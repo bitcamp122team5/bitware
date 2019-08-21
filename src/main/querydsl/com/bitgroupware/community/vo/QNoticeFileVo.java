@@ -28,6 +28,8 @@ public class QNoticeFileVo extends EntityPathBase<NoticeFileVo> {
 
     public final NumberPath<Integer> ntFileNo = createNumber("ntFileNo", Integer.class);
 
+    public final StringPath ntFileType = createString("ntFileType");
+
     public final StringPath ntFileUrl = createString("ntFileUrl");
 
     public QNoticeFileVo(String variable) {
