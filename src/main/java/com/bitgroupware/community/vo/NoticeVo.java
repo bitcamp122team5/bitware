@@ -1,14 +1,18 @@
 package com.bitgroupware.community.vo;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.bitgroupware.member.vo.MemberVo;
 
@@ -18,7 +22,7 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "noticeFileList")
 @Entity(name = "notice")
 public class NoticeVo {
 
@@ -41,7 +45,7 @@ public class NoticeVo {
 	@JoinColumn(name="mem_id", updatable = false, columnDefinition = "varchar(100)")
 	private MemberVo member;
 	
-//	@OneToMany(mappedBy = "notice", fetch = FetchType.EAGER)
-//	private List<NoticeFileVo> noticeFileList = new ArrayList<NoticeFileVo>();
+	@OneToMany(mappedBy = "notice", fetch = FetchType.EAGER)
+	private List<NoticeFileVo> noticeFileList = new ArrayList<NoticeFileVo>();
 	
 }

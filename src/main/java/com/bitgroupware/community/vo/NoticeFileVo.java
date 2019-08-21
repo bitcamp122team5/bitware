@@ -13,7 +13,7 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "notice")
 @Entity(name = "notice_file")
 public class NoticeFileVo {
 
@@ -28,8 +28,8 @@ public class NoticeFileVo {
 	@JoinColumn(name="ntNo", nullable = false, updatable = false)
 	private NoticeVo notice;
 	
-//	public void setNotice(NoticeVo notice) {
-//		this.notice = notice;
-//		notice.getNoticeFileList().add(this);
-//	}
+	public void setNotice(NoticeVo notice) {
+		this.notice = notice;
+		notice.getNoticeFileList().add(this);
+	}
 }

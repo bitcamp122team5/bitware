@@ -14,6 +14,72 @@ $(function(){
 	$("#keyword").val(keyword);
 });
 </script>
+<script>
+$(document).ready(function() {
+	var xOffset = 10;
+    var yOffset = 30;
+    $(document).on("mouseover",".thumbnail",function(e){ //마우스 오버시
+    	$("body").append("<p id='preview'><img src='"+ $(this).attr("value") +"' height='200px' /></p>"); //보여줄 이미지를 선언                       
+        $("#preview")
+        	.css("top",(e.pageY - xOffset) + "px")
+            .css("left",(e.pageX + yOffset) + "px")
+            .fadeIn("fast"); //미리보기 화면 설정 셋팅
+    });
+    $(document).on("mousemove",".thumbnail",function(e){ //마우스 이동시
+        $("#preview")
+        	.css("top",(e.pageY - xOffset) + "px")
+            .css("left",(e.pageX + yOffset) + "px");
+    });
+    $(document).on("mouseout",".thumbnail",function(){ //마우스 아웃시
+       	$("#preview").remove();
+    });
+});
+</script>
+<style>
+/* 미리보기 스타일 셋팅 */
+#preview{
+	z-index: 9999;
+    position:absolute;
+    border:0px solid #ccc;
+    background:#333;
+    padding:1px;
+    display:none;
+    color:#fff;
+}
+</style>
+<script>
+$(document).ready(function() {
+	$("#allCheckBox").click(function(){
+		var chk = $("#allCheckBox").prop("checked");
+		if(chk){
+			$(".checkBox").prop("checked",true);
+		}else{
+			$(".checkBox").prop("checked",false);
+		}
+	});
+	$(".checkBox").click(function(){
+		$("#allCheckBox").prop("checked",false);
+	});
+	$(".deleteBtn").click(function(){
+		var confirm_val = confirm("정말 삭제하시겠습니까?");
+		if(confirm_val){
+			var checkBoxArr = new Array();
+			$("input[class='checkBox']:checked").each(function(){
+				checkBoxArr.push($(this).val());
+			})
+			$.ajax({
+				url:"/admin/deleteNoticeCheckBox",
+				type:"post",
+				data:{checkBoxArr:checkBoxArr},
+				success:function(result){
+					alert(result);
+					location.href="/admin/selectNoticeList";
+				}
+			});
+		}
+	});
+});
+</script>
 </head>
 <body>
 <!-- 검색 시작 -->
@@ -39,16 +105,6 @@ $(function(){
 <table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
 	<tr>
 		<th><input type="checkbox" name="allCheckBox" id="allCheckBox"></th>
-		<script>
-			$("#allCheckBox").click(function(){
-				var chk = $("#allCheckBox").prop("checked");
-				if(chk){
-					$(".checkBox").prop("checked",true);
-				}else{
-					$(".checkBox").prop("checked",false);
-				}
-			});
-		</script>
 		<th bgcolor="orange" width="100">분류</th>
 		<th bgcolor="orange" width="400">제목</th>
 		<th bgcolor="orange" width="100">등록일</th>
@@ -57,13 +113,20 @@ $(function(){
 	</tr>
 	<tr th:each="notice:${noticeList}">
 		<td><input type="checkbox" name="checkBox" class="checkBox" th:value="${notice.ntNo}"></td>
-		<script>
-			$(".checkBox").click(function(){
-				$("#allCheckBox").prop("checked",false);
-			});
-		</script>
 		<td th:text="${notice.ntCate}"></td>
-        <td><a th:href="@{/admin/updateNoticeView(ntNo=${notice.ntNo})}" th:text="${notice.ntTitle}"></a></td>
+        <td>
+        	<a th:href="@{/admin/updateNoticeView(ntNo=${notice.ntNo})}" th:text="${notice.ntTitle}"></a>
+        	<span th:each="noticeFile:${notice.noticeFileList}">
+        		<span th:if="${noticeFile.ntFileType=='image'}">
+        			<img th:src="@{/images/fileImage.png}" style="width: 5px; height: 5px">
+        			<span th:text="${noticeFile.ntFileName}" class="thumbnail" th:value="${noticeFile.ntFileUrl}" style="font-size: 5px"></span>
+        		</span>
+        		<span th:if="${noticeFile.ntFileType=='document'}">
+        			<img th:src="@{/images/fileImage.png}" style="width: 5px; height: 5px">
+        			<span th:text="${noticeFile.ntFileName}" style="font-size: 5px"></span>
+        		</span>
+        	</span>
+        </td>
     	<div th:if="${today==#dates.format(notice.ntDate,'yyyy-MM-dd')}">
 			<td th:text="${#dates.format(notice.ntDate,'HH:mm')}"></td>
 		</div>
@@ -81,26 +144,6 @@ $(function(){
 </table>
 <br>
 <button type="button" class="deleteBtn">삭제</button>
-<script>
-	$(".deleteBtn").click(function(){
-		var confirm_val = confirm("정말 삭제하시겠습니까?");
-		if(confirm_val){
-			var checkBoxArr = new Array();
-			$("input[class='checkBox']:checked").each(function(){
-				checkBoxArr.push($(this).val());
-			})
-			$.ajax({
-				url:"/admin/deleteNoticeCheckBox",
-				type:"post",
-				data:{checkBoxArr:checkBoxArr},
-				success:function(result){
-					alert(result);
-					location.href="/admin/selectNoticeList";
-				}
-			});
-		}
-	});
-</script>
 <a th:href="@{/admin/insertNoticeView}">게시글 등록</a>
 <table th:align="center">
 	<tr>
