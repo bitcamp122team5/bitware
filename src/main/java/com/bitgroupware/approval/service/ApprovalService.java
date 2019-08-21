@@ -1,8 +1,8 @@
-package com.bitgroupware.admin.service;
+package com.bitgroupware.approval.service;
 
 import java.util.List;
 
-import com.bitgroupware.admin.beans.ApprovalDoucemtDto;
+import com.bitgroupware.approval.beans.ApprovalDoucemtDto;
 
 public interface ApprovalService {
 	

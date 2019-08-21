@@ -1,4 +1,4 @@
-package com.bitgroupware.admin.persistence;
+package com.bitgroupware.approval.persistence;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import com.bitgroupware.admin.beans.ApprovalDoucemtDto;
+import com.bitgroupware.approval.beans.ApprovalDoucemtDto;
 
 @Mapper
 public interface ApprovalDocumentDao {

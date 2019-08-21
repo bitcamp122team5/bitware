@@ -9,9 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.bitgroupware.admin.beans.ApprovalDoucemtDto;
-import com.bitgroupware.admin.service.ApprovalService;
-import com.bitgroupware.community.service.NoticeService;
+import com.bitgroupware.approval.beans.ApprovalDoucemtDto;
+import com.bitgroupware.approval.service.ApprovalService;
 
 /**
  * @Title	ApprovalController
@@ -20,7 +19,7 @@ import com.bitgroupware.community.service.NoticeService;
  */
 
 @Controller
-public class ApprovalController {
+public class AdminApprovalController {
 	
 	@Autowired
 	private ApprovalService approvalService;

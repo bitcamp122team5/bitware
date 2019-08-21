@@ -1,12 +1,12 @@
-package com.bitgroupware.admin.service;
+package com.bitgroupware.approval.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bitgroupware.admin.beans.ApprovalDoucemtDto;
-import com.bitgroupware.admin.persistence.ApprovalDocumentDao;
+import com.bitgroupware.approval.beans.ApprovalDoucemtDto;
+import com.bitgroupware.approval.persistence.ApprovalDocumentDao;
 
 @Service
 public class ApprovalServiceImpl implements ApprovalService {
