@@ -24,6 +24,8 @@ public class QNoticeVo extends EntityPathBase<NoticeVo> {
 
     public final com.bitgroupware.member.vo.QMemberVo member;
 
+    public final ListPath<NoticeFileVo, QNoticeFileVo> noticeFileList = this.<NoticeFileVo, QNoticeFileVo>createList("noticeFileList", NoticeFileVo.class, QNoticeFileVo.class, PathInits.DIRECT2);
+
     public final StringPath ntCate = createString("ntCate");
 
     public final NumberPath<Integer> ntCnt = createNumber("ntCnt", Integer.class);
