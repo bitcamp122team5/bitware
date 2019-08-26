@@ -42,19 +42,19 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 	$.ajax({
 		type: "post",
-		url: "/user/selectMeetingroomReservationListAjax",
+		url: "/user/selectCarReservationListAjax",
 		data: {},
 		dataType: "json",
-		success:function(mrr){
-			for(var i=0 in mrr){
-				if(mrr[i].meetingroom.mrNo==1) var color = "#000000";
-				if(mrr[i].meetingroom.mrNo==2) var color = "#ff0000";
-				if(mrr[i].meetingroom.mrNo==3) var color = "#00ff00";
-				if(mrr[i].meetingroom.mrNo==4) var color = "#0000ff";
+		success:function(carReservation){
+			for(var i=0 in carReservation){
+				if(carReservation[i].car.carNo==1) var color = "#000000";
+				if(carReservation[i].car.carNo==2) var color = "#ff0000";
+				if(carReservation[i].car.carNo==3) var color = "#00ff00";
+				if(carReservation[i].car.carNo==4) var color = "#0000ff";
 				calendar.addEvent({
-	            	title: mrr[i].meetingroom.mrName+" "+mrr[i].member.memName,
-	                start: mrr[i].mrResStart+":00",
-	                end: mrr[i].mrResEnd+":00",
+	            	title: carReservation[i].car.carName+" "+carReservation[i].member.memName,
+	                start: carReservation[i].carResStart+":00",
+	                end: carReservation[i].carResEnd+":00",
 	                color: color
 	            });
 			}
@@ -158,27 +158,26 @@ $(function(){
 <div id="myModal" class="modal">
 	<div class="modal-content">
 		<span class="close">&times;</span>                                                               
-    	<form action="/user/insertMeetingroomReservation">
+    	<form action="/user/insertCarReservation">
     	<h3>예약하기</h3>
     	<table>
     		<tr>
-    			<td>회의실 선택</td>
+    			<td>차량 선택</td>
     			<td colspan="2">
-    				<select name="mrNo">
-						<option value="1">회의실1</option>
-						<option value="2">회의실2</option>
-						<option value="3">회의실3</option>
-						<option value="4">회의실4</option>
+    				<select name="carNo">
+						<span th:each="car:${carList}">
+							<option th:value="${car.carNo}" th:text="${car.carName}"></option>
+						</span>
 					</select>
     			</td>
     		</tr>
     		<tr>
     			<td>Start Date</td>
-    			<td><input type="text" id="startDateElem" name="mrResStart" class="form-control" autocomplete="off"></td>
+    			<td><input type="text" id="startDateElem" name="carResStart" class="form-control" autocomplete="off"></td>
     		</tr>
     		<tr>
     			<td>End Date</td>
-    			<td><input type="text" id="endDateElem" name="mrResEnd" class="form-control" autocomplete="off"></td>
+    			<td><input type="text" id="endDateElem" name="carResEnd" class="form-control" autocomplete="off"></td>
     		</tr>
     	</table>
 		<input type="submit" value="예약하기">
@@ -189,14 +188,14 @@ $(function(){
 				<td>예약</td>
 				<td>취소</td>
 			</tr>
-			<tr th:each="mrr:${mrrListByMemId}">
+			<tr th:each="carReservation:${carReservationList}">
 				<td>
-					<span th:text="${mrr.meetingroom.mrName}"></span>&nbsp;
-					<span th:text="${mrr.mrResStart}"></span>&nbsp;
-					<span th:text="${mrr.mrResEnd}"></span>&nbsp;
-					<span th:text="${#dates.format(mrr.mrResDate,'yyyy-MM-dd HH:mm')}"></span>
+					<span th:text="${carReservation.car.carName}"></span>&nbsp;
+					<span th:text="${carReservation.carResStart}"></span>&nbsp;
+					<span th:text="${carReservation.carResEnd}"></span>&nbsp;
+					<span th:text="${#dates.format(carReservation.carResDate,'yyyy-MM-dd HH:mm')}"></span>
 				</td>
-				<td><a th:href="@{/user/deleteMeetingroomReservation(mrResNo=${mrr.mrResNo})}">취소</a></td>
+				<td><a th:href="@{/user/deleteCarReservation(carResNo=${carReservation.carResNo})}">취소</a></td>
 			</tr>
 		</table>
 	</div>

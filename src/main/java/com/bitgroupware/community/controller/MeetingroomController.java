@@ -25,25 +25,23 @@ public class MeetingroomController {
 	@Autowired
 	private MeetingroomReservationService meetingroomReservationService;
 	
-	@RequestMapping("/selectMeetingroomReservationView")
-	public String insertMeetingroomView(Model model, String msg, @AuthenticationPrincipal SecurityUser principal) {
-		MemberVo member = principal.getMember();
+	@RequestMapping("/selectMeetingroomReservationList")
+	public String selectMeetingroomReservationList(Model model, String msg, @AuthenticationPrincipal SecurityUser principal) {
 //		meetingroomReservationService.deleteCheck();
-		List<MeetingroomReservationVo> mrrListByMemId = meetingroomReservationService.selectMeetingroomReservationList(member);
-		model.addAttribute("mrrListByMemId", mrrListByMemId);
+		List<MeetingroomVo> meetingroomList = meetingroomReservationService.selectMeetingroomList();
+		MemberVo member = principal.getMember();
+		List<MeetingroomReservationVo> meetingroomReservationList = meetingroomReservationService.selectMeetingroomReservationList(member);
+		model.addAttribute("meetingroomList", meetingroomList);
+		model.addAttribute("meetingroomReservationList", meetingroomReservationList);
 		model.addAttribute("msg",msg);
-		return "community/meetingroom";
+		return "community/meetingroomReservationList";
 	}
 	
 	@RequestMapping("/insertMeetingroomReservation")
-	public String insertMeetingroom(int mrNo, MeetingroomReservationVo mrr, @AuthenticationPrincipal SecurityUser principal) {
+	public String insertMeetingroomReservation(int mrNo, MeetingroomReservationVo meetingroomReservation, @AuthenticationPrincipal SecurityUser principal) {
 		try {
-//			String[] startArr = mrr.getMrResStart().split("T");
-//			String[] endArr = mrr.getMrResEnd().split("T");
-//			String start = startArr[0]+" "+startArr[1]+":00";
-//			String end = endArr[0]+" "+endArr[1]+":00";
-			String start = mrr.getMrResStart()+":00";
-			String end = mrr.getMrResEnd()+":00";
+			String start = meetingroomReservation.getMrResStart()+":00";
+			String end = meetingroomReservation.getMrResEnd()+":00";
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date startDate = format.parse(start);
 			Date endDate = format.parse(end);
@@ -51,28 +49,28 @@ public class MeetingroomController {
 			int check = meetingroomReservationService.checkDuplicates(mrNo, start, end); 
 			if(date.compareTo(startDate)==1||startDate.compareTo(endDate)==1||check==1) {
 				String msg = "Invalid date entered. Please re-enter.";
-				return "redirect:/user/selectMeetingroomReservationView?msg="+msg;
+				return "redirect:/user/selectMeetingroomReservationList?msg="+msg;
 			}
 		} catch (ParseException e) {
 			System.out.println("날짜 선택에서 오류 났어요.");
 			e.printStackTrace();
 		}
-		MeetingroomVo mr = meetingroomReservationService.selectMeetingroomByMrNo(mrNo);
-		mrr.setMeetingroom(mr);
-		mrr.setMember(principal.getMember());
-		meetingroomReservationService.insertMeetingroomReservation(mrr);
-		return "redirect:/user/selectMeetingroomReservationView";
+		MeetingroomVo meetingroom = meetingroomReservationService.selectMeetingroomByMrNo(mrNo);
+		meetingroomReservation.setMeetingroom(meetingroom);
+		meetingroomReservation.setMember(principal.getMember());
+		meetingroomReservationService.insertMeetingroomReservation(meetingroomReservation);
+		return "redirect:/user/selectMeetingroomReservationList";
 	}
 
 	@RequestMapping("/selectMeetingroomReservationListAjax")
 	@ResponseBody
-	public List<MeetingroomReservationVo> selectMeetingroomReservationList() {
-		return meetingroomReservationService.selectMeetingroomReservationList();
+	public List<MeetingroomReservationVo> selectMeetingroomReservationListAjax() {
+		return meetingroomReservationService.selectMeetingroomReservationListAjax();
 	}
 	
 	@RequestMapping("/deleteMeetingroomReservation")
 	public String deleteMeetingroomReservation(int mrResNo) {
 		meetingroomReservationService.deleteMeetingroomReservation(mrResNo);
-		return "redirect:/user/selectMeetingroomReservationView";
+		return "redirect:/user/selectMeetingroomReservationList";
 	}
 }

@@ -8,8 +8,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bitgroupware.community.persistence.CarRepository;
+import com.bitgroupware.community.persistence.DocCenterRepository;
 import com.bitgroupware.community.persistence.MeetingroomRepository;
 import com.bitgroupware.community.persistence.NoticeRepository;
+import com.bitgroupware.community.vo.CarVo;
+import com.bitgroupware.community.vo.DocCenterVo;
 import com.bitgroupware.community.vo.MeetingroomVo;
 import com.bitgroupware.community.vo.NoticeVo;
 import com.bitgroupware.company.persistence.DepartmentRepository;
@@ -30,6 +34,8 @@ public class TestController {
 	@Autowired
 	private NoticeRepository noticeRepo;
 	@Autowired
+	private DocCenterRepository docCenterRepo;
+	@Autowired
 	private MeetingroomRepository meetingroomRepo;
 	@Autowired
 	private DepartmentRepository departmentRepo;
@@ -37,6 +43,8 @@ public class TestController {
 	private TeamRepository teamRepo;
 	@Autowired
 	private RanksRepository ranksRepo;
+	@Autowired
+	private CarRepository carRepo;
 	@Autowired
 	private PasswordEncoder encoder;
 
@@ -58,11 +66,29 @@ public class TestController {
 			notice.setNtCate("일반");
 			notice.setNtTitle("글제목"+i);
 			notice.setNtContent("글내용"+i);
+			notice.setNtFileCheck("N");
 			notice.setMember(admin);
 			
 			noticeRepo.save(notice);
 		}
 		return "공지사항 생성완료";
+	}
+	
+	@RequestMapping("/createDocCenter")
+	@ResponseBody
+	public String createDocCenter() {
+		MemberVo admin = memberRepo.findById("admin").get();
+		for(int i=1; i<=342; i++) {
+			DocCenterVo docCenter = new DocCenterVo();
+			docCenter.setDocCate("일반");
+			docCenter.setDocTitle("글제목"+i);
+			docCenter.setDocContent("글내용"+i);
+			docCenter.setDocFileCheck("N");
+			docCenter.setMember(admin);
+			
+			docCenterRepo.save(docCenter);
+		}
+		return "자료실 생성완료";
 	}
 	
 	@RequestMapping("/createMeetingroom")
@@ -75,6 +101,18 @@ public class TestController {
 			meetingroomRepo.save(mr);
 		}
 		return "회의실 생성완료";
+	}
+	
+	@RequestMapping("/createCar")
+	@ResponseBody
+	public String createCar() {
+		for(int i=1; i<=4; i++) {
+			CarVo car = new CarVo();
+			car.setCarName("차량"+i);
+			car.setCarPlate("01하000"+i);
+			carRepo.save(car);
+		}
+		return "차량 생성완료";
 	}
 	
 	@RequestMapping("/createCompany")
@@ -169,7 +207,111 @@ public class TestController {
 		
 		memberRepo.save(member);
 		
-		return "멤버 하나 생성완료";
+		return "ADMIN 하나 생성완료";
+	}
+	
+	@RequestMapping("/createUser")
+	@ResponseBody
+	public String createUser() {
+		MemberVo member = new MemberVo();
+		member.setMemId("911121001");
+		member.setMemPw(encoder.encode("911121001"));
+		member.setMemName("황준우");
+		member.setRole(Role.ROLE_USER);
+		member.setEnabled(true);
+		
+		member.setMemJoinDate(new Date());
+		
+		member.setMemTel("010-2641-2684");
+		member.setMemOfficeTel("02-1234-1234");
+		
+		member.setMemJumin("840415-1000001");
+		member.setMemSignUrl("/images/840415/sign.png");
+		member.setMemVacation(15);
+		
+		member.setMemAddrCode("07776");
+		member.setMemAddr("서울시 강남구 강남대로 4");
+		member.setMemAddrDetail("102호");
+		
+		DepartmentVo department2 = departmentRepo.findById(2).get();
+		member.setDepartment(department2);
+		TeamVo team3 = teamRepo.findById(3).get();
+		member.setTeam(team3);
+		RanksVo ranks = ranksRepo.findById("사원").get();
+		member.setRanks(ranks);
+		
+		memberRepo.save(member);
+		
+		return "USER 하나 생성완료";
+	}
+	
+	@RequestMapping("/createPm")
+	@ResponseBody
+	public String createPm() {
+		MemberVo member = new MemberVo();
+		member.setMemId("941230002");
+		member.setMemPw(encoder.encode("941230002"));
+		member.setMemName("정동원");
+		member.setRole(Role.ROLE_PM);
+		member.setEnabled(true);
+		
+		member.setMemJoinDate(new Date());
+		
+		member.setMemTel("010-2641-2684");
+		member.setMemOfficeTel("02-1234-1234");
+		
+		member.setMemJumin("840415-1000002");
+		member.setMemSignUrl("/images/840415/sign.png");
+		member.setMemVacation(15);
+		
+		member.setMemAddrCode("07775");
+		member.setMemAddr("서울시 강남구 강남대로 3");
+		member.setMemAddrDetail("103호");
+		
+		DepartmentVo department1 = departmentRepo.findById(1).get();
+		member.setDepartment(department1);
+//		TeamVo team1 = teamRepo.findById(1).get();
+//		member.setTeam(team1);
+		RanksVo ranks = ranksRepo.findById("부장").get();
+		member.setRanks(ranks);
+		
+		memberRepo.save(member);
+		
+		return "PM 하나 생성완료";
+	}
+	@RequestMapping("/createPl")
+	@ResponseBody
+	public String createPl() {
+		MemberVo member = new MemberVo();
+		member.setMemId("910111003");
+		member.setMemPw(encoder.encode("910111003"));
+		member.setMemName("홍길동");
+		member.setRole(Role.ROLE_PL);
+		member.setEnabled(true);
+		
+		member.setMemJoinDate(new Date());
+		
+		member.setMemTel("010-2641-2684");
+		member.setMemOfficeTel("02-1234-1234");
+		
+		member.setMemJumin("840415-1000003");
+		member.setMemSignUrl("/images/840415/sign.png");
+		member.setMemVacation(15);
+		
+		member.setMemAddrCode("07774");
+		member.setMemAddr("서울시 강남구 강남대로 1");
+		member.setMemAddrDetail("107호");
+		
+		DepartmentVo department1 = departmentRepo.findById(1).get();
+		member.setDepartment(department1);
+		TeamVo team2 = teamRepo.findById(2).get();
+		member.setTeam(team2);
+		RanksVo ranks = ranksRepo.findById("팀장").get();
+		member.setRanks(ranks);
+		
+		memberRepo.save(member);
+		
+		return "PL 하나 생성완료";
 	}
 	
 }

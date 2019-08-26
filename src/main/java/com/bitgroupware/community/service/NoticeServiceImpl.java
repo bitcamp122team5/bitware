@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import javax.transaction.Transactional;
 
@@ -23,13 +22,35 @@ public class NoticeServiceImpl implements NoticeService {
 
 	@Autowired
 	private NoticeRepository noticeRepo;
-
 	@Autowired
 	private NoticeFileRepository noticeFileRepo;
 
+	public int countNotice(Search search) {
+		if (search.getSearchCondition() == null)
+			search.setSearchCondition("ntTitle");
+		if (search.getSearchKeyword() == null)
+			search.setSearchKeyword("");
+
+		String searchCondition = search.getSearchCondition();
+		String searchKeyword = "%" + search.getSearchKeyword().trim() + "%";
+		int count = 0;
+		switch (searchCondition) {
+		case "ntTitle":
+			count = noticeRepo.countByNtTitle(searchKeyword);
+			break;
+		case "ntCate":
+			count = noticeRepo.countByNtCate(searchKeyword);
+			break;
+		case "ntContent":
+			count = noticeRepo.countByNtContent(searchKeyword);
+			break;
+		}
+		return count;
+	}
+	
 	public List<NoticeVo> selectNoticeList(int begin, Search search) {
 		if (search.getSearchCondition() == null)
-			search.setSearchCondition("nt_title");
+			search.setSearchCondition("ntTitle");
 		if (search.getSearchKeyword() == null)
 			search.setSearchKeyword("");
 
@@ -37,13 +58,13 @@ public class NoticeServiceImpl implements NoticeService {
 		String searchKeyword = "%" + search.getSearchKeyword().trim() + "%";
 		List<NoticeVo> noticeList = null;
 		switch (searchCondition) {
-		case "nt_title":
+		case "ntTitle":
 			noticeList = noticeRepo.findAllByPagingAndNtTitle(begin, searchKeyword);
 			break;
-		case "nt_cate":
+		case "ntCate":
 			noticeList = noticeRepo.findAllByPagingAndNtCate(begin, searchKeyword);
 			break;
-		case "nt_content":
+		case "ntContent":
 			noticeList = noticeRepo.findAllByPagingAndNtContent(begin, searchKeyword);
 			break;
 		}
@@ -129,38 +150,11 @@ public class NoticeServiceImpl implements NoticeService {
 		}
 	}
 
-	public int countNotice(Search search) {
-		if (search.getSearchCondition() == null)
-			search.setSearchCondition("nt_title");
-		if (search.getSearchKeyword() == null)
-			search.setSearchKeyword("");
-
-		String searchCondition = search.getSearchCondition();
-		String searchKeyword = "%" + search.getSearchKeyword().trim() + "%";
-		int count = 0;
-		switch (searchCondition) {
-		case "nt_title":
-			count = noticeRepo.countByNtTitle(searchKeyword);
-			break;
-		case "nt_cate":
-			count = noticeRepo.countByNtCate(searchKeyword);
-			break;
-		case "nt_content":
-			count = noticeRepo.countByNtContent(searchKeyword);
-			break;
-		}
-		return count;
-	}
-
-	public List<NoticeFileVo> selectNoticeFileListByNtNo(int ntNo) {
-		return noticeFileRepo.selectNoticeFileListByNtNo(ntNo);
-	}
-
 	public void deleteNoticeFile(String fileUrl) {
 		int count = noticeFileRepo.countByNtFileUrl(fileUrl);
 		if (count != 0) {
-			int ntFileNo = noticeFileRepo.NtFileNoByNtFileUrl(fileUrl);
-			noticeFileRepo.deleteByNtFileNo(ntFileNo);
+			NoticeFileVo noticeFile = noticeFileRepo.findByNtFileUrl(fileUrl);
+			noticeFileRepo.delete(noticeFile);
 		}
 	}
 }

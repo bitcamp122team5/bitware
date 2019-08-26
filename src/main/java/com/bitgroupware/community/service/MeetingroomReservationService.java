@@ -8,18 +8,20 @@ import com.bitgroupware.member.vo.MemberVo;
 
 public interface MeetingroomReservationService {
 
-	void insertMeetingroomReservation(MeetingroomReservationVo mrr);
-
-	MeetingroomVo selectMeetingroomByMrNo(int mrNo);
-
-	List<MeetingroomReservationVo> selectMeetingroomReservationList();
+	List<MeetingroomVo> selectMeetingroomList();
 
 	List<MeetingroomReservationVo> selectMeetingroomReservationList(MemberVo member);
 
-	void deleteMeetingroomReservation(int mrResNo);
-
-	void deleteCheck();
-
 	int checkDuplicates(int mrNo, String start, String end);
+	
+	MeetingroomVo selectMeetingroomByMrNo(int mrNo);
+	
+	void insertMeetingroomReservation(MeetingroomReservationVo meetingroomReservation);
+
+	List<MeetingroomReservationVo> selectMeetingroomReservationListAjax();
+	
+	void deleteMeetingroomReservation(int mrResNo);
+	
+	void deleteCheck();
 
 }

@@ -3,7 +3,7 @@
 xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 <meta charset="UTF-8">
-<title>공지사항 목록페이지(관리자)</title>
+<title>공지사항 목록페이지</title>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script> 
 <script>
 $(function(){
@@ -46,43 +46,10 @@ $(document).ready(function() {
     color:#fff;
 }
 </style>
-<script>
-$(document).ready(function() {
-	$("#allCheckBox").click(function(){
-		var chk = $("#allCheckBox").prop("checked");
-		if(chk){
-			$(".checkBox").prop("checked",true);
-		}else{
-			$(".checkBox").prop("checked",false);
-		}
-	});
-	$(".checkBox").click(function(){
-		$("#allCheckBox").prop("checked",false);
-	});
-	$(".deleteBtn").click(function(){
-		var confirm_val = confirm("정말 삭제하시겠습니까?");
-		if(confirm_val){
-			var checkBoxArr = new Array();
-			$("input[class='checkBox']:checked").each(function(){
-				checkBoxArr.push($(this).val());
-			})
-			$.ajax({
-				url:"/admin/deleteNoticeCheckBox",
-				type:"post",
-				data:{checkBoxArr:checkBoxArr},
-				success:function(result){
-					alert(result);
-					location.href="/admin/selectNoticeList";
-				}
-			});
-		}
-	});
-});
-</script>
 </head>
 <body>
 <!-- 검색 시작 -->
-<form th:action="@{/admin/selectNoticeList}">
+<form th:action="@{/user/selectNoticeList}">
 <table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
 <tr>
     <td align="right">
@@ -103,7 +70,6 @@ $(document).ready(function() {
 
 <table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
 	<tr>
-		<th><input type="checkbox" name="allCheckBox" id="allCheckBox"></th>
 		<th bgcolor="orange" width="100">분류</th>
 		<th bgcolor="orange" width="400">제목</th>
 		<th bgcolor="orange" width="100">등록일</th>
@@ -111,10 +77,9 @@ $(document).ready(function() {
 		<th bgcolor="orange" width="100">조회수</th>
 	</tr>
 	<tr th:each="notice:${noticeList}">
-		<td><input type="checkbox" name="checkBox" class="checkBox" th:value="${notice.ntNo}"></td>
 		<td th:text="${notice.ntCate}"></td>
         <td>
-        	<a th:href="@{/admin/updateNoticeView(ntNo=${notice.ntNo})}" th:text="${notice.ntTitle}"></a>
+        	<a th:href="@{/user/selectNotice(ntNo=${notice.ntNo})}" th:text="${notice.ntTitle}"></a>
         	<span th:each="noticeFile:${notice.noticeFileList}">
         		<span th:if="${noticeFile.ntFileType=='image'}">
         			<img th:src="@{/images/fileImage.png}" style="width: 5px; height: 5px">
@@ -142,30 +107,28 @@ $(document).ready(function() {
 	</tr>
 </table>
 <br>
-<button type="button" class="deleteBtn">삭제</button>
-<a th:href="@{/admin/insertNoticeView}">게시글 등록</a>
 <table th:align="center">
 	<tr>
 		<td colspan="5">
 			<span th:if="${page.curBlock > 1 }">
-				<a th:href="@{/admin/selectNoticeList(curPage=${page.prevPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}">[이전]</a>
+				<a th:href="@{/user/selectNoticeList(curPage=${page.prevPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}">[이전]</a>
 			</span>
 			<span th:if="${page.curBlock > 1 }">
-				<a th:href="@{/admin/selectNoticeList(curPage=1,searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}">1</a>
+				<a th:href="@{/user/selectNoticeList(curPage=1,searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}">1</a>
 			</span>
 			<span th:each="num:${block}">
 				<span th:if="${num==page.curPage }">
-					<a th:href="@{/admin/selectNoticeList(curPage=${num},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${num}" style="color:orange;"></a>
+					<a th:href="@{/user/selectNoticeList(curPage=${num},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${num}" style="color:orange;"></a>
 				</span>
 				<span th:unless="${num==page.curPage }">
-					<a th:href="@{/admin/selectNoticeList(curPage=${num},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${num}"></a>
+					<a th:href="@{/user/selectNoticeList(curPage=${num},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${num}"></a>
 				</span>
 			</span>
 			<span th:if="${page.curBlock < page.totBlock }">
-				<a th:href="@{/admin/selectNoticeList(curPage=${page.totPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${page.totPage}"></a>
+				<a th:href="@{/user/selectNoticeList(curPage=${page.totPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${page.totPage}"></a>
 			</span>
 			<span th:if="${page.curBlock < page.totBlock }">
-				<a th:href="@{/admin/selectNoticeList(curPage=${page.nextPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}">[다음]</a>
+				<a th:href="@{/user/selectNoticeList(curPage=${page.nextPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}">[다음]</a>
 			</span>
 		</td>
 	</tr>

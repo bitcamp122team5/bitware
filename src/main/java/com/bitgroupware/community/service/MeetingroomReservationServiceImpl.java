@@ -18,51 +18,53 @@ import com.bitgroupware.member.vo.MemberVo;
 public class MeetingroomReservationServiceImpl implements MeetingroomReservationService{
 
 	@Autowired
-	private MeetingroomReservationRepository meetingroomReservationRepo;
-	@Autowired
 	private MeetingroomRepository meetingroomRepo;
+	@Autowired
+	private MeetingroomReservationRepository meetingroomReservationRepo;
 	
-	public void insertMeetingroomReservation(MeetingroomReservationVo mrr) {
-		meetingroomReservationRepo.save(mrr);
-	}
-
-	public MeetingroomVo selectMeetingroomByMrNo(int mrNo) {
-		return meetingroomRepo.findById(mrNo).get();
-	}
-
-	public List<MeetingroomReservationVo> selectMeetingroomReservationList() {
-		return meetingroomReservationRepo.findAll();
+	public List<MeetingroomVo> selectMeetingroomList() {
+		return meetingroomRepo.findAll();
 	}
 
 	public List<MeetingroomReservationVo> selectMeetingroomReservationList(MemberVo member) {
 		return meetingroomReservationRepo.findByMember(member);
 	}
 
+	public int checkDuplicates(int mrNo, String start, String end) {
+		return meetingroomReservationRepo.checkDuplicates(mrNo, start, end);
+	}
+	
+	public MeetingroomVo selectMeetingroomByMrNo(int mrNo) {
+		return meetingroomRepo.findById(mrNo).get();
+	}
+	
+	public void insertMeetingroomReservation(MeetingroomReservationVo meetingroomReservation) {
+		meetingroomReservationRepo.save(meetingroomReservation);
+	}
+	
+	public List<MeetingroomReservationVo> selectMeetingroomReservationListAjax() {
+		return meetingroomReservationRepo.findAll();
+	}
+	
 	public void deleteMeetingroomReservation(int mrResNo) {
 		meetingroomReservationRepo.deleteById(mrResNo);
 	}
-
+	
 	public void deleteCheck() {
-		List<MeetingroomReservationVo> mrrList = meetingroomReservationRepo.findAll();
-		for(MeetingroomReservationVo mrr:mrrList) {
+		List<MeetingroomReservationVo> meetingroomReservationList = meetingroomReservationRepo.findAll();
+		for(MeetingroomReservationVo meetingroomReservation:meetingroomReservationList) {
 			try {
-//				String[] endArr = mrr.getMrResEnd().split("T");
-//				String end = endArr[0]+" "+endArr[1]+":00";
-				String end = mrr.getMrResEnd()+":00";
+				String end = meetingroomReservation.getMrResEnd()+":00";
 				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				Date endDate = format.parse(end);
 				Date date = new Date();
 				if(date.compareTo(endDate)==1) {
-					meetingroomReservationRepo.delete(mrr);
+					meetingroomReservationRepo.delete(meetingroomReservation);
 				}
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	public int checkDuplicates(int mrNo, String start, String end) {
-		return meetingroomReservationRepo.checkDuplicates(mrNo, start, end);
 	}
 
 }
