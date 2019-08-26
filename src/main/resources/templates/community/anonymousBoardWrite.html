@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<title>익명게시판 글작성페이지</title>
+</head>
+<body>
+<form th:action="@{/user/insertAnonymousBoard}">
+	<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
+		<tr>
+			<td>제목</td>
+			<td><input type="text" name="btitle"></td>
+		</tr>
+		<tr>
+			<td>내용</td>
+			<td><textarea name="bcontent" rows="10"></textarea></td>
+		</tr>
+		<tr>
+			<td>비밀번호</td>
+			<td><input type="password" name="bpw"></td>
+		</tr>
+		<tr>
+			<td colspan="2"><input type="submit" value="입력">
+			<a th:href="@{/user/selectAnonymousBoardList}">목록보기</a>
+		</tr>
+	</table>
+</form>
+</body>
+</html>

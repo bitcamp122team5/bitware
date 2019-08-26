@@ -18,18 +18,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.bitgroupware.community.service.DocCenterService;
 import com.bitgroupware.community.service.NoticeService;
-import com.bitgroupware.community.utils.MediaUtils;
 import com.bitgroupware.community.utils.TemporaryFileUrl;
 import com.bitgroupware.community.utils.UploadFileUtils;
-import com.bitgroupware.community.vo.NoticeVo;
 
 @Controller
 @RequestMapping("/admin")
-public class AjaxUploadController {
+public class AdminAjaxUploadController {
 
 	@Autowired
 	private NoticeService noticeService;
+	@Autowired
+	private DocCenterService docCenterService;
 
 	@RequestMapping(value = "/uploadAjax", method = RequestMethod.POST, produces = "text/plain;charset=utf-8")
 	@ResponseBody
@@ -47,11 +48,8 @@ public class AjaxUploadController {
 		InputStream in = null;
 		ResponseEntity<byte[]> entity = null;
 		try {
-			String formatName = fileUrl.substring(fileUrl.lastIndexOf(".") + 1);
-			MediaType mType = MediaUtils.getMediaType(formatName);
 			HttpHeaders headers = new HttpHeaders();
 			in = new FileInputStream(uploadPath + fileUrl);
-			System.out.println(uploadPath + fileUrl);
 			fileUrl = fileUrl.substring(fileUrl.indexOf("_") + 1);
 			headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 			headers.add("Content-Disposition",
@@ -67,14 +65,25 @@ public class AjaxUploadController {
 		return entity;
 	}
 
-	@RequestMapping(value = "/deleteFileAjax", method = RequestMethod.POST)
+	@RequestMapping(value = "/deleteNoticeFileAjax", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<String> deleteFileAjax(String fileUrl, HttpServletRequest request) {
+	public ResponseEntity<String> deleteNoticeFileAjax(String fileUrl, HttpServletRequest request) {
 		String uploadPath = request.getSession().getServletContext().getRealPath("/");
 		String temporaryFileUrl = fileUrl.substring(1);
 		new File(uploadPath + temporaryFileUrl).delete();
 		TemporaryFileUrl.fileUrl.remove(fileUrl);
 		noticeService.deleteNoticeFile(fileUrl);
+		return new ResponseEntity<String>("deleted", HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/deleteDocCenterFileAjax", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<String> deleteDocCenterFileAjax(String fileUrl, HttpServletRequest request) {
+		String uploadPath = request.getSession().getServletContext().getRealPath("/");
+		String temporaryFileUrl = fileUrl.substring(1);
+		new File(uploadPath + temporaryFileUrl).delete();
+		TemporaryFileUrl.fileUrl.remove(fileUrl);
+		docCenterService.deleteDocCenterFile(fileUrl);
 		return new ResponseEntity<String>("deleted", HttpStatus.OK);
 	}
 }

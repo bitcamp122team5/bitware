@@ -31,7 +31,7 @@ $(function(){
 	$(".uploadList").on("click","span",function(e){
 		var that=$(this); //클릭한 span 태그
 		$.ajax({
-			url:"/admin/deleteFileAjax",
+			url:"/admin/deleteNoticeFileAjax",
 			type:"post",
 			data:{
 				fileUrl:$(this).attr("data-src"),
