@@ -6,7 +6,7 @@
 </head>
 <body th:align="center">
 	<h1>사원 등록</h1>
-	<form th:action="insertMember" method="post">
+	<form th:action="@{/admin/insertMember}" method="post">
 	<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
 		<tr>
 			<td th:text="이름"></td>
@@ -16,10 +16,10 @@
 			<td th:text="부서"></td>
 			<td>
 				<select name="deptName">
-					<option>--부서 선택--</option>
-				</select>
-				<select name="teamName">
-					<option>--팀 선택--</option>
+					<option>--부서선택--</option>
+					<option th:each="dept:${deptList}"
+						th:value="${dept.deptNo}"
+						th:utext="${dept.deptName}"/>
 				</select>
 			</td>
 		</tr>
@@ -27,7 +27,10 @@
 			<td th:text="직급"></td>
 			<td>
 				<select name="ranks">
-					<option>--직급 선택--</option>
+					<option>--직급선택--</option>
+					<option th:each="ranks:${rankList}"
+						th:value="${ranks.ranks}"
+						th:utext="${ranks.ranks}"/>
 				</select>
 			</td>
 		</tr>
