@@ -33,15 +33,19 @@ public class AdminMemberController {
 	public String insertMemberView(Model model, DepartmentVo departmentVo, RanksVo ranksVo) {
 		List<DepartmentVo> deptList = memberService.selectDeptList(departmentVo);
 		List<RanksVo> rankList = memberService.selectRanksList(ranksVo);
+		String curdate = memberService.selectCurdate();
 		
 		model.addAttribute("deptList", deptList);
 		model.addAttribute("rankList", rankList);
+		model.addAttribute("curdate", curdate);
 		return "admin/member/memberInsert";
 	}
 	
 	// 사원 등록
 	@RequestMapping("/insertMember")
 	public String insertMember(MemberVo memberVo) {
+		String curdate = memberService.selectCurdate();
+		
 		memberService.insertMember(memberVo);
 		return "redirect:selectMemberList";
 	}

@@ -48,10 +48,9 @@ public class MemberServiceImpl implements MemberService {
 		memberRepository.save(memberVo);
 	}
 
-	// 사원 상세보기
 	@Override
-	public MemberVo selectMember(MemberVo memberVo) {
-		return null;
+	public String selectCurdate() {
+		return memberRepository.selectCurdate();
 	}
 
 }

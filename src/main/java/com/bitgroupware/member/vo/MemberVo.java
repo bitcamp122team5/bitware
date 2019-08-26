@@ -52,6 +52,7 @@ public class MemberVo {
 	private String memAddrCode;
 	private String memAddr;
 	private String memAddrDetail;
+	private String memAddrExtra;
 	
 	@ManyToOne
 	@JoinColumn(name = "dept_name")
