@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.bitgroupware.project.beans.MemberOfficeInfo;
 import com.bitgroupware.project.beans.ProjectInfoDto;
+import com.bitgroupware.project.beans.ProjectWbsDto;
 import com.bitgroupware.project.persistence.ProjectDao;
 
 @Service("ProjectService")
@@ -17,40 +18,40 @@ public class ProejctServiceImpl implements ProjectService {
 	
 	//전체 프로젝트 조회 (진행중인 프로젝트)
 	@Override
-	public List<ProjectInfoDto> selectProjectList(int prj_completion) {
-		return dao.selectProjectList(prj_completion);
+	public List<ProjectInfoDto> selectProjectList(int prjCompletion) {
+		return dao.selectProjectList(prjCompletion);
 	}
 	
 	//완료된 프로젝트 조회
 	@Override
-	public List<ProjectInfoDto> selectEndProjectList(int prj_completion) {
-		return dao.selectEndProjectList(prj_completion);
+	public List<ProjectInfoDto> selectEndProjectList(int prjCompletion) {
+		return dao.selectEndProjectList(prjCompletion);
 	}
 
 	//참여중인 프로젝트 조회
 	@Override
-	public List<ProjectInfoDto> selectAttendProjectList(int prj_completion, String mem_id) {
-		return dao.selectAttendProjectList(prj_completion, mem_id);
+	public List<ProjectInfoDto> selectAttendProjectList(int prjCompletion, String memId) {
+		return dao.selectAttendProjectList(prjCompletion, memId);
 	}
 
 	//프로젝트 상세페이지 조회
 	@Override
-	public ProjectInfoDto selectProject(int prj_code) {
-		return dao.selectProject(prj_code);
+	public ProjectInfoDto selectProject(int prjCode) {
+		return dao.selectProject(prjCode);
 	}
 	
 	/*프로젝트 정보 수정*/
 	@Override
-	public ProjectInfoDto updateProject(int prj_code) {
+	public ProjectInfoDto updateProject(int prjCode) {
 
-		return dao.updateProject(prj_code);
+		return dao.updateProject(prjCode);
 	}
 
 	/*프로젝트 정보 생성 */
 	@Override
-	public void insertProject(ProjectInfoDto prjVO) {
+	public void insertProject(ProjectInfoDto prjInfoDto) {
 
-		dao.insertProject(prjVO);
+		dao.insertProject(prjInfoDto);
 	}
 	
 	/*프로젝트 참여인원 기본 리스트 출력*/
@@ -72,6 +73,13 @@ public class ProejctServiceImpl implements ProjectService {
 	public List<MemberOfficeInfo> selectProjectAttendMemberList(int prjCode) {
 		
 		return dao.selectProjectAttendMemberList(prjCode);
+	}
+	
+	/*프로젝트 WBS 정보 불러오기*/
+	@Override
+	public List<ProjectWbsDto> selectProjectWbsList(int prjCode) {
+		
+		return dao.selectProjectWbsList(prjCode);
 	}
 
 }

@@ -9,21 +9,23 @@ import org.apache.ibatis.annotations.Update;
 
 import com.bitgroupware.project.beans.MemberOfficeInfo;
 import com.bitgroupware.project.beans.ProjectInfoDto;
+import com.bitgroupware.project.beans.ProjectWbsDto;
 
 @Mapper
 public interface ProjectDao {
 	
 	//전체 프로젝트 조회(진행중인 프로젝트)
-	@Select("select * from project_info where prj_completion = 0 order by prj_code desc")
-	public List<ProjectInfoDto> selectProjectList(int prj_completion);
+	@Select("SELECT * FROM PROJECT_INFO "
+			+ "WHERE PRJ_COMPLETION = 0 ORDER BY PRJ_CODE DESC")
+	public List<ProjectInfoDto> selectProjectList(int prjCompletion);
 	
 	//완료된 프로젝트 조회
 	@Select("SELECT * FROM PROJECT_INFO WHERE PRJ_COMPLETION = 1 ORDER BY PRJ_CODE DESC")
-	public List<ProjectInfoDto> selectEndProjectList(int prj_completion);
+	public List<ProjectInfoDto> selectEndProjectList(int prjCompletion);
 	
 	//참여중인 프로젝트 조회
 	@Select("SELECT * FROM PROJECT_INFO WHERE PRJ_COMPLETION = 0, PRJ_CODE = (SELECT PRJ_CODE FROM PROJECT_MEMBERS WHERE MEM_ID = #{memId}) ORDER BY PRJ_CODE DESC")
-	public List<ProjectInfoDto> selectAttendProjectList(int prj_completion, String mem_id);
+	public List<ProjectInfoDto> selectAttendProjectList(int prjCompletion, String memId);
 	
 	//프로젝트 상세페이지 조회
 	@Select("SELECT * FROM PROJECT_INFO WHERE PRJ_CODE = #{prjCode}")
@@ -48,5 +50,12 @@ public interface ProjectDao {
 	/*특정 프로젝트 참여인원 리스트 출력 */
 	@Select("SELECT * FROM MEMBER_OFFICEINFO WHERE MEM_ID = ANY(SELECT MEM_ID FROM PROJECT_MEMBERS WHERE PRJ_CODE = #{prjCode})")
 	public List<MemberOfficeInfo> selectProjectAttendMemberList(int prjCode);
+
+	/*프로젝트 WBS 정보 불러오기*/
+	@Select("SELECT PRJ_CODE, PRJ_WORK_NAME, PRJ_GROUP, PRJ_STEP, PRJ_DEPTH, PRJ_MANAGER, PRJ_OUTPUT, PRJ_PLAN_START,"
+			+ "PRJ_PLAN_END, PRJ_REAL_END, PRJ_WORK_COMPLETION, PRJ_TOTAL_DAYS FROM PROJECT_WBS "
+			+ "WHERE PRJ_CODE = #{prjCode} ORDER BY PRJ_GROUP, PRJ_STEP ASC")
+	public List<ProjectWbsDto> selectProjectWbsList(int prjCode);
+	
 	
 }
