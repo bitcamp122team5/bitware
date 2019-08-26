@@ -2,11 +2,9 @@ package com.bitgroupware.admin.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.bitgroupware.approval.beans.ApprovalDoucemtDto;
@@ -19,6 +17,7 @@ import com.bitgroupware.approval.service.ApprovalService;
  */
 
 @Controller
+@RequestMapping("/admin")
 public class AdminApprovalController {
 	
 	@Autowired
@@ -26,7 +25,7 @@ public class AdminApprovalController {
 	
 	// 문서리스트
 	@RequestMapping("/selectApprovalDocList")
-	public String selectApprovalDocList(HttpServletRequest request,ModelMap model) {
+	public String selectApprovalDocList(Model model) {
 		
 		List<ApprovalDoucemtDto> approvalDocList = approvalService.selectApprovalDocList();
 		model.addAttribute("approvalDocList",approvalDocList);
@@ -34,38 +33,30 @@ public class AdminApprovalController {
 		return "admin/approval/approvalDocList";
 	}
 	
-	/*
-	 * // 상세
-	 * 
-	 * @RequestMapping("/selectDoc") public String
-	 * selectApprovalDoc(HttpServletRequest request,ModelMap model,int apdocNo) {
-	 * 
-	 * 
-	 * return "admin/approval/approvalDoc"; }
-	 */
-	
-	// 등록
+	// 등록페이지(insert+update)
 	@RequestMapping("/insertApprovalDocView")
-	public String insertApprovalDoc(HttpServletRequest request,ModelMap model,ApprovalDoucemtDto apdocVo) {
+	public String insertApprovalDocView(Model model,ApprovalDoucemtDto apdocDto) {
 		
-		if(apdocVo.getApdocNo() != null) {
-			apdocVo = approvalService.selectApprovalDoc(apdocVo.getApdocNo());
-//			model.addAttribute( )
+		if(apdocDto.getApdocNo() != null) { // 수정할 때 필요 해서  Dto 가져감
+			apdocDto = approvalService.selectApprovalDoc(apdocDto.getApdocNo());
+			model.addAttribute("apdocDto",apdocDto);
 		}
 		return "admin/approval/approvalDocWrite";
 	}
 	
-	// 수정
-	@RequestMapping("/updateApprovalDoc")
-	public String updateApprovalDocList(HttpServletRequest request,ModelMap model,ApprovalDoucemtDto apdocVo) {
-		
-		return "admin/approval/approvalDocUpdate";
+	
+	// 등록(insert+update)
+	@RequestMapping("/insertApprovalDoc")
+	public String insertApprovalDoc(Model model,ApprovalDoucemtDto apdocDto) {
+		approvalService.insertApprovalDoc(apdocDto);
+		return "redirect:/admin/selectApprovalDocList";
 	}
+	
 	
 	// 삭제
 	@RequestMapping("/deleteApprovalDoc")
-	public String deleteApprovalDocList(HttpServletRequest request,ModelMap model,ApprovalDoucemtDto apdocVo) {
-		
-		return "admin/approval/approvalDocDelete";
+	public String deleteApprovalDocList(Model model,ApprovalDoucemtDto apdocDto) {
+		approvalService.deleteApprovalDoc(apdocDto);
+		return "redirect:/admin/selectApprovalDocList";
 	}
 }
