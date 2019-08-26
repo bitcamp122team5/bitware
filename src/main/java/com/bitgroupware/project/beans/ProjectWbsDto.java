@@ -7,17 +7,17 @@ import lombok.Data;
 @Data
 public class ProjectWbsDto {
 	
-	private int prj_works_no;
-	private int prj_code;
-	private String prj_works;
-	private int prj_group;
-	private int prj_step;
-	private int prj_indent;
-	private String prj_manager;
-	private String prj_outputs;
-	private Date prj_plan_start;
-	private Date prj_plan_end;
-	private Date prj_work_start;
-	private Date prj_work_end;
-	private int prj_work_completion;
+	private int prjWorksNo;
+	private int prjCode;
+	private String prjWorkName;
+	private int prjGroup;
+	private int prjStep;
+	private int prjDepth;
+	private String prjManager;
+	private String prjOutput;
+	private Date prjPlanStart;
+	private Date prjPlanEnd;
+	private Date prjRealEnd;
+	private int prjWorkCompletion;
+	private String prjTotalDays;
 }

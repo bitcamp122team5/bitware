@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bitgroupware.project.beans.MemberOfficeInfo;
 import com.bitgroupware.project.beans.ProjectInfoDto;
+import com.bitgroupware.project.beans.ProjectWbsDto;
 import com.bitgroupware.project.service.ProjectService;
 
 @Controller
@@ -23,7 +24,7 @@ public class ProjectController {
 	@RequestMapping("/")
 	public String index() {
 		
-		return "/index";
+		return "project/index";
 	}
 	
 	/*전체 프로젝트 조회 */
@@ -44,14 +45,16 @@ public class ProjectController {
 		return "project/project"; 
 	}
 	
-	/*프로젝트 상세페이지로 이동*/
+	/*프로젝트 상세페이지로 이동 및 프로젝트 WBS 불러오기*/
 	@RequestMapping("/projectDetail")
 	public String selectProjectView(Model model, int prjCode) {
 		
 		ProjectInfoDto prjInfo = projectService.selectProject(prjCode);
 		List<MemberOfficeInfo> memInfos = projectService.selectProjectAttendMemberList(prjCode);
+		List<ProjectWbsDto> prjWbs = projectService.selectProjectWbsList(prjCode);
 		model.addAttribute("prjInfo", prjInfo);
 		model.addAttribute("memInfos", memInfos);
+		model.addAttribute("prjWbs", prjWbs);
 		return "project/projectDetail";
 	}
 	
@@ -108,6 +111,14 @@ public class ProjectController {
 		return "project/project";
 	}
 	
+	@RequestMapping(value="selectProjectWbsListAjax", method=RequestMethod.POST)
+	@ResponseBody
+	public List<ProjectWbsDto> selectProjectWbsListAjax(int prjCode){
+			
+		System.out.println("11111"+prjCode);
+		System.out.println(projectService.selectProjectWbsList(prjCode));
+		return projectService.selectProjectWbsList(prjCode);
+	}
 	
 	
 //	@RequestMapping("/selectProjectMemberListAjax")
