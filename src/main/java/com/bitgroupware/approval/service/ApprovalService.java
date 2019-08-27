@@ -2,20 +2,31 @@ package com.bitgroupware.approval.service;
 
 import java.util.List;
 
-import com.bitgroupware.approval.beans.ApprovalDoucemtDto;
+import com.bitgroupware.approval.beans.ApprovalDto;
 
 public interface ApprovalService {
 	
-	// 모든 문서양식 불러오기
-	List<ApprovalDoucemtDto> selectApprovalDocList();
+	// 결재 받을 문서 리스트
+	List<?> selectApprovalListTobe();
+	
+	// 결재 할 문서 리스트
+	List<?> selectApprovalListTo();
 	
 	// 읽기
-	ApprovalDoucemtDto selectApprovalDoc(String apdocNo);
+	ApprovalDto selectApproval();
 	
-	// 등록(insert+update)
-	void insertApprovalDoc(ApprovalDoucemtDto dto);
+	// 기안
+	void insertApproval();
 	
 	// 삭제
-	void deleteApprovalDoc(ApprovalDoucemtDto dto);
-
+	void deleteApproval();
+	
+	// 결재 경로
+	List<?> selectLine();
+	
+	// 마지막 결재 경로
+	List<?> selectLineLast();
+	
+	// 결재
+	void updateApproval();
 }

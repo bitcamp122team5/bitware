@@ -2,54 +2,67 @@ package com.bitgroupware.approval.service;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bitgroupware.approval.beans.ApprovalDoucemtDto;
-import com.bitgroupware.approval.persistence.ApprovalDocumentDao;
+import com.bitgroupware.approval.beans.ApprovalDto;
 
 @Service
 public class ApprovalServiceImpl implements ApprovalService {
 
-	@Autowired
-    private ApprovalDocumentDao apDao;
-	
-	static final Logger LOGGER = LoggerFactory.getLogger(ApprovalServiceImpl.class);
-	
-	// 모든 문서양식 불러오기
+	// 결재 받을 문서 리스트
 	@Override
-	public List<ApprovalDoucemtDto> selectApprovalDocList() {
-		return apDao.selectApprovalDocList();
-	}
-	
-	// 읽기
-	@Override
-	public ApprovalDoucemtDto selectApprovalDoc(String apdocNo) {
-		return apDao.selectApprovalDoc(apdocNo);
+	public List<?> selectApprovalListTobe() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	// 등록(insert+update)
-	@Transactional
+	// 결재 할 문서 리스트
 	@Override
-	public void insertApprovalDoc(ApprovalDoucemtDto dto) {
-		if(dto.getApdocNo() == null || "".equals(dto.getApdocNo())) {
-			apDao.insertApprovalDoc(dto);
-			LOGGER.error("insertApprovalDoc");
-		}else if(dto.getApdocNo() != null){
-			apDao.updateApprovalDoc(dto);
-			LOGGER.error("updateApprovalDoc");
-		}else {
-			LOGGER.error("둘 다 해당사항 없음");
-		}
+	public List<?> selectApprovalListTo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	// 읽기
+	@Override
+	public ApprovalDto selectApproval() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	// 기안
+	@Override
+	public void insertApproval() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	// 삭제
 	@Override
-	public void deleteApprovalDoc(ApprovalDoucemtDto dto) {
-		apDao.deleteApprovalDoc(dto);
+	public void deleteApproval() {
+		// TODO Auto-generated method stub
+		
 	}
+	
+	// 결재 경로
+	@Override
+	public List<?> selectLine() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	// 마지막 결재 경로
+	@Override
+	public List<?> selectLineLast() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	// 결재
+	@Override
+	public void updateApproval() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
