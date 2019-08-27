@@ -15,4 +15,14 @@ public interface AnonymousBoardService {
 
 	void insertAnonymousBoard(AnonymousBoardVo anonymousBoard);
 
+	AnonymousBoardVo selectAnonymousBoard(int bno);
+
+	boolean checkPwAjax(int bno, String bpw);
+
+	void updateAnonymousBoard(AnonymousBoardVo anonymousBoard);
+
+	void deleteAnonymousBoard(int bno);
+
+	void insertAnonymousBoardReply(AnonymousBoardVo anonymousBoard);
+
 }

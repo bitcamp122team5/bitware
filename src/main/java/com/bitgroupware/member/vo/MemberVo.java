@@ -1,7 +1,5 @@
 package com.bitgroupware.member.vo;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -32,11 +30,12 @@ public class MemberVo {
 	private String memName;
 	@Enumerated(EnumType.STRING)
 	private Role role;
+	@Column(insertable = false, columnDefinition = "boolean default true")
 	private boolean enabled;
 	
-	private Date memJoinDate;
+	private String memJoinDate;
 	@Column(insertable = false)
-	private Date memQuitDate;
+	private String memQuitDate;
 	@Column(insertable = false)
 	private String memQuitReason;
 	@Column(insertable = false, columnDefinition = "varchar(100) default 'work'")

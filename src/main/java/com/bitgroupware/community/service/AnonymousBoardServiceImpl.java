@@ -39,10 +39,63 @@ public class AnonymousBoardServiceImpl implements AnonymousBoardService{
 	}
 
 	public List<AnonymousBoardVo> selectAnonymousBoardList() {
-		return anonymousBoardRepo.findAll();
+		List<AnonymousBoardVo> anonymousBoardList = anonymousBoardRepo.findAllByOrderByBgroupDescAndBstepAsc();
+		
+		if(anonymousBoardList.size()>0) {
+			for(int i=0; i<anonymousBoardList.size();i++) {
+				int count = anonymousBoardList.get(i).getBindent();
+				if(count>0) {
+					for(int j=1;j<=count;j++) {
+						anonymousBoardList.get(i).getBindentcnt().add(i);
+					}
+				}
+			}
+		}else {
+			anonymousBoardRepo.initAutoIncrement();
+		}
+		return anonymousBoardList;
 	}
 
 	public void insertAnonymousBoard(AnonymousBoardVo anonymousBoard) {
+		int maxBno = anonymousBoardRepo.selectMaxBno();
+		anonymousBoard.setBgroup(maxBno+1);
+		anonymousBoard.setBstep(0);
+		anonymousBoard.setBindent(0);
 		anonymousBoardRepo.save(anonymousBoard);
+	}
+
+	public AnonymousBoardVo selectAnonymousBoard(int bno) {
+		return anonymousBoardRepo.findById(bno).get();
+	}
+
+	public boolean checkPwAjax(int bno, String bpw) {
+		if(anonymousBoardRepo.findByBnoAndBpw(bno, bpw)==null) {
+			return false;
+		}else {
+			return true;
+		}
+	}
+
+	public void updateAnonymousBoard(AnonymousBoardVo anonymousBoard) {
+		anonymousBoardRepo.save(anonymousBoard);
+	}
+
+	public void deleteAnonymousBoard(int bno) {
+		anonymousBoardRepo.deleteById(bno);
+	}
+
+	@Override
+	public void insertAnonymousBoardReply(AnonymousBoardVo anonymousBoard) {
+		int bgroup = anonymousBoard.getBgroup();
+		int bstep = anonymousBoard.getBstep();
+		
+		anonymousBoardRepo.replyShape(bgroup, bstep);
+		
+		anonymousBoard.setBstep(bstep+1);
+		anonymousBoard.setBindent(anonymousBoard.getBindent()+1);
+		
+		anonymousBoardRepo.save(anonymousBoard);
+		
+		
 	}
 }

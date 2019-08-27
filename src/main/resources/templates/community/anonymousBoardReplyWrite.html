@@ -3,14 +3,17 @@
 xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 <meta charset="UTF-8">
-<title>익명게시판 글작성페이지</title>
+<title>익명게시판 답변글작성페이지</title>
 </head>
 <body>
-<form th:action="@{/user/insertAnonymousBoard}">
+<form th:action="@{/user/insertAnonymousBoardReply}">
+	<input type="hidden" name="bgroup" th:value="${anonymousBoard.bgroup}">
+	<input type="hidden" name="bstep" th:value="${anonymousBoard.bstep}">
+	<input type="hidden" name="bindent" th:value="${anonymousBoard.bindent}">
 	<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
 		<tr>
 			<td bgcolor="orange">제목</td>
-			<td><input type="text" name="btitle"></td>
+			<td><input type="text" name="btitle" th:value="'re:'+${anonymousBoard.btitle}"></td>
 		</tr>
 		<tr>
 			<td bgcolor="orange">내용</td>

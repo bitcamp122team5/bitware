@@ -6,29 +6,35 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <title>익명게시판 목록페이지</title>
 </head>
 <body>
-<table>
+<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
 	<tr>
-		<td>번호</td>
-		<td>제목</td>
-		<td>날짜</td>
-		<td>조회수</td>
+		<td bgcolor="orange" width="100">번호</td>
+		<td bgcolor="orange" width="400">제목</td>
+		<td bgcolor="orange" width="100">날짜</td>
+		<td bgcolor="orange" width="100">조회수</td>
 	</tr>
 	<tr th:each="anonymousBoard:${anonymousBoardList}">
 		<td th:text="${anonymousBoard.bno}"></td>
-		<td style="text-align: left;"><span th:each="num:${#numbers.sequence(1,${anonymousBoard.bindent})}"><span>&nbsp;</span></span>
+		<td style="text-align: left;"><span th:each="num:${anonymousBoard.bindentcnt}"><span>&nbsp;</span></span>
 			<span th:if="${anonymousBoard.bindent>0 }">
-				<a th:href="@{/user/selectAnonymousBoard(bno=${anonymousBoard.bno})}" th:text="re:${anonymousBoard.btitle}">re:dto.bTitle</a>
+				<a th:href="@{/user/selectAnonymousBoard(bno=${anonymousBoard.bno})}" th:text="'re:'+${anonymousBoard.btitle}"></a>
 			</span>
 			<span th:unless="${anonymousBoard.bindent>0 }">
 				<a th:href="@{/user/selectAnonymousBoard(bno=${anonymousBoard.bno})}" th:text="${anonymousBoard.btitle}"></a>
 			</span>
 		</td>
-		<td th:text="${anonymousBoard.bdate}"></td>
+		<div th:if="${today==#dates.format(anonymousBoard.bdate,'yyyy-MM-dd')}">
+			<td th:text="${#dates.format(anonymousBoard.bdate,'HH:mm')}"></td>
+		</div>
+		<div th:unless="${today==#dates.format(anonymousBoard.bdate,'yyyy-MM-dd')}">
+			<td th:text="${#dates.format(anonymousBoard.bdate,'yyyy-MM-dd')}"></td>
+		</div>
 		<td th:text="${anonymousBoard.bcnt}"></td>
+		
 	</tr>
 	<tr>
 		<td colspan="4">
-			<a th:href="@{/user/insertAnonymousBoardView">글작성</a>
+			<a th:href="@{/user/insertAnonymousBoardView}">글작성</a>
 		</td>
 	</tr>
 </table>

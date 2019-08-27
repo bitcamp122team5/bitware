@@ -183,9 +183,9 @@ public class TestController {
 		member.setMemPw(encoder.encode("admin"));
 		member.setMemName("권재범");
 		member.setRole(Role.ROLE_ADMIN);
-		member.setEnabled(true);
+//		member.setEnabled(true);
 
-		member.setMemJoinDate(new Date());
+		member.setMemJoinDate("2019-01-01");
 
 		member.setMemTel("010-2641-2684");
 		member.setMemOfficeTel("02-1234-1234");
@@ -218,9 +218,9 @@ public class TestController {
 		member.setMemPw(encoder.encode("911121001"));
 		member.setMemName("황준우");
 		member.setRole(Role.ROLE_USER);
-		member.setEnabled(true);
+//		member.setEnabled(true);
 		
-		member.setMemJoinDate(new Date());
+		member.setMemJoinDate("2019-01-01");
 		
 		member.setMemTel("010-2641-2684");
 		member.setMemOfficeTel("02-1234-1234");
@@ -253,9 +253,9 @@ public class TestController {
 		member.setMemPw(encoder.encode("941230002"));
 		member.setMemName("정동원");
 		member.setRole(Role.ROLE_PM);
-		member.setEnabled(true);
+//		member.setEnabled(true);
 		
-		member.setMemJoinDate(new Date());
+		member.setMemJoinDate("2019-01-01");
 		
 		member.setMemTel("010-2641-2684");
 		member.setMemOfficeTel("02-1234-1234");
@@ -287,9 +287,9 @@ public class TestController {
 		member.setMemPw(encoder.encode("910111003"));
 		member.setMemName("홍길동");
 		member.setRole(Role.ROLE_PL);
-		member.setEnabled(true);
+//		member.setEnabled(true);
 		
-		member.setMemJoinDate(new Date());
+		member.setMemJoinDate("2019-01-01");
 		
 		member.setMemTel("010-2641-2684");
 		member.setMemOfficeTel("02-1234-1234");
