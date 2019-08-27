@@ -32,6 +32,8 @@ public class QMemberVo extends EntityPathBase<MemberVo> {
 
     public final StringPath memAddrDetail = createString("memAddrDetail");
 
+    public final StringPath memAddrExtra = createString("memAddrExtra");
+
     public final StringPath memId = createString("memId");
 
     public final DateTimePath<java.util.Date> memJoinDate = createDateTime("memJoinDate", java.util.Date.class);
