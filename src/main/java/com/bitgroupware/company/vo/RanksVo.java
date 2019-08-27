@@ -17,4 +17,6 @@ public class RanksVo {
 	@Id
 	@Column(columnDefinition = "varchar(100)")
 	private String ranks;
+	private int ranksNo;
+	
 }

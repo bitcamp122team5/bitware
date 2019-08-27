@@ -120,57 +120,71 @@ public class TestController {
 	public String createCompany() {
 		DepartmentVo department1 = new DepartmentVo();
 		department1.setDeptName("지원부");
+		department1.setDeptNo(1);
 		departmentRepo.save(department1);
 		DepartmentVo department2 = new DepartmentVo();
 		department2.setDeptName("영업부");
+		department2.setDeptNo(2);
 		departmentRepo.save(department2);
 		DepartmentVo department3 = new DepartmentVo();
 		department3.setDeptName("개발부");
+		department3.setDeptNo(3);
 		departmentRepo.save(department3);
 		
-		DepartmentVo department4 = departmentRepo.findById(1).get();
+		DepartmentVo department4 = departmentRepo.findById("지원부").get();
 		TeamVo team1 = new TeamVo();
 		team1.setDepartment(department4);
 		team1.setTeamName("경영지원팀");
+		team1.setTeamNo(1);
 		teamRepo.save(team1);
 		TeamVo team2 = new TeamVo();
 		team2.setDepartment(department4);
 		team2.setTeamName("기술지원팀");
+		team2.setTeamNo(2);
 		teamRepo.save(team2);
-		DepartmentVo department5 = departmentRepo.findById(2).get();
+		DepartmentVo department5 = departmentRepo.findById("영업부").get();
 		TeamVo team3 = new TeamVo();
 		team3.setDepartment(department5);
 		team3.setTeamName("영업1팀");
+		team3.setTeamNo(3);
 		teamRepo.save(team3);
 		TeamVo team4 = new TeamVo();
 		team4.setDepartment(department5);
 		team4.setTeamName("영업2팀");
+		team4.setTeamNo(4);
 		teamRepo.save(team4);
-		DepartmentVo department6 = departmentRepo.findById(3).get();
+		DepartmentVo department6 = departmentRepo.findById("개발부").get();
 		TeamVo team5 = new TeamVo();
 		team5.setDepartment(department6);
 		team5.setTeamName("개발1팀");
+		team5.setTeamNo(5);
 		teamRepo.save(team5);
 		TeamVo team6 = new TeamVo();
 		team6.setDepartment(department6);
 		team6.setTeamName("개발2팀");
+		team6.setTeamNo(6);
 		teamRepo.save(team6);
 		
-		RanksVo ranks1 = new RanksVo();
-		ranks1.setRanks("사장");
-		ranksRepo.save(ranks1);
-		RanksVo ranks2 = new RanksVo();
-		ranks2.setRanks("이사");
-		ranksRepo.save(ranks2);
+		RanksVo ranks5 = new RanksVo();
+		ranks5.setRanks("사장");
+		ranks5.setRanksNo(5);
+		ranksRepo.save(ranks5);
+		RanksVo ranks4 = new RanksVo();
+		ranks4.setRanks("이사");
+		ranks4.setRanksNo(4);
+		ranksRepo.save(ranks4);
 		RanksVo ranks3 = new RanksVo();
 		ranks3.setRanks("부장");
+		ranks3.setRanksNo(3);
 		ranksRepo.save(ranks3);
-		RanksVo ranks4 = new RanksVo();
-		ranks4.setRanks("팀장");
-		ranksRepo.save(ranks4);
-		RanksVo ranks5 = new RanksVo();
-		ranks5.setRanks("사원");
-		ranksRepo.save(ranks5);
+		RanksVo ranks2 = new RanksVo();
+		ranks2.setRanks("팀장");
+		ranks2.setRanksNo(2);
+		ranksRepo.save(ranks2);
+		RanksVo ranks1 = new RanksVo();
+		ranks1.setRanks("사원");
+		ranks1.setRanksNo(1);
+		ranksRepo.save(ranks1);
 		
 		return "컴퍼니 생성완료";
 	}
@@ -185,7 +199,7 @@ public class TestController {
 		member.setRole(Role.ROLE_ADMIN);
 		member.setEnabled(true);
 
-		member.setMemJoinDate(new Date());
+		member.setMemJoinDate("2019-03-27");
 
 		member.setMemTel("010-2641-2684");
 		member.setMemOfficeTel("02-1234-1234");
@@ -198,7 +212,7 @@ public class TestController {
 		member.setMemAddr("서울시 강남구 강남대로 5");
 		member.setMemAddrDetail("101호");
 		
-		DepartmentVo department3 = departmentRepo.findById(3).get();
+		DepartmentVo department3 = departmentRepo.findById("개발부").get();
 		member.setDepartment(department3);
 //		TeamVo team5 = teamRepo.findById(5).get();
 //		member.setTeam(team5);
@@ -218,9 +232,9 @@ public class TestController {
 		member.setMemPw(encoder.encode("911121001"));
 		member.setMemName("황준우");
 		member.setRole(Role.ROLE_USER);
-		member.setEnabled(true);
+//		member.setEnabled(true);
 		
-		member.setMemJoinDate(new Date());
+		member.setMemJoinDate("2019-03-27");
 		
 		member.setMemTel("010-2641-2684");
 		member.setMemOfficeTel("02-1234-1234");
@@ -233,9 +247,9 @@ public class TestController {
 		member.setMemAddr("서울시 강남구 강남대로 4");
 		member.setMemAddrDetail("102호");
 		
-		DepartmentVo department2 = departmentRepo.findById(2).get();
+		DepartmentVo department2 = departmentRepo.findById("영업부").get();
 		member.setDepartment(department2);
-		TeamVo team3 = teamRepo.findById(3).get();
+		TeamVo team3 = teamRepo.findById("영업1팀").get();
 		member.setTeam(team3);
 		RanksVo ranks = ranksRepo.findById("사원").get();
 		member.setRanks(ranks);
@@ -255,7 +269,7 @@ public class TestController {
 		member.setRole(Role.ROLE_PM);
 		member.setEnabled(true);
 		
-		member.setMemJoinDate(new Date());
+		member.setMemJoinDate("2019-03-27");
 		
 		member.setMemTel("010-2641-2684");
 		member.setMemOfficeTel("02-1234-1234");
@@ -268,7 +282,7 @@ public class TestController {
 		member.setMemAddr("서울시 강남구 강남대로 3");
 		member.setMemAddrDetail("103호");
 		
-		DepartmentVo department1 = departmentRepo.findById(1).get();
+		DepartmentVo department1 = departmentRepo.findById("지원부").get();
 		member.setDepartment(department1);
 //		TeamVo team1 = teamRepo.findById(1).get();
 //		member.setTeam(team1);
@@ -289,7 +303,7 @@ public class TestController {
 		member.setRole(Role.ROLE_PL);
 		member.setEnabled(true);
 		
-		member.setMemJoinDate(new Date());
+		member.setMemJoinDate("2019-03-27");
 		
 		member.setMemTel("010-2641-2684");
 		member.setMemOfficeTel("02-1234-1234");
@@ -302,9 +316,9 @@ public class TestController {
 		member.setMemAddr("서울시 강남구 강남대로 1");
 		member.setMemAddrDetail("107호");
 		
-		DepartmentVo department1 = departmentRepo.findById(1).get();
+		DepartmentVo department1 = departmentRepo.findById("지원부").get();
 		member.setDepartment(department1);
-		TeamVo team2 = teamRepo.findById(2).get();
+		TeamVo team2 = teamRepo.findById("기술지원팀").get();
 		member.setTeam(team2);
 		RanksVo ranks = ranksRepo.findById("팀장").get();
 		member.setRanks(ranks);
