@@ -1,7 +1,5 @@
 package com.bitgroupware.member.vo;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -31,12 +29,14 @@ public class MemberVo {
 	private String memPw;
 	private String memName;
 	@Enumerated(EnumType.STRING)
-	private Role role;
+	private Role role;  
+	// 시큐리티에서 ture면 인식해줌, false면 인식 안함 '아마도.'
+	@Column(insertable = false, columnDefinition = "boolean default true")
 	private boolean enabled;
 	
-	private Date memJoinDate;
+	private String memJoinDate;
 	@Column(insertable = false)
-	private Date memQuitDate;
+	private String memQuitDate;
 	@Column(insertable = false)
 	private String memQuitReason;
 	@Column(insertable = false, columnDefinition = "varchar(100) default 'work'")
@@ -47,6 +47,7 @@ public class MemberVo {
 	
 	private String memJumin;
 	private String memSignUrl;
+	@Column(insertable = false, columnDefinition = "int(11) default 15")
 	private int memVacation;
 	
 	private String memAddrCode;

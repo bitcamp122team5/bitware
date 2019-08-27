@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.bitgroupware.company.vo.DepartmentVo;
 
-public interface DepartmentRepository extends JpaRepository<DepartmentVo, Integer>{
+public interface DepartmentRepository extends JpaRepository<DepartmentVo, String>{
 
 }

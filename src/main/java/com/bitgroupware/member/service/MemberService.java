@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.bitgroupware.company.vo.DepartmentVo;
 import com.bitgroupware.company.vo.RanksVo;
+import com.bitgroupware.company.vo.TeamVo;
 import com.bitgroupware.member.vo.MemberVo;
 
 public interface MemberService {
@@ -11,6 +12,8 @@ public interface MemberService {
 	List<MemberVo> selectMemberList(MemberVo memberVo);
 	
 	List<DepartmentVo> selectDeptList(DepartmentVo departmentVo);
+
+	List<TeamVo> selectTeamList(String deptName);
 	
 	List<RanksVo> selectRanksList(RanksVo ranksVo);
 	
@@ -18,4 +21,6 @@ public interface MemberService {
 
 	String selectCurdate();
 	
+	String selectCountMember();
+
 }
