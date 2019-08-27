@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.bitgroupware.approval.beans.ApprovalDoucemtDto;
 import com.bitgroupware.approval.beans.ApprovalFileDto;
-import com.bitgroupware.approval.service.ApprovalService;
+import com.bitgroupware.approval.service.ApprovalDocService;
+
 
 
 @Controller
@@ -18,7 +19,7 @@ import com.bitgroupware.approval.service.ApprovalService;
 public class AdminApprovalController {
 	
 	@Autowired
-	private ApprovalService approvalService;
+	private ApprovalDocService approvalService;
 	
 	// 문서리스트
 		@RequestMapping("/selectApprovalDocList")
