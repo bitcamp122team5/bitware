@@ -29,8 +29,8 @@ public class MemberVo {
 	private String memPw;
 	private String memName;
 	@Enumerated(EnumType.STRING)
-	private Role role;  
 	// 시큐리티에서 ture면 인식해줌, false면 인식 안함 '아마도.'
+	private Role role;
 	@Column(insertable = false, columnDefinition = "boolean default true")
 	private boolean enabled;
 	
