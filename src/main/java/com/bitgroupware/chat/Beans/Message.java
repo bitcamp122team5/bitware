@@ -1,6 +1,6 @@
-package com.bitgroupware.chat.model;
+package com.bitgroupware.chat.Beans;
 
-public class ChatMessage {
+public class Message {
 	public enum MessageType {
 	    CHAT, JOIN, LEAVE
 	  }
