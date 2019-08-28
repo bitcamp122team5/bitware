@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -12,14 +12,15 @@
 	.info.hidden{display:none;}
 </style>
 <script type="text/javascript">
-	function popup(){
-		var value = this.value;
-		console.log(value);
-		var url = "/chat";
-		var name = "popup test";
-		var option = "width=500, height=500, top=100, left=200, location=no"
-		window.open(url, name, option);
-	}
+	$(function(){
+		$(".memberId").click(function(){
+			var memId = $(this).val();
+			var url = "/chat?memId=" + memId;
+			var name = "popup test";
+			var option = "width=500, height=500, top=100, left=200, location=no"
+			window.open(url, name, option);
+		})
+	});
 </script>
 </head>
 <body>
@@ -31,20 +32,28 @@
 			<li><a href="#dep3">개발부</a></li>
 		</ul>
 	</div>
-	<div class="info">
-		<ul>
-			<li th:each="member : ${memberList}" th:object="${member}" th:if="${member.deptName} == '지원부'"><a href="javascript:popup()" th:value="${member.memId}" th:text="${member.memName}"></a></li>
-		</ul>
-	</div>
-	<div class="info hidden">
-		<ul>
-			<li th:each="member : ${memberList}" th:object="${member}" th:if="${member.deptName} == '영업부'"><a href="javascript:popup(this)" th:value="${member.memId}" th:text="${member.memName}" ></a></li>
-		</ul>
-	</div>
-	<div class="info hidden">
-		<ul>
-			<li th:each="member : ${memberList}" th:object="${member}" th:if="${member.deptName} == '개발부'"><a href="javascript:popup(this)" th:value="${member.memId}" th:text="${member.memName}"></a></li>
-		</ul>
+	<div>
+		<div class="info">
+			<ul>
+				<th:block th:each="member : ${memberList}" th:if="${member.deptName} == '지원부'">
+					<li class="memberId" th:value="${member.memId}" th:text="${member.memName}"></li>
+				</th:block>
+			</ul>
+		</div>
+		<div class="info hidden">
+			<ul>
+				<th:block th:each="member : ${memberList}" th:if="${member.deptName} == '영업부'">
+					<li class="memberId" th:value="${member.memId}" th:text="${member.memName}"></li>
+				</th:block>
+			</ul>
+		</div>
+		<div class="info hidden">
+			<ul>
+				<th:block th:each="member : ${memberList}" th:if="${member.deptName} == '개발부'">
+					<li class="memberId" th:value="${member.memId}" th:text="${member.memName}"></li>
+				</th:block>
+			</ul>
+		</div>
 	</div>
 </div>
 </body>
