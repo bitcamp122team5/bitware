@@ -23,4 +23,8 @@ public interface MemberService {
 	
 	String selectCountMember();
 
+	MemberVo selectMember(String memId);
+	
+	void updateMember(MemberVo memberVo);
+
 }

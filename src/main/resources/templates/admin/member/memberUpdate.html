@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>사원 등록 (관리자)</title>
+<title>사원 수정 (관리자)</title>
 	<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
     <script type="text/javascript">
         $(function() {
@@ -45,22 +45,28 @@
 
 </head>
 <body th:align="center">
-	<h1>사원 등록</h1>
-	<form th:action="@{/admin/insertMember}" method="post">
+	<h1>사원 수정</h1>
+	<form th:action="@{/admin/updateMember}" method="post">
+		<input name="memId" type="hidden" th:value="${member.memId}">
 		<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
 			<tr>
+				<td th:text="사원번호"></td>
+				<td th:text="${member.memId}">
+				</td>
+			</tr>
+			<tr>
 				<td th:text="이름"></td>
-				<td><input name="memName" type="text"></td>
+				<td th:text="${member.memName}"></td>
 			</tr>
 			<tr>
 				<td th:text="주민번호"></td>
-				<td><input name="memJumin" type="text"></td>
+				<td th:text="${member.memJumin}"></td>
 			</tr>
 			<tr>
 				<td th:text="부서"></td>
 				<td>
 					<select name="department" id="department">
-						<option>--부서선택--</option>
+						<option th:text="${member.department.deptName}"></option>
 						<option th:each="dept:${deptList}" 
 							th:value="${dept.deptName}"
 							th:text="${dept.deptName}" />
@@ -84,7 +90,7 @@
 				<td th:text="입사일"></td>
 				<td>
 					<input type="hidden" id=curdate th:value="${curdate}">
-					<input name="memJoinDate" id=memJoinDate type="date">
+					<input name="memJoinDate" id=memJoinDate type="date" th:value="${member.memJoinDate}">
 				</td>
 				<script>
 					document.getElementById("memJoinDate").setAttribute('max', document.getElementById("curdate").value);
@@ -92,20 +98,20 @@
 			</tr>
 			<tr>
 				<td th:text="사내전화번호"></td>
-				<td><input name="memOfficeTel" type="text"></td>
+				<td><input name="memOfficeTel" type="text" th:value="${member.memOfficeTel}"></td>
 			</tr>
 			<tr>
 				<td th:text="휴대전화번호"></td>
-				<td><input name="memTel" type="text"></td>
+				<td><input name="memTel" type="text" th:value="${member.memTel}"></td>
 			</tr>
 			<tr>
 				<td th:text="주소"></td>
 				<td>
-					<input name="memAddrCode" type="text" id="sample6_postcode" placeholder="우편번호" readonly>
+					<input name="memAddrCode" type="text" id="sample6_postcode" placeholder="우편번호" th:value="${member.memAddrCode}" readonly>
 					<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
-					<input name="memAddr" type="text" id="sample6_address" placeholder="주소" readonly><br>
-					<input name="memAddrDetail" type="text" id="sample6_detailAddress" placeholder="상세주소">
-					<input name="memAddrExtra" type="text" id="sample6_extraAddress" placeholder="참고항목" readonly>
+					<input name="memAddr" type="text" id="sample6_address" placeholder="주소" th:value="${member.memAddr}" readonly><br>
+					<input name="memAddrDetail" type="text" id="sample6_detailAddress" placeholder="상세주소" th:value="${member.memAddrDetail}">
+					<input name="memAddrExtra" type="text" id="sample6_extraAddress" placeholder="참고항목" th:value="${member.memAddrExtra}" readonly>
 				</td>
 				<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 				<script>
@@ -179,9 +185,30 @@
 				</td>
 			</tr>
 			<tr>
+				<td th:text="재직현황"></td>
+				<td>
+					<select name="memStatus">
+						<option value="work">work</option>
+						<option value="rest">rest</option>
+						<option value="out">out</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td th:text="퇴사일자"></td>
+				<td><input name="memQuitDate" id="memQuitDate" type="date" th:value="member.memQuitDate"></td>
+				<script>
+					document.getElementById("memQuitDate").setAttribute('max', document.getElementById("curdate").value);
+				</script>
+			</tr>
+			<tr>
+				<td th:text="퇴사사유"></td>
+				<td><input name="memQuitReason" type="text" th:value="member.memQuitReason"></td>
+			</tr>
+			<tr>
 				<td colspan="2">
 					<input type="button" value="취소" onclick="history.back(-1)">
-					<input type="submit" value="등록">
+					<input type="submit" value="수정">
 				</td>
 			</tr>
 		</table>

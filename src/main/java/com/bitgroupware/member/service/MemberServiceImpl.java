@@ -52,10 +52,10 @@ public class MemberServiceImpl implements MemberService {
 	// 직급 리스트
 	@Override
 	public List<RanksVo> selectRanksList(RanksVo ranksVo) {
-		return (List<RanksVo>) ranksRepository.findAll();
+		return (List<RanksVo>) ranksRepository.findAllByOrderByRanksNoAsc();
 	}
 
-	// 사원 삽입
+	// 사원 생성
 	@Override
 	public void insertMember(MemberVo memberVo) {
 		memberRepository.save(memberVo);
@@ -74,5 +74,30 @@ public class MemberServiceImpl implements MemberService {
 		return memberRepository.selectCountMember();
 	}
 
+	// 사원 수정을 위한 사원 정보
+	@Override
+	public MemberVo selectMember(String memId) {
+		return memberRepository.findById(memId).get();
+	}
+
+	// 사원 수정
+	@Override
+	public void updateMember(MemberVo memberVo) {
+		MemberVo updateMember = memberRepository.findById(memberVo.getMemId()).get();
+		
+		updateMember.setMemJoinDate(memberVo.getMemJoinDate());
+		updateMember.setMemOfficeTel(memberVo.getMemOfficeTel());
+		updateMember.setMemTel(memberVo.getMemTel());
+		updateMember.setMemAddrCode(memberVo.getMemAddrCode());
+		updateMember.setMemAddr(memberVo.getMemAddr());
+		updateMember.setMemAddrDetail(memberVo.getMemAddrDetail());
+		updateMember.setMemAddrExtra(memberVo.getMemAddrExtra());
+		updateMember.setMemSignUrl(memberVo.getMemSignUrl());
+		updateMember.setMemStatus(memberVo.getMemStatus());
+		updateMember.setMemQuitDate(memberVo.getMemQuitDate());
+		updateMember.setMemQuitReason(memberVo.getMemQuitReason());
+		
+		memberRepository.save(updateMember);
+	}
 
 }

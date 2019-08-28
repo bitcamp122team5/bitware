@@ -16,7 +16,7 @@
 			<th>재직현황</th>
 		</tr>
 		<tr th:each="member : ${memberList}">
-			<td><a th:href="@{/admin/updateMember(memName=${member.memName})}" th:text="${member.memName}"></a></td>
+			<td><a th:href="@{/admin/updateMemberView(memId=${member.memId})}" th:text="${member.memName}"></a></td>
 			<td th:text="${member.memId}">
 			<td th:text="${member.ranks.ranks}">
 			<td th:text="${member.memTel}">
