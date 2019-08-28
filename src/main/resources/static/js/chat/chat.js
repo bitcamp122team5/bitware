@@ -1,7 +1,7 @@
 'use strict';
 
 var nameInput = $('#name');
-var roomInput = $('#room-id');
+var roomInput = $('#room-id').val();
 var usernamePage = document.querySelector('#username-page');
 var chatPage = document.querySelector('#chat-page');
 var usernameForm = document.querySelector('#usernameForm');
@@ -56,7 +56,7 @@ function enterRoom(newRoomId) {
 }
 
 function onConnected() {
-  enterRoom(roomInput.val());
+  enterRoom(roomInput);
   connectingElement.classList.add('hidden');
 }
 
@@ -139,7 +139,7 @@ $(document).ready(function() {
 
   var savedRoom = Cookies.get('roomId');
   if (savedRoom) {
-    roomInput.val(savedRoom);
+    roomInput = savedRoom;
   }
 
   usernamePage.classList.remove('hidden');

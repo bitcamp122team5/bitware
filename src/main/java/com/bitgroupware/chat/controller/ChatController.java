@@ -14,15 +14,18 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bitgroupware.chat.Beans.DepartmentDto;
 import com.bitgroupware.chat.Beans.MemberDto;
 import com.bitgroupware.chat.Beans.Message;
 import com.bitgroupware.chat.Beans.Message.MessageType;
 import com.bitgroupware.chat.service.ChatService;
+import com.bitgroupware.security.config.SecurityUser;
 
 
 @Controller
@@ -52,8 +55,15 @@ public class ChatController {
 	
 	/*chat 메인 페이지로 이동 */
 	@RequestMapping("chat")
-	public String chatView(Model model, String memId) {
+	public String chatView(String memId, @AuthenticationPrincipal SecurityUser principal, Model model) {
+		String sessionId = principal.getMember().getMemId();
+		model.addAttribute("sessionId", sessionId);
+		model.addAttribute("memId", memId);
+		System.out.println(sessionId);
 		System.out.println(memId);
+		String roomId = memId + sessionId;
+		model.addAttribute("roomId", roomId);
+		
 		return "chat/chat";
 	}
 	
