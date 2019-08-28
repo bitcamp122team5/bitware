@@ -3,17 +3,11 @@ package com.bitgroupware.community.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.bitgroupware.community.persistence.AnonymousBoardRepository;
 import com.bitgroupware.community.vo.AnonymousBoardVo;
-import com.bitgroupware.community.vo.QAnonymousBoardVo;
 import com.bitgroupware.utils.Search;
-import com.querydsl.core.BooleanBuilder;
 
 @Service
 public class AnonymousBoardServiceImpl implements AnonymousBoardService{
@@ -21,32 +15,50 @@ public class AnonymousBoardServiceImpl implements AnonymousBoardService{
 	@Autowired
 	private AnonymousBoardRepository anonymousBoardRepo;
 	
-	public Page<AnonymousBoardVo> selectAnonymousBoardList(Search search) {
+	public int countAnonymousBoard(Search search) {
+		if (search.getSearchCondition() == null)
+			search.setSearchCondition("btitle");
+		if (search.getSearchKeyword() == null)
+			search.setSearchKeyword("");
 		
-		BooleanBuilder builder = new BooleanBuilder();
-
-		QAnonymousBoardVo qAnonymousBoard = QAnonymousBoardVo.anonymousBoardVo;
-
-		if (search.getSearchCondition().equals("TITLE")) {
-			builder.and(qAnonymousBoard.btitle.like("%" + search.getSearchKeyword() + "%"));
-		} else if (search.getSearchCondition().equals("CONTENT")) {
-			builder.and(qAnonymousBoard.bcontent.like("%" + search.getSearchKeyword() + "%"));
+		String searchCondition = search.getSearchCondition();
+		String searchKeyword = "%" + search.getSearchKeyword().trim() + "%";
+		int count = 0;
+		switch (searchCondition) {
+		case "btitle":
+			count = anonymousBoardRepo.countByBtitle(searchKeyword);
+			break;
+		case "bcontent":
+			count = anonymousBoardRepo.countByBcontent(searchKeyword);
+			break;
 		}
-
-		Pageable pageable = PageRequest.of(0, 10, Sort.Direction.DESC, "bno");
-
-		return anonymousBoardRepo.findAll(builder, pageable);
+		return count;
 	}
+	
+	public List<AnonymousBoardVo> selectAnonymousBoardList(int begin, Search search) {
+		if (search.getSearchCondition() == null)
+			search.setSearchCondition("btitle");
+		if (search.getSearchKeyword() == null)
+			search.setSearchKeyword("");
 
-	public List<AnonymousBoardVo> selectAnonymousBoardList() {
-		List<AnonymousBoardVo> anonymousBoardList = anonymousBoardRepo.findAllByOrderByBgroupDescAndBstepAsc();
+		String searchCondition = search.getSearchCondition();
+		String searchKeyword = "%" + search.getSearchKeyword().trim() + "%";
+		List<AnonymousBoardVo> anonymousBoardList = null;
+		switch (searchCondition) {
+		case "btitle":
+			anonymousBoardList = anonymousBoardRepo.findAllByPagingAndBtitle(begin, searchKeyword);
+			break;
+		case "bcontent":
+			anonymousBoardList = anonymousBoardRepo.findAllByPagingAndBcontent(begin, searchKeyword);
+			break;
+		}
 		
 		if(anonymousBoardList.size()>0) {
 			for(int i=0; i<anonymousBoardList.size();i++) {
 				int count = anonymousBoardList.get(i).getBindent();
 				if(count>0) {
 					for(int j=1;j<=count;j++) {
-						anonymousBoardList.get(i).getBindentcnt().add(i);
+						anonymousBoardList.get(i).getBindentcnt().add(j);
 					}
 				}
 			}
@@ -55,7 +67,7 @@ public class AnonymousBoardServiceImpl implements AnonymousBoardService{
 		}
 		return anonymousBoardList;
 	}
-
+	
 	public void insertAnonymousBoard(AnonymousBoardVo anonymousBoard) {
 		int maxBno = anonymousBoardRepo.selectMaxBno();
 		anonymousBoard.setBgroup(maxBno+1);
@@ -95,7 +107,5 @@ public class AnonymousBoardServiceImpl implements AnonymousBoardService{
 		anonymousBoard.setBindent(anonymousBoard.getBindent()+1);
 		
 		anonymousBoardRepo.save(anonymousBoard);
-		
-		
 	}
 }

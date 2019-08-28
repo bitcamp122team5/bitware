@@ -3,8 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <title>로그인</title>
+<script>
+window.onload=function(){
+	var msg = document.getElementById('msg').value;
+	if(msg!=""){
+		alert(msg);
+	}
+}
+</script>
 </head>
 <body th:align="center">
+<input type="hidden" th:value="${msg}" id="msg">
 <h1>로그인</h1>
 <form method="post">
 <table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">

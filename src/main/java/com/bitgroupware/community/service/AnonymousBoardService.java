@@ -9,9 +9,9 @@ import com.bitgroupware.utils.Search;
 
 public interface AnonymousBoardService {
 
-	Page<AnonymousBoardVo> selectAnonymousBoardList(Search search);
+	int countAnonymousBoard(Search search);
 
-	List<AnonymousBoardVo> selectAnonymousBoardList();
+	List<AnonymousBoardVo> selectAnonymousBoardList(int begin, Search search);
 
 	void insertAnonymousBoard(AnonymousBoardVo anonymousBoard);
 
@@ -24,5 +24,7 @@ public interface AnonymousBoardService {
 	void deleteAnonymousBoard(int bno);
 
 	void insertAnonymousBoardReply(AnonymousBoardVo anonymousBoard);
+
+
 
 }
