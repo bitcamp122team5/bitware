@@ -86,12 +86,13 @@ window.onload=function(){
 		</tr>
 		<tr>
 			<td bgcolor="orange">비밀번호</td>
-			<td><input type="password" id="bpw"></td>
+			<td><input type="password" name="bpw" id="bpw"></td>
 		</tr>
 		<tr>
 			<td colspan="2">
 				<input type="button" id="updateBtn" value="수정하기">
 				<input type="button" id="deleteBtn" value="삭제하기">
+				<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/user/deleteAnonymousBoard(bno=${anonymousBoard.bno})}">삭제하기(관리자)</a>
 				<input type="button" id="replyBtn" value="답변달기">
 				<a th:href="@{/user/selectAnonymousBoardList}">목록보기</a>
 			</td>

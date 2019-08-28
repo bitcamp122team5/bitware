@@ -10,9 +10,20 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
 import com.bitgroupware.community.vo.AnonymousBoardVo;
+import com.bitgroupware.community.vo.NoticeVo;
 
-public interface AnonymousBoardRepository extends JpaRepository<AnonymousBoardVo, Integer>, QuerydslPredicateExecutor<AnonymousBoardVo>{
+public interface AnonymousBoardRepository extends JpaRepository<AnonymousBoardVo, Integer> {
 
+	@Query(value = "select count(*) from anonymous_board where btitle like ?", nativeQuery = true)
+	int countByBtitle(String searchKeyword);
+	@Query(value = "select count(*) from anonymous_board where bcontent like ?", nativeQuery = true)
+	int countByBcontent(String searchKeyword);
+	
+	@Query(value = "select r1.* from (select * from anonymous_board where btitle like ?2 order by bgroup desc, bstep asc) r1 limit 10 offset ?1", nativeQuery = true)
+	List<AnonymousBoardVo> findAllByPagingAndBtitle(int begin, String searchKeyword);
+	@Query(value = "select r1.* from (select * from anonymous_board where bcontent like ?2 order by bgroup desc, bstep asc) r1 limit 10 offset ?1", nativeQuery = true)
+	List<AnonymousBoardVo> findAllByPagingAndBcontent(int begin, String searchKeyword);
+	
 	AnonymousBoardVo findByBnoAndBpw(int bno, String bpw);
 
 	@Query(value = "select ifnull(max(bno),0) from anonymous_board", nativeQuery = true)
@@ -27,9 +38,5 @@ public interface AnonymousBoardRepository extends JpaRepository<AnonymousBoardVo
 	@Transactional
 	@Query(value = "alter table anonymous_board auto_increment=0", nativeQuery = true)
 	void initAutoIncrement();
-
-	@Query(value = "select * from anonymous_board order by bGroup desc, bStep asc", nativeQuery = true)
-	List<AnonymousBoardVo> findAllByOrderByBgroupDescAndBstepAsc();
-
 
 }

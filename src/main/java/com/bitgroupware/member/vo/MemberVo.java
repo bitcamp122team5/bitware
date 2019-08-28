@@ -27,6 +27,7 @@ public class MemberVo {
 	@Column(columnDefinition = "varchar(100)")
 	private String memId;
 	private String memPw;
+	@Column(updatable = false)
 	private String memName;
 	@Enumerated(EnumType.STRING)
 	// 시큐리티에서 ture면 인식해줌, false면 인식 안함 '아마도.'
@@ -45,6 +46,7 @@ public class MemberVo {
 	private String memTel;
 	private String memOfficeTel;
 	
+	@Column(updatable = false)
 	private String memJumin;
 	private String memSignUrl;
 	@Column(insertable = false, columnDefinition = "int(11) default 15")

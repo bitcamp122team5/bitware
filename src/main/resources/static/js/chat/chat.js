@@ -132,6 +132,7 @@ function getAvatarColor(messageSender) {
 }
 
 $(document).ready(function() {
+	document.getElementById("room-Id");
   var savedName = Cookies.get('name');
   if (savedName) {
     nameInput.val(savedName);

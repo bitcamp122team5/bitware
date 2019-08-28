@@ -57,12 +57,12 @@ public class ChatController {
 		return "chat/chat";
 	}
 	
-	@RequestMapping("chatlist")
+	@RequestMapping("chatList")
 	public String chatList(Model model, MemberDto memberDto, DepartmentDto depDto) {
 		List<MemberDto> memberList = chatservice.selectMemberList(memberDto);
 		List<DepartmentDto> depList = chatservice.selectDeptList(depDto);
 		model.addAttribute("memberList", memberList);
 		model.addAttribute("depList", depList);
-		return "chat/chatlist";
+		return "chat/chatList";
 	}
 }

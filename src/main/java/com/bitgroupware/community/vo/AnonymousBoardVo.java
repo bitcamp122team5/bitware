@@ -24,7 +24,6 @@ public class AnonymousBoardVo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int bno;
-	@Column(updatable = false)
 	private String bpw;
 	private String btitle;
 	private String bcontent;
