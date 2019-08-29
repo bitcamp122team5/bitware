@@ -19,4 +19,6 @@ public interface NoticeService {
 
 	void deleteNoticeFile(String fileUrl);
 
+	void increaseNtCnt(int ntNo);
+
 }

@@ -20,5 +20,6 @@ public class CarVo {
 	private int carNo;
 	private String carName;
 	private String carPlate;
-
+	private String carDeparture;
+	private String carArrival;
 }

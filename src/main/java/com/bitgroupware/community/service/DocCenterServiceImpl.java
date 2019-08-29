@@ -15,6 +15,7 @@ import com.bitgroupware.community.persistence.DocCenterRepository;
 import com.bitgroupware.community.utils.TemporaryFileUrl;
 import com.bitgroupware.community.vo.DocCenterFileVo;
 import com.bitgroupware.community.vo.DocCenterVo;
+import com.bitgroupware.community.vo.NoticeVo;
 import com.bitgroupware.utils.Search;
 
 @Service
@@ -156,5 +157,11 @@ public class DocCenterServiceImpl implements DocCenterService {
 			DocCenterFileVo docCenterFile = docCenterFileRepo.findByDocFileUrl(fileUrl);
 			docCenterFileRepo.delete(docCenterFile);
 		}
+	}
+
+	public void increaseDocCnt(int docNo) {
+		DocCenterVo docCenter = docCenterRepo.findById(docNo).get();
+		docCenter.setDocCnt(docCenter.getDocCnt()+1);
+		docCenterRepo.save(docCenter);
 	}
 }

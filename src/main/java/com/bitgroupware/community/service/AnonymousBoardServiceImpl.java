@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.bitgroupware.community.persistence.AnonymousBoardRepository;
 import com.bitgroupware.community.vo.AnonymousBoardVo;
+import com.bitgroupware.community.vo.DocCenterVo;
 import com.bitgroupware.utils.Search;
 
 @Service
@@ -106,6 +107,12 @@ public class AnonymousBoardServiceImpl implements AnonymousBoardService{
 		anonymousBoard.setBstep(bstep+1);
 		anonymousBoard.setBindent(anonymousBoard.getBindent()+1);
 		
+		anonymousBoardRepo.save(anonymousBoard);
+	}
+
+	public void increaseBcnt(int bno) {
+		AnonymousBoardVo anonymousBoard = anonymousBoardRepo.findById(bno).get();
+		anonymousBoard.setBcnt(anonymousBoard.getBcnt()+1);
 		anonymousBoardRepo.save(anonymousBoard);
 	}
 }

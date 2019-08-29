@@ -152,6 +152,16 @@ $(function(){
 	});
 });
 </script>
+<script>
+$(function(){
+	$(".mapBtn").click(function(){
+		var areaSelection = $(this).siblings().val();
+		if(areaSelection!=""){
+			window.open("/user/map?areaSelection="+areaSelection,"map","width=1500,height=600");
+		}
+	});
+});
+</script>
 </head>
 <body>
 <input type="hidden" th:value="${msg}" id="msg">
@@ -178,6 +188,18 @@ $(function(){
     		<tr>
     			<td>End Date</td>
     			<td><input type="text" id="endDateElem" name="carResEnd" class="form-control" autocomplete="off"></td>
+    		</tr>
+    		<tr>
+    			<td>출발지</td>
+    			<td><input type="text" id="departure" name="carDeparture">
+    				<input type="button" class="mapBtn" value="검색">
+    			</td>
+    		</tr>
+    		<tr>
+    			<td>도착지</td>
+    			<td><input type="text" id="arrival" name="carArrival">
+    				<input type="button" class="mapBtn" value="검색">
+    			</td>
     		</tr>
     	</table>
 		<input type="submit" value="예약하기">

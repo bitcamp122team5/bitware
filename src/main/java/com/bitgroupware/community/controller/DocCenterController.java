@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bitgroupware.community.service.DocCenterService;
 import com.bitgroupware.community.vo.DocCenterVo;
+import com.bitgroupware.member.utils.Role;
+import com.bitgroupware.security.config.SecurityUser;
 import com.bitgroupware.utils.Pager;
 import com.bitgroupware.utils.Search;
 
@@ -55,7 +58,10 @@ public class DocCenterController {
 	}
 	
 	@RequestMapping("/selectDocCenter")
-	public String selectDocCenter(Model model, int docNo) {
+	public String selectDocCenter(Model model, int docNo, @AuthenticationPrincipal SecurityUser principal) {
+		if(!principal.getMember().getRole().equals(Role.ROLE_ADMIN)) {
+			docCenterService.increaseDocCnt(docNo);
+		}
 		DocCenterVo docCenter = docCenterService.selectDocCenterByDocNo(docNo);
 		model.addAttribute("docCenter", docCenter);
 		return "community/docCenterDetail";

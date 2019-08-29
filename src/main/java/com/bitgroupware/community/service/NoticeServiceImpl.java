@@ -157,4 +157,10 @@ public class NoticeServiceImpl implements NoticeService {
 			noticeFileRepo.delete(noticeFile);
 		}
 	}
+
+	public void increaseNtCnt(int ntNo) {
+		NoticeVo notice = noticeRepo.findById(ntNo).get();
+		notice.setNtCnt(notice.getNtCnt()+1);
+		noticeRepo.save(notice);
+	}
 }
