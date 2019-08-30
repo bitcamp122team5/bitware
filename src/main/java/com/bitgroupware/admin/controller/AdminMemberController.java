@@ -95,6 +95,13 @@ public class AdminMemberController {
 	public String updateMemberView(Model model, String memId, DepartmentVo departmentVo, RanksVo ranksVo) {
 		MemberVo member = memberService.selectMember(memId);
 		List<DepartmentVo> deptList = memberService.selectDeptList(departmentVo);
+		try {
+			// 기존 생성된 사원이지만 부서가 없는 경우 예외 발생
+			List<TeamVo> teamList = memberService.selectTeamList(member.getDepartment().getDeptName());
+			model.addAttribute("teamList", teamList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		List<RanksVo> rankList = memberService.selectRanksList(ranksVo);
 		String curdate = memberService.selectCurdate();
 		
@@ -102,6 +109,7 @@ public class AdminMemberController {
 		model.addAttribute("rankList", rankList);
 		model.addAttribute("curdate", curdate);
 		model.addAttribute("member", member);
+		
 		return "admin/member/memberUpdate";
 	}
 
@@ -122,6 +130,20 @@ public class AdminMemberController {
 			break;
 		default:
 			memberVo.setRole(Role.ROLE_USER);
+		}
+		
+		System.out.println("재직상태 : " + memberVo.getMemStatus()); //테스트 후 삭제
+		
+		// 으아아아아아아아아아아아아아아아아아아아아아아아아아아아 setEnabled 왜 작동 안하는거야
+		switch (memberVo.getMemStatus()) {
+		case "out":
+			memberVo.setEnabled(false);
+			break;
+		default:
+			memberVo.setEnabled(true);
+			memberVo.setMemQuitDate(null);
+			memberVo.setMemQuitReason("");
+			break;
 		}
 		
 		memberService.updateMember(memberVo);

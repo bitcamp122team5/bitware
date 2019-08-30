@@ -11,6 +11,8 @@
 			<th>이름</th>
 			<th>사원번호</th>
 			<th>직급</th>
+			<th>부서</th>
+			<th>팀</th>
 			<th>전화번호</th>
 			<th>내선번호</th>
 			<th>재직현황</th>
@@ -19,6 +21,8 @@
 			<td><a th:href="@{/admin/updateMemberView(memId=${member.memId})}" th:text="${member.memName}"></a></td>
 			<td th:text="${member.memId}">
 			<td th:text="${member.ranks.ranks}">
+			<td th:text="${member.department?.deptName}">
+			<td th:text="${member.team?.teamName}">
 			<td th:text="${member.memTel}">
 			<td th:text="${member.memOfficeTel}">
 			<td th:text="${member.memStatus}">

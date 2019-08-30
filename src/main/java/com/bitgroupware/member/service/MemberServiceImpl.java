@@ -32,7 +32,7 @@ public class MemberServiceImpl implements MemberService {
 	// 사원 리스트
 	@Override
 	public List<MemberVo> selectMemberList(MemberVo memberVo) {
-		return (List<MemberVo>) memberRepository.findAll();
+		return (List<MemberVo>) memberRepository.findAllByOrderByMemNameAsc();
 	}
 
 	// 부서 리스트
@@ -85,6 +85,9 @@ public class MemberServiceImpl implements MemberService {
 	public void updateMember(MemberVo memberVo) {
 		MemberVo updateMember = memberRepository.findById(memberVo.getMemId()).get();
 		
+		updateMember.setDepartment(memberVo.getDepartment());
+		updateMember.setTeam(memberVo.getTeam());
+		updateMember.setRanks(memberVo.getRanks());
 		updateMember.setMemJoinDate(memberVo.getMemJoinDate());
 		updateMember.setMemOfficeTel(memberVo.getMemOfficeTel());
 		updateMember.setMemTel(memberVo.getMemTel());

@@ -21,6 +21,35 @@
             }
         }
     </script>
+    
+    <script>
+	$(function(){
+		var memDept = $("#memDept").val();
+		$("#department option[value="+memDept+"]").attr("selected",true);
+	});
+	</script>
+	
+	<script>
+	$(function(){
+		var memTeam = $("#memTeam").val();
+		$("#team option[value="+memTeam+"]").attr("selected",true);
+	});
+	</script>
+    
+    <script>
+	$(function(){
+		var memRanks = $("#memRanks").val();
+		$("#ranks option[value="+memRanks+"]").attr("selected",true);
+	});
+	</script>
+    
+    <script>
+	$(function(){
+		var status = $("#status").val();
+		$("#memStatus option[value="+status+"]").attr("selected",true);
+	});
+	</script>
+    
     <script>
     $(document).ready(function(){
 	    $('#department').change(function(){
@@ -65,21 +94,27 @@
 			<tr>
 				<td th:text="부서"></td>
 				<td>
+					<input id="memDept" type="hidden" th:value="${member.department?.deptName}">
 					<select name="department" id="department">
-						<option th:text="${member.department.deptName}"></option>
-						<option th:each="dept:${deptList}" 
+						<option>--부서선택--</option>
+						<option th:each="dept:${deptList}"
 							th:value="${dept.deptName}"
 							th:text="${dept.deptName}" />
 					</select>
+					<input id="memTeam" type="hidden" th:value="${member.team?.teamName}">
 					<select name="team" id="team">
 						<option>--팀선택--</option>
+						<option th:each="team:${teamList}"
+							th:value="${team.teamName}"
+							th:text="${team.teamName}" />
 					</select>
 				</td>
 			</tr>
 			<tr>
 				<td th:text="직급"></td>
 				<td>
-					<select name="ranks">
+					<input id="memRanks" type="hidden" th:value="${member.ranks.ranks}">
+					<select name="ranks" id="ranks">
 						<option th:each="ranks:${rankList}" 
 							th:value="${ranks.ranks}"
 							th:text="${ranks.ranks}" />
@@ -187,23 +222,26 @@
 			<tr>
 				<td th:text="재직현황"></td>
 				<td>
-					<select name="memStatus">
-						<option value="work">work</option>
-						<option value="rest">rest</option>
-						<option value="out">out</option>
+					<input id="status" type="hidden" th:value="${member.memStatus}">
+					<select name="memStatus" id="memStatus">
+						<option th:value="work">work</option>
+						<option th:value="rest">rest</option>
+						<option th:value="out">out</option>
 					</select>
 				</td>
 			</tr>
 			<tr>
 				<td th:text="퇴사일자"></td>
-				<td><input name="memQuitDate" id="memQuitDate" type="date" th:value="member.memQuitDate"></td>
+				<td>
+					<input name="memQuitDate" id="memQuitDate" type="date" th:value="${member.memQuitDate}">
+				</td>
 				<script>
 					document.getElementById("memQuitDate").setAttribute('max', document.getElementById("curdate").value);
 				</script>
 			</tr>
 			<tr>
 				<td th:text="퇴사사유"></td>
-				<td><input name="memQuitReason" type="text" th:value="member.memQuitReason"></td>
+				<td><input name="memQuitReason" type="text" th:value="${member.memQuitReason}"></td>
 			</tr>
 			<tr>
 				<td colspan="2">
