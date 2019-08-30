@@ -8,6 +8,7 @@
 	<h1>사원 목록</h1>
 	<table th:align="center" border="1" th:cellpadding="0" th:width="700">
 		<tr>
+			<th><input type="checkbox" name="allCheckBox" id="allCheckBox"></th>
 			<th>이름</th>
 			<th>사원번호</th>
 			<th>직급</th>
@@ -18,6 +19,7 @@
 			<th>재직현황</th>
 		</tr>
 		<tr th:each="member : ${memberList}">
+			<td><input type="checkbox" name="checkBox" class="checkBox" th:value="${member.memId}"></td>
 			<td><a th:href="@{/admin/updateMemberView(memId=${member.memId})}" th:text="${member.memName}"></a></td>
 			<td th:text="${member.memId}">
 			<td th:text="${member.ranks.ranks}">
@@ -28,6 +30,7 @@
 			<td th:text="${member.memStatus}">
 		</tr>
 	</table>
+	<button type="button" class="deleteBtn">삭제</button>
 	<a th:href="@{/admin/insertMemberView}">사원 등록</a>
 </body>
 </html>

@@ -146,4 +146,24 @@ $(document).ready(function() {
   usernamePage.classList.remove('hidden');
   usernameForm.addEventListener('submit', connect, true);
   messageForm.addEventListener('submit', sendMessage, true);
+  
+ document.getElementById("sendBtn").onclick=function(){
+	 var content = document.getElementById("message").value;
+	 var sender = document.getElementById("sender").value;
+	 var receiver = document.getElementById("receiver").value;
+	 var roomId = document.getElementById("roomId").value;
+	 $.ajax({
+		url:"/user/insertChat",
+		data:{
+			content : content,
+			sender : sender,
+			receiver : receiver,
+			roomId : roomId
+		},
+		dataType:'json',
+		success:function(data){
+			alert(data);
+		}
+	 });
+ }
 });
