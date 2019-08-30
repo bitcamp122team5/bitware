@@ -11,7 +11,6 @@ import com.bitgroupware.approval.beans.ApprovalDocumentDto;
 import com.bitgroupware.approval.beans.ApprovalDto;
 import com.bitgroupware.approval.service.ApprovalDocService;
 import com.bitgroupware.approval.service.ApprovalService;
-import com.bitgroupware.chat.Beans.MemberDto;
 
 @Controller
 public class ApprovalController {
@@ -63,7 +62,7 @@ public class ApprovalController {
 	}
 	
 	// 등록
-	public String insertApproval() {
+	public String insertApproval(ApprovalDto apdto) {
 		return "redirect:/approval/approvalListTobe";
 	}
 	

@@ -43,11 +43,11 @@ public class ApprovalServiceImpl implements ApprovalService {
 
 	// 기안
 	@Override
-	public void insertApproval(ApprovalProgressDto aprDto,ApprovalDocumentDto dto) {
+	public void insertApproval(ApprovalDto apdto) {
 		
-		if(dto.getApdocNo() == null || "".equals(dto.getApdocNo())) {
+		if(apdto.getApdocNo() == null || "".equals(apdto.getApdocNo())) {
 			LOGGER.error("insertApprovalDoc");
-		}else if(dto.getApdocNo() != null){
+		}else if(apdto.getApdocNo() != null){
 			LOGGER.error("updateApprovalDoc");
 		}else {
 			LOGGER.error("둘 다 해당사항 없음");

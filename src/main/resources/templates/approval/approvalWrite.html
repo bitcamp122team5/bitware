@@ -14,6 +14,7 @@
 <link th:href="@{/editor/summernote/summernote.css}" rel="stylesheet">
 <script th:src="@{/editor/summernote/summernote.js}"></script>
 <script>
+
 $(function(){
 	$("#apContent").summernote({
 		hegit:300
@@ -56,13 +57,11 @@ $(function(){
 			<div>
 			
 <script type="text/javascript">
+window.onload = function(){
+	var finalSign = $("#finalSign").val(); // 해당문서 최종 결재 라인 넘버 가져옴
+	alert(finalSign);
+}
 
-var a = document.getElementById("finalSign");
-var aa = document.getElementById("finalSign").val;
-alert(a);
-consol.log(a);
-alert(aa);
-consol.log(aa);
 		document.write("<table border='0' cellspacing='0'>")
 		document.write("<tr>")
 		document.write("<td align='center'>")
@@ -92,7 +91,7 @@ consol.log(aa);
 			<input type="hidden" name="apdocNo" th:value="${apDto?.apdocNo}">
 			<input type="hidden" name="apSignpath" th:value="${apDto?.apSignpath}">
 			<input type="hidden" name="apContent" th:value="${apDto?.apContent}">
-			<input type="hidden" name="finalSign" th:value="${apDto?.finalSign}">
+			<input type="hidden" id="finalSign" name="finalSign" th:value="${apDto?.finalSign}">
 			<table th:align="center" border="1" th:cellpadding="0"
 				th:cellspacing="0">
 				<tr>
