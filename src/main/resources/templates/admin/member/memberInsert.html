@@ -46,7 +46,7 @@
 </head>
 <body th:align="center">
 	<h1>사원 등록</h1>
-	<form th:action="@{/admin/insertMember}" method="post">
+	<form th:action="@{/admin/insertMember}" method="post" enctype="multipart/form-data">
 		<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
 			<tr>
 				<td th:text="이름"></td>
@@ -175,7 +175,7 @@
 				<td th:text="서명"></td>
 				<td>
 					<img id="blah" width="75" height="75" />
-					<input type="file" id="imgInp" accept="image/*"/>
+					<input type="file" id="imgInp" accept="image/*" name="file"/>
 				</td>
 			</tr>
 			<tr>

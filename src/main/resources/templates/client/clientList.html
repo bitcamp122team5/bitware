@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<title>거래처 목록페이지(관리자)</title>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script> 
+<script>
+$(function(){
+	var cate = $("#searchCondition").val();
+	$("#category option[value="+cate+"]").attr("selected",true);
+	
+	var keyword = $("#searchKeyword").val();
+	$("#keyword").val(keyword);
+});
+</script>
+</head>
+<body>
+<!-- 검색 시작 -->
+<form th:action="@{/user/selectClientList}">
+<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
+<tr>
+    <td align="right">
+        <select name="searchCondition" id="category">
+        	<option value="clientName">이름</option>
+        	<option value="clientCompany">회사명</option>
+        </select>
+        <input name="searchKeyword" id="keyword" type="text">
+        <input type="submit" value="검색">
+    </td>
+</tr>
+</table>
+</form>
+<input type="hidden" id="searchCondition" th:value="${search.searchCondition}">
+<input type="hidden" id="searchKeyword" th:value="${search.searchKeyword}">
+<!-- 검색 종료 -->
+
+<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
+	<tr>
+		<th bgcolor="orange" width="100">이름</th>
+		<th bgcolor="orange" width="300">전화번호</th>
+		<th bgcolor="orange" width="100">회사명</th>
+		<th bgcolor="orange" width="100">부서명</th>
+		<th bgcolor="orange" width="100">직책</th>
+		<th bgcolor="orange" width="100">비고</th>
+	</tr>
+	<tr th:each="client:${clientList}">
+		<td th:text="${client.clientName}"></td>
+		<td th:text="${client.clientTel}"></td>
+		<td th:text="${client.clientCompany}"></td>
+		<td th:text="${client.clientDeptName}"></td>
+		<td th:text="${client.clientRanks}"></td>
+		<td th:text="${client.clientNote}"></td>
+	</tr>
+</table>
+<br>
+<table th:align="center">
+	<tr>
+		<td colspan="5">
+			<span th:if="${page.curBlock > 1 }">
+				<a th:href="@{/admin/selectClientList(curPage=${page.prevPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}">[이전]</a>
+			</span>
+			<span th:if="${page.curBlock > 1 }">
+				<a th:href="@{/admin/selectClientList(curPage=1,searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}">1</a>
+			</span>
+			<span th:each="num:${block}">
+				<span th:if="${num==page.curPage }">
+					<a th:href="@{/admin/selectClientList(curPage=${num},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${num}" style="color:orange;"></a>
+				</span>
+				<span th:unless="${num==page.curPage }">
+					<a th:href="@{/admin/selectClientList(curPage=${num},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${num}"></a>
+				</span>
+			</span>
+			<span th:if="${page.curBlock < page.totBlock }">
+				<a th:href="@{/admin/selectClientList(curPage=${page.totPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${page.totPage}"></a>
+			</span>
+			<span th:if="${page.curBlock < page.totBlock }">
+				<a th:href="@{/admin/selectClientList(curPage=${page.nextPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}">[다음]</a>
+			</span>
+		</td>
+	</tr>
+</table>
+</body>
+</html>

@@ -1,14 +1,22 @@
 package com.bitgroupware.admin.controller;
 
+import java.beans.PropertyEditorSupport;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.bitgroupware.company.vo.DepartmentVo;
 import com.bitgroupware.company.vo.RanksVo;
@@ -63,7 +71,29 @@ public class AdminMemberController {
 	
 	// 사원 등록
 	@RequestMapping("/insertMember")
-	public String insertMember(MemberVo memberVo) {
+	public String insertMember(MemberVo memberVo, HttpServletRequest request) {
+		String fileName = "Empty";
+		String serverPath ="";
+		String localPath = "";
+		if(!memberVo.getFile().isEmpty()) {
+			UUID uuid = UUID.randomUUID();
+			String uid = uuid.toString();
+			fileName = uid + "_" + memberVo.getFile().getOriginalFilename();
+			try {
+				String defaultPath = request.getSession().getServletContext().getRealPath("/");
+				serverPath = defaultPath + "memSign" + File.separator +fileName;
+				localPath = File.separator + "memSign" + File.separator +fileName;
+				File f = new File(serverPath);
+				if(!f.exists()) {
+					f.mkdirs();
+				}
+				memberVo.getFile().transferTo(f);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			memberVo.setMemSignUrl(localPath);
+		}
+		
 		String curdate = memberService.selectCurdate();
 		String memCount = memberService.selectCountMember();
 		String memId = curdate.replace("-", "") + (String.format("%3s", memCount)).replace(" ", "0"); // 사원번호 부여
