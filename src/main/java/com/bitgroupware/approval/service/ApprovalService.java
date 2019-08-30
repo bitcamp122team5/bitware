@@ -18,7 +18,7 @@ public interface ApprovalService {
 	ApprovalDto selectApproval(ApprovalDto apDto);
 	
 	// 기안
-	void insertApproval(ApprovalProgressDto aprDto,ApprovalDocumentDto dto);
+	void insertApproval(ApprovalDto apdto);
 	
 	// 삭제
 	void deleteApproval();
@@ -31,4 +31,6 @@ public interface ApprovalService {
 	
 	// 결재
 	void updateApproval();
+
+	
 }

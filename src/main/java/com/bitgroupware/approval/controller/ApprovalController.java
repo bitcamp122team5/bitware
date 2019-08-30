@@ -62,7 +62,7 @@ public class ApprovalController {
 	}
 	
 	// 등록
-	public String insertApproval() {
+	public String insertApproval(ApprovalDto apdto) {
 		return "redirect:/approval/approvalListTobe";
 	}
 	
