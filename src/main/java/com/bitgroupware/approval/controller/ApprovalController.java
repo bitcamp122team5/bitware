@@ -11,7 +11,6 @@ import com.bitgroupware.approval.beans.ApprovalDocumentDto;
 import com.bitgroupware.approval.beans.ApprovalDto;
 import com.bitgroupware.approval.service.ApprovalDocService;
 import com.bitgroupware.approval.service.ApprovalService;
-import com.bitgroupware.chat.Beans.MemberDto;
 
 @Controller
 public class ApprovalController {
