@@ -53,7 +53,7 @@ public class AdminClientController {
 		model.addAttribute("block",block);
 		model.addAttribute("search",search);
 		
-		return "admin/client/clientList";
+		return "admin/etc/clientList";
 	}
 	
 	@RequestMapping("/insertClient")

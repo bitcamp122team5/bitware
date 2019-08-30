@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<title>영업부 조직도</title>
+</head>
+<body>
+<div th:text="${deptName}" th:align="center"></div>
+<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
+	<tr>
+		<td bgcolor="orange" width="100">이름</td>
+		<td bgcolor="orange" width="100">전화번호</td>
+		<td bgcolor="orange" width="100">내선번호</td>
+		<td bgcolor="orange" width="100">부서명</td>
+		<td bgcolor="orange" width="100">직책</td>
+	</tr>
+	<tr>
+		<td th:text="${header.memName}"></td>
+		<td th:text="${header.memTel}"></td>
+		<td th:text="${header.memOfficeTel}"></td>
+		<td th:text="${header.department.deptName}"></td>
+		<td th:text="${header.ranks.ranks}"></td>
+	</tr>
+</table>
+<th:block th:each="team:${teamList}">
+<br>
+<div th:text="${deptName}+' '+${team.teamName}" th:align="center"></div>
+<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
+	<tr>
+		<td bgcolor="orange" width="100">이름</td>
+		<td bgcolor="orange" width="100">전화번호</td>
+		<td bgcolor="orange" width="100">내선번호</td>
+		<td bgcolor="orange" width="100">부서명</td>
+		<td bgcolor="orange" width="100">직책</td>
+	</tr>
+	<tr>
+		<td th:text="${teamleader0.memName}"></td>
+		<td th:text="${teamleader0.memTel}"></td>
+		<td th:text="${teamleader0.memOfficeTel}"></td>
+		<td th:text="${teamleader0.department.deptName}+' '+${teamleader0.team.teamName}"></td>
+		<td th:text="${teamleader0.ranks.ranks}"></td>
+	</tr>
+	<tr th:each="teamMember:${teamMemberList0}">
+		<td th:text="${teamMember.memName}"></td>
+		<td th:text="${teamMember.memTel}"></td>
+		<td th:text="${teamMember.memOfficeTel}"></td>
+		<td th:text="${teamMember.department.deptName}+' '+${teamMember.team.teamName}"></td>
+		<td th:text="${teamMember.ranks.ranks}"></td>
+	</tr>
+</table>
+</th:block>
+</body>
+</html>
