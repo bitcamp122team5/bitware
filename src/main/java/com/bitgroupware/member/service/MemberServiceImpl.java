@@ -95,7 +95,11 @@ public class MemberServiceImpl implements MemberService {
 		updateMember.setMemAddr(memberVo.getMemAddr());
 		updateMember.setMemAddrDetail(memberVo.getMemAddrDetail());
 		updateMember.setMemAddrExtra(memberVo.getMemAddrExtra());
-		updateMember.setMemSignUrl(memberVo.getMemSignUrl());
+		if(memberVo.getMemSignUrl()==null) {
+			System.out.println("서명이 수정되지 않았거나 없습니다");
+		} else {
+			updateMember.setMemSignUrl(memberVo.getMemSignUrl());			
+		}
 		updateMember.setMemStatus(memberVo.getMemStatus());
 		updateMember.setMemQuitDate(memberVo.getMemQuitDate());
 		updateMember.setMemQuitReason(memberVo.getMemQuitReason());

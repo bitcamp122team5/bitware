@@ -1,6 +1,5 @@
 package com.bitgroupware.admin.controller;
 
-import java.beans.PropertyEditorSupport;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,11 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.bitgroupware.company.vo.DepartmentVo;
 import com.bitgroupware.company.vo.RanksVo;
@@ -145,7 +141,7 @@ public class AdminMemberController {
 
 	// 사원 수정
 	@RequestMapping("/updateMember")
-	public String updateMember(MemberVo memberVo) {
+	public String updateMember(MemberVo memberVo, HttpServletRequest request) {
 		switch (memberVo.getRanks().getRanksNo()) {
 		case 1:
 			memberVo.setRole(Role.ROLE_USER);
@@ -162,18 +158,38 @@ public class AdminMemberController {
 			memberVo.setRole(Role.ROLE_USER);
 		}
 		
-		System.out.println("재직상태 : " + memberVo.getMemStatus()); //테스트 후 삭제
+		// enabled 설정. 작동X
+//		switch (memberVo.getMemStatus()) {
+//		case "out":
+//			memberVo.setEnabled(false);
+//			break;
+//		default:
+//			memberVo.setEnabled(true);
+//			memberVo.setMemQuitDate(null);
+//			memberVo.setMemQuitReason("");
+//			break;
+//		}
 		
-		// 으아아아아아아아아아아아아아아아아아아아아아아아아아아아 setEnabled 왜 작동 안하는거야
-		switch (memberVo.getMemStatus()) {
-		case "out":
-			memberVo.setEnabled(false);
-			break;
-		default:
-			memberVo.setEnabled(true);
-			memberVo.setMemQuitDate(null);
-			memberVo.setMemQuitReason("");
-			break;
+		String fileName = "Empty";
+		String serverPath ="";
+		String localPath = "";
+		if(!memberVo.getFile().isEmpty()) {
+			UUID uuid = UUID.randomUUID();
+			String uid = uuid.toString();
+			fileName = uid + "_" + memberVo.getFile().getOriginalFilename();
+			try {
+				String defaultPath = request.getSession().getServletContext().getRealPath("/");
+				serverPath = defaultPath + "memSign" + File.separator +fileName;
+				localPath = File.separator + "memSign" + File.separator +fileName;
+				File f = new File(serverPath);
+				if(!f.exists()) {
+					f.mkdirs();
+				}
+				memberVo.getFile().transferTo(f);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			memberVo.setMemSignUrl(localPath);
 		}
 		
 		memberService.updateMember(memberVo);

@@ -75,7 +75,7 @@
 </head>
 <body th:align="center">
 	<h1>사원 수정</h1>
-	<form th:action="@{/admin/updateMember}" method="post">
+	<form th:action="@{/admin/updateMember}" method="post" enctype="multipart/form-data">
 		<input name="memId" type="hidden" th:value="${member.memId}">
 		<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
 			<tr>
@@ -215,8 +215,8 @@
 			<tr>
 				<td th:text="서명"></td>
 				<td>
-					<img id="blah" width="75" height="75" />
-					<input type="file" id="imgInp" accept="image/*"/>
+					<img th:src="${member.memSignUrl}" id="blah" width="75" height="75" /><br>
+					<input type="file" id="imgInp" accept="image/*" name="file"/>
 				</td>
 			</tr>
 			<tr>
