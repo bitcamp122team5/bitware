@@ -13,8 +13,9 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
-import com.bitgroupware.chat.Beans.Message;
-import com.bitgroupware.chat.Beans.Message.MessageType;
+import com.bitgroupware.chat.Beans.ChatMessageDto;
+import com.bitgroupware.chat.Beans.ChatMessageDto;
+import com.bitgroupware.chat.Beans.ChatMessageDto.MessageType;
 
 @Component
 public class WebSocketEventListener {
@@ -32,8 +33,8 @@ public class WebSocketEventListener {
 		if(username != null) {
 			logger.info("User Disconnected: " + username);
 			
-			Message message = new Message();
-			message.setType(MessageType.LEAVE);
+			ChatMessageDto message = new ChatMessageDto();
+			message.setMessageType(MessageType.LEAVE);
 			message.setSender(username);
 			
 			messagingTemplate.convertAndSend(format("/channel/%s", roomId), message);
