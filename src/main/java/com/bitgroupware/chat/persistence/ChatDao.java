@@ -2,9 +2,11 @@ package com.bitgroupware.chat.persistence;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import com.bitgroupware.chat.Beans.ChatMessageDto;
 import com.bitgroupware.chat.Beans.DepartmentDto;
 import com.bitgroupware.chat.Beans.MemberDto;
 
@@ -20,11 +22,10 @@ public interface ChatDao {
 	@Select("SELECT * FROM DEPARTMENT")
 	List<DepartmentDto> selectDepList();
 	
-	/*
-	 * <select id="listCart" resultType="com.five.mall.model.dto.CartDto"> select
-	 * cartNo, m.userId, name, p.productNo, productName, amount, productPrice,
-	 * nvl(productPrice*amount,0) money from member m, cart c, product p where
-	 * m.userId=c.userId and p.productNo=c.productNo and m.userId=#{userId}
-	 * </select>
-	 */
+	@Select("SELECT * FROM MEMBER WHERE MEM_ID = #{memId}")
+	public MemberDto selectMemeberInfo(String memId);
+	
+	@Insert("INSERT INTO CHAT_MESSAGE (SENDER, CONTENT, RECEIVER, ROOM_ID) VALUES (#{sender},#{content},#{receiver},#{roomId})")
+	void insertChat(ChatMessageDto chatDto);
+	 
 }
