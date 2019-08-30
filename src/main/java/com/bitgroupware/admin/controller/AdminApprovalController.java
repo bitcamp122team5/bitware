@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.bitgroupware.approval.beans.ApprovalDoucemtDto;
+import com.bitgroupware.approval.beans.ApprovalDocumentDto;
 import com.bitgroupware.approval.beans.ApprovalFileDto;
 import com.bitgroupware.approval.persistence.ApprovalDocumentDao;
 import com.bitgroupware.approval.service.ApprovalDocService;
@@ -29,14 +29,14 @@ public class AdminApprovalController {
 	// 문서리스트
 	@RequestMapping("/selectApprovalDocList")
 	public String selectApprovalDocList(Model model) {
-		List<ApprovalDoucemtDto> approvalDocList = approvalService.selectApprovalDocList();
+		List<ApprovalDocumentDto> approvalDocList = approvalService.selectApprovalDocList();
 		model.addAttribute("approvalDocList",approvalDocList);
 		return "admin/approval/approvalDocList";
 	}
 	
 	// 등록페이지(insert+update)
 	@RequestMapping("/insertApprovalDocView")
-	public String insertApprovalDocView(Model model,ApprovalDoucemtDto apdocDto) {
+	public String insertApprovalDocView(Model model,ApprovalDocumentDto apdocDto) {
 		if(apdocDto.getApdocNo() != null) { // 수정할 때 필요 해서  Dto 가져감
 			apdocDto = approvalService.selectApprovalDoc(apdocDto.getApdocNo());
 			model.addAttribute("apdocDto",apdocDto);
@@ -47,7 +47,7 @@ public class AdminApprovalController {
 	
 	// 등록(insert+update)
 	@RequestMapping("/insertApprovalDoc")
-	public String insertApprovalDoc(Model model, ApprovalDoucemtDto apdocDto, ApprovalFileDto apfileDto) {
+	public String insertApprovalDoc(Model model, ApprovalDocumentDto apdocDto, ApprovalFileDto apfileDto) {
 		String apFilename = "Empty";
 		String path = UPLOAD_DIR;
 		
@@ -76,7 +76,7 @@ public class AdminApprovalController {
 	
 	// 삭제
 	@RequestMapping("/deleteApprovalDoc")
-	public String deleteApprovalDocList(Model model,ApprovalDoucemtDto apdocDto) {
+	public String deleteApprovalDocList(Model model,ApprovalDocumentDto apdocDto) {
 		approvalService.deleteApprovalDoc(apdocDto);
 		return "redirect:/admin/selectApprovalDocList";
 	}
