@@ -74,4 +74,10 @@ public class CarController {
 		carReservationService.deleteCarReservation(carResNo);
 		return "redirect:/user/selectCarReservationList";
 	}
+	
+	@RequestMapping("/map")
+	public String map(Model model, String areaSelection) {
+		model.addAttribute("areaSelection", areaSelection);
+		return "community/map";
+	}
 }

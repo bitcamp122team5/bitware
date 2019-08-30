@@ -7,6 +7,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.bitgroupware.company.vo.DepartmentVo;
 import com.bitgroupware.company.vo.RanksVo;
@@ -56,6 +59,9 @@ public class MemberVo {
 	private String memAddr;
 	private String memAddrDetail;
 	private String memAddrExtra;
+	
+	@Transient
+	private MultipartFile file;
 	
 	@ManyToOne
 	@JoinColumn(name = "dept_name")

@@ -19,4 +19,6 @@ public interface DocCenterService {
 
 	void deleteDocCenterFile(String fileUrl);
 
+	void increaseDocCnt(int docNo);
+
 }

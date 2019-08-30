@@ -1,4 +1,4 @@
-package com.bitgroupware.community.vo;
+package com.bitgroupware.etc.beans;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,14 +12,17 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Entity(name = "car")
-public class CarVo {
-	
+@Entity(name = "client")
+public class ClientVo {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int carNo;
-	private String carName;
-	private String carPlate;
-	private String carDeparture;
-	private String carArrival;
+	private int clientNo;
+	private String clientName;
+	private String clientTel;
+	private String clientCompany;
+	private String clientDeptName;
+	private String clientRanks;
+	private String clientNote;
+	
 }

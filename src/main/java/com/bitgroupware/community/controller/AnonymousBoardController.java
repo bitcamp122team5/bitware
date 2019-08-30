@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bitgroupware.community.service.AnonymousBoardService;
 import com.bitgroupware.community.vo.AnonymousBoardVo;
+import com.bitgroupware.member.utils.Role;
+import com.bitgroupware.security.config.SecurityUser;
 import com.bitgroupware.utils.Pager;
 import com.bitgroupware.utils.Search;
 
@@ -69,7 +71,10 @@ public class AnonymousBoardController {
 	}
 	
 	@RequestMapping("/selectAnonymousBoard")
-	public String selectAnonymousBoard(Model model, int bno) {
+	public String selectAnonymousBoard(Model model, int bno, @AuthenticationPrincipal SecurityUser principal) {
+		if(!principal.getMember().getRole().equals(Role.ROLE_ADMIN)) {
+			anonymousBoardService.increaseBcnt(bno);
+		}
 		AnonymousBoardVo anonymousBoard = anonymousBoardService.selectAnonymousBoard(bno);
 		model.addAttribute("anonymousBoard", anonymousBoard);
 		return "community/anonymousBoardDetail";

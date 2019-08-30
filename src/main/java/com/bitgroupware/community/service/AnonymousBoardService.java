@@ -25,6 +25,8 @@ public interface AnonymousBoardService {
 
 	void insertAnonymousBoardReply(AnonymousBoardVo anonymousBoard);
 
+	void increaseBcnt(int bno);
+
 
 
 }

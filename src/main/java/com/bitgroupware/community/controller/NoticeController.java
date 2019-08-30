@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bitgroupware.community.service.NoticeService;
 import com.bitgroupware.community.vo.NoticeVo;
+import com.bitgroupware.member.utils.Role;
+import com.bitgroupware.security.config.SecurityUser;
 import com.bitgroupware.utils.Pager;
 import com.bitgroupware.utils.Search;
 
@@ -55,7 +58,10 @@ public class NoticeController {
 	}
 	
 	@RequestMapping("/selectNotice")
-	public String selectNotice(Model model, int ntNo) {
+	public String selectNotice(Model model, int ntNo, @AuthenticationPrincipal SecurityUser principal) {
+		if(!principal.getMember().getRole().equals(Role.ROLE_ADMIN)) {
+			noticeService.increaseNtCnt(ntNo);
+		}
 		NoticeVo notice = noticeService.selectNoticeByNtNo(ntNo);
 		model.addAttribute("notice", notice);
 		return "community/noticeDetail";
