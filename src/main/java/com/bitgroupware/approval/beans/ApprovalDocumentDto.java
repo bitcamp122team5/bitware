@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @ToString
-public class ApprovalDoucemtDto {
+public class ApprovalDocumentDto {
 	private String 	apdocNo;	// 번호
 	private String	apdocName;	// 문서양식명
 	private String	apdocForm;	// 문서양식내용
