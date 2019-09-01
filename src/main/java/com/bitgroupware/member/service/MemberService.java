@@ -26,5 +26,7 @@ public interface MemberService {
 	MemberVo selectMember(String memId);
 	
 	void updateMember(MemberVo memberVo);
+	
+	void deleteMember(String memId);
 
 }
