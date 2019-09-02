@@ -28,10 +28,10 @@ public class ApprovalDocServiceImpl implements ApprovalDocService {
 	}
 	
 	// 읽기
-	@Override
-	public ApprovalDocumentDto selectApprovalDoc(String apdocNo) {
-		return apDao.selectApprovalDoc(apdocNo);
-	}
+//	@Override
+//	public ApprovalDocumentDto selectApprovalDoc(String apdocNo) {
+//		return apDao.selectApprovalDoc(apdocNo);
+//	}
 
 	// 등록(insert+update)
 	@Transactional
@@ -78,5 +78,10 @@ public class ApprovalDocServiceImpl implements ApprovalDocService {
 		// TODO Auto-generated method stub
 		apDao.deleteApprovalDocFile(fileDto);
 		
+	}
+
+	//jaebum
+	public ApprovalDocumentDto selectApprovalDoc(int apdocNo) {
+		return apDao.selectApprovalDoc(apdocNo);
 	}
 }

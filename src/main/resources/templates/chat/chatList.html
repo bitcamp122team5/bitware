@@ -14,12 +14,13 @@
 </style>
 <script type="text/javascript">
 	$(function(){
-		$(".memberId").click(function(){
-			var memId = $(this).val();
-			var url = "/user/chat?memId=" + memId;
-			var name = "popup test";
-			var option = "width=500, height=500, top=100, left=200, location=no"
-			window.open(url, name, option);
+		$(".memberId1").click(function(){
+			var memId = $(this).parent().val();
+			alert(memId);
+// 			var url = "/user/chat?memId=" + memId;
+// 			var name = "popup test";
+// 			var option = "width=500, height=500, top=100, left=200, location=no"
+// 			window.open(url, name, option);
 		})
 	});
 </script>
@@ -37,7 +38,9 @@
 		<div class="info">
 			<ul>
 				<th:block th:each="member : ${memberList}" th:if="${member.deptName} == '지원부'">
-					<li class="memberId" th:value="${member.memId}" th:text="${member.memName}"></li>
+					<li class="memberId" th:value="${member.memId}">
+						<p class="memberId1" th:text="${member.memName}"></p>
+					</li>
 				</th:block>
 			</ul>
 		</div>
