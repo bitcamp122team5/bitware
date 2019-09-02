@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bitgroupware.company.vo.DepartmentVo;
@@ -202,4 +203,15 @@ public class AdminMemberController {
 		memberService.deleteMember(memberVo.getMemId());
 		return "redirect:selectMemberList";
 	}
+	
+	@RequestMapping(value = "/deleteMemberCheckBox")
+	@ResponseBody
+	public String deleteMember(@RequestParam(value = "checkBoxArr[]") List<String> checkBoxArr) {
+		for(String checkBox: checkBoxArr) {
+			memberService.deleteMember(checkBox);
+		}
+		return "삭제완료";
+	}
+	
+	
 }
