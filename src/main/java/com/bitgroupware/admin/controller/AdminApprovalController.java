@@ -35,16 +35,16 @@ public class AdminApprovalController {
 	}
 	
 	// 등록페이지(insert+update)
-	@RequestMapping("/insertApprovalDocView")
-	public String insertApprovalDocView(Model model,ApprovalDocumentDto apdocDto) {
-		System.out.println(apdocDto.toString());
-		if(apdocDto.getApdocNo() != null) { // 수정할 때 필요 해서  Dto 가져감
-			apdocDto = approvalService.selectApprovalDoc(apdocDto.getApdocNo());
-			model.addAttribute("apdocDto",apdocDto);
-			System.out.println(apdocDto.toString());
-		}
-		return "admin/approval/approvalDocWrite";
-	}
+//	@RequestMapping("/insertApprovalDocView")
+//	public String insertApprovalDocView(Model model,ApprovalDocumentDto apdocDto) {
+//		System.out.println(apdocDto.toString());
+//		if(apdocDto.getApdocNo() != null) { // 수정할 때 필요 해서  Dto 가져감
+//			apdocDto = approvalService.selectApprovalDoc(apdocDto.getApdocNo());
+//			model.addAttribute("apdocDto",apdocDto);
+//			System.out.println(apdocDto.toString());
+//		}
+//		return "admin/approval/approvalDocWrite";
+//	}
 	
 	
 	// 등록(insert+update)

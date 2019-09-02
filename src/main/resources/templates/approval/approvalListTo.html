@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<title>결재 할 문서</title>
+</head>
+<body>
+<table border="1">
+	<tr>
+		<td>번호</td>
+		<td>제목</td>
+		<td>상태</td>
+		<td>작성자</td>
+		<td>작성일자</td>
+	</tr>
+	<tr th:each="approval:${approvalList}">
+		<td th:text="${approval.apNo}"></td>
+		<td><a th:href="@{/user/selectApprovalView(apNo=${approval.apNo})}" th:text="${approval.apTitle}"></a></td>
+		<td th:text="${approval.apDocstatus}"></td>
+		<td th:text="${approval.memId}"></td>
+		<div th:if="${today==#dates.format(approval.apInsertdate,'yyyy-MM-dd')}">
+			<td th:text="${#dates.format(approval.apInsertdate,'HH:mm')}"></td>
+		</div>
+		<div th:unless="${today==#dates.format(approval.apInsertdate,'yyyy-MM-dd')}">
+			<td th:text="${#dates.format(approval.apInsertdate,'yyyy-MM-dd')}"></td>
+		</div>
+	</tr>
+</table>
+</body>
+</html>

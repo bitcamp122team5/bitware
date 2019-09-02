@@ -19,8 +19,12 @@ public interface ApprovalDocumentDao {
 	List<ApprovalDocumentDto> selectApprovalDocList();
 	
 	// 읽기
+//	@Select("SELECT * FROM APPROVAL_DOCUMENT WHERE APDOC_NO = #{apdocNo}")
+//	ApprovalDocumentDto selectApprovalDoc(String apdocNo);
+	
+	
 	@Select("SELECT * FROM APPROVAL_DOCUMENT WHERE APDOC_NO = #{apdocNo}")
-	ApprovalDocumentDto selectApprovalDoc(String apdocNo);
+	ApprovalDocumentDto selectApprovalDoc(int apdocNo);
 
 	// 등록
 	@Insert("INSERT INTO APPROVAL_DOCUMENT (APDOC_NAME,APDOC_FORM,FiNAL_SIGN) VALUES (#{apdocName}, #{apdocForm}, #{finalSign})")

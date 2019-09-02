@@ -11,7 +11,7 @@ public interface ApprovalDocService {
 	List<ApprovalDocumentDto> selectApprovalDocList();
 	
 	// 읽기
-	ApprovalDocumentDto selectApprovalDoc(String apdocNo);
+//	ApprovalDocumentDto selectApprovalDoc(String apdocNo);
 	
 	// 등록(insert+update)
 	void insertApprovalDoc(ApprovalDocumentDto dto);
@@ -27,5 +27,8 @@ public interface ApprovalDocService {
 	void deleteApprovalDoc(ApprovalDocumentDto dto);
 	
 	void deleteApprovalDocFile(ApprovalFileDto fileDto);
+
+	//재범
+	ApprovalDocumentDto selectApprovalDoc(int apdocNo);
 
 }
