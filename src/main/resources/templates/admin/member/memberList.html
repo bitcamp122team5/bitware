@@ -3,6 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <title>사원 목록 (관리자)</title>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+<script>
+$(document).ready(function() {
+	$("#allCheckBox").click(function(){
+		var chk = $("#allCheckBox").prop("checked");
+		if(chk){
+			$(".checkBox").prop("checked",true);
+		}else{
+			$(".checkBox").prop("checked",false);
+		}
+	});
+	$(".checkBox").click(function(){
+		$("#allCheckBox").prop("checked",false);
+	});
+	$(".deleteBtn").click(function(){
+		var confirm_val = confirm("정말 삭제하시겠습니까?");
+		if(confirm_val){
+			var checkBoxArr = new Array();
+			$("input[class='checkBox']:checked").each(function(){
+				checkBoxArr.push($(this).val());
+			})
+			$.ajax({
+				url:"/admin/deleteMemberCheckBox",
+				type:"post",
+				data:{checkBoxArr:checkBoxArr},
+				success:function(result){
+					alert(result);
+					location.href="/admin/selectMemberList";
+				}
+			});
+		}
+	});
+});
+</script>
 </head>
 <body th:align="center">
 	<h1>사원 목록</h1>
