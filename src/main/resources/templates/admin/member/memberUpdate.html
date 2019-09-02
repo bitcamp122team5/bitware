@@ -71,11 +71,30 @@
 	    });
     });
     </script>
+    <script>
+	    function updateMember() {
+			var updateMember = document.memberForm;
+			
+			updateMember.enctype = "multipart/form-data"
+			updateMember.action = "/admin/updateMember"
+			updateMember.method = "post"
+			updateMember.submit();
+		}
+    	
+    	function deleteMember() {
+    		var deleteMember = document.memberForm;
+    		
+    		deleteMember.enctype = "multipart/form-data"
+    		deleteMember.action = "/admin/deleteMember"
+    		deleteMember.method = "post"
+    		deleteMember.submit();
+    	}
+    </script>
 
 </head>
 <body th:align="center">
 	<h1>사원 수정</h1>
-	<form th:action="@{/admin/updateMember}" method="post" enctype="multipart/form-data">
+	<form name="memberForm">
 		<input name="memId" type="hidden" th:value="${member.memId}">
 		<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
 			<tr>
@@ -245,8 +264,9 @@
 			</tr>
 			<tr>
 				<td colspan="2">
-					<input type="button" value="취소" onclick="history.back(-1)">
-					<input type="submit" value="수정">
+					<a href="#" th:onclick="history.back(-1)" th:text="취소"></a>
+					<a href="#" th:onclick="javascript:updateMember()" th:text="수정"></a>
+					<a href="#" th:onclick="javascript:deleteMember()" th:text="사원삭제"></a>
 				</td>
 			</tr>
 		</table>

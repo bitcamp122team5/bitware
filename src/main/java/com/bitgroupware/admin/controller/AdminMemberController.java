@@ -195,4 +195,11 @@ public class AdminMemberController {
 		memberService.updateMember(memberVo);
 		return "redirect:selectMemberList";
 	}
+	
+	//사원 삭제
+	@RequestMapping("/deleteMember")
+	public String deleteMember(MemberVo memberVo) {
+		memberService.deleteMember(memberVo.getMemId());
+		return "redirect:selectMemberList";
+	}
 }

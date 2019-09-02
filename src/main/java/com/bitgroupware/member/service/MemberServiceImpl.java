@@ -107,4 +107,10 @@ public class MemberServiceImpl implements MemberService {
 		memberRepository.save(updateMember);
 	}
 
+	// 멤버 삭제
+	@Override
+	public void deleteMember(String memId) {
+		memberRepository.deleteById(memId);
+	}
+
 }
