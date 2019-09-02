@@ -3,7 +3,7 @@
 xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 <meta charset="UTF-8">
-<title>영업부 조직도</title>
+<title>영업부 조직도(사원용)</title>
 </head>
 <body>
 <div th:text="${deptName}" th:align="center"></div>
@@ -23,9 +23,9 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 		<td th:text="${header.ranks.ranks}"></td>
 	</tr>
 </table>
-<th:block th:each="team:${teamList}">
+<th:block th:each="repetition:${repetitions}">
 <br>
-<div th:text="${deptName}+' '+${team.teamName}" th:align="center"></div>
+<div th:text="${deptName}+' '+${repetition.team.teamName}" th:align="center"></div>
 <table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
 	<tr>
 		<td bgcolor="orange" width="100">이름</td>
@@ -35,13 +35,13 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 		<td bgcolor="orange" width="100">직책</td>
 	</tr>
 	<tr>
-		<td th:text="${teamleader0.memName}"></td>
-		<td th:text="${teamleader0.memTel}"></td>
-		<td th:text="${teamleader0.memOfficeTel}"></td>
-		<td th:text="${teamleader0.department.deptName}+' '+${teamleader0.team.teamName}"></td>
-		<td th:text="${teamleader0.ranks.ranks}"></td>
+		<td th:text="${repetition.leader.memName}"></td>
+		<td th:text="${repetition.leader.memTel}"></td>
+		<td th:text="${repetition.leader.memOfficeTel}"></td>
+		<td th:text="${repetition.leader.department.deptName}+' '+${repetition.leader.team.teamName}"></td>
+		<td th:text="${repetition.leader.ranks.ranks}"></td>
 	</tr>
-	<tr th:each="teamMember:${teamMemberList0}">
+	<tr th:each="teamMember:${repetition.teamMemberList}">
 		<td th:text="${teamMember.memName}"></td>
 		<td th:text="${teamMember.memTel}"></td>
 		<td th:text="${teamMember.memOfficeTel}"></td>

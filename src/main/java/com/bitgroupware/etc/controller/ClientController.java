@@ -51,6 +51,6 @@ public class ClientController {
 		model.addAttribute("block",block);
 		model.addAttribute("search",search);
 		
-		return "client/clientList";
+		return "etc/clientList";
 	}
 }

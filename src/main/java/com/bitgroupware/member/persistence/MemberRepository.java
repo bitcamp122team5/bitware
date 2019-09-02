@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.bitgroupware.company.vo.DepartmentVo;
+import com.bitgroupware.company.vo.RanksVo;
 import com.bitgroupware.company.vo.TeamVo;
 import com.bitgroupware.member.vo.MemberVo;
 
@@ -24,6 +25,8 @@ public interface MemberRepository extends JpaRepository<MemberVo, String>{
 
 	@Query(value = "select * from member where ranks = '부장' and dept_name = ?", nativeQuery = true)
 	MemberVo selectHeaderBydeptName(String deptName);
+
+	List<MemberVo> findByRanks(RanksVo ranks);
 	
 ///////////////////////////////////////////////////////////////
 	
