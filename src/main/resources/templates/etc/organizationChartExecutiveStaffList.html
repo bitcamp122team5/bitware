@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<title>영업부 조직도(임원용)</title>
+</head>
+<body>
+<th:block th:each="repetition:${repetitions}">
+<!-- <th:block th:each="executiveStaff:${repetitions.executiveStaffList}"> -->
+<div th:text="${repetition.ranks.ranks}" th:align="center"></div>
+<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
+	<tr>
+		<td bgcolor="orange" width="100">이름</td>
+		<td bgcolor="orange" width="100">전화번호</td>
+		<td bgcolor="orange" width="100">내선번호</td>
+		<td bgcolor="orange" width="100">직책</td>
+	</tr>
+	<tr th:each="executiveStaff:${repetition.executiveStaffList}">
+		<td th:text="${executiveStaff.memName}"></td>
+		<td th:text="${executiveStaff.memTel}"></td>
+		<td th:text="${executiveStaff.memOfficeTel}"></td>
+		<td th:text="${executiveStaff.ranks.ranks}"></td>
+	</tr>
+</table>
+<br>
+</th:block>
+</th:block>
+</body>
+</html>
