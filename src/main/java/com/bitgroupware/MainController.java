@@ -1,5 +1,7 @@
 package com.bitgroupware;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,12 @@ public class MainController {
 		
 		List<NoticeVo> noticeList = noticeService.selectMainNoticeList();
 		
+		Date date = new Date();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		String today = format.format(date);
+		
 		model.addAttribute("noticeList", noticeList);
+		model.addAttribute("today",today);
 		
 		return "index";
 	}

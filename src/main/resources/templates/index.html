@@ -15,7 +15,9 @@
 		</tr>
 		<tr th:each="notice:${noticeList}">
 			<td th:text="${notice.ntCate}"></td>
-			<td th:text="${notice.ntTitle}"></td>
+			<td>
+				<a th:href="@{/user/selectNotice(ntNo=${notice.ntNo})}" th:text="${notice.ntTitle}"></a>
+			</td>
 			<div th:if="${today==#dates.format(notice.ntDate,'yyyy-MM-dd')}">
 				<td th:text="${#dates.format(notice.ntDate,'HH:mm')}"></td>
 			</div>
