@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bitgroupware.community.vo.NoticeVo;
 import com.bitgroupware.company.persistence.DepartmentRepository;
 import com.bitgroupware.company.persistence.RanksRepository;
 import com.bitgroupware.company.persistence.TeamRepository;
@@ -13,6 +14,7 @@ import com.bitgroupware.company.vo.RanksVo;
 import com.bitgroupware.company.vo.TeamVo;
 import com.bitgroupware.member.persistence.MemberRepository;
 import com.bitgroupware.member.vo.MemberVo;
+import com.bitgroupware.utils.Search;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -31,8 +33,24 @@ public class MemberServiceImpl implements MemberService {
 
 	// 사원 리스트
 	@Override
-	public List<MemberVo> selectMemberList(MemberVo memberVo) {
-		return (List<MemberVo>) memberRepository.findAllByOrderByMemNameAsc();
+	public List<MemberVo> selectMemberList(int begin, Search search) {
+		if (search.getSearchCondition() == null)
+			search.setSearchCondition("memName");
+		if (search.getSearchKeyword() == null)
+			search.setSearchKeyword("");
+
+		String searchCondition = search.getSearchCondition();
+		String searchKeyword = "%" + search.getSearchKeyword().trim() + "%";
+		List<MemberVo> memberList = null;
+		switch (searchCondition) {
+		case "memName":
+			memberList = memberRepository.findAllByPagingAndMemName(begin, searchKeyword);
+			break;
+		case "memId":
+			memberList = memberRepository.findAllByPagingAndMemId(begin, searchKeyword);
+			break;
+		}
+		return memberList;
 	}
 
 	// 부서 리스트
@@ -111,6 +129,26 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void deleteMember(String memId) {
 		memberRepository.deleteById(memId);
+	}
+
+	public int countNotice(Search search) {
+		if (search.getSearchCondition() == null)
+			search.setSearchCondition("memName");
+		if (search.getSearchKeyword() == null)
+			search.setSearchKeyword("");
+
+		String searchCondition = search.getSearchCondition();
+		String searchKeyword = "%" + search.getSearchKeyword().trim() + "%";
+		int count = 0;
+		switch (searchCondition) {
+		case "memName":
+			count = memberRepository.countByMemName(searchKeyword);
+			break;
+		case "memId":
+			count = memberRepository.countByMemId(searchKeyword);
+			break;
+		}
+		return count;
 	}
 
 }

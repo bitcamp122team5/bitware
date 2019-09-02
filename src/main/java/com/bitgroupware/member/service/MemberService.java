@@ -6,10 +6,11 @@ import com.bitgroupware.company.vo.DepartmentVo;
 import com.bitgroupware.company.vo.RanksVo;
 import com.bitgroupware.company.vo.TeamVo;
 import com.bitgroupware.member.vo.MemberVo;
+import com.bitgroupware.utils.Search;
 
 public interface MemberService {
 	
-	List<MemberVo> selectMemberList(MemberVo memberVo);
+	List<MemberVo> selectMemberList(int begin, Search search);
 	
 	List<DepartmentVo> selectDeptList(DepartmentVo departmentVo);
 
@@ -28,5 +29,7 @@ public interface MemberService {
 	void updateMember(MemberVo memberVo);
 	
 	void deleteMember(String memId);
+
+	int countNotice(Search search);
 
 }
