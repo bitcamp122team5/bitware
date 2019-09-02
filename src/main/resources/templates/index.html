@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>메인페이지</title>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+</head>
+<body th:align="center">
+	<h1>메인페이지</h1>
+	<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
+		<tr>
+			<th>분류</th>
+			<th>제목</th>
+			<th>등록시간</th>
+		</tr>
+		<tr th:each="notice:${noticeList}">
+			<td th:text="${notice.ntCate}"></td>
+			<td th:text="${notice.ntTitle}"></td>
+			<div th:if="${today==#dates.format(notice.ntDate,'yyyy-MM-dd')}">
+				<td th:text="${#dates.format(notice.ntDate,'HH:mm')}"></td>
+			</div>
+			<div th:unless="${today==#dates.format(notice.ntDate,'yyyy-MM-dd')}">
+				<td th:text="${#dates.format(notice.ntDate,'yyyy-MM-dd')}"></td>
+			</div>
+		</tr>
+	</table>
+</body>
+</html>

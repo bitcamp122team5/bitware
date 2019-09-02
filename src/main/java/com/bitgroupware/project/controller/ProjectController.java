@@ -25,12 +25,6 @@ public class ProjectController {
 	@Autowired
 	private ProjectService projectService;
 	
-	@RequestMapping("/")
-	public String index() {
-		
-		return "project/index";
-	}
-	
 	/*전체 프로젝트 조회 */
 	@RequestMapping("/project")
 	public String selectProjectList(Model model) {

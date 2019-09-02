@@ -70,6 +70,12 @@ public class NoticeServiceImpl implements NoticeService {
 		}
 		return noticeList;
 	}
+	
+	public List<NoticeVo> selectMainNoticeList() {
+		List<NoticeVo> noticeList = null;
+		noticeList = noticeRepo.findTop5ByOrderByNtDateDesc();
+		return noticeList;
+	}
 
 	@Transactional
 	public void insertNotice(NoticeVo notice) {

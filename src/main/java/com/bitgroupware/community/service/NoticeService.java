@@ -10,6 +10,8 @@ public interface NoticeService {
 	int countNotice(Search search);
 
 	List<NoticeVo> selectNoticeList(int begin, Search search);
+	
+	List<NoticeVo> selectMainNoticeList();
 
 	void insertNotice(NoticeVo notice);
 

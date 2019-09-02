@@ -26,4 +26,7 @@ public interface NoticeRepository extends JpaRepository<NoticeVo, Integer>, Quer
 	
 	@Query(value = "select max(nt_no) from notice", nativeQuery = true)
 	int findByMaxNtNo();
+	
+	@Query(value = "select * from notice where nt_del_check = 'N' order by nt_date desc limit 5", nativeQuery = true)
+	List<NoticeVo> findTop5ByOrderByNtDateDesc();
 }
