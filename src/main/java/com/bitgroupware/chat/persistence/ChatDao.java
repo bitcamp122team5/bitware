@@ -31,8 +31,9 @@ public interface ChatDao {
 	//@Select("select max(message_id), sender, content, receiver, room_id from chat_message group by room_id having receiver = #{receiver}")
 	//@Select("select max(message_id), sender, content, receiver, room_id from chat_message where receiver = #{receiver} group by room_id")
 	@Select("select max(message_id), sender, content, receiver, room_id from chat_message group by room_id")
-	//public ChatMessageDto selectLastContentList(String receiver);
 	List<ChatMessageDto> selectLastContentList();
+	//public ChatMessageDto selectLastContentList(String receiver);
+	
 	
 	
 }

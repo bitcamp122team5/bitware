@@ -13,43 +13,22 @@
 	.info.hidden{display:none;}
 </style>
 <script type="text/javascript">
-	/* $(function(){
-		$(".memId p").bind("click", function(){
-			var memId = $(this).parent().val();
-			alert(memId);
-			
-			var url = "/user/chat?memId=" + memId;
-			var name = "chatPopup";
-			var option = "width=500, height=500, top=100, left=200, location=no"
-			window.open(url, name, option);
-		})
-	}); */
+
 	$(function(){
-<<<<<<< HEAD
-		$(".memberId1").click(function(){
-			var memId = $(this).parent().val();
-			alert(memId);
-// 			var url = "/user/chat?memId=" + memId;
-// 			var name = "popup test";
-// 			var option = "width=500, height=500, top=100, left=200, location=no"
-// 			window.open(url, name, option);
-=======
 		$(".memName").click(function(){
 			var memId = $(this).parent().attr('value');
 			var url = "/user/chat?memId=" + memId;
 			var name = "chatPopup";
 			var option = "width=500, height=500, top=100, left=200, location=no"
 			window.open(url, name, option);
-
->>>>>>> feature/chat
 		})
 	})
 </script>
 </head>
 <body>
 <div>
-	<div th:each="lcList : ${lastContentList}">
-		<div th:text="${lcList.sender}"></div>
+	<div th:each="lcList : ${lastContentList}" th:if="${sessionName == lcList.receiver}">
+		<div th:text="${lcList.content}"></div>
 	</div>
 	<div class="tab">
 		<ul>
@@ -62,16 +41,11 @@
 		<div class="info">
 			<ul>
 				<th:block th:each="member : ${memberList}" th:if="${member.deptName} == '지원부'">
-<<<<<<< HEAD
-					<li class="memberId" th:value="${member.memId}">
-						<p class="memberId1" th:text="${member.memName}"></p>
-=======
 					<li class="mem" th:value="${member.memId}">
 						<p class="memName" th:text="${member.memName}"></p>
-						<th:block th:each="lcList : ${lastContentList}" th:if="${member.memName} == ${lsList.sender}">
+						<th:block th:each="lcList : ${lastContentList}" th:if="${sessionName == lcList.receiver && member.memName == lsList.sender}">
 						<span th:text="${lcList.content}"></span>
 						</th:block>
->>>>>>> feature/chat
 					</li>
 				</th:block>
 			</ul>

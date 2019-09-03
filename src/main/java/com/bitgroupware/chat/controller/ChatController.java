@@ -85,12 +85,12 @@ public class ChatController {
 		List<MemberDto> memberList = chatservice.selectMemberList(memberDto);
 		List<DepartmentDto> depList = chatservice.selectDeptList(depDto);
 
-		String receiver = principal.getMember().getMemName();
+		String sessionName = principal.getMember().getMemName();
 		//chatDto = chatservice.selectLastContentList(receiver);
 		List<ChatMessageDto> lastContentList = chatservice.selectLastContentList(chatDto);
 		
 		//model.addAttribute("sessionId", sessionId);
-		model.addAttribute("receiver", receiver);
+		model.addAttribute("sessionName", sessionName);
 		
 		model.addAttribute("memberList", memberList);
 		model.addAttribute("depList", depList);
