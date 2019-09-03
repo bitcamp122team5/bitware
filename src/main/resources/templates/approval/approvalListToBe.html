@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <meta charset="UTF-8">
 <title>결재 받은 문서</title>
+<th:block th:replace="fragments/config :: configFragment"></th:block>
 </head>
 <body>
+<div th:replace="fragments/header :: headerFragment"></div>
+
+<div th:replace="fragments/aside :: asideFragment"></div>
+
+<!-- //무조건 section 안에서 내용 작성 -->
+<div layout:fragment="content" class="section">
+
 <a th:href="@{/user/selectApprovalListToBe}">전체</a>
 <a th:href="@{/user/selectApprovalListToBe?status=1}">대기</a>
 <a th:href="@{/user/selectApprovalListToBe?status=2}">진행</a>
@@ -33,5 +42,6 @@
 		</div>
 	</tr>
 </table>
+</div><!-- //section end -->
 </body>
 </html>

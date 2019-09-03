@@ -1,16 +1,31 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <meta charset="UTF-8">
 <title>기안</title>
+<th:block th:replace="fragments/config :: configFragment"></th:block>
+
+<!-- 사용자 css 추가 -->
+<th:block layout:fragment="css">
+
 <!-- include libraries(jQuery, bootstrap) -->
 <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script> 
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
+
 <!-- include summernote css/js -->
 <link th:href="@{/editor/summernote/summernote.css}" rel="stylesheet">
+
+</th:block>
+
+<!-- 사용자 script 추가 -->
+<th:block layout:fragment="script">
+
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
+
 <script th:src="@{/editor/summernote/summernote.js}"></script>
+
+</th:block>
 <script>
 $(function(){
 	$("#apContent").summernote({
@@ -20,6 +35,12 @@ $(function(){
 </script>
 </head>
 <body th:align="center">
+<div th:replace="fragments/header :: headerFragment"></div>
+
+<div th:replace="fragments/aside :: asideFragment"></div>
+
+<!-- //무조건 section 안에서 내용 작성 -->
+<div layout:fragment="content" class="section">
 <!-- 글쓰기 -->
 	<div>
 		<form id="fom1" th:action="@{/user/insertApproval}" method="post" enctype="multipart/form-data">
@@ -50,5 +71,6 @@ $(function(){
 		</form>
 	</div>
 	<a th:href="@{/user/main}">목록</a><br>
+</div><!-- //section end -->
 </body>
 </html>
