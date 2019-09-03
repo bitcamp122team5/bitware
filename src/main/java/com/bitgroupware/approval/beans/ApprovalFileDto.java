@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 public class ApprovalFileDto {
 	private String	apFileno;		// 파일번호
-	private String	apdocNo;		// 문서양식번호
+	private String	apNo;		// 문서양식번호
 	
 	private String	apFilename;		// 파일명
 	private String	apFileurl;		// 첨부파일URL

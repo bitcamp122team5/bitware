@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bitgroupware.approval.beans.ApprovalDto;
+import com.bitgroupware.approval.beans.ApprovalFileDto;
 import com.bitgroupware.approval.persistence.ApprovalDao;
 import com.bitgroupware.member.vo.MemberVo;
 
@@ -111,6 +112,11 @@ public class ApprovalServiceImpl implements ApprovalService {
 	@Override
 	public void updateApproval(ApprovalDto approval) {
 		apDao.updateApproval(approval);
+	}
+
+	@Override
+	public void insertApprovalFile(ApprovalFileDto approvalFileDto) {
+		apDao.insertApprovalFile(approvalFileDto);
 	}
 
 	

@@ -3,6 +3,7 @@ package com.bitgroupware.approval.service;
 import java.util.List;
 
 import com.bitgroupware.approval.beans.ApprovalDto;
+import com.bitgroupware.approval.beans.ApprovalFileDto;
 import com.bitgroupware.member.vo.MemberVo;
 
 public interface ApprovalService {
@@ -29,6 +30,8 @@ public interface ApprovalService {
 	void deleteApproval(ApprovalDto approval);
 	
 	void updateApproval(ApprovalDto approval);
+	
+	void insertApprovalFile(ApprovalFileDto approvalFileDto);
 	
 	
 
