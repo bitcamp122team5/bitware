@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <meta charset="UTF-8">
 <title>공지사항 상세페이지</title>
-<!-- image resize -->
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script> 
-<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css"> 
+<th:block th:replace="fragments/config :: configFragment"></th:block>
+
 <script>
 $(function(){
 	$(".resizable img").resizable();
@@ -15,6 +14,14 @@ $(function(){
 </script>
 </head>
 <body th:align="center">
+
+<div th:replace="fragments/header :: headerFragment"></div>
+
+<div th:replace="fragments/aside :: asideFragment"></div>
+
+<!-- //무조건 section 안에서 내용 작성 -->
+<div layout:fragment="content" class="section">
+
 <table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
 <tr>
 	<td bgcolor="orange" th:text="분류" width="80"></td>
@@ -51,5 +58,6 @@ $(function(){
 </tr>	
 </table>
 <a th:href="@{/user/selectDocCenterList}">글목록</a>
+</div><!-- //section end -->
 </body>
 </html>

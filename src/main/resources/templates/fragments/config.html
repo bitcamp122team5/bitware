@@ -9,12 +9,14 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <link th:href="@{/css/common/reset.css}" rel="stylesheet">
 <link th:href="@{/css/common/common.css}" rel="stylesheet">
 <link th:href="@{/css/common/layout.css}" rel="stylesheet">
+<link th:href="@{/css/common/jquery-ui.css}" rel="stylesheet">
 
 <!-- 컨텐츠 페이지 CSS 삽입 -->
 <th:block layout:fragment="css"></th:block>
 
 <!-- 공통 JS -->
 <script th:src="@{/js/common/jquery-3.4.1.js}"></script>
+<script th:src="@{/js/common/jquery-ui.js}"></script>
 
 <!-- 컨텐츠 페이지 JS 삽입 -->
 <th:block layout:fragment="script"></th:block>

@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <meta charset="UTF-8">
 <title>영업부 조직도(임원용)</title>
+<th:block th:replace="fragments/config :: configFragment"></th:block>
 </head>
 <body>
+<div th:replace="fragments/header :: headerFragment"></div>
+
+<div th:replace="fragments/aside :: asideFragment"></div>
+
+<!-- //무조건 section 안에서 내용 작성 -->
+<div layout:fragment="content" class="section">
+
 <th:block th:each="repetition:${repetitions}">
 <!-- <th:block th:each="executiveStaff:${repetitions.executiveStaffList}"> -->
 <div th:text="${repetition.ranks.ranks}" th:align="center"></div>
@@ -26,5 +35,6 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <br>
 </th:block>
 </th:block>
+</div><!-- //section end -->
 </body>
 </html>

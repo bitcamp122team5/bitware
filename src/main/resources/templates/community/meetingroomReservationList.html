@@ -1,21 +1,31 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <meta charset="UTF-8">
 <title>회의실 예약</title>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+<th:block th:replace="fragments/config :: configFragment"></th:block>
+
+<!-- 사용자 css 추가 -->
+<th:block layout:fragment="css">
 <link th:href='@{/fullcalendar/packages/core/main.css}' rel='stylesheet' />
 <link th:href='@{/fullcalendar/packages/daygrid/main.css}' rel='stylesheet' />
 <link th:href='@{/fullcalendar/packages/timegrid/main.css}' rel='stylesheet' />
 <link th:href='@{/fullcalendar/packages/list/main.css}' rel='stylesheet' />
+<link th:href="@{/rome/dist/rome.css}" rel="stylesheet">
+</th:block>
+
+<!-- 사용자 script 추가 -->
+<th:block layout:fragment="script">
 <script th:src='@{/fullcalendar/packages/core/main.js}'></script>
 <script th:src='@{/fullcalendar/packages/interaction/main.js}'></script>
 <script th:src='@{/fullcalendar/packages/daygrid/main.js}'></script>
 <script th:src='@{/fullcalendar/packages/timegrid/main.js}'></script>
 <script th:src='@{/fullcalendar/packages/list/main.js}'></script>
-<link th:href="@{/rome/dist/rome.css}" rel="stylesheet">
 <script th:src="@{/rome/dist/rome.js}"></script>
+</th:block>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 	var modal = document.getElementById('myModal');
@@ -154,6 +164,13 @@ $(function(){
 </script>
 </head>
 <body>
+<div th:replace="fragments/header :: headerFragment"></div>
+
+<div th:replace="fragments/aside :: asideFragment"></div>
+
+<!-- //무조건 section 안에서 내용 작성 -->
+<div layout:fragment="content" class="section">
+
 <input type="hidden" th:value="${msg}" id="msg">
 <div id="myModal" class="modal">
 	<div class="modal-content">
@@ -201,5 +218,6 @@ $(function(){
 	</div>
 </div>
 <div id='calendar'></div>
+</div><!-- //section end -->
 </body>
 </html>
