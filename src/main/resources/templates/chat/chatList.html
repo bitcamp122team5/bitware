@@ -13,19 +13,34 @@
 	.info.hidden{display:none;}
 </style>
 <script type="text/javascript">
-	$(function(){
-		$(".memberId").click(function(){
-			var memId = $(this).val();
+	/* $(function(){
+		$(".memId p").bind("click", function(){
+			var memId = $(this).parent().val();
+			alert(memId);
+			
 			var url = "/user/chat?memId=" + memId;
-			var name = "popup test";
+			var name = "chatPopup";
 			var option = "width=500, height=500, top=100, left=200, location=no"
 			window.open(url, name, option);
 		})
-	});
+	}); */
+	$(function(){
+		$(".memName").click(function(){
+			var memId = $(this).parent().attr('value');
+			var url = "/user/chat?memId=" + memId;
+			var name = "chatPopup";
+			var option = "width=500, height=500, top=100, left=200, location=no"
+			window.open(url, name, option);
+
+		})
+	})
 </script>
 </head>
 <body>
 <div>
+	<div th:each="lcList : ${lastContentList}">
+		<div th:text="${lcList.sender}"></div>
+	</div>
 	<div class="tab">
 		<ul>
 			<li class="on"><a href="#dep1">지원부</a></li>
@@ -37,21 +52,32 @@
 		<div class="info">
 			<ul>
 				<th:block th:each="member : ${memberList}" th:if="${member.deptName} == '지원부'">
-					<li class="memberId" th:value="${member.memId}" th:text="${member.memName}"></li>
+					<li class="mem" th:value="${member.memId}">
+						<p class="memName" th:text="${member.memName}"></p>
+						<th:block th:each="lcList : ${lastContentList}" th:if="${member.memName} == ${lsList.sender}">
+						<span th:text="${lcList.content}"></span>
+						</th:block>
+					</li>
 				</th:block>
 			</ul>
 		</div>
 		<div class="info hidden">
 			<ul>
 				<th:block th:each="member : ${memberList}" th:if="${member.deptName} == '영업부'">
-					<li class="memberId" th:value="${member.memId}" th:text="${member.memName}"></li>
+					<li class="mem" th:value="${member.memId}">
+						<p class="memName" th:text="${member.memName}"></p>
+						<span></span>
+					</li>
 				</th:block>
 			</ul>
 		</div>
 		<div class="info hidden">
 			<ul>
 				<th:block th:each="member : ${memberList}" th:if="${member.deptName} == '개발부'">
-					<li class="memberId" th:value="${member.memId}" th:text="${member.memName}"></li>
+					<li class="mem" th:value="${member.memId}">
+						<p class="memName" th:text="${member.memName}"></p>
+						<span></span>
+					</li>
 				</th:block>
 			</ul>
 		</div>

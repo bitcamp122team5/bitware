@@ -27,5 +27,12 @@ public interface ChatDao {
 	
 	@Insert("INSERT INTO CHAT_MESSAGE (SENDER, CONTENT, RECEIVER, ROOM_ID) VALUES (#{sender},#{content},#{receiver},#{roomId})")
 	void insertChat(ChatMessageDto chatDto);
-	 
+	
+	//@Select("select max(message_id), sender, content, receiver, room_id from chat_message group by room_id having receiver = #{receiver}")
+	//@Select("select max(message_id), sender, content, receiver, room_id from chat_message where receiver = #{receiver} group by room_id")
+	@Select("select max(message_id), sender, content, receiver, room_id from chat_message group by room_id")
+	//public ChatMessageDto selectLastContentList(String receiver);
+	List<ChatMessageDto> selectLastContentList();
+	
+	
 }

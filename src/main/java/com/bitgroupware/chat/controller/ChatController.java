@@ -2,7 +2,10 @@ package com.bitgroupware.chat.controller;
 
 import static java.lang.String.format;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,14 +62,18 @@ public class ChatController {
 		MemberDto memDto = chatservice.selectMemeberInfo(memId);
 		model.addAttribute("memDto", memDto);
 		
-		int sessionId_num = Integer.parseInt(sessionId);
-		int memId_num = Integer.parseInt(memId);
 		model.addAttribute("sessionId", sessionId);
 		model.addAttribute("sessionName", sessionName);
 		model.addAttribute("memId", memId);
+		
 		System.out.println(sessionId);
 		System.out.println(memId);
-		int roomId = memId_num + sessionId_num;
+		
+		String[] roomArray = {sessionId, memId};
+		Arrays.sort(roomArray, Collections.reverseOrder());
+		
+		String roomId = Arrays.stream(roomArray).collect(Collectors.joining());
+		
 		System.out.println("rooId =" + roomId);
 		model.addAttribute("roomId", roomId);
 
@@ -74,11 +81,22 @@ public class ChatController {
 	}
 
 	@RequestMapping("/chatList")
-	public String chatList(Model model, MemberDto memberDto, DepartmentDto depDto) {
+	public String chatList(Model model, MemberDto memberDto, DepartmentDto depDto, ChatMessageDto chatDto, @AuthenticationPrincipal SecurityUser principal) {
 		List<MemberDto> memberList = chatservice.selectMemberList(memberDto);
 		List<DepartmentDto> depList = chatservice.selectDeptList(depDto);
+
+		String receiver = principal.getMember().getMemName();
+		//chatDto = chatservice.selectLastContentList(receiver);
+		List<ChatMessageDto> lastContentList = chatservice.selectLastContentList(chatDto);
+		
+		//model.addAttribute("sessionId", sessionId);
+		model.addAttribute("receiver", receiver);
+		
 		model.addAttribute("memberList", memberList);
 		model.addAttribute("depList", depList);
+		model.addAttribute("chatDto", chatDto);
+		model.addAttribute("lastContentList", lastContentList);
+		
 		return "chat/chatList";
 	}
 
@@ -92,6 +110,7 @@ public class ChatController {
 		
 		ChatMessageDto chatDto = new ChatMessageDto();
 		chatDto.setContent(content);
+		chatDto.setSender(sender);
 		chatDto.setReceiver(receiver);
 		chatDto.setRoomId(roomId);
 		chatservice.insertChat(chatDto);

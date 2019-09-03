@@ -40,6 +40,20 @@ public class ChatServiceImpl implements ChatService {
 		// TODO Auto-generated method stub
 		return chatDao.selectMemeberInfo(memId); 
 	}
+
+	@Override
+	public List<ChatMessageDto> selectLastContentList(ChatMessageDto chatDto) {
+		// TODO Auto-generated method stub
+		return chatDao.selectLastContentList();
+	}
+
+//	@Override
+//	public ChatMessageDto selectLastContentList(String receiver) {
+//		// TODO Auto-generated method stub
+//		return chatDao.selectLastContentList(receiver);
+//	}
+
+
 	
 	 
 	
