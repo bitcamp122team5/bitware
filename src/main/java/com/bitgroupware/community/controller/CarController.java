@@ -75,9 +75,15 @@ public class CarController {
 		return "redirect:/user/selectCarReservationList";
 	}
 	
-	@RequestMapping("/map")
-	public String map(Model model, String areaSelection) {
+	@RequestMapping("/departureMap")
+	public String departureMap(Model model, String areaSelection) {
 		model.addAttribute("areaSelection", areaSelection);
-		return "community/map";
+		return "community/departureMap";
+	}
+	
+	@RequestMapping("/arrivalMap")
+	public String arrivalMap(Model model, String areaSelection) {
+		model.addAttribute("areaSelection", areaSelection);
+		return "community/arrivalMap";
 	}
 }
