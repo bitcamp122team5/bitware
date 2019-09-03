@@ -16,4 +16,5 @@ public class MemberDto {
 	private String ranks;
 	private int teamNo;
 	private String teamName;
+	private String content;
 }

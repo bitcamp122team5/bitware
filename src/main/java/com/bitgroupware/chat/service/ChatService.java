@@ -15,4 +15,7 @@ public interface ChatService {
 	void insertChat(ChatMessageDto chatDto);
 	
     public MemberDto selectMemeberInfo(String memId); 
+
+    //public ChatMessageDto selectLastContentList(String receiver);
+    List<ChatMessageDto> selectLastContentList(ChatMessageDto chatDto);
 }
