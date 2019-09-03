@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <meta charset="UTF-8">
 <title>익명게시판 글작성페이지</title>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+<th:block th:replace="fragments/config :: configFragment"></th:block>
 <script>
 window.onload=function(){
 	document.getElementById("bpwCheck").onblur=function(){
@@ -78,6 +79,12 @@ window.onload=function(){
 </script>
 </head>
 <body>
+<div th:replace="fragments/header :: headerFragment"></div>
+
+<div th:replace="fragments/aside :: asideFragment"></div>
+
+<!-- //무조건 section 안에서 내용 작성 -->
+<div layout:fragment="content" class="section">
 <form th:action="@{/user/insertAnonymousBoard}" id="form">
 	<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
 		<tr>
@@ -102,5 +109,6 @@ window.onload=function(){
 		</tr>
 	</table>
 </form>
+</div><!-- //section end -->
 </body>
 </html>

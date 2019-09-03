@@ -1,9 +1,20 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script type="text/javascript" th:src="@{/js/project/jquery-3.1.1.min.js}"></script>
+<th:block th:replace="fragments/config :: configFragment"></th:block>
+
+<!-- 사용자 css 추가 -->
+<th:block layout:fragment="css">
+<link rel="stylesheet" type="text/css" th:href="@{/css/project/sweetalert.css?ver=1.2}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/project/bootstrap-theme.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/project/bootstrap.min.css}">
+</th:block>
+
+<!-- 사용자 script 추가 -->
+<th:block layout:fragment="script">
 <script type="text/javascript" th:src="@{/js/project/bootstrap.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/project/sweetalert.min.js?ver=1}"></script>
 <script type="text/javascript" th:src="@{/js/project/projectWbs.js}"></script>
@@ -11,10 +22,7 @@
 <script type="text/javascript" th:src="@{/js/project/calendar.js}"></script>
 <script type="text/javascript" th:src="@{/js/project/stringBuffer.js}"></script>
 <script type="text/javascript" th:src="@{/js/project/makeRound.js}"></script>
-
-<link rel="stylesheet" type="text/css" th:href="@{/css/project/sweetalert.css?ver=1.2}">
-<link rel="stylesheet" type="text/css" th:href="@{/css/project/bootstrap-theme.min.css}">
-<link rel="stylesheet" type="text/css" th:href="@{/css/project/bootstrap.min.css}">
+</th:block>
 
 <style>
 input[type='text']{
@@ -62,6 +70,12 @@ function commaNum(num){
 </script>
 </head>
 <body>
+<div th:replace="fragments/header :: headerFragment"></div>
+
+<div th:replace="fragments/aside :: asideFragment"></div>
+
+<!-- //무조건 section 안에서 내용 작성 -->
+<div layout:fragment="content" class="section">
 	<div>
 	<table class="table table-striped">
 		<thead>
@@ -250,5 +264,6 @@ function commaNum(num){
 			</div>
 		</div>
 	</div>
+</div><!-- //section end -->
 </body>
 </html>

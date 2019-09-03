@@ -1,10 +1,18 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<th:block th:replace="fragments/config :: configFragment"></th:block>
 </head>
 <body>
+<div th:replace="fragments/header :: headerFragment"></div>
+
+<div th:replace="fragments/aside :: asideFragment"></div>
+
+<!-- //무조건 section 안에서 내용 작성 -->
+<div layout:fragment="content" class="section">
 	<div>
 	<form action="/updateProject">
 	<table>
@@ -32,5 +40,6 @@
 	<input type="submit" value="프로젝트 정보 수정 완료">
 	</form>
 	</div>
+</div><!-- //section end -->
 </body>
 </html>

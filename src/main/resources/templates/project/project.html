@@ -1,18 +1,33 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <meta charset="UTF-8">
 <title>Project List</title>
-<script type="text/javascript" th:src="@{/js/project/jquery-3.1.1.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/project/bootstrap.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/project/sweetalert.min.js?ver=1}"></script>
-<script type="text/javascript" th:src="@{/js/project/projectList.js}"></script>
+<th:block th:replace="fragments/config :: configFragment"></th:block>
 
+<!-- 사용자 css 추가 -->
+<th:block layout:fragment="css">
 <link rel="stylesheet" type="text/css" th:href="@{/css/project/sweetalert.css?ver=1.2}">
 <link rel="stylesheet" type="text/css" th:href="@{/css/project/bootstrap-theme.min.css}">
 <link rel="stylesheet" type="text/css" th:href="@{/css/project/bootstrap.min.css}">
+</th:block>
+
+<!-- 사용자 script 추가 -->
+<th:block layout:fragment="script">
+<script type="text/javascript" th:src="@{/js/project/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/project/sweetalert.min.js?ver=1}"></script>
+<script type="text/javascript" th:src="@{/js/project/projectList.js}"></script>
+</th:block>
+
 </head>
 <body>
+<div th:replace="fragments/header :: headerFragment"></div>
+
+<div th:replace="fragments/aside :: asideFragment"></div>
+
+<!-- //무조건 section 안에서 내용 작성 -->
+<div layout:fragment="content" class="section">
 	<div>
 	<a th:href="@{/user/selectProjectList}">전체 프로젝트</a>
 	<a th:href="@{/user/selectEndProjectList}">완료된 프로젝트</a>
@@ -87,5 +102,6 @@
 			</div>
 		</div>
 	</div>
+</div><!-- //section end -->
 </body>
 </html>
