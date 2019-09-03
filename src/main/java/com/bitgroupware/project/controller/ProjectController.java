@@ -20,13 +20,14 @@ import com.bitgroupware.project.service.ProjectService;
 import com.bitgroupware.project.util.Analysis;
 
 @Controller
+@RequestMapping("/user")
 public class ProjectController {
 
 	@Autowired
 	private ProjectService projectService;
 	
 	/*전체 프로젝트 조회 */
-	@RequestMapping("/project")
+	@RequestMapping("/selectProjectList")
 	public String selectProjectList(Model model) {
 		List<ProjectInfoDto> prjInfos = projectService.selectProjectList();
 		model.addAttribute("prjInfos", prjInfos);
@@ -34,7 +35,7 @@ public class ProjectController {
 	}
 	
 	/*완료된 프로젝트 조회 */
-	@RequestMapping("/projectEnd")
+	@RequestMapping("/selectEndProjectList")
 	public String selectEndProjectList(Model model) {
 		List<ProjectInfoDto> prjInfos = projectService.selectEndProjectList();
 		model.addAttribute("prjInfos", prjInfos);
@@ -48,6 +49,10 @@ public class ProjectController {
 		ProjectInfoDto prjInfo = projectService.selectProject(prjCode);
 		List<MemberDto> memInfos = projectService.selectProjectAttendMemberList(prjCode);
 		List<ProjectWbsDto> prjWbs = projectService.selectProjectWbsList(prjCode);
+		
+		//참여인원 추가 모달을 위함.
+		List<MemberDto> memOfficeInfo = projectService.selectProjectMemberList();
+		model.addAttribute("members", memOfficeInfo);
 		System.out.println("prjInfo내용 : "+prjInfo);
 		model.addAttribute("prjInfo", prjInfo);
 		model.addAttribute("memInfos", memInfos);
@@ -73,14 +78,14 @@ public class ProjectController {
 		System.out.println("code 값 : " + prjDto);
 		System.out.println(prjDto.getPrjStart()+"이건 start  "+prjDto.getPrjEnd()+"이건 end");
 		projectService.updateProject(prjDto);
-		return "redirect:/project";
+		return "redirect:/user/selectProjectList";
 	}
 	
 	/*프로젝트 생성 */
 	@RequestMapping(value="/insertProject", method=RequestMethod.POST)
 	public String insertProject(ProjectInfoDto prjDto) {
 		projectService.insertProject(prjDto);
-		return "redirect:/project";
+		return "redirect:/user/selectProjectList";
 	}
 	
 	/*프로젝트 참여인원 선택 페이지로 이동 */
@@ -144,10 +149,8 @@ public class ProjectController {
 						Integer.parseInt(req.getParameterValues("inPrjDepth")[i]),
 						Integer.parseInt(req.getParameterValues("workCompletion")[i]),
 						req.getParameterValues("inPrjWorkName")[i],
-						req.getParameterValues("planStart")[i],
-						req.getParameterValues("planEnd")[i],
-						req.getParameterValues("realStart")[i],
-						req.getParameterValues("realEnd")[i],
+						req.getParameterValues("wbsStart")[i],
+						req.getParameterValues("wbsEnd")[i],
 						req.getParameterValues("inPrjManager")[i],
 						req.getParameterValues("inPrjOutput")[i],
 						prjTotalDays[i]);

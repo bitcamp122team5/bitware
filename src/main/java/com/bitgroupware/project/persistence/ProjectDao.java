@@ -16,8 +16,7 @@ import com.bitgroupware.project.beans.ProjectWbsDto;
 public interface ProjectDao {
 	
 	//전체 프로젝트 조회(진행중인 프로젝트)
-	@Select("SELECT * FROM PROJECT_INFO "
-			+ "WHERE PRJ_COMPLETION = 0 ORDER BY PRJ_CODE DESC")
+	@Select("SELECT * FROM PROJECT_INFO WHERE PRJ_COMPLETION = 0 ORDER BY PRJ_CODE DESC")
 	public List<ProjectInfoDto> selectProjectList();
 	
 	//완료된 프로젝트 조회
@@ -54,8 +53,8 @@ public interface ProjectDao {
 	public List<MemberDto> selectProjectAttendMemberList(int prjCode);
 
 	/*프로젝트 WBS 정보 불러오기*/
-	@Select("SELECT PRJ_CODE, PRJ_WORK_NAME, PRJ_GROUP, PRJ_STEP, PRJ_DEPTH, PRJ_MANAGER, PRJ_OUTPUT, PRJ_PLAN_START,"
-			+ "PRJ_PLAN_END, PRJ_REAL_END, PRJ_WORK_COMPLETION, PRJ_TOTAL_DAYS FROM PROJECT_WBS "
+	@Select("SELECT PRJ_CODE, PRJ_WORK_NAME, PRJ_GROUP, PRJ_STEP, PRJ_DEPTH, PRJ_MANAGER, PRJ_OUTPUT, PRJ_WBS_START,"
+			+ "PRJ_WBS_END, PRJ_WORK_COMPLETION, PRJ_TOTAL_DAYS FROM PROJECT_WBS "
 			+ "WHERE PRJ_CODE = #{prjCode} ORDER BY PRJ_GROUP, PRJ_STEP ASC")
 	public List<ProjectWbsDto> selectProjectWbsList(int prjCode);
 	

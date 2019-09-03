@@ -51,14 +51,14 @@
 				})
 				var prjCode = $("#prjCode").val();
 				$.ajax({
-					url:"/insertProjectAttendMembers",
+					url:"/user/insertProjectAttendMembers",
 					type:"post",
 					data:{
 						checkBoxArr:checkBoxArr,
 						prjCode:prjCode
 					},
 					success:function(){
-						location.href="/projectDetail?prjCode="+prjCode;
+						location.href="/user/projectDetail?prjCode="+prjCode;
 					}
 				});
 			}

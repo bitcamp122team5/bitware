@@ -11,7 +11,7 @@ import com.bitgroupware.project.beans.ProjectWbsDto;
 import com.bitgroupware.project.persistence.ProjectDao;
 
 @Service("ProjectService")
-public class ProejctServiceImpl implements ProjectService {
+public class ProjectServiceImpl implements ProjectService {
 
 	@Autowired
 	private ProjectDao dao;
