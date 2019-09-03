@@ -22,7 +22,7 @@
 	</tr>
 	<tr th:each="approval:${approvalListToBe}">
 		<td th:text="${approval.apNo}"></td>
-		<td><a th:href="@{/user/selectApproval}" th:text="${approval.apTitle}"></a></td>
+		<td><a th:href="@{/user/selectApprovalView(apNo=${approval.apNo})}" th:text="${approval.apTitle}"></a></td>
 		<td th:text="${approval.apDocstatus}"></td>
 		<td th:text="${approval.memId}"></td>
 		<div th:if="${today==#dates.format(approval.apInsertdate,'yyyy-MM-dd')}">
