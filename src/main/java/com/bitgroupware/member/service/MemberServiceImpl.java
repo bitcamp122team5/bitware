@@ -151,4 +151,18 @@ public class MemberServiceImpl implements MemberService {
 		return count;
 	}
 
+	@Override
+	public void updateMyInfo(MemberVo memberVo) {
+		MemberVo updateMyInfo = memberRepository.findById(memberVo.getMemId()).get();
+		
+		updateMyInfo.setMemOfficeTel(memberVo.getMemOfficeTel());
+		updateMyInfo.setMemTel(memberVo.getMemTel());
+		updateMyInfo.setMemAddrCode(memberVo.getMemAddrCode());
+		updateMyInfo.setMemAddr(memberVo.getMemAddr());
+		updateMyInfo.setMemAddrDetail(memberVo.getMemAddrDetail());
+		updateMyInfo.setMemAddrExtra(memberVo.getMemAddrExtra());
+		
+		memberRepository.save(updateMyInfo);
+	}
+
 }

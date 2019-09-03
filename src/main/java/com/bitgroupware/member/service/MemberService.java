@@ -31,5 +31,7 @@ public interface MemberService {
 	void deleteMember(String memId);
 
 	int countNotice(Search search);
+	
+	void updateMyInfo(MemberVo memberVo);
 
 }
