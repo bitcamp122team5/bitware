@@ -30,4 +30,5 @@ public class ApprovalDto {
     private String apSignName4;
     private String apSignName5;
 	private int finalSign;
+	private String apComment;
 }

@@ -36,7 +36,7 @@ public class QMemberVo extends EntityPathBase<MemberVo> {
 
     public final StringPath memId = createString("memId");
 
-    public final DateTimePath<java.util.Date> memJoinDate = createDateTime("memJoinDate", java.util.Date.class);
+    public final StringPath memJoinDate = createString("memJoinDate");
 
     public final StringPath memJumin = createString("memJumin");
 
@@ -46,7 +46,7 @@ public class QMemberVo extends EntityPathBase<MemberVo> {
 
     public final StringPath memPw = createString("memPw");
 
-    public final DateTimePath<java.util.Date> memQuitDate = createDateTime("memQuitDate", java.util.Date.class);
+    public final StringPath memQuitDate = createString("memQuitDate");
 
     public final StringPath memQuitReason = createString("memQuitReason");
 

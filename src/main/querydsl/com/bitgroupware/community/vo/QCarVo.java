@@ -19,6 +19,10 @@ public class QCarVo extends EntityPathBase<CarVo> {
 
     public static final QCarVo carVo = new QCarVo("carVo");
 
+    public final StringPath carArrival = createString("carArrival");
+
+    public final StringPath carDeparture = createString("carDeparture");
+
     public final StringPath carName = createString("carName");
 
     public final NumberPath<Integer> carNo = createNumber("carNo", Integer.class);
