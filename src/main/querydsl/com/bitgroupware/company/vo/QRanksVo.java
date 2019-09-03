@@ -21,6 +21,8 @@ public class QRanksVo extends EntityPathBase<RanksVo> {
 
     public final StringPath ranks = createString("ranks");
 
+    public final NumberPath<Integer> ranksNo = createNumber("ranksNo", Integer.class);
+
     public QRanksVo(String variable) {
         super(RanksVo.class, forVariable(variable));
     }

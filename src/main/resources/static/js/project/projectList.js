@@ -95,7 +95,31 @@ function updateProject() {
 	$('#frmUpdateProjcet').submit();
 }
 
+/*프로젝트 참여인원 추가 모달 팝업 */
+function insertProjectAttendMemberModal() {
+	$("#insertProjectAttendMemberModal").modal();
+}
 
+/*참여인원 추가 체크박스 전체 체크 기능 */
+$(function(){
+	$("#allCheckBox").click(function(){
+		var chk = $('#allCheckBox').prop("checked");
+		if(chk){
+			$(".checkBox").prop("checked",true);
+		}else{
+			$(".checkBox").prop("checked",false);
+		}
+	});	
+	
+	
+})
+
+/*참여인원 추가 체크 박스 개별 체크 기능 */
+$(function(){
+	$(".checkBox").click(function(){
+		$("#allCheckBox").prop("checked",false);
+	});	
+})
 
 //참여인원 선택 생성 폼
 //function selectProjectMember() {

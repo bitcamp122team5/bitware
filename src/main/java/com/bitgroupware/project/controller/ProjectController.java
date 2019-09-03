@@ -49,6 +49,10 @@ public class ProjectController {
 		ProjectInfoDto prjInfo = projectService.selectProject(prjCode);
 		List<MemberDto> memInfos = projectService.selectProjectAttendMemberList(prjCode);
 		List<ProjectWbsDto> prjWbs = projectService.selectProjectWbsList(prjCode);
+		
+		//참여인원 추가 모달을 위함.
+		List<MemberDto> memOfficeInfo = projectService.selectProjectMemberList();
+		model.addAttribute("members", memOfficeInfo);
 		System.out.println("prjInfo내용 : "+prjInfo);
 		model.addAttribute("prjInfo", prjInfo);
 		model.addAttribute("memInfos", memInfos);

@@ -66,9 +66,76 @@ $(document).ready(function(){
 						subData.prjWbsStart[i], subData.prjWbsEnd[i], subData.prjWorkCompletion[i], subData.prjTotalDays[i]));
 		}
 		
+		//WBS 진행률 통계
+		WBSProgress();
 	}
 });
 	
+// 진행률 통계 구하기
+function WBSProgress(){
+	
+	var date = new Date();
+	var year = date.getFullYear();
+	var month = date.getMonth()+1
+	var day = date.getDate();
+	
+	if(month < 10){
+		month = "0"+month;
+	}
+	if(day < 10){
+		day = "0"+day;
+	}
+	var today = year+"-"+month+"-"+day;
+	
+	//wbs항목들의 percent 값을 담을 배열 생성
+	var percentArray = new Array();
+	//분모 구하기 (WBS종료일 - WBS시작일)
+	var denominator = new Array();
+	//분자 구하기 (TODAY - WBS시작일)
+	var molecule = new Array();
+	//임시 배열 변수
+	var tempNum = new Array();
+	
+	//분모 구하기 (WBS종료일 - WBS시작일) 
+	for(var i=0; i<subData.cnt; i++){
+		denominator[i] = dayCalculation(subData.prjWbsStart[i], subData.prjWbsEnd[i]);
+	}
+	
+	//분자 구하기 (TODAY - WBS시작일)
+	for(var i=0; i<subData.cnt; i++){
+		molecule[i] = dayCalculation(subData.prjWbsStart[i], today);
+	}
+	//진행률 구하기
+	for(var i=0; i<subData.cnt; i++){
+		//alert('분자['+i+'] = '+molecule[i]);
+		//alert('분모['+i+'] = '+denominator[i]);
+		tempNum[i] = makeBaseRound((molecule[i] / denominator[i]) * 100);
+		if(0 < tempNum[i] && tempNum[i] <= 100){
+			percentArray[i] = tempNum[i];
+		}else if(tempNum[i] > 100){
+			percentArray[i] = 100;
+		}else{
+			percentArray[i] = 0;
+		}
+	}
+	//진행률 입력
+	for(var i=0; i<subData.cnt; i++){
+			$('.progressList').each(function(i){
+				$(this).text(percentArray[i]+'%');
+			});
+	}
+}
+
+//날짜 차이 일수 구하기
+function dayCalculation(start, end){
+	var tempStart = start.split("-");
+	var tempEnd = end.split("-");
+	
+	var starts = new Date(tempStart[0], tempStart[1]-1, tempStart[2]);
+	var ends = new Date(tempEnd[0], tempEnd[1]-1, tempEnd[2]);
+	
+	return ((ends.getTime() - starts.getTime()) / (1000*60*60*24)) + 1;
+}
 
 /*테이블 tbody 화면에 그리는 함수 (projectWbs 출력) */
 function screenWriteTbody(num, group, step, depth, workName, manager, output, WbsStart, WbsEnd, workCompletion, totalDays) {
@@ -84,7 +151,6 @@ function screenWriteTbody(num, group, step, depth, workName, manager, output, Wb
 	if(output == "null" || output == null){
 		output = substitute;
 	}
-	
 	tag.append("<tr id='"+num+"'>");
 	tag.append("<td><input type='checkbox' name='chkVal' value='"+num+"'/></td>")
 	tag.append("<td>");
@@ -113,7 +179,6 @@ function screenWriteTbody(num, group, step, depth, workName, manager, output, Wb
 	
 	return tag.toString();
 }
-
 
 //숫자 5 -> 05 변경
 function numFormat(num) {
@@ -432,11 +497,4 @@ function totalDaysAnalysis(data, cnt) {
 			tag.append("<td style='display: none;'><input type='hidden' name='inPrjTotalDays' value='0'></td>");
 		}
 	return tag.toString();
-	}
-
-
-
-
-
-
-
+}

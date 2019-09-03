@@ -54,7 +54,7 @@ public interface ProjectDao {
 
 	/*프로젝트 WBS 정보 불러오기*/
 	@Select("SELECT PRJ_CODE, PRJ_WORK_NAME, PRJ_GROUP, PRJ_STEP, PRJ_DEPTH, PRJ_MANAGER, PRJ_OUTPUT, PRJ_WBS_START,"
-			+ "PRJ_WBS_END, PRJ_WORK_COMPLETION FROM PROJECT_WBS "
+			+ "PRJ_WBS_END, PRJ_WORK_COMPLETION, PRJ_TOTAL_DAYS FROM PROJECT_WBS "
 			+ "WHERE PRJ_CODE = #{prjCode} ORDER BY PRJ_GROUP, PRJ_STEP ASC")
 	public List<ProjectWbsDto> selectProjectWbsList(int prjCode);
 	
