@@ -48,7 +48,13 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 #pagination a {display:inline-block;margin-right:10px;}
 #pagination .on {font-weight: bold; cursor: default;color:#777;}
 </style>
-
+<script>
+window.onload=function(){
+	document.getElementById("submitBtn").onclick=function(){
+		window.opener.document.getElementById("arrival").value=document.getElementById("keyword").value;
+	}
+}
+</script>
 </head>
 <body>
 <input type="hidden" id="areaSelection" th:value="${areaSelection}">
