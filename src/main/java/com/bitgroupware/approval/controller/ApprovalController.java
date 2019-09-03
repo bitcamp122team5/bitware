@@ -1,5 +1,7 @@
 package com.bitgroupware.approval.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -9,9 +11,13 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.bitgroupware.approval.beans.ApprovalDocumentDto;
 import com.bitgroupware.approval.beans.ApprovalDto;
+import com.bitgroupware.approval.beans.ApprovalFileDto;
+import com.bitgroupware.approval.persistence.ApprovalDao;
 import com.bitgroupware.approval.service.ApprovalDocService;
 import com.bitgroupware.approval.service.ApprovalService;
 import com.bitgroupware.member.vo.MemberVo;
@@ -26,6 +32,9 @@ public class ApprovalController {
 	
 	@Autowired
 	private ApprovalDocService approvalDocService;
+	
+	@Autowired
+	private ApprovalDao apdao;
 	
 	// 임시 MAIN
 	@RequestMapping("/main")
@@ -50,7 +59,7 @@ public class ApprovalController {
 	
 	// 등록
 	@RequestMapping("/insertApproval")
-	public String insertApproval(ApprovalDto approval, @AuthenticationPrincipal SecurityUser principal) {
+	public String insertApproval(ApprovalDto approval, @AuthenticationPrincipal SecurityUser principal,MultipartHttpServletRequest request,ApprovalFileDto approvalFileDto) {
 		approval.setApDeleteflag("N");
 		approval.setApDocstatus("1");
 		approval.setMemId(principal.getMember().getMemId());
@@ -76,7 +85,31 @@ public class ApprovalController {
 			break;
 		}
 		approvalService.insertApproval(approval, principal.getMember());
-		System.out.println("aaa"+approval);
+		
+		// 파일 업로드
+		String apNo = apdao.selectMaxApNo();
+		List<MultipartFile> fileList = request.getFiles("file");
+		
+		String path = request.getSession().getServletContext().getRealPath("/approval/");
+		
+		for(MultipartFile mf : fileList) {
+			String originFileName = mf.getOriginalFilename(); // 원본 파일 명
+            long fileSize = mf.getSize(); // 파일 사이즈
+            
+            String safeFile = path+ System.currentTimeMillis() + originFileName;
+            approvalFileDto.setApFilename(originFileName);
+            approvalFileDto.setApFileurl(safeFile);
+            approvalFileDto.setApNo(apNo);
+            System.out.println(approvalFileDto);
+            try {
+                mf.transferTo(new File(safeFile));
+                approvalService.insertApprovalFile(approvalFileDto);
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+		}
 		return "redirect:/user/selectApprovalListToBe";
 	}
 	
@@ -215,15 +248,9 @@ public class ApprovalController {
 			approval.setApSignName5(member.getMemName());
 			break;
 		}
-		System.out.println("!!!!"+approval);
 		approvalService.updateApprovalCancel(approval);
 		return "redirect:/user/selectApprovalListToBe";
 	}
-	
-	
-	
-	
-	
 	
 	@RequestMapping("/updateApprovalView")
 	public String updateApprovalView(Model model,String apNo) {
