@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="headerFragment" class="header">
+	<h1 class="logo"><a th:href="@{/user/}">BITWARE</a></h1>
+	<ul class="gnb">
+		<li><a href="#">커뮤니티</a></li>
+		<li><a href="#">전자결제</a></li>
+		<li><a href="#">프로젝트</a></li>
+		<li><a href="#">주소록</a></li>
+	</ul>
+	<ul class="userInfo">
+		<li><a href="#">홍길동 님</a><li>
+		<li class="commute on"><a href="#">출근</a><li>
+		<li class="commute"><a href="#">퇴근</a><li>
+	</ul>
+</div><!-- //header end -->
+</html>
