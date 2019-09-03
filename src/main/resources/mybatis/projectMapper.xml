@@ -6,13 +6,13 @@
 <mapper namespace="com.bitgroupware.project.persistence.ProjectDao">
 	<insert id="insertProjectWbsList" parameterType="com.bitgroupware.project.beans.ProjectWbsDto">
 		INSERT INTO PROJECT_WBS
-			(PRJ_CODE, PRJ_WORK_NAME, PRJ_GROUP, PRJ_STEP, PRJ_DEPTH, PRJ_PLAN_START, 
-			 PRJ_PLAN_END, PRJ_WORK_COMPLETION, PRJ_TOTAL_DAYS 
+			(PRJ_CODE, PRJ_WORK_NAME, PRJ_GROUP, PRJ_STEP, PRJ_DEPTH, PRJ_WBS_START, 
+			 PRJ_WBS_END, PRJ_WORK_COMPLETION, PRJ_TOTAL_DAYS 
 			 <if test="prjManager != null and prjManager != '' ">, PRJ_MANAGER</if>
 			 <if test="prjOutput != null and prjOutput != '' ">, PRJ_OUTPUT</if>
 			 )VALUES(
-			 #{prjCode}, #{prjWorkName}, #{prjGroup}, #{prjStep}, #{prjDepth}, #{prjPlanStart},
-			 #{prjPlanEnd}, #{prjWorkCompletion}, #{prjTotalDays} 
+			 #{prjCode}, #{prjWorkName}, #{prjGroup}, #{prjStep}, #{prjDepth}, #{prjWbsStart},
+			 #{prjWbsEnd}, #{prjWorkCompletion}, #{prjTotalDays} 
 			 <if test="prjManager != null and prjManager != '' ">, #{prjManager}</if>
 			 <if test="prjOutput != null and prjOutput != '' ">, #{prjOutput}</if>
 			 )

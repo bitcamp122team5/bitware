@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script type="text/javascript" src="js/project/jquery-3.1.1.min.js"></script>
-<script type="text/javascript" src="js/project/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/project/sweetalert.min.js?ver=1"></script>
-<script type="text/javascript" src="js/project/projectWbs.js"></script>
-<script type="text/javascript" src="js/project/projectList.js"></script>
-<script type="text/javascript" src="js/project/calendar.js"></script>
-<script type="text/javascript" src="js/project/stringBuffer.js"></script>
-<script type="text/javascript" src="js/project/makeRound.js"></script>
+<script type="text/javascript" th:src="@{/js/project/jquery-3.1.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/project/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/project/sweetalert.min.js?ver=1}"></script>
+<script type="text/javascript" th:src="@{/js/project/projectWbs.js}"></script>
+<script type="text/javascript" th:src="@{/js/project/projectList.js}"></script>
+<script type="text/javascript" th:src="@{/js/project/calendar.js}"></script>
+<script type="text/javascript" th:src="@{/js/project/stringBuffer.js}"></script>
+<script type="text/javascript" th:src="@{/js/project/makeRound.js}"></script>
 
-<link rel="stylesheet" type="text/css" href="css/project/sweetalert.css?ver=1.2">
-<link rel="stylesheet" type="text/css" href="css/project/bootstrap-theme.min.css">
-<link rel="stylesheet" type="text/css" href="css/project/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" th:href="@{/css/project/sweetalert.css?ver=1.2}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/project/bootstrap-theme.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/project/bootstrap.min.css}">
 
 <style>
 input[type='text']{
@@ -106,7 +106,7 @@ function commaNum(num){
 					<td rowspan="5"><div style="width: 45px;"></div></td>
 					<td rowspan="5"></td>
 					<td rowspan="5">
-						<div style="width: 450px;">
+						<div style="width: 450px; height: 100px;">
 							<h1>업무구분</h1>
 						</div>
 					</td>
@@ -115,20 +115,14 @@ function commaNum(num){
 					<td rowspan="5"><div style="width: 80px;"></div></td>
 					<td rowspan="5"><div style="width: 80px;"></div></td>
 					<td rowspan="5"><div style="width: 80px;"></div></td>
-					<td rowspan="5"><div style="width: 80px;"></div></td>
-					<td><div style="width: 100px;">월</div></td>
 				</tr>
 				<tr>
-					<td>주차</td>
 				</tr>
 				<tr>
-					<td>일</td>
 				</tr>
 				<tr>
-					<td>총진척률</td>
 				</tr>
 				<tr>
-					<td>일간진척률</td>
 				</tr>
 				<tr>
 					<td><input type='checkbox' onclick='checkAll(this.checked)'/>전체</td>
@@ -136,20 +130,18 @@ function commaNum(num){
 						<button type='button' class='btn btn-sm btn-info' onclick='createTopList()'>생성</button>
 					</td>
 					<td align="center">WBS 작업 목록</td>
-					<td>계획 작업시작일</td>
-					<td>계획 작업종료일</td>
-					<td>실제 작업시작일</td>
-					<td>실제 작업종료일</td>
+					<td>작업 시작일</td>
+					<td>작업 종료일</td>
 					<td>담당자</td>
 					<td>산출물</td>
-					<td></td>
+					<td>진행률</td>
 				</tr>
 			</thead>
 			<tbody id='tbody'>
 			</tbody>
 		</table>
 		<input class="btn btn-sm btn-warning btn-center" type="button" value="저장" onclick="insertProjectWbsList()">
-		<input class="btn btn-sm btn-warning btn-center" type="button" value="프로젝트 목록" onclick="location.href='/project'">
+		<input class="btn btn-sm btn-warning btn-center" type="button" value="프로젝트 목록" onclick="location.href='/user/selectProjectList'">
 		 <input class='btn btn-sm btn-warning btn-center' type='button' value='작업 삭제' onclick='checkListRemove()'>
 	</form>
 	
@@ -162,7 +154,7 @@ function commaNum(num){
 					<h4 id="prjAttend">프로젝트 정보 수정</h4>
 				</div>
 				<div class="modal-body">
-					<form action="/updateProject" method='post'
+					<form action="/user/updateProject" method='post'
 						id='frmUpdateProjcet'>
 						<div class='form-group'>
 						<input type="hidden" name="prjCode" id="prjCode" th:value="${prjInfo.prjCode}" />

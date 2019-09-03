@@ -3,19 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <title>Project List</title>
-<script type="text/javascript" src="js/project/jquery-3.1.1.min.js"></script>
-<script type="text/javascript" src="js/project/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/project/sweetalert.min.js?ver=1"></script>
-<script type="text/javascript" src="js/project/projectList.js"></script>
+<script type="text/javascript" th:src="@{/js/project/jquery-3.1.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/project/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/project/sweetalert.min.js?ver=1}"></script>
+<script type="text/javascript" th:src="@{/js/project/projectList.js}"></script>
 
-<link rel="stylesheet" type="text/css" href="css/project/sweetalert.css?ver=1.2">
-<link rel="stylesheet" type="text/css" href="css/project/bootstrap-theme.min.css">
-<link rel="stylesheet" type="text/css" href="css/project/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" th:href="@{/css/project/sweetalert.css?ver=1.2}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/project/bootstrap-theme.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/project/bootstrap.min.css}">
 </head>
 <body>
 	<div>
-	<a th:href="@{/project}">전체 프로젝트</a>
-	<a th:href="@{/projectEnd}">완료된 프로젝트</a>
+	<a th:href="@{/user/selectProjectList}">전체 프로젝트</a>
+	<a th:href="@{/user/selectEndProjectList}">완료된 프로젝트</a>
 	</div>
 	<div>
 	<table class="table table-hover">
@@ -30,7 +30,7 @@
 		</thead>
 		<tbody>
 		<tr th:each="Infos : ${prjInfos}">
-			<td><a th:href="@{/projectDetail(prjCode=${Infos.prjCode})}" th:text="${Infos.prjName}"></a></td>
+			<td><a th:href="@{/user/projectDetail(prjCode=${Infos.prjCode})}" th:text="${Infos.prjName}"></a></td>
 			<td>PM들어갈 자리 ajax만들고 넣을 예쩡</td>
 			<td th:text="${Infos.prjStart}"></td>
 			<td th:text="${Infos.prjEnd}"></td>
@@ -52,7 +52,7 @@
 				</div>
 				<div class="modal-body">
 					<!-- 프로젝트 생성처리 form -->
-					<form action="/insertProject" method='post'	id='frmInsertProjcet'>
+					<form action="/user/insertProject" method='post'	id='frmInsertProjcet'>
 						<div class='form-group'>
 							<label>프로젝트명</label>
 							<input class='form-control' type="text" name='prjName' id='prjName' />
