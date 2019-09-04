@@ -1,11 +1,11 @@
+// swal은 sweetalert.js에서 파생. alert 대신 쓰는 것. 경고창 url을 없애주고 ui가 깔끔
+
 // 프로젝트 생성 폼
 function insertProjectForm() {
 	$("#insertProjectForm").modal();
 }
 
-
 // 프로젝트 생성
-// swal은 sweetalert.js에서 파생. alert 대신 쓰는 것. 경고창 url을 없애주고 ui가 깔끔
 function insertProject() {
 	var prjName = $('#prjName').val();
 	var prjStart = $('#prjStart').val();
@@ -49,24 +49,15 @@ function insertProject() {
 		swal('참여인원을 선택해주세요');
 		return false;
 	}
-	
 	$('#frmInsertProjcet').submit();
-	
 }
-
-
-
 
 /*프로젝트 정보 수정 모달 팝업*/
 function projectUpdateModal() {
 	$('#projectUpdateModal').modal();
 }
 
-/*프로젝트 참여인원 확인 리스트 모달 팝업 */
-function projectAttendMemberModal() {
-	$("#projectAttendMemberModal").modal();
-}
-
+/*프로젝트 정보 수정 */
 function updateProject() {
 	var prjName = $('#prjName').val();
 	var prjStart = $('#prjStart').val();
@@ -104,12 +95,14 @@ function updateProject() {
 		return false;
 	}else if(prjMothercompany == ''){
 		swal('마더업체', '마더업체를 입력해주세요');
+		return false;
 	}
-	
-	
-	
-	
 	$('#frmUpdateProjcet').submit();
+}
+
+/*프로젝트 참여인원 확인 리스트 모달 팝업 */
+function projectAttendMemberModal() {
+	$("#projectAttendMemberModal").modal();
 }
 
 /*프로젝트 참여인원 추가 모달 팝업 */
@@ -127,8 +120,6 @@ $(function(){
 			$(".checkBox").prop("checked",false);
 		}
 	});	
-	
-	
 })
 
 /*참여인원 추가 체크 박스 개별 체크 기능 */
@@ -138,6 +129,7 @@ $(function(){
 	});	
 })
 
+/*참여인원 추가 (추가사항) */
 function insertProjectAttendMembers(){
 	var confirm_val = confirm("선택을 완료하시겠습니까?");
 	if(confirm_val){
