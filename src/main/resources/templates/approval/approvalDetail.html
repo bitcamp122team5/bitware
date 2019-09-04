@@ -173,10 +173,14 @@ $(function(){
 		<tr>
 			<td>첨부파일</td>
 			<td>
-				<span th:each="approvalFile:${approvalFileList}" >
-					<span th:if="${approvalFile.apFileno!=null}" th:text="${approvalFile.apFilename}"></span><br>
-					<span th:unless="${approvalFile.apFileno==null}">없듐</span>
-				</span>
+			<span th:if="${approvalFileList.isEmpty()}">
+				<span>첨부파일이 없습니다.</span>
+			</span>
+			<span th:unless="${approvalFileList.isEmpty()}">
+			<span th:each="approvalFile:${approvalFileList}">
+					<span th:text="${approvalFile.apFilename}"></span><br>
+			</span>
+			</span>
 			</td>
 		</tr>
 		

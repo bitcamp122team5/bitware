@@ -6,25 +6,65 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.data.jpa.repository.Query;
 
 import com.bitgroupware.approval.beans.ApprovalDto;
 import com.bitgroupware.approval.beans.ApprovalFileDto;
+import com.bitgroupware.community.vo.NoticeVo;
 
 @Mapper
 public interface ApprovalDao {
 	// 결재 받을 문서 리스트
-	@Select("select * from approval where mem_id = #{memId} and ap_deleteflag='N'")
-	List<ApprovalDto> selectApprovalListToBeByTotal(String memId);
+	@Select("select r1.* from (select * from approval where mem_id = #{memId} and ap_deleteflag='N' and ap_title like #{searchKeyword} order by ap_no desc) r1 limit 10 offset #{begin}")
+	List<ApprovalDto> selectApprovalListToBeByTotalApTilte(String memId,int begin,String searchKeyword);
+	
+	@Select("select r1.* from (select * from approval where mem_id = #{memId} and ap_deleteflag='N' and ap_content like #{searchKeyword} order by ap_no desc) r1 limit 10 offset #{begin}")
+	List<ApprovalDto> selectApprovalListToBeByTotalApContent(String memId,int begin,String searchKeyword);
+	
+	@Select("select r1.* from (select * from approval where mem_id = #{memId} and ap_deleteflag='N' and ap_docstatus=#{status} and ap_title like #{searchKeyword} order by ap_no desc) r1 limit 10 offset #{begin}")
+	List<ApprovalDto> selectApprovalListToBeApTilte(String memId,String status,int begin,String searchKeyword);
+	
+	@Select("select r1.* from (select * from approval where mem_id = #{memId} and ap_deleteflag='N' and ap_docstatus=#{status} and ap_content like #{searchKeyword} order by ap_no desc) r1 limit 10 offset #{begin}")
+	List<ApprovalDto> selectApprovalListToBeApContent(String memId,String status,int begin,String searchKeyword);
 
 	@Select("select * from approval where mem_id = #{memId} and ap_deleteflag='N' and ap_docstatus = #{status}")
-	List<ApprovalDto> selectApprovalListToBe(String memId, String status);
+	List<ApprovalDto> selectApprovalListToBe(String memId, String status,int begin,String searchKeyword);
+	
+	// 페이징
+	@Select("select count(*) from approval where ap_deleteflag = 'N' and ap_title like #{searchKeyword} and mem_id = #{memId}")
+	int countByApTitle(String memId, String searchKeyword);
 
+	@Select("select count(*) from approval where ap_deleteflag = 'N' and ap_content like #{searchKeyword} and mem_id = #{memId}")
+	int countByApContent(String memId, String searchKeyword);
+
+	@Select("select count(*) from approval where ap_deleteflag = 'N' and mem_id = #{memId} and ap_docstatus=#{status} and ap_title like #{searchKeyword} ")
+	int countByApTitleStatus(String memId, String status, String searchKeyword);
+
+	@Select("select count(*) from approval where ap_deleteflag = 'N' and mem_id = #{memId} and ap_docstatus = #{status} and ap_content like #{searchKeyword} ")
+	int countByApContentStatus(String memId, String status, String searchKeyword);
+
+	
+	
+	
 	// 결재 할 문서 리스트
 	@Select("select * from approval where ap_signpath = #{memId} and ap_docstatus in (1,2) and ap_deleteflag = 'N'")
-	List<ApprovalDto> selectApprovalListTo(String memId);
+	List<ApprovalDto> selectApprovalListTo(String memId,int begin,String searchKeyword);
 
 	@Select("select * from approval where ap_no = #{apNo} and ap_deleteflag = 'N'")
 	ApprovalDto selectApproval(String apNo);
+	
+	@Select("select r1.* from (select * from approval where ap_signpath = #{memId} and ap_docstatus in (1,2) and ap_deleteflag = 'N' and ap_title like #{searchKeyword} order by ap_no desc) r1 limit 10 offset #{begin}")
+	List<ApprovalDto> selectApprovalListToApTilte(String memId, int begin, String searchKeyword);
+
+	@Select("select r1.* from (select * from approval where ap_signpath = #{memId} and ap_docstatus in (1,2) and ap_deleteflag = 'N' and ap_content like #{searchKeyword} order by ap_no desc) r1 limit 10 offset #{begin}")
+	List<ApprovalDto> selectApprovalListToApContent(String memId, int begin, String searchKeyword);
+	
+	@Select("select r1.* from (select DISTINCT ap_no,ap_title,ap_docstatus,approval.mem_id,ap_insertdate from approval join member on (approval.ap_sign_name2 = member.mem_name or approval.ap_sign_name3 = member.mem_name or approval.ap_sign_name4 = member.mem_name or approval.ap_sign_name5 = member.mem_name) where not approval.mem_id in (#{memId}) and ap_docstatus in (2,3,4) and ap_deleteflag = 'N' and ap_content like #{searchKeyword} order by ap_no desc) r1 limit 10 offset #{begin}")
+	List<ApprovalDto> selectApprovalListToFinishApTilte(String memId, int begin, String searchKeyword);
+
+	@Select("select r1.* from (select DISTINCT ap_no,ap_title,ap_docstatus,approval.mem_id,ap_insertdate from approval join member on (approval.ap_sign_name2 = member.mem_name or approval.ap_sign_name3 = member.mem_name or approval.ap_sign_name4 = member.mem_name or approval.ap_sign_name5 = member.mem_name) where not approval.mem_id in (#{memId}) and ap_docstatus in (2,3,4) and ap_deleteflag = 'N' and ap_content like #{searchKeyword} order by ap_no desc) r1 limit 10 offset #{begin}")
+	List<ApprovalDto> selectApprovalListToFinishApContent(String memId, int begin, String searchKeyword);
+	
 
 	// 기안
 	@Insert("insert into approval(ap_title,ap_content,ap_deleteflag,ap_docstatus,apdoc_no,ap_insertdate,mem_id,ap_signpath,ap_sign_url1,ap_sign_url2,ap_sign_url3,ap_sign_url4,ap_sign_url5,ap_sign_name1,ap_sign_name2,ap_sign_name3,ap_sign_name4,ap_sign_name5,final_sign) values(#{apTitle},#{apContent},#{apDeleteflag},#{apDocstatus},#{apdocNo},now(),#{memId},#{apSignpath},#{apSignUrl1},#{apSignUrl2},#{apSignUrl3},#{apSignUrl4},#{apSignUrl5},#{apSignName1},#{apSignName2},#{apSignName3},#{apSignName4},#{apSignName5},#{finalSign})")
@@ -57,13 +97,28 @@ public interface ApprovalDao {
 	@Update("update approval set ap_title = #{apTitle} ,ap_content = #{apContent} where ap_no = #{apNo}")
 	void updateApproval(ApprovalDto approval);
 	
+	@Update("update approval_file set ap_filename=#{apFilename}, ap_fileurl=#{apFileurl} where ap_fileno=#{apFileno}")
+	void updateApprovalFile(ApprovalFileDto approvalFile);
+	
 	@Select("SELECT MAX(AP_NO) FROM APPROVAL")
 	String selectMaxApNo();
 	
 	@Insert("INSERT INTO APPROVAL_FILE (AP_NO,AP_FILENAME,AP_FILEURL) VALUES (#{apNo}, #{apFilename}, #{apFileurl})")
 	void insertApprovalFile(ApprovalFileDto approvalFileDto);
 	
+	
 	@Select("select * from approval_file where ap_no = #{apNo}")
 	List<ApprovalFileDto> selectApprovalFile(String apNo);
+
+	
+	@Select("select count( DISTINCT  ap_no,ap_title,ap_docstatus,approval.mem_id,ap_insertdate) from approval join member on (approval.ap_sign_name2 = member.mem_name or approval.ap_sign_name3 = member.mem_name or approval.ap_sign_name4 = member.mem_name or approval.ap_sign_name5 = member.mem_name) where not approval.mem_id in (#{memId}) and ap_docstatus in (2,3,4) and ap_deleteflag = 'N' and ap_content like #{searchKeyword}")
+	int countByToApTitle(String memId, String searchKeyword);
+
+	@Select("select count( DISTINCT  ap_no,ap_title,ap_docstatus,approval.mem_id,ap_insertdate) from approval join member on (approval.ap_sign_name2 = member.mem_name or approval.ap_sign_name3 = member.mem_name or approval.ap_sign_name4 = member.mem_name or approval.ap_sign_name5 = member.mem_name) where not approval.mem_id in (#{memId}) and ap_docstatus in (2,3,4) and ap_deleteflag = 'N' and ap_content like #{searchKeyword}")
+	int countByToApContent(String memId, String searchKeyword);
+
+	
+	
+	
 	
 }

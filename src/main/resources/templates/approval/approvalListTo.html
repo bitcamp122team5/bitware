@@ -14,6 +14,31 @@
 
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
+
+<!-- 검색 시작 -->
+<form th:action="@{/user/selectApprovalListTo}">
+<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
+<tr>
+    <td align="right">
+        <select name="searchCondition" id="category">
+        	<option value="apTitle">제목</option>
+        	<option value="apContent">내용</option>
+        </select>
+        <input name="searchKeyword" id="keyword" type="text">
+        <input type="submit" value="검색">
+    </td>
+</tr>
+</table>
+</form>
+<input type="hidden" id="searchCondition" th:value="${search.searchCondition}">
+<input type="hidden" id="searchKeyword" th:value="${search.searchKeyword}">
+<!-- 검색 종료 -->
+
+<a th:href="@{/user/selectApprovalListTo}">진행</a>
+<a th:href="@{/user/selectApprovalListFinish}">완료</a>
+
+
+<!-- <input type="hidden" name="memId" th:value="${memId}"> -->
 <table border="1">
 	<tr>
 		<td>번호</td>
@@ -22,8 +47,9 @@
 		<td>작성자</td>
 		<td>작성일자</td>
 	</tr>
-	<tr th:each="approval:${approvalList}">
-		<td th:text="${approval.apNo}"></td>
+	<tr th:each="approval,count :${approvalList}">
+<!-- 		<td th:text="${approval.apNo}"></td> -->
+		<td th:text="${count.count}"></td>
 		<td><a th:href="@{/user/selectApprovalView(apNo=${approval.apNo})}" th:text="${approval.apTitle}"></a></td>
 		<td th:text="${approval.apDocstatus}"></td>
 		<td th:text="${approval.memId}"></td>
@@ -35,7 +61,33 @@
 		</div>
 	</tr>
 </table>
+<!-- 페이징 -->
+<table th:align="center">
+	<tr>
+		<td colspan="5">
+			<span th:if="${page.curBlock > 1 }">
+				<a th:href="@{/user/selectApprovalListTo(curPage=${page.prevPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}">[이전]</a>
+			</span>
+			<span th:if="${page.curBlock > 1 }">
+				<a th:href="@{/user/selectApprovalListTo(curPage=1,searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}">1</a>
+			</span>
+			<span th:each="num:${block}">
+				<span th:if="${num==page.curPage }">
+					<a th:href="@{/user/selectApprovalListTo(curPage=${num},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${num}" style="color:orange;"></a>
+				</span>
+				<span th:unless="${num==page.curPage }">
+					<a th:href="@{/user/selectApprovalListTo(curPage=${num},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${num}"></a>
+				</span>
+			</span>
+			<span th:if="${page.curBlock < page.totBlock }">
+				<a th:href="@{/user/selectApprovalListTo(curPage=${page.totPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${page.totPage}"></a>
+			</span>
+			<span th:if="${page.curBlock < page.totBlock }">
+				<a th:href="@{/user/selectApprovalListTo(curPage=${page.nextPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}">[다음]</a>
+			</span>
+		</td>
+	</tr>
+</table>
 </div><!-- //section end -->
-
 </body>
 </html>
