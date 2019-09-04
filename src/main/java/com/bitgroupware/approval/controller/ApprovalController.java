@@ -146,11 +146,14 @@ public class ApprovalController {
 	@RequestMapping("/selectApprovalView")
 	public String selectApprovalView(Model model, String apNo, @AuthenticationPrincipal SecurityUser principal) {
 		ApprovalDto approval = approvalService.selectApproval(apNo);
+		List<ApprovalFileDto> approvalFileList = approvalService.selectApprovalFile(apNo);
 		model.addAttribute("approval", approval);
+		model.addAttribute("approvalFileList",approvalFileList);
 		String memId = principal.getMember().getMemId();
 		int ranksNo = approvalService.selectRanksNo(memId);
 		model.addAttribute("ranksNo",ranksNo);
 		System.out.println(approval);
+		System.out.println(approvalFileList);
 		return "approval/approvalDetail";
 	}
 	

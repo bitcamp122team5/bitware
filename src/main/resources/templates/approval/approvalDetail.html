@@ -153,18 +153,42 @@ $(function(){
 		<table border="1" width="1000" height="500">
 		<tr>
 			<td>문서명</td>
-			<td name="apTitle" id="apTitle" th:text="${approval.apTitle}"/>
+			<td th:text="${approval.apTitle}"/>
 		</tr>
 		<tr>
 			<td>문서내용</td>
 			<td><span name="apContent" cols="50" rows="50" id="apContent" th:utext="${approval.apContent}"></span></td>
 		</tr>
+		
+<!-- 		<tr> -->
+<!-- 			<td>첨부파일</td> -->
+<!-- 			<td>  -->
+<!-- 				<span th:each="approvalFile:${approvalFileList}" > -->
+<!-- 					<span th:if="${approvalFile.apFileno!=null}" th:text="${approvalFile.apFilename}"></span><br> -->
+<!-- 					<span th:unless="${approvalFile.apFileno==null}">첨부파일이 없습니다.</span> -->
+<!-- 				</span> -->
+<!-- 			</td> -->
+<!-- 		</tr> -->
+		
+		<tr>
+			<td>첨부파일</td>
+			<td>
+				<span th:each="approvalFile:${approvalFileList}" >
+					<span th:if="${approvalFile.apFileno!=null}" th:text="${approvalFile.apFilename}"></span><br>
+					<span th:unless="${approvalFile.apFileno==null}">없듐</span>
+				</span>
+			</td>
+		</tr>
+		
+		
 		<th:block th:if="${approval.apComment != null}">
 		<tr>
-		<td>반려사유</td>
-		<td name="apComment" id="apComment" th:text="${approval.apComment}"></td>
+			<td>반려사유</td>
+			<td th:text="${approval.apComment}"></td>
 		</tr>
 		</th:block>
+
+
 		</table>
 	</div>
 		<a th:href="@{/user/selectApprovalListToBe}">목록</a><br>
