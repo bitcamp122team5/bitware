@@ -25,15 +25,11 @@
 <body>
 <div th:replace="fragments/header :: headerFragment"></div>
 
-<div th:replace="fragments/aside :: asideFragment"></div>
+<div th:replace="fragments/aside :: asideFragmentProject"></div>
 
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
-	<div>
-	<a th:href="@{/user/selectProjectList}">전체 프로젝트</a>
-	<a th:href="@{/user/selectAttendingProjectList}">참여중인 프로젝트</a>
-	<a th:href="@{/user/selectEndProjectList}">완료된 프로젝트</a>
-	</div>
+	
 	<input type="hidden" id="sessionRanks" th:value="${sessionRanks}">
 	<div>
 	<table class="table table-hover">

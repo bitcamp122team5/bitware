@@ -47,4 +47,16 @@
 		<li class="dep1"><a th:href="@{/user/selectApprovalListToBe}">결재 받을(은) 문서</a></li>
 	</ul>
 </div><!-- //aside end -->
+
+<!-- Project -->
+<div th:fragment="asideFragmentProject" class="aside">
+	<div class="aside_tit">
+		<a href="#"></a>
+	</div>
+	<ul class="aside_con">
+		<li class="dep1"><a th:href="@{/user/selectProjectList}">전체 프로젝트</a></li>
+		<li class="dep1"><a th:href="@{/user/selectAttendingProjectList}">참여중인 프로젝트</a></li>
+		<li class="dep1"><a th:href="@{/user/selectEndProjectList}">완료된 프로젝트</a></li>
+	</ul>
+</div><!-- //aside end -->
 </html>
