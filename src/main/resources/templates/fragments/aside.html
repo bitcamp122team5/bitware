@@ -35,4 +35,22 @@
 		<li class="dep1"><a th:href="@{/user/selectCarReservationList}">법인차량예약</a></li>
 	</ul>
 </div><!-- //aside end -->
+
+<div th:fragment="asideFragmentChat" class="aside">
+	<div class="aside_tit">
+		<a href="#"></a>
+	</div>
+	<ul class="aside_con">
+		<li class="dep1"><a th:href="@{/user/selectNoticeList}">채팅메뉴1</a></li>
+		<li class="dep1 have"><a th:href="@{/user/selectDocCenterList}" class="dep1 have">채팅메뉴2</a>
+			<ul class="dep2ul">
+				<li><a href="#">서브1</a></li>
+				<li><a href="#">서브2</a></li>
+				<li><a href="#">서브3</a></li>
+			</ul>
+		</li>
+		<li class="dep1"><a th:href="@{/user/selectMeetingroomReservationList}">채팅메뉴3</a></li>
+		<li class="dep1"><a th:href="@{/user/selectCarReservationList}">채팅메뉴4</a></li>
+	</ul>
+</div><!-- //aside end -->
 </html>
