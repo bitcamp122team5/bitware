@@ -2,8 +2,11 @@ package com.bitgroupware.project.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Select;
+
 import com.bitgroupware.project.beans.MemberDto;
 import com.bitgroupware.project.beans.ProjectInfoDto;
+import com.bitgroupware.project.beans.ProjectMembersDto;
 import com.bitgroupware.project.beans.ProjectWbsDto;
 
 public interface ProjectService {
@@ -15,7 +18,7 @@ public interface ProjectService {
 	public List<ProjectInfoDto> selectEndProjectList();
 	
 	//참여중인 프로젝트 조회
-	public List<ProjectInfoDto> selectAttendProjectList(int prjCompletion, String memId);
+	public List<ProjectInfoDto> selectAttendProjectList(String memId);
 	
 	//프로젝트 상세페이지 조회
 	public ProjectInfoDto selectProject(int prjCode);
@@ -24,7 +27,7 @@ public interface ProjectService {
 	public void updateProject(ProjectInfoDto prjDto);
 	
 	/*프로젝트 정보 생성 */
-	public void insertProject(ProjectInfoDto prjInfoDto);
+	public boolean insertProject(ProjectInfoDto prjInfoDto);
 	
 	/*프로젝트 참여인원 기본 리스트 출력*/
 	public List<MemberDto> selectProjectMemberList();
@@ -45,5 +48,18 @@ public interface ProjectService {
 	public boolean insertProjectWbsList(List<ProjectWbsDto> prjWbsDto);
 	
 	/*prjCode만 가져오기(완료되지 않은 프로젝트) */
-	public List<ProjectInfoDto> selectPrjCode();
+	public ProjectInfoDto selectPrjCode();
+	
+	/*프로젝트 참여인원 삭제를 위한 주키 추출 */
+	public ProjectMembersDto selectPrjMemNo(int prjCode, String memId);
+	
+	/*프로젝트 참여인원 삭제 */
+	public void deleteProjectAttendMember(int prjMemNo);
+	
+	/*프로젝트 완료 처리*/
+	public void completeProject(int prjCode);
+	
+	/*멤버 아이디로 멤버 정보 뽑아오기*/
+	public MemberDto selectMemberInfos(String memId);
+	
 }

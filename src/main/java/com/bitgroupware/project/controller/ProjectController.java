@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,9 +16,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bitgroupware.project.beans.MemberDto;
 import com.bitgroupware.project.beans.ProjectInfoDto;
+import com.bitgroupware.project.beans.ProjectMembersDto;
 import com.bitgroupware.project.beans.ProjectWbsDto;
 import com.bitgroupware.project.service.ProjectService;
 import com.bitgroupware.project.util.Analysis;
+import com.bitgroupware.security.config.SecurityUser;
 
 @Controller
 @RequestMapping("/user")
@@ -28,17 +31,46 @@ public class ProjectController {
 	
 	/*전체 프로젝트 조회 */
 	@RequestMapping("/selectProjectList")
-	public String selectProjectList(Model model) {
+	public String selectProjectList(Model model, @AuthenticationPrincipal SecurityUser principal) {
+		String sessionRanks = principal.getMember().getRanks().getRanks();
 		List<ProjectInfoDto> prjInfos = projectService.selectProjectList();
 		model.addAttribute("prjInfos", prjInfos);
+		model.addAttribute("sessionRanks", sessionRanks);
+		
+		//참여인원 추가 모달을 위함.
+		List<MemberDto> memOfficeInfo = projectService.selectProjectMemberList();
+		model.addAttribute("members", memOfficeInfo);
+		
+		return "project/project"; 
+	}
+	
+	/*참여중인 프로젝트 조회 */
+	@RequestMapping("/selectAttendingProjectList")
+	public String selectAttendingProjectList(Model model, @AuthenticationPrincipal SecurityUser principal) {
+		String sessionId = principal.getMember().getMemId();
+		String sessionRanks = principal.getMember().getRanks().getRanks();
+		List<ProjectInfoDto> prjInfos = projectService.selectAttendProjectList(sessionId);
+		model.addAttribute("prjInfos", prjInfos);
+		model.addAttribute("sessionRanks", sessionRanks);
+		
+		//참여인원 추가 모달을 위함.
+		List<MemberDto> memOfficeInfo = projectService.selectProjectMemberList();
+		model.addAttribute("members", memOfficeInfo);
 		return "project/project"; 
 	}
 	
 	/*완료된 프로젝트 조회 */
 	@RequestMapping("/selectEndProjectList")
-	public String selectEndProjectList(Model model) {
+	public String selectEndProjectList(Model model,  @AuthenticationPrincipal SecurityUser principal) {
+		String sessionRanks = principal.getMember().getRanks().getRanks();
 		List<ProjectInfoDto> prjInfos = projectService.selectEndProjectList();
 		model.addAttribute("prjInfos", prjInfos);
+		model.addAttribute("sessionRanks", sessionRanks);
+		
+		//참여인원 추가 모달을 위함.
+		List<MemberDto> memOfficeInfo = projectService.selectProjectMemberList();
+		model.addAttribute("members", memOfficeInfo);
+		
 		return "project/project"; 
 	}
 	
@@ -81,12 +113,41 @@ public class ProjectController {
 		return "redirect:/user/selectProjectList";
 	}
 	
+	
 	/*프로젝트 생성 */
 	@RequestMapping(value="/insertProject", method=RequestMethod.POST)
-	public String insertProject(ProjectInfoDto prjDto) {
-		projectService.insertProject(prjDto);
+	public String insertProject(ProjectInfoDto prjDto, HttpServletRequest req) {
+		
+		
+		String[] memArr = req.getParameterValues("memIdChk");
+		
+		String boojang = "부장";
+		MemberDto memDto;
+		String pmName = "";
+		for(String memId : memArr) {
+			memDto = projectService.selectMemberInfos(memId);
+			System.out.println("memDto 결과" + memDto);
+			System.out.println("memDto.getRanks결과 : "+ memDto.getRanks());
+			if(memDto.getRanks().equals(boojang)) {
+				pmName = memDto.getMemName();
+			}
+		}
+		System.out.println("pmName 출력 : "+ pmName);
+		prjDto.setPrjPm(pmName);
+		System.out.println("prjDto.getPrjPm() 결과 : "+prjDto.getPrjPm());
+		if(projectService.insertProject(prjDto)) {
+			
+			ProjectInfoDto prjInfo;
+			prjInfo = projectService.selectPrjCode();
+			 
+			for(String memId : memArr) {
+				projectService.insertProjectAttendMembers(memId, prjInfo.getPrjCode());
+			}
+		}
+		
 		return "redirect:/user/selectProjectList";
 	}
+	
 	
 	/*프로젝트 참여인원 선택 페이지로 이동 */
 	@RequestMapping("/selectProjectAttendMemberList")
@@ -170,9 +231,38 @@ public class ProjectController {
 		return isc;
 	}
 	
+	/*프로젝트 참여인원 삭제 */
+	@RequestMapping(value="deleteProjectAttendMember", method=RequestMethod.POST)
+	@ResponseBody
+	public void deleteProjectAttendMember(int prjCode, String memId) {
+		
+		ProjectMembersDto prjMemDto;
+		prjMemDto = projectService.selectPrjMemNo(prjCode, memId);
+		System.out.println("prjCode : "+prjCode);
+		System.out.println("memId : "+memId);
+		System.out.println("prjMemNo  :  "+ prjMemDto.getPrjMemNo());
+		projectService.deleteProjectAttendMember(prjMemDto.getPrjMemNo());
+	}
+	
+	/*프로젝트 완료 처리 */
+	@RequestMapping("completeProject")
+	public String completeProject(int prjCode) {
+		projectService.completeProject(prjCode);
+		
+		return "redirect:/user/selectEndProjectList";
+	}
 	
 	
-	
+//	@RequestMapping("selectProjectPMName")
+//	@ResponseBody
+//	public String selectProjectPMName (@RequestParam(value="prjCode[]") List<Integer> prjCodes){
+//		
+//		for(Integer prjCode : prjCodes) {
+//			projectService.selectProjectPMName(prjCode);
+//		}
+//		
+//		return "project/project";
+//	}
 //	
 //	@RequestMapping("selectAttendProjectMembersAjax")
 //	@ResponseBody

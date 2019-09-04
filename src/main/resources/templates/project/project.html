@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 <meta charset="UTF-8">
 <title>Project List</title>
@@ -15,8 +16,10 @@
 <body>
 	<div>
 	<a th:href="@{/user/selectProjectList}">전체 프로젝트</a>
+	<a th:href="@{/user/selectAttendingProjectList}">참여중인 프로젝트</a>
 	<a th:href="@{/user/selectEndProjectList}">완료된 프로젝트</a>
 	</div>
+	<input type="hidden" id="sessionRanks" th:value="${sessionRanks}">
 	<div>
 	<table class="table table-hover">
 		<thead>
@@ -30,16 +33,16 @@
 		</thead>
 		<tbody>
 		<tr th:each="Infos : ${prjInfos}">
+			<input type="hidden" id="pmPrjCode" th:value="${Infos.PrjCode}">
 			<td><a th:href="@{/user/projectDetail(prjCode=${Infos.prjCode})}" th:text="${Infos.prjName}"></a></td>
-			<td>PM들어갈 자리 ajax만들고 넣을 예쩡</td>
+			<td th:text="${Infos.prjPm}"></td>
 			<td th:text="${Infos.prjStart}"></td>
 			<td th:text="${Infos.prjEnd}"></td>
 			<td th:text="${Infos.prjMothercompany}"></td>
 		</tr>
 		</tbody>
 	</table>
-	<input class='btn btn-sm btn-warning btn-center' type='button'
-			value='프로젝트 생성' onclick='insertProjectForm()'>
+	<input class='btn btn-sm btn-warning btn-center' type='button' value='프로젝트 생성' id="insertProjectBtn" onclick='insertProjectForm()'>
 	</div>
 	
 	<!-- 프로젝트 생성 modal -->
@@ -51,8 +54,8 @@
 					<h4 class="modal-title">프로젝트 생성</h4>
 				</div>
 				<div class="modal-body">
+				<form action="/user/insertProject" method='post' id='frmInsertProjcet'>
 					<!-- 프로젝트 생성처리 form -->
-					<form action="/user/insertProject" method='post'	id='frmInsertProjcet'>
 						<div class='form-group'>
 							<label>프로젝트명</label>
 							<input class='form-control' type="text" name='prjName' id='prjName' />
@@ -77,12 +80,28 @@
 							<label>마더업체</label>
 							<input class='form-control' type="text" name='prjMothercompany' id='prjMothercompany' />
 						</div>
-						<div class='modal-footer'>
-							<input type="button" class='btn btn-sm btn-warning' value="확인" onclick="insertProject()" />
-							<input type="reset" class='btn btn-sm btn-warning' value="초기화" />
-							<input type='button' class='btn btn-sm btn-warning' data-dismiss='modal' value="취소" />
-						</div>
-					</form>
+					<table class="table table-hover">
+					<h4>프로젝트 참여인원 선택</h4>
+					<tr>
+						<th><input type="checkbox" name="allCheckBox" id="allCheckBox"></th>
+						<th>이름</th>
+						<th>부서</th>
+						<th>팀</th>
+						<th>직급</th>
+					</tr>
+					<tr th:each="worker : ${members}">
+						<td><input type="checkbox" name="memIdChk" id="memId" class="checkBoxArr" th:value="${worker.memId}"></td>
+							<td th:text="${worker.memName}"></td>
+							<td th:text="${worker.deptName}"></td>
+							<td th:text="${worker.teamName}"></td>
+							<td th:text="${worker.ranks}"></td>
+					</tr>
+				</table>
+				</form>
+				</div>
+				<div class='modal-footer'>
+					<input type="button" class='btn btn-sm btn-warning' value="생성" onclick="insertProject()" />
+					<input type='button' class='btn btn-sm btn-warning' data-dismiss='modal' value="취소" />
 				</div>
 			</div>
 		</div>

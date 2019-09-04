@@ -2,11 +2,13 @@ package com.bitgroupware.project.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bitgroupware.project.beans.MemberDto;
 import com.bitgroupware.project.beans.ProjectInfoDto;
+import com.bitgroupware.project.beans.ProjectMembersDto;
 import com.bitgroupware.project.beans.ProjectWbsDto;
 import com.bitgroupware.project.persistence.ProjectDao;
 
@@ -30,8 +32,8 @@ public class ProjectServiceImpl implements ProjectService {
 
 	//참여중인 프로젝트 조회
 	@Override
-	public List<ProjectInfoDto> selectAttendProjectList(int prjCompletion, String memId) {
-		return dao.selectAttendProjectList(prjCompletion, memId);
+	public List<ProjectInfoDto> selectAttendProjectList(String memId) {
+		return dao.selectAttendProjectList(memId);
 	}
 
 	//프로젝트 상세페이지 조회
@@ -43,41 +45,36 @@ public class ProjectServiceImpl implements ProjectService {
 	/*프로젝트 정보 수정*/
 	@Override
 	public void updateProject(ProjectInfoDto prjDto) {
-
 		dao.updateProject(prjDto);
 	}
 
 	/*프로젝트 정보 생성 */
 	@Override
-	public void insertProject(ProjectInfoDto prjInfoDto) {
-		dao.insertProject(prjInfoDto);
+	public boolean insertProject(ProjectInfoDto prjInfoDto) {
+		return dao.insertProject(prjInfoDto);
 	}
 	
 	/*프로젝트 참여인원 기본 리스트 출력*/
 	@Override
 	public List<MemberDto> selectProjectMemberList() {
-
-		return dao.selectProejctMemberList();
+		return dao.selectProjectMemberList();
 	}
 	
 	/*프로젝트 참여인원 추가(생성)*/
 	@Override
 	public void insertProjectAttendMembers(String memId, int prjCode) {
-		
 		dao.insertProjectAttendMembers(memId, prjCode);
 	}
 
 	/*특정 프로젝트 참여인원 리스트 출력 */
 	@Override
 	public List<MemberDto> selectProjectAttendMemberList(int prjCode) {
-		
 		return dao.selectProjectAttendMemberList(prjCode);
 	}
 	
 	/*프로젝트 WBS 정보 불러오기*/
 	@Override
 	public List<ProjectWbsDto> selectProjectWbsList(int prjCode) {
-		
 		return dao.selectProjectWbsList(prjCode);
 	}
 	
@@ -92,17 +89,42 @@ public class ProjectServiceImpl implements ProjectService {
 	public boolean insertProjectWbsList(List<ProjectWbsDto> prjWbsDto) {
 		
 		boolean chk = false;
-		
 		for(ProjectWbsDto prjWbsDtos : prjWbsDto) {
 		chk = dao.insertProjectWbsList(prjWbsDtos) == 1 ? true : false;
-	}
+		}
 		return chk;
 	}
 
 	/*prjCode만 가져오기(완료되지 않은 프로젝트) */
 	@Override
-	public List<ProjectInfoDto> selectPrjCode() {
-		
+	public ProjectInfoDto selectPrjCode() {
 		return dao.selectPrjCode();
 	}
+	
+
+	/*프로젝트 참여인원 삭제 */
+	@Override
+	public void deleteProjectAttendMember(int prjMemNo) {
+		dao.deleteProjectAttendMember(prjMemNo);
+	}
+	
+	/*프로젝트 참여인원 삭제를 위한 주키 추출 */
+	@Override
+	public ProjectMembersDto selectPrjMemNo(int prjCode, String memId) {
+		return dao.selectPrjMemNo(prjCode, memId);
+	}
+	
+	/*프로젝트 완료 처리*/
+	@Override
+	public void completeProject(int prjCode) {
+		dao.completeProject(prjCode);
+	}
+
+	/*멤버 아이디로 멤버 정보 뽑아오기*/
+	@Override
+	public MemberDto selectMemberInfos(String memId) {
+		return dao.selectMemberInfos(memId);
+	}
+	
+	
 }

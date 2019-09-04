@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Update;
 
 import com.bitgroupware.project.beans.MemberDto;
 import com.bitgroupware.project.beans.ProjectInfoDto;
+import com.bitgroupware.project.beans.ProjectMembersDto;
 import com.bitgroupware.project.beans.ProjectWbsDto;
 
 @Mapper
@@ -24,8 +25,8 @@ public interface ProjectDao {
 	public List<ProjectInfoDto> selectEndProjectList();
 	
 	//참여중인 프로젝트 조회
-	@Select("SELECT * FROM PROJECT_INFO WHERE PRJ_COMPLETION = 0, PRJ_CODE = (SELECT PRJ_CODE FROM PROJECT_MEMBERS WHERE MEM_ID = #{memId}) ORDER BY PRJ_CODE DESC")
-	public List<ProjectInfoDto> selectAttendProjectList(int prjCompletion, String memId);
+	@Select("SELECT * FROM PROJECT_INFO WHERE PRJ_COMPLETION = 0 AND PRJ_CODE = ANY(SELECT PRJ_CODE FROM PROJECT_MEMBERS WHERE MEM_ID = #{memId}) ORDER BY PRJ_CODE DESC")
+	public List<ProjectInfoDto> selectAttendProjectList(String memId);
 	
 	//프로젝트 상세페이지 조회
 	@Select("SELECT * FROM PROJECT_INFO WHERE PRJ_CODE = #{prjCode}")
@@ -36,20 +37,20 @@ public interface ProjectDao {
 	public void updateProject(ProjectInfoDto prjDto);
 	
 	/*프로젝트 정보 생성 */
-	@Insert("INSERT INTO PROJECT_INFO (PRJ_NAME, PRJ_DEPOSIT, PRJ_WORKING_EXPENSES, PRJ_START, PRJ_END, PRJ_MOTHERCOMPANY) VALUES (#{prjName}, #{prjDeposit}, #{prjWorkingExpenses}, #{prjStart}, #{prjEnd}, #{prjMothercompany})")
-	public void insertProject(ProjectInfoDto prjDto);
+	@Insert("INSERT INTO PROJECT_INFO (PRJ_NAME, PRJ_DEPOSIT, PRJ_WORKING_EXPENSES, PRJ_START, PRJ_END, PRJ_MOTHERCOMPANY, PRJ_PM) VALUES (#{prjName}, #{prjDeposit}, #{prjWorkingExpenses}, #{prjStart}, #{prjEnd}, #{prjMothercompany}, #{prjPm})")
+	public boolean insertProject(ProjectInfoDto prjDto);
 	
 	/*프로젝트 참여인원 기본 리스트 출력*/
 	@Select("SELECT MEM_ID, MEM_NAME, DEPT_NAME, TEAM_NAME, RANKS FROM MEMBER WHERE DEPT_NAME='개발부' "
 			+ " ORDER BY (CASE RANKS WHEN '부장' THEN 1 WHEN '팀장' THEN 2 WHEN '사원' THEN 3 END); ")
-	public List<MemberDto> selectProejctMemberList();
+	public List<MemberDto> selectProjectMemberList();
 	
 	/*프로젝트 참여인원 추가(생성)*/
 	@Insert("INSERT INTO PROJECT_MEMBERS (PRJ_CODE, MEM_ID) VALUES (#{prjCode}, #{memId})")
 	public void insertProjectAttendMembers(String memId, int prjCode);
 	
 	/*특정 프로젝트 참여인원 리스트 출력 */
-	@Select("SELECT * FROM MEMBER WHERE MEM_ID = ANY(SELECT MEM_ID FROM PROJECT_MEMBERS WHERE PRJ_CODE = #{prjCode})")
+	@Select("SELECT * FROM MEMBER WHERE MEM_ID = ANY(SELECT MEM_ID FROM PROJECT_MEMBERS WHERE PRJ_CODE = #{prjCode}) ORDER BY (CASE RANKS WHEN '부장' THEN 1 WHEN '팀장' THEN 2 WHEN '사원' THEN 3 END)")
 	public List<MemberDto> selectProjectAttendMemberList(int prjCode);
 
 	/*프로젝트 WBS 정보 불러오기*/
@@ -66,8 +67,23 @@ public interface ProjectDao {
 	public int insertProjectWbsList(ProjectWbsDto prjWbsDto);
 	
 	/*prjCode만 가져오기(완료되지 않은 프로젝트) */
-	@Select("SELECT PRJ_CODE FROM PROJECT_INFO WHERE PRJ_COMPLETION = 0")
-	public List<ProjectInfoDto> selectPrjCode();
+	@Select("SELECT PRJ_CODE FROM PROJECT_INFO WHERE PRJ_COMPLETION = 0 ORDER BY PRJ_CODE DESC LIMIT 1")
+	public ProjectInfoDto selectPrjCode();
 	
+	/*프로젝트 참여인원 삭제를 위한 주키 추출 */
+	@Select("SELECT PRJ_MEM_NO FROM PROJECT_MEMBERS WHERE PRJ_CODE = #{prjCode} AND MEM_ID = #{memId}")
+	public ProjectMembersDto selectPrjMemNo(int prjCode, String memId);
+	
+	/*프로젝트 참여인원 삭제 */
+	@Delete("DELETE FROM PROJECT_MEMBERS WHERE PRJ_MEM_NO = #{prjMemNo}")
+	public void deleteProjectAttendMember(int prjMemNo);
+	
+	/*프로젝트 완료 처리*/
+	@Update("UPDATE PROJECT_INFO SET PRJ_COMPLETION = 1 WHERE PRJ_CODE = #{prjCode}")
+	public void completeProject(int prjCode);
+	
+	/*멤버 아이디로 멤버 정보 뽑아오기*/
+	@Select("SELECT MEM_NAME, DEPT_NAME, TEAM_NAME, RANKS FROM MEMBER WHERE MEM_ID = #{memId}")
+	public MemberDto selectMemberInfos(String memId);
 	
 }
