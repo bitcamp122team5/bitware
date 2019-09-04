@@ -9,9 +9,24 @@
 		<li><a href="#">주소록</a></li>
 	</ul>
 	<ul class="userInfo">
-		<li><a href="#">홍길동 님</a><li>
-		<li class="commute on"><a href="#">출근</a><li>
+		<li><a href="#" sec:authentication="principal.member.memName"></a><li>
+		<li class="commute on"><a id="onTime" href="#">출근</a><li>
 		<li class="commute"><a href="#">퇴근</a><li>
 	</ul>
+	<input type="text">
+	<script>
+		window.onload=function(){
+			document.getElementById("onTime").onclick=function(){
+				$.ajax({
+					url: "/user/insertOntime",
+					data: {},
+					datatype: "json",
+					success: function(result) {
+						alert(result);
+					}
+				});
+			};
+		}
+	</script>
 </div><!-- //header end -->
 </html>

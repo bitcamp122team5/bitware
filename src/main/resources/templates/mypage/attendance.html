@@ -13,10 +13,8 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
-
-	<h1>휴가 및 근태</h1>
 	<form>
-		<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
+		<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
 			<tr>
 				<td>
 					<input type="date">
@@ -36,12 +34,18 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 		</table>
 	</form>
 	<form>
-		<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
+		<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
 			<tr>
-				<th th:text="날짜"></th>
-				<th th:text="출근시간"></th>
-				<th th:text="퇴근시간"></th>
-				<th th:text="구분"></th>
+				<th>날짜</th>
+				<th>출근시간</th>
+				<th>퇴근시간</th>
+				<th>구분</th>
+			</tr>
+			<tr th:each="commute : ${commuteList}">
+				<td th:text="${commute.commuteDate}"></td>
+				<td th:text="${commute?.commuteOntime}"></td>
+				<td th:text="${commute?.commuteOfftime}"></td>
+				<td th:text="${commute?.commuteStatus}"></td>
 			</tr>
 		</table>	
 	</form>

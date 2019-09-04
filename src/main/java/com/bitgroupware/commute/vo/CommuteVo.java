@@ -24,7 +24,7 @@ public class CommuteVo {
 	private int commuteNo;
 	@ManyToOne
 	@JoinColumn(name = "mem_id")
-	private MemberVo memId;
+	private MemberVo memberVo;
 	private String commuteDate;
 	private String commuteOntime;
 	private String commuteOfftime;
