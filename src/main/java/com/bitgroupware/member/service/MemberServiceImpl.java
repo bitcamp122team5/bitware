@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bitgroupware.community.vo.NoticeVo;
 import com.bitgroupware.company.persistence.DepartmentRepository;
 import com.bitgroupware.company.persistence.RanksRepository;
 import com.bitgroupware.company.persistence.TeamRepository;
@@ -15,6 +14,7 @@ import com.bitgroupware.company.vo.TeamVo;
 import com.bitgroupware.member.persistence.MemberRepository;
 import com.bitgroupware.member.vo.MemberVo;
 import com.bitgroupware.utils.Search;
+
 
 @Service
 public class MemberServiceImpl implements MemberService {
