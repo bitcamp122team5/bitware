@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<div th:fragment="headerFragmentAdmin" class="header">
+	<h1 class="logo"><a th:href="@{/admin/main}">BITWARE</a></h1>
+	<ul class="gnb">
+		<li><a th:href="@{/admin/selectNoticeList}">커뮤니티</a></li>
+		<li><a href="#">전자결제</a></li>
+		<li><a href="#">프로젝트</a></li>
+		<li><a href="#">주소록</a></li>
+	</ul>
+	<ul class="userInfo">
+		<li><a href="#"  sec:authentication="principal.member.memName"></a><li>
+	</ul>
+</div><!-- //header end -->
+</html>

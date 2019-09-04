@@ -32,7 +32,7 @@ public class QCommuteVo extends EntityPathBase<CommuteVo> {
 
     public final StringPath commuteStatus = createString("commuteStatus");
 
-    public final com.bitgroupware.member.vo.QMemberVo memId;
+    public final com.bitgroupware.member.vo.QMemberVo memberVo;
 
     public QCommuteVo(String variable) {
         this(CommuteVo.class, forVariable(variable), INITS);
@@ -52,7 +52,7 @@ public class QCommuteVo extends EntityPathBase<CommuteVo> {
 
     public QCommuteVo(Class<? extends CommuteVo> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.memId = inits.isInitialized("memId") ? new com.bitgroupware.member.vo.QMemberVo(forProperty("memId"), inits.get("memId")) : null;
+        this.memberVo = inits.isInitialized("memberVo") ? new com.bitgroupware.member.vo.QMemberVo(forProperty("memberVo"), inits.get("memberVo")) : null;
     }
 
 }

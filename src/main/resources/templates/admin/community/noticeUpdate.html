@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <meta charset="UTF-8">
 <title>공지사항 상세페이지(수정)(관리자용)</title>
@@ -98,7 +99,14 @@ function checkImageType(fileUrl){
 }
 </style>
 </head>
-<body th:align="center">
+<body>
+<div th:replace="fragments/headerAdmin :: headerFragmentAdmin"></div>
+
+<div th:replace="fragments/asideAdmin :: asideFragmentAdminCommunity"></div>
+
+<!-- //무조건 section 안에서 내용 작성 -->
+<div layout:fragment="content" class="section">
+
 <form th:action="@{/admin/updateNotice}" method="post">
 <input type="hidden" th:value="${notice.ntNo}" name="ntNo">
 <input type="hidden" th:value="${notice.ntDelCheck}" name="ntDelCheck">
@@ -161,5 +169,6 @@ function checkImageType(fileUrl){
 </table>
 </form>
 <a th:href="@{/admin/selectNoticeList}">글목록</a>
+</div>
 </body>
 </html>

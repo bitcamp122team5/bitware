@@ -3,6 +3,7 @@ function insertProjectForm() {
 	$("#insertProjectForm").modal();
 }
 
+
 // 프로젝트 생성
 // swal은 sweetalert.js에서 파생. alert 대신 쓰는 것. 경고창 url을 없애주고 ui가 깔끔
 function insertProject() {
@@ -14,6 +15,9 @@ function insertProject() {
 	var prjMothercompany = $('#prjMothercompany').val();
 	var start = new Date(prjStart);
 	var end = new Date(prjEnd);
+	var memIdChk = $("input[class='checkBoxArr']:checked").length;
+	
+	
 	if(prjName == ''){
 		swal('프로젝트명', '프로젝트명을 입력해주세요');
 		return false;
@@ -40,9 +44,18 @@ function insertProject() {
 		return false;
 	}else if(prjMothercompany == ''){
 		swal('마더업체', '마더업체를 입력해주세요');
+		return false;
+	}else if(memIdChk < 1 ){
+		swal('참여인원을 선택해주세요');
+		return false;
 	}
+	
 	$('#frmInsertProjcet').submit();
+	
 }
+
+
+
 
 /*프로젝트 정보 수정 모달 팝업*/
 function projectUpdateModal() {
@@ -63,7 +76,7 @@ function updateProject() {
 	var prjMothercompany = $('#prjMothercompany').val();
 	var start = new Date(prjStart);
 	var end = new Date(prjEnd);
-	var memId = $('#memId').val();
+	
 	//var prjCode = $('#prjCode').val();
 	if(prjName == ''){
 		swal('프로젝트명', '프로젝트명을 입력해주세요');
@@ -92,6 +105,10 @@ function updateProject() {
 	}else if(prjMothercompany == ''){
 		swal('마더업체', '마더업체를 입력해주세요');
 	}
+	
+	
+	
+	
 	$('#frmUpdateProjcet').submit();
 }
 
@@ -121,6 +138,98 @@ $(function(){
 	});	
 })
 
+function insertProjectAttendMembers(){
+	var confirm_val = confirm("선택을 완료하시겠습니까?");
+	if(confirm_val){
+		var checkBoxArr = new Array();
+		$("input[class='checkBox']:checked").each(function(){
+			checkBoxArr.push($(this).val());
+		})
+		var prjCode = $("#prjCode").val();
+		$.ajax({
+			url:"/user/insertProjectAttendMembers",
+			type:"post",
+			data:{
+				checkBoxArr:checkBoxArr,
+				prjCode:prjCode
+			},
+			success:function(){
+				location.href="/user/projectDetail?prjCode="+prjCode;
+			}
+		});
+	}
+}
+
+/*참여인원 삭제 모달*/
+function deleteProjectAttendMember(){
+	var confirm_val = confirm("인원을 삭제하시겠습니까?");
+	if(confirm_val){
+		var memId = $('#memId').val();
+		var prjCode = $("#prjCode").val();
+		$.ajax({
+			url:"/user/deleteProjectAttendMember",
+			type:"post",
+			data:{
+				memId : memId,
+				prjCode : prjCode
+			},
+			success:function(){
+				alert("해당 인원이 삭제 됐습니다.");
+				location.href="/user/projectDetail?prjCode="+prjCode;
+			}
+		});
+	}
+}
+
+/*프로젝트 생성 버튼 직급에 따라 show or hide*/
+$(function(){
+	
+	if($('#sessionRanks').val() == "부장"){
+		$('#insertProjectBtn').show();
+	}else if($('#sessionRanks').val() == "사장"){
+		$('#insertProjectBtn').show();
+	}else{
+		$('#insertProjectBtn').hide();
+	}
+})
+
+/*프로젝트 완료 처리*/
+function completeProject(){
+	var confirm_val = confirm("프로젝트를 완료 처리 하시겠습니까?");
+	if(confirm_val){
+		$("#completeProjectFrm").submit();
+	}
+}
+
+//$(function(){
+//	var prjCode = new Array();
+//	var list = {};
+//	
+//	$('#pmPrjCode').each(function(){
+//		prjCode.push($(this).val());
+//	})
+//	
+//	$.ajax({
+//		type: "post",
+//		url: "selectProjectPMName",
+//		data: { prjCode : prjCode },
+//		success: function(members){
+//			if(members.lenght != 0){
+//				list.cnt = members.length;
+//				list.names = new Array();
+//				alert(list.cnt);
+//				$.each(members, function(i, MemberDto){
+//					list.names[i] = MemberDto.memName;
+//				});
+//				for(var i=0; i<list.cnt; i++){
+//					$('#pmNames').each(function(i){
+//						$(this).text(list.names[i]);
+//					});
+//				}
+//			}
+//		}
+//	});
+//});
 //참여인원 선택 생성 폼
 //function selectProjectMember() {
 //	$("#memberForm").modal();

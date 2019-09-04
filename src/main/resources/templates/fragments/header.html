@@ -5,20 +5,37 @@
 	<ul class="gnb">
 		<li><a th:href="@{/user/selectNoticeList}">커뮤니티</a></li>
 		<li><a th:href="@{/user/selectApprovalListToBe}">전자결제</a></li>
-		<li><a href="#">프로젝트</a></li>
+		<li><a th:href="@{/user/selectProjectList}">프로젝트</a></li>
 		<li><a href="#">주소록</a></li>
 	</ul>
 	<ul class="userInfo">
-		<li><a href="#">홍길동 님</a><li>
-		<li class="commute on"><a href="#">출근</a><li>
+		<li><a href="#" sec:authentication="principal.member.memName"></a><li>
+		<li class="commute on"><a id="onTime" href="#">출근</a><li>
 		<li class="commute"><a href="#">퇴근</a><li>
 	</ul>
-	
+
 	<div class="chat_wrap">
 		<button type="button" class="btn_chat"><i class="fal fa-smile"></i></button>
 		<div class="chat_inner">
 			 <th:block th:replace="chat/chatList :: chatFragment"></th:block>
 		</div>
 	</div><!-- //chat_wrap end -->
+
+	<input type="text">
+	<script>
+		window.onload=function(){
+			document.getElementById("onTime").onclick=function(){
+				$.ajax({
+					url: "/user/insertOntime",
+					data: {},
+					datatype: "json",
+					success: function(result) {
+						alert(result);
+					}
+				});
+			};
+		}
+	</script>
+
 </div><!-- //header end -->
 </html>
