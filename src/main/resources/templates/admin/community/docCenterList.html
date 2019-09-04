@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <meta charset="UTF-8">
-<title>공지사항 목록페이지(관리자)</title>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script> 
+<title>자료실 (관리자)</title>
+<th:block th:replace="fragments/config :: configFragment"></th:block>
 <script>
 $(function(){
 	var cate = $("#searchCondition").val();
@@ -81,6 +82,13 @@ $(document).ready(function() {
 </script>
 </head>
 <body>
+<div th:replace="fragments/headerAdmin :: headerFragmentAdmin"></div>
+
+<div th:replace="fragments/asideAdmin :: asideFragmentAdminCommunity"></div>
+
+<!-- //무조건 section 안에서 내용 작성 -->
+<div layout:fragment="content" class="section">
+
 <!-- 검색 시작 -->
 <form th:action="@{/admin/selectDocCenterList}">
 <table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
@@ -170,5 +178,6 @@ $(document).ready(function() {
 		</td>
 	</tr>
 </table>
+</div>
 </body>
 </html>
