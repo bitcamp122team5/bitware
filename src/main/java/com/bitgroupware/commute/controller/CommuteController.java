@@ -27,12 +27,12 @@ public class CommuteController {
 
 	// 근태 목록
 	@RequestMapping("/selectCommuteList")
-	public String selectCommuteList(Model model) {
+	public String selectCommuteList(Model model, @AuthenticationPrincipal SecurityUser principal) {
 		
-		List<CommuteVo> commuteList = commuteService.selectCommuteList();
+		List<CommuteVo> commuteList = commuteService.selectCommuteList(principal.getMember());
 		
 		model.addAttribute("commuteList", commuteList);
-		
+
 		return "mypage/attendance";
 	}
 	

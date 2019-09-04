@@ -3,12 +3,12 @@ package com.bitgroupware.commute.service;
 import java.util.List;
 
 import com.bitgroupware.commute.vo.CommuteVo;
-import com.bitgroupware.security.config.SecurityUser;
+import com.bitgroupware.member.vo.MemberVo;
 
 public interface CommuteService {
-	
-	List<CommuteVo> selectCommuteList();
 
 	void insertOntime(CommuteVo commuteVo);
+
+	List<CommuteVo> selectCommuteList(MemberVo member);
 
 }
