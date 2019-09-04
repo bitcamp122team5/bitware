@@ -3,6 +3,7 @@ package com.bitgroupware.approval.controller;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -22,6 +24,8 @@ import com.bitgroupware.approval.service.ApprovalDocService;
 import com.bitgroupware.approval.service.ApprovalService;
 import com.bitgroupware.member.vo.MemberVo;
 import com.bitgroupware.security.config.SecurityUser;
+import com.bitgroupware.utils.Pager;
+import com.bitgroupware.utils.Search;
 
 @Controller
 @RequestMapping("/user")
@@ -100,7 +104,6 @@ public class ApprovalController {
             approvalFileDto.setApFilename(originFileName);
             approvalFileDto.setApFileurl(safeFile);
             approvalFileDto.setApNo(apNo);
-            System.out.println(approvalFileDto);
             try {
                 mf.transferTo(new File(safeFile));
                 approvalService.insertApprovalFile(approvalFileDto);
@@ -115,32 +118,96 @@ public class ApprovalController {
 	
 	// 결재 받을 문서 리스트
 	@RequestMapping("/selectApprovalListToBe")
-	public String selectApprovalListToBe(Model model, @AuthenticationPrincipal SecurityUser principal, String status) {
-		String memId = principal.getMember().getMemId();
-		List<ApprovalDto> approvalListToBe;
-		if(status==""||status==null) {
-			approvalListToBe = approvalService.selectApprovalListToBeByTotal(memId);
-		}else {
-			approvalListToBe = approvalService.selectApprovalListToBe(memId, status);
-		}
-		model.addAttribute("approvalListToBe",approvalListToBe);
-		
+	public String selectApprovalListToBe(Model model, @AuthenticationPrincipal SecurityUser principal, String status, 
+			@RequestParam(defaultValue = "1") int curPage, Search search) {
 		Date date = new Date();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		String today = format.format(date);
+		String memId = principal.getMember().getMemId();
+		List<ApprovalDto> approvalListToBe;
+		int count;
+		if(status==""||status==null) {
+			count = approvalService.countApproval(memId,search);
+		}else {
+			count = approvalService.countApprovalStatus(memId,status,search);
+		}
+			Pager page = new Pager(count, curPage);
+			int blockBegin = page.getBlockBegin();
+			int blockEnd = page.getBlockEnd();
+			
+			List<Integer> block= new ArrayList<Integer>();
+			for( int i = blockBegin; i<=blockEnd; i++) {
+				block.add(i);
+			}
+			int begin = page.getPageBegin()-1;
+		if(status==""||status==null) {
+			approvalListToBe = approvalService.selectApprovalListToBeByTotal(memId,begin,search);
+		}else {
+			approvalListToBe = approvalService.selectApprovalListToBe(memId, status,begin, search);
+		}
+		model.addAttribute("approvalListToBe",approvalListToBe);
 		model.addAttribute("today",today);
+		model.addAttribute("page",page);
+		model.addAttribute("block",block);
+		model.addAttribute("search",search);
+		model.addAttribute("status",status);
 		
 		return "approval/approvalListToBe";
 	}
 	
 	// 결재 할 문서 리스트
 	@RequestMapping("/selectApprovalListTo")
-	public String selectApprovalListTo(Model model, @AuthenticationPrincipal SecurityUser principal) {
+	public String selectApprovalListTo(Model model, @AuthenticationPrincipal SecurityUser principal, 
+			@RequestParam(defaultValue = "1") int curPage, Search search) {
+		
 		String memId = principal.getMember().getMemId();
-		List<ApprovalDto> approvalList = approvalService.selectApprovalListTo(memId);
+		int count = approvalService.countApproval(memId,search);
+
+		Pager page = new Pager(count, curPage);
+		int blockBegin = page.getBlockBegin();
+		int blockEnd = page.getBlockEnd();
+
+		List<Integer> block = new ArrayList<Integer>();
+		for (int i = blockBegin; i <= blockEnd; i++) {
+			block.add(i);
+		}
+
+		int begin = page.getPageBegin() - 1;
+		
+		List<ApprovalDto> approvalList = approvalService.selectApprovalListTo(memId,begin,search);
 		model.addAttribute("approvalList",approvalList);
+		model.addAttribute("page",page);
+		model.addAttribute("block",block);
+		model.addAttribute("search",search);
 		return "approval/approvalListTo";
 	}
+	
+	@RequestMapping("/selectApprovalListFinish")
+	public String selectApprovalListToFinish(Model model, @AuthenticationPrincipal SecurityUser principal, 
+			@RequestParam(defaultValue = "1") int curPage, Search search) {
+		
+		String memId = principal.getMember().getMemId();
+		int count = approvalService.countApprovalToFinish(memId,search);
+
+		Pager page = new Pager(count, curPage);
+		int blockBegin = page.getBlockBegin();
+		int blockEnd = page.getBlockEnd();
+
+		List<Integer> block = new ArrayList<Integer>();
+		for (int i = blockBegin; i <= blockEnd; i++) {
+			block.add(i);
+		}
+
+		int begin = page.getPageBegin() - 1;
+		
+		List<ApprovalDto> approvalList = approvalService.selectApprovalListToFinish(memId,begin,search);
+		model.addAttribute("approvalList",approvalList);
+		model.addAttribute("page",page);
+		model.addAttribute("block",block);
+		model.addAttribute("search",search);
+		return "approval/approvalListTo";
+	}
+	
 
 	// 읽기
 	@RequestMapping("/selectApprovalView")
@@ -256,15 +323,17 @@ public class ApprovalController {
 	}
 	
 	@RequestMapping("/updateApprovalView")
-	public String updateApprovalView(Model model,String apNo) {
+	public String updateApprovalView(Model model,String apNo,ApprovalFileDto approvalFile) {
 		ApprovalDto approval = approvalService.selectApproval(apNo);
+		List<ApprovalFileDto> approvalFileList = approvalService.selectApprovalFile(apNo);
 		model.addAttribute("approval",approval);
 		return "approval/approvalUpdate";
 	}
 	
 	@RequestMapping("/updateApproval")
-	public String updateApproval(ApprovalDto approval) {
+	public String updateApproval(ApprovalDto approval,ApprovalFileDto approvalFile) {
 		approvalService.updateApproval(approval);
+		approvalService.updateApprovalFile(approvalFile);
 		return "redirect:/user/selectApprovalListToBe";
 	}
 

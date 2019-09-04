@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import com.bitgroupware.approval.beans.ApprovalDto;
 import com.bitgroupware.approval.beans.ApprovalFileDto;
 import com.bitgroupware.approval.persistence.ApprovalDao;
+import com.bitgroupware.community.vo.NoticeVo;
 import com.bitgroupware.member.vo.MemberVo;
+import com.bitgroupware.utils.Search;
 
 @Service
 public class ApprovalServiceImpl implements ApprovalService {
@@ -21,17 +23,81 @@ public class ApprovalServiceImpl implements ApprovalService {
 	static final Logger LOGGER = LoggerFactory.getLogger(ApprovalServiceImpl.class);
 
 	// 결재 받을 문서 리스트
-	public List<ApprovalDto> selectApprovalListToBeByTotal(String memId) {
-		return apDao.selectApprovalListToBeByTotal(memId);
+	public List<ApprovalDto> selectApprovalListToBeByTotal(String memId,int begin,Search search) {
+		if (search.getSearchCondition() == null)
+			search.setSearchCondition("apTitle");
+		if (search.getSearchKeyword() == null)
+			search.setSearchKeyword("");
+		String searchCondition = search.getSearchCondition();
+		String searchKeyword = "%" + search.getSearchKeyword().trim() + "%";
+		List<ApprovalDto> approvalList = null;
+		switch (searchCondition) {
+		case "apTitle":
+			approvalList = apDao.selectApprovalListToBeByTotalApTilte(memId,begin, searchKeyword);
+			break;
+		case "apContent":
+			approvalList = apDao.selectApprovalListToBeByTotalApContent(memId,begin, searchKeyword);
+			break;
+		}
+		return approvalList;
 	}
 
-	public List<ApprovalDto> selectApprovalListToBe(String memId, String status) {
-		return apDao.selectApprovalListToBe(memId, status);
+	public List<ApprovalDto> selectApprovalListToBe(String memId, String status,int begin,Search search) {
+		if (search.getSearchCondition() == null)
+			search.setSearchCondition("apTitle");
+		if (search.getSearchKeyword() == null)
+			search.setSearchKeyword("");
+		String searchCondition = search.getSearchCondition();
+		String searchKeyword = "%" + search.getSearchKeyword().trim() + "%";
+		List<ApprovalDto> approvalList = null;
+		switch (searchCondition) {
+		case "apTitle":
+			approvalList = apDao.selectApprovalListToBeApTilte(memId, status,begin, searchKeyword);
+			break;
+		case "apContent":
+			approvalList = apDao.selectApprovalListToBeApContent(memId, status,begin, searchKeyword);
+			break;
+		}
+		return approvalList;
 	}
 
 	// 결재 할 문서 리스트
-	public List<ApprovalDto> selectApprovalListTo(String memId) {
-		return apDao.selectApprovalListTo(memId);
+	public List<ApprovalDto> selectApprovalListTo(String memId,int begin,Search search) {
+		if (search.getSearchCondition() == null)
+			search.setSearchCondition("apTitle");
+		if (search.getSearchKeyword() == null)
+			search.setSearchKeyword("");
+		String searchCondition = search.getSearchCondition();
+		String searchKeyword = "%" + search.getSearchKeyword().trim() + "%";
+		List<ApprovalDto> approvalList = null;
+		switch (searchCondition) {
+		case "apTitle":
+			approvalList = apDao.selectApprovalListToApTilte(memId,begin, searchKeyword);
+			break;
+		case "apContent":
+			approvalList = apDao.selectApprovalListToApContent(memId,begin, searchKeyword);
+			break;
+		}
+		return approvalList;
+	}
+	
+	public List<ApprovalDto> selectApprovalListToFinish(String memId,int begin,Search search) {
+		if (search.getSearchCondition() == null)
+			search.setSearchCondition("apTitle");
+		if (search.getSearchKeyword() == null)
+			search.setSearchKeyword("");
+		String searchCondition = search.getSearchCondition();
+		String searchKeyword = "%" + search.getSearchKeyword().trim() + "%";
+		List<ApprovalDto> approvalList = null;
+		switch (searchCondition) {
+		case "apTitle":
+			approvalList = apDao.selectApprovalListToFinishApTilte(memId,begin, searchKeyword);
+			break;
+		case "apContent":
+			approvalList = apDao.selectApprovalListToFinishApContent(memId,begin, searchKeyword);
+			break;
+		}
+		return approvalList;
 	}
 
 	// 읽기
@@ -118,10 +184,81 @@ public class ApprovalServiceImpl implements ApprovalService {
 	public void updateApproval(ApprovalDto approval) {
 		apDao.updateApproval(approval);
 	}
+	
+	@Override
+	public void updateApprovalFile(ApprovalFileDto approvalFile) {
+		apDao.updateApprovalFile(approvalFile);
+	}
 
 	@Override
 	public void insertApprovalFile(ApprovalFileDto approvalFileDto) {
 		apDao.insertApprovalFile(approvalFileDto);
+	}
+	
+	//재범페이징
+
+	@Override
+	public int countApproval(String memId, Search search) {
+		if (search.getSearchCondition() == null)
+			search.setSearchCondition("apTitle");
+		if (search.getSearchKeyword() == null)
+			search.setSearchKeyword("");
+
+		String searchCondition = search.getSearchCondition();
+		String searchKeyword = "%" + search.getSearchKeyword().trim() + "%";
+		int count = 0;
+		switch (searchCondition) {
+		case "apTitle":
+			count = apDao.countByApTitle(memId,searchKeyword);
+			break;
+		case "apContent":
+			count = apDao.countByApContent(memId,searchKeyword);
+			break;
+		}
+		return count;
+	}
+
+	@Override
+	public int countApprovalStatus(String memId, String status, Search search) {
+		if (search.getSearchCondition() == null)
+			search.setSearchCondition("apTitle");
+		if (search.getSearchKeyword() == null)
+			search.setSearchKeyword("");
+
+		String searchCondition = search.getSearchCondition();
+		String searchKeyword = "%" + search.getSearchKeyword().trim() + "%";
+		int count = 0;
+		switch (searchCondition) {
+		case "apTitle":
+			count = apDao.countByApTitleStatus(memId,status,searchKeyword);
+			break;
+		case "apContent":
+			count = apDao.countByApContentStatus(memId,status,searchKeyword);
+			break;
+		}
+		return count;
+	}
+
+	@Override
+	public int countApprovalToFinish(String memId, Search search) {
+		if (search.getSearchCondition() == null)
+			search.setSearchCondition("apTitle");
+		if (search.getSearchKeyword() == null)
+			search.setSearchKeyword("");
+
+		String searchCondition = search.getSearchCondition();
+		String searchKeyword = "%" + search.getSearchKeyword().trim() + "%";
+		int count = 0;
+		switch (searchCondition) {
+		case "apTitle":
+			count = apDao.countByToApTitle(memId,searchKeyword);
+			break;
+		case "apContent":
+			count = apDao.countByToApContent(memId,searchKeyword);
+			break;
+		}
+		System.out.println(count);
+		return count;
 	}
 
 	
