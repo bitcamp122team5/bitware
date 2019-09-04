@@ -26,7 +26,7 @@
 </script>
 </head>
 <body>
-<div>
+<div th:fragment="chatFragment">
 	<div th:each="lcList : ${lastContentList}" th:if="${sessionName == lcList.receiver}">
 		<div th:text="${lcList.content}"></div>
 	</div>
@@ -43,9 +43,9 @@
 				<th:block th:each="member : ${memberList}" th:if="${member.deptName} == '지원부'">
 					<li class="mem" th:value="${member.memId}">
 						<p class="memName" th:text="${member.memName}"></p>
-						<th:block th:each="lcList : ${lastContentList}" th:if="${sessionName == lcList.receiver && member.memName == lsList.sender}">
+						<!-- <th:block th:each="lcList : ${lastContentList}" th:if="${sessionName == lcList.receiver && member.memName == lsList.sender}">
 						<span th:text="${lcList.content}"></span>
-						</th:block>
+						</th:block> -->
 					</li>
 				</th:block>
 			</ul>

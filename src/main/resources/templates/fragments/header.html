@@ -13,5 +13,12 @@
 		<li class="commute on"><a href="#">출근</a><li>
 		<li class="commute"><a href="#">퇴근</a><li>
 	</ul>
+	
+	<div class="chat_wrap">
+		<button type="button" class="btn_chat"><i class="fal fa-smile"></i></button>
+		<div class="chat_inner">
+			 <th:block th:replace="chat/chatList :: chatFragment"></th:block>
+		</div>
+	</div><!-- //chat_wrap end -->
 </div><!-- //header end -->
 </html>
