@@ -62,4 +62,8 @@ public interface ApprovalDao {
 	
 	@Insert("INSERT INTO APPROVAL_FILE (AP_NO,AP_FILENAME,AP_FILEURL) VALUES (#{apNo}, #{apFilename}, #{apFileurl})")
 	void insertApprovalFile(ApprovalFileDto approvalFileDto);
+	
+	@Select("select * from approval_file where ap_no = #{apNo}")
+	List<ApprovalFileDto> selectApprovalFile(String apNo);
+	
 }

@@ -39,6 +39,11 @@ public class ApprovalServiceImpl implements ApprovalService {
 	public ApprovalDto selectApproval(String apNo) {
 		return apDao.selectApproval(apNo);
 	}
+	
+	@Override
+	public List<ApprovalFileDto> selectApprovalFile(String apNo) {
+		return apDao.selectApprovalFile(apNo);
+	}
 
 	// 기안
 	@Override
@@ -118,6 +123,8 @@ public class ApprovalServiceImpl implements ApprovalService {
 	public void insertApprovalFile(ApprovalFileDto approvalFileDto) {
 		apDao.insertApprovalFile(approvalFileDto);
 	}
+
+	
 
 	
 

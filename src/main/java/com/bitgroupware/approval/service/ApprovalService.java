@@ -33,7 +33,7 @@ public interface ApprovalService {
 	
 	void insertApprovalFile(ApprovalFileDto approvalFileDto);
 	
-	
+	List<ApprovalFileDto> selectApprovalFile(String apNo);
 
 
 	
