@@ -1,0 +1,17 @@
+/* checkbox */
+.check_wrap input[type=checkbox] {display:none;}
+.check_wrap input[type=checkbox] + label {width:20px;height:20px;display:inline-block;cursor:pointer;line-height:22px;background:url('../image/check_off.png')left/22px no-repeat;}
+.check_wrap input[type=checkbox]:checked + label {background-image:url('../image/check_on.png');}
+
+
+/* table */
+.table_wrap{width:98%;margin:0 auto;}
+.table_wrap table{width:100%;}
+.table_wrap tr{border-bottom:1px solid #ddd;}
+.table_wrap.list thead th{padding:8px 10px;box-sizing:border-box;background:#e7e9ef;text-align:center;}
+.table_wrap.list tbody th{padding:8px 10px;box-sizing:border-box;background:#e7e9ef;}
+.table_wrap.list tbody td{padding:8px 10px;box-sizing:border-box;text-align:center;}
+.table_wrap.list .tit{text-align:left;}
+.table_wrap.list .tit::after{content:'';display:block;clear:both;}
+.table_wrap.list .tit a{float:left;width:100%;}
+.table_wrap.list .file img{width:20px;height:20px;}
