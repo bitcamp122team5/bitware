@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.bitgroupware.approval.beans.ApprovalDto;
+import com.bitgroupware.approval.beans.ApprovalFileDto;
 
 @Mapper
 public interface ApprovalDao {
@@ -55,4 +56,10 @@ public interface ApprovalDao {
 	
 	@Update("update approval set ap_title = #{apTitle} ,ap_content = #{apContent} where ap_no = #{apNo}")
 	void updateApproval(ApprovalDto approval);
+	
+	@Select("SELECT MAX(AP_NO) FROM APPROVAL")
+	String selectMaxApNo();
+	
+	@Insert("INSERT INTO APPROVAL_FILE (AP_NO,AP_FILENAME,AP_FILEURL) VALUES (#{apNo}, #{apFilename}, #{apFileurl})")
+	void insertApprovalFile(ApprovalFileDto approvalFileDto);
 }
