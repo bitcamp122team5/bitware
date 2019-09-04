@@ -29,9 +29,5 @@ public class MypageController {
 		memberService.updateMyInfo(memberVo);
 		return "redirect:mypage";
 	}
-	
-	@RequestMapping("/attendance")
-	public String attendance() {
-		return "mypage/attendance";
-	}
+
 }

@@ -21,9 +21,8 @@ layout:decorator="layout/default">
 
 	<!-- //무조건 section 안에서 내용 작성 -->
 	<div layout:fragment="content" class="section no_aside">
-	<a th:href="@{/user/mypage}" th:text="마이페이지"></a>
-	<a th:href="@{/user/attendance}" th:text="휴가및근태"></a>
-	<h1>메인페이지</h1>
+	<a th:href="@{/user/mypage}">마이페이지</a>
+	<a th:href="@{/user/selectCommuteList}">휴가 및 근태</a>
 	<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
 		<tr>
 			<th>분류</th>
