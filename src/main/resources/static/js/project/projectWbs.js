@@ -3,7 +3,7 @@ var subData = {} // List<ProjectWbsDto>
 
 
 /*최초 ProjectWbs 화면 그리기 */
-$(document).ready(function(){
+$(function(){
 	
 	// 기본데이터 저장 객체
 	baseData = {
@@ -498,3 +498,5 @@ function totalDaysAnalysis(data, cnt) {
 		}
 	return tag.toString();
 }
+
+

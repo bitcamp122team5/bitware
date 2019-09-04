@@ -153,8 +153,13 @@ function commaNum(num){
 		</table>
 		<input class="btn btn-sm btn-warning btn-center" type="button" value="저장" onclick="insertProjectWbsList()">
 		<input class="btn btn-sm btn-warning btn-center" type="button" value="프로젝트 목록" onclick="location.href='/user/selectProjectList'">
-		 <input class='btn btn-sm btn-warning btn-center' type='button' value='작업 삭제' onclick='checkListRemove()'>
+		<input class="btn btn-sm btn-warning btn-center" type="button" value="작업 삭제" onclick="checkListRemove()">
+		
 	</form>
+		<form id="completeProjectFrm" action="completeProject">
+			<input type="hidden" name="prjCode" id="prjCode" th:value="${prjInfo.prjCode}">
+			<input class="btn btn-sm btn-warning btn-center" type="button" value="프로젝트 완료" onclick="completeProject()">
+		</form>
 	
 	<!-- 프로젝트 정보 수정 모달 -->
 	<div class="modal fade" id="projectUpdateModal" role="dialog">
@@ -203,7 +208,7 @@ function commaNum(num){
 		</div>
 	</div>
 	<!-- 프로젝트 참여인원 추가 모달 -->
-	<div class="modal fade" id="insertProjectAttendMemberModal" role="dialog">
+	<div class="modal fade" id="insertProjectAttendMemberModal" role="dialog" style="z-index: 9999;">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -211,7 +216,7 @@ function commaNum(num){
 					<h4 id="prjAttend">프로젝트 참여인원</h4>
 				</div>
 				<div class="modal-body">
-					<table class="table table-hover">
+				<table class="table table-hover">
 					<tr>
 						<th><input type="checkbox" name="allCheckBox" id="allCheckBox"></th>
 						
@@ -221,17 +226,17 @@ function commaNum(num){
 						<th>직급</th>
 					</tr>
 					<tr th:each="worker : ${members}">
-						<td><input type="checkbox" name="memId" calss="checkBox" th:value="${worker.memId}"></td>
-							
+						<td><input type="checkbox" name="memId" id="memId" class="checkBox" th:value="${worker.memId}"></td>
 							<td th:text="${worker.memName}"></td>
 							<td th:text="${worker.deptName}"></td>
 							<td th:text="${worker.teamName}"></td>
 							<td th:text="${worker.ranks}"></td>
 							<td><input type="hidden" name="prjCode" id="prjCode" th:value="${prjInfo.prjCode}"></td>
 					</tr>
-					<br />
-					<button type="button" class="insertProjectAttendMembersBtn">프로젝트 참여인원 선택 완료</button>					
-					</table>
+				</table>					
+				</div>
+				<div class="modal-footer">
+				<tr><button type="button" onclick="insertProjectAttendMembers()" class="btn btn-sm btn-warning">프로젝트 참여인원 선택 완료</button></tr>				
 				</div>
 			</div>
 		</div>
@@ -250,16 +255,22 @@ function commaNum(num){
 					<tr>
 						<th>이름</th>
 						<th>부서</th>
+						<th>팀</th>
 						<th>직급</th>
+						<th></th>
 					</tr>
 					<tr th:each="memInfos : ${memInfos}">
-						<div class="form-group">
-						<td class="prjMems" th:text="${memInfos.memName}"></td>
+						<td class="prjMems" id="memId" th:text="${memInfos.memName}"></td>
 						<td th:text="${memInfos.deptName}"></td>
+						<td th:text="${memInfos.teamName}"></td>
 						<td th:text="${memInfos.ranks}"></td>
-						</div>
+						<td><input type="hidden" name="prjCode" id="prjCode" th:value="${prjInfo.prjCode}"></td> 
+						<td><button type="button" class="close" aria-label="Close" onclick="deleteProjectAttendMember()" style="color: red;"><span aria-hidden="true">&times;</span></button></td>
 					</tr>
 					</table>
+					<div class="modal-footer">
+					<input type="button" value="참여인원 추가" onclick="insertProjectAttendMemberModal()" id="projectAttendMembersBtn" class="btn btn-sm btn-warning btn-center">
+					</div>
 				</div>
 			</div>
 		</div>
