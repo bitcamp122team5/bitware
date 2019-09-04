@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorator="layout/default">
+<head>
+<meta charset="UTF-8">
+<title>메인페이지</title>
+<th:block th:replace="fragments/config :: configFragment"></th:block>
+
+</head>
+<body>
+<div th:replace="fragments/headerAdmin :: headerFragmentAdmin"></div>
+
+<!-- //무조건 section 안에서 내용 작성 -->
+<div layout:fragment="content" class="section no_aside">
+
+</div>
+</body>
+</html>
