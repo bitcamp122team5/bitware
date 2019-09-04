@@ -92,16 +92,6 @@ public class ProjectController {
 		return "project/projectDetail";
 	}
 	
-	/*프로젝트 수정 페이지로 이동 */
-	@RequestMapping("/updateProjectView")
-	public String updateProjectView(Model model, String prjCode) {
-		int code = Integer.parseInt(prjCode.trim());
-		
-		ProjectInfoDto prjVO = projectService.selectProject(code);
-		model.addAttribute("board", prjVO);
-		return "project/projectUpdate";
-	}
-	
 	/*프로젝트 수정 */
 	@RequestMapping("/updateProject")
 	public String updateProject(Model model, ProjectInfoDto prjDto) {
@@ -112,7 +102,6 @@ public class ProjectController {
 		projectService.updateProject(prjDto);
 		return "redirect:/user/selectProjectList";
 	}
-	
 	
 	/*프로젝트 생성 */
 	@RequestMapping(value="/insertProject", method=RequestMethod.POST)
@@ -144,20 +133,7 @@ public class ProjectController {
 				projectService.insertProjectAttendMembers(memId, prjInfo.getPrjCode());
 			}
 		}
-		
 		return "redirect:/user/selectProjectList";
-	}
-	
-	
-	/*프로젝트 참여인원 선택 페이지로 이동 */
-	@RequestMapping("/selectProjectAttendMemberList")
-	public String selectProjectAttendMembersView(Model model, int prjCode) {
-		
-		List<MemberDto> memOfficeInfo = projectService.selectProjectMemberList();
-		ProjectInfoDto prjDto = projectService.selectProject(prjCode);
-		model.addAttribute("members", memOfficeInfo);
-		model.addAttribute("prjCode", prjDto);
-		return "project/projectAttendMembers";
 	}
 	
 	/*프로젝트 참여인원 추가 */
@@ -168,11 +144,9 @@ public class ProjectController {
 		for(String checkBox : checkBoxArr) {
 			projectService.insertProjectAttendMembers(checkBox, prjCode);
 		}
-		
 		System.out.println("프로젝트 참여인원 추가 컨트롤러 작업 완료");
 		return "project/project";
 	}
-	
 	
 	//Project WBS List 불러오는 ajax
 	@RequestMapping(value="selectProjectWbsListAjax", method=RequestMethod.POST)
@@ -193,7 +167,6 @@ public class ProjectController {
 		
 		System.out.println("insertProjectWbsListAjax : " + prjDto);
 		boolean isc = false;
-		
 		
 		String[] prjTotalDaysSum = req.getParameterValues("inPrjTotalDays");
 		System.out.println("prjTotalDaysSum 출력 결과 : " + prjTotalDaysSum);
@@ -227,7 +200,6 @@ public class ProjectController {
 		}else {
 			isc = projectService.deleteProjectWbsList(prjDto.getPrjCode());
 		}
-		
 		return isc;
 	}
 	
