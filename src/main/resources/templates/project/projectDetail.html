@@ -33,15 +33,6 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <script th:src='@{/fullcalendar/packages/timegrid/main.js}'></script>
 <script th:src='@{/fullcalendar/packages/list/main.js}'></script>
 </th:block>
-<script>
-	function useCalendar(){
-		alert("111");
-				
-
-	
-	
-
-</script>
 <style>
   #calendar {
     max-width: 900px;
@@ -92,6 +83,58 @@ function commaNum(num){
 	}
 	return str;
 }
+
+function viewGraph(){
+		alert("111");
+		
+		$("#viewGraphModal").modal();
+		
+		var calendarEl = document.getElementById('calendar');
+		  
+		var calendar = new FullCalendar.Calendar(calendarEl, {
+			plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
+		  	header: {
+	      		left: 'prev,next today',
+	      		center: 'title',
+	     		right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+	      	},
+	     	defaultDate: new Date(),
+	      	locale: 'ko',
+	      	navLinks: true, // can click day/week names to navigate views
+	      	businessHours: true, // display business hours
+	      	editable: false,
+	    });
+		
+		var prjCode = $('#prjCode').val();
+		alert(prjCode);
+		$.ajax({
+			type: "post",
+			url: "/user/selectProjectWbsOnCalendar",
+			data: {prjCode : prjCode},
+			dataType: "json",
+			success:function(projectWbsList){
+				for(var i in projectWbsList){
+					if(projectWbsList[i].prjDepth==0) var color = "#ff0000";
+					if(projectWbsList[i].prjDepth==1) var color = "#ff6000";
+					if(projectWbsList[i].prjDepth==2) var color = "#ff9600";
+					if(projectWbsList[i].prjDepth==3) var color = "#ffd200";
+					if(projectWbsList[i].prjDepth==4) var color = "#ffe400";
+					if(projectWbsList[i].prjDepth==5) var color = "#c1ee0c";
+					if(projectWbsList[i].prjDepth==6) var color = "#66ee0c";
+					if(projectWbsList[i].prjDepth==7) var color = "#0cee76";
+					if(projectWbsList[i].prjDepth==8) var color = "#0c91ee";
+					if(projectWbsList[i].prjDepth==9) var color = "#0c6cee";
+					calendar.addEvent({
+		            	title: projectWbsList[i].prjWorkName,
+		                start: projectWbsList[i].prjWbsStart,
+		                end: projectWbsList[i].prjWbsEnd,
+		                color: color
+		            });
+				}
+			}
+		});
+	    calendar.render();
+	}
 </script>
 </head>
 <body>
@@ -179,7 +222,7 @@ function commaNum(num){
 		<input class="btn btn-sm btn-warning btn-center" type="button" value="저장" onclick="insertProjectWbsList()">
 		<input class="btn btn-sm btn-warning btn-center" type="button" value="프로젝트 목록" onclick="location.href='/user/selectProjectList'">
 		<input class="btn btn-sm btn-warning btn-center" type="button" value="작업 삭제" onclick="checkListRemove()">
-		<input class="btn btn-sm btn-warning btn-center" type="button" id="goodluck" value="달력" onclick="calendarModal()">
+		<input class="btn btn-sm btn-warning btn-center" type="button" value="달력" onclick="viewGraph()">
 		
 	</form>
 		<form id="completeProjectFrm" action="completeProject">
@@ -302,7 +345,7 @@ function commaNum(num){
 		</div>
 	</div>
 	
-	<div class="modal fade" id="calendarModal" role="dialog" style="z-index: 9999;">
+	<div class="modal fade" id="viewGraphModal" role="dialog" style="z-index: 9999;">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">

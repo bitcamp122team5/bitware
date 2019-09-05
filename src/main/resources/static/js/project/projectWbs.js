@@ -500,54 +500,54 @@ function totalDaysAnalysis(data, cnt) {
 }
 
 //프로젝트 달력
-function calendarModal() {
-	$("#calendarModal").modal();
-	
-	var calendarEl = document.getElementById('calendar');
-	  
-	var calendar = new FullCalendar.Calendar(calendarEl, {
-		plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
-	  	header: {
-      		left: 'prev,next today',
-      		center: 'title',
-     		right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
-      	},
-     	defaultDate: new Date(),
-      	locale: 'ko',
-      	navLinks: true, // can click day/week names to navigate views
-      	businessHours: true, // display business hours
-      	editable: false,
-    });
-	
-	var prjCode = $('#prjCode').val();
-	$.ajax({
-		type: "post",
-		url: "/user/selectProjectWbsOnCalendar",
-		data: {prjCode : prjCode},
-		dataType: "json",
-		success:function(projectWbsList){
-			for(ProjectWbsDto projectWbs : projectWbsList){
-				if(projectWbs.prjDepth==0) var color = "#000000";
-				if(projectWbs.prjDepth==1) var color = "#000000";
-				if(projectWbs.prjDepth==2) var color = "#000000";
-				if(projectWbs.prjDepth==3) var color = "#000000";
-				if(projectWbs.prjDepth==4) var color = "#000000";
-				if(projectWbs.prjDepth==5) var color = "#000000";
-				if(projectWbs.prjDepth==6) var color = "#000000";
-				if(projectWbs.prjDepth==7) var color = "#000000";
-				if(projectWbs.prjDepth==8) var color = "#000000";
-				if(projectWbs.prjDepth==9) var color = "#000000";
-				calendar.addEvent({
-	            	title: projectWbs.prjWorkName,
-	                start: projectWbs.prjWbsStart,
-	                end: projectWbs.prjWbsEnd,
-	                color: color
-	            });
-			}
-		}
-	});
-    calendar.render();
-}
-}
+//function calendarModal() {
+//	$("#calendarModal").modal();
+//	
+//	var calendarEl = document.getElementById('calendar');
+//	  
+//	var calendar = new FullCalendar.Calendar(calendarEl, {
+//		plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
+//	  	header: {
+//      		left: 'prev,next today',
+//      		center: 'title',
+//     		right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+//      	},
+//     	defaultDate: new Date(),
+//      	locale: 'ko',
+//      	navLinks: true, // can click day/week names to navigate views
+//      	businessHours: true, // display business hours
+//      	editable: false,
+//    });
+//	
+//	var prjCode = $('#prjCode').val();
+//	$.ajax({
+//		type: "post",
+//		url: "/user/selectProjectWbsOnCalendar",
+//		data: {prjCode : prjCode},
+//		dataType: "json",
+//		success:function(projectWbsList){
+//			for(ProjectWbsDto projectWbs : projectWbsList){
+//				if(projectWbs.prjDepth==0) var color = "#000000";
+//				if(projectWbs.prjDepth==1) var color = "#000000";
+//				if(projectWbs.prjDepth==2) var color = "#000000";
+//				if(projectWbs.prjDepth==3) var color = "#000000";
+//				if(projectWbs.prjDepth==4) var color = "#000000";
+//				if(projectWbs.prjDepth==5) var color = "#000000";
+//				if(projectWbs.prjDepth==6) var color = "#000000";
+//				if(projectWbs.prjDepth==7) var color = "#000000";
+//				if(projectWbs.prjDepth==8) var color = "#000000";
+//				if(projectWbs.prjDepth==9) var color = "#000000";
+//				calendar.addEvent({
+//	            	title: projectWbs.prjWorkName,
+//	                start: projectWbs.prjWbsStart,
+//	                end: projectWbs.prjWbsEnd,
+//	                color: color
+//	            });
+//			}
+//		}
+//	});
+//    calendar.render();
+//}
+//}
 
 
