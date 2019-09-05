@@ -1,18 +1,31 @@
 package com.bitgroupware.approval.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -26,6 +39,7 @@ import com.bitgroupware.member.vo.MemberVo;
 import com.bitgroupware.security.config.SecurityUser;
 import com.bitgroupware.utils.Pager;
 import com.bitgroupware.utils.Search;
+import com.mysema.commons.lang.URLEncoder;
 
 @Controller
 @RequestMapping("/user")
@@ -103,6 +117,7 @@ public class ApprovalController {
 				long fileSize = mf.getSize(); // 파일 사이즈
 
 				String safeFile = path + System.currentTimeMillis() + originFileName;
+//				String safeFile = path + originFileName;
 				approvalFileDto.setApFilename(originFileName);
 				approvalFileDto.setApFileurl(safeFile);
 				approvalFileDto.setApNo(apNo);
@@ -118,6 +133,29 @@ public class ApprovalController {
 			}
 		}
 		return "redirect:/user/selectApprovalListToBe";
+	}
+	
+	
+	@RequestMapping("/downloadFile")
+	@ResponseBody
+	public ResponseEntity<byte[]> displayFile(String apFileurl,String apFilename) throws Exception {
+		InputStream in = null;
+		ResponseEntity<byte[]> entity = null;
+		try {
+			HttpHeaders headers = new HttpHeaders();
+			in = new FileInputStream(apFileurl);
+			headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+			headers.add("Content-Disposition",
+					"attachment; filename=\"" + new String(apFilename.getBytes("utf-8"), "iso-8859-1") + "\"");
+			entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
+		} finally {
+			if (in != null)
+				in.close();
+		}
+		return entity;
 	}
 	
 	@RequestMapping("/updateApprovalView")
@@ -370,5 +408,6 @@ public class ApprovalController {
 		approvalService.updateApprovalCancel(approval);
 		return "redirect:/user/selectApprovalListToBe";
 	}
+	
 	
 }

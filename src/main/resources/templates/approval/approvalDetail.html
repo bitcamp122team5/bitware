@@ -25,7 +25,6 @@ $(function(){
 			location.href="/user/updateApprovalCancel?apNo="+apNo+"&apComment="+apComment;
 		}
 	});
-});
 </script>
 </head>
 <body th:align="center">
@@ -37,18 +36,21 @@ $(function(){
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
 
-<table border="1" th:align="center">
+
 <input type="hidden" id="apNo" th:value="${approval.apNo}">
 <input type="hidden" id="finalSign" th:value="${approval.finalSign}">
 <input type="hidden" id="ranksNo" th:value="${ranksNo}">
 <!-- <input type="hidden" id="apFileno" th:value="${approvalFileList.apFileno}"> -->
-	<tr>
-		<td>사원</td>
-		<td>팀장</td>
-		<td>부장</td>
-		<td>이사</td>
-		<td>사장</td>
-	</tr>
+
+	<div th:align="center">
+		<table border="1" th:align="center">
+		<tr>
+			<td>사원</td>
+			<td>팀장</td>
+			<td>부장</td>
+			<td>이사</td>
+			<td>사장</td>
+		</tr>
 	<tr>
 		<td>
 			<th:block th:if="${approval.apSignUrl1!=null}">
@@ -148,9 +150,10 @@ $(function(){
 		<td th:text="${approval.apSignName4}"></td>
 		<td th:text="${approval.apSignName5}"></td>
 	</tr>
-</table>
+	</table>
+	</div>
 
-<div th:align="center">
+	<div th:align="center">
 		<table border="1" width="1000" height="500">
 		<tr>
 			<td>문서명</td>
@@ -174,13 +177,16 @@ $(function(){
 		<tr>
 			<td>첨부파일</td>
 			<td>
+			
 			<span th:if="${approvalFileList.isEmpty()}">
 				<span>첨부파일이 없습니다.</span>
 			</span>
+			
 			<span th:unless="${approvalFileList.isEmpty()}">
-			<span th:each="approvalFile:${approvalFileList}">
-					<span th:text="${approvalFile.apFilename}"></span><br>
-			</span>
+				<span th:each="approvalFile:${approvalFileList}">
+				<input type="hidden" id="apFileno" th:value="${approvalFile.apFileno}">
+					<a th:href="@{/user/downloadFile(apFileurl=${approvalFile.apFileurl},apFilename=${approvalFile.apFilename})}" th:name="file" th:text="${approvalFile.apFilename}"></a><br>
+				</span>
 			</span>
 			</td>
 		</tr>
@@ -192,10 +198,9 @@ $(function(){
 			<td th:text="${approval.apComment}"></td>
 		</tr>
 		</th:block>
-
-
 		</table>
-	</div>
+		
+	
 		<a th:href="@{/user/selectApprovalListToBe}">목록</a><br>
 		<a th:if="${approval.apDocstatus=='1'}" th:href="@{/user/deleteApproval(apNo=${approval.apNo})}">삭제</a><br>
 		<a th:if="${approval.apDocstatus=='1'}" th:href="@{/user/updateApprovalView(apNo=${approval.apNo})}">수정</a>
