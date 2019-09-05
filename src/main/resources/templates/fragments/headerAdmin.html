@@ -11,6 +11,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	</ul>
 	<ul class="userInfo">
 		<li><a href="#"  sec:authentication="principal.member.memName"></a><li>
+		<li><a th:href="@{/logout}">로그아웃</a></li>
 	</ul>
 </div><!-- //header end -->
 </html>

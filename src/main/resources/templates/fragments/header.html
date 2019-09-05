@@ -13,6 +13,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 		<li><a th:href="@{/user/mypage}" sec:authentication="principal.member.memName"></a><li>
 		<li class="commute on"><a id="onTime">출결</a><li>
 <!-- 		<li class="commute"><a href="#">퇴근</a><li> -->
+		<li><a th:href="@{/logout}">로그아웃</a></li>
 	</ul>
 
 	<div class="chat_wrap">
@@ -35,18 +36,5 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 			};
 		}
 	</script>
-	<!-- <script>
-		$(function(){
-			$.ajax({
-				url: "/user/chatList",
-				data: {},
-				datatype: "json",
-				success: function(){
-					
-				}
-			})
-		})
-	</script> -->
-
 </div><!-- //header end -->
 </html>

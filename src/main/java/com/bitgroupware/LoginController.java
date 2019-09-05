@@ -1,7 +1,11 @@
 package com.bitgroupware;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.bitgroupware.security.config.SecurityUser;
 
 @Controller
 public class LoginController {
@@ -17,5 +21,14 @@ public class LoginController {
 	}
 	@RequestMapping("/accessDenied")
 	public void accessDenied() {
+	}
+	@RequestMapping("/loginCheck")
+	@ResponseBody
+	public String loginCheck(@AuthenticationPrincipal SecurityUser principal) {
+		if(principal.getMember()!=null) {
+			return "success";
+		}else {
+			return "fail";
+		}
 	}
 }
