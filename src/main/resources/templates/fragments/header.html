@@ -10,9 +10,9 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 		<li><a href="#">주소록</a></li>
 	</ul>
 	<ul class="userInfo">
-		<li><a href="#" sec:authentication="principal.member.memName"></a><li>
-		<li class="commute on"><a id="onTime" href="#">출근</a><li>
-		<li class="commute"><a href="#">퇴근</a><li>
+		<li><a th:href="@{/user/mypage}" sec:authentication="principal.member.memName"></a><li>
+		<li class="commute on"><a id="onTime">출결</a><li>
+<!-- 		<li class="commute"><a href="#">퇴근</a><li> -->
 	</ul>
 
 	<div class="chat_wrap">
@@ -25,7 +25,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 		window.onload=function(){
 			document.getElementById("onTime").onclick=function(){
 				$.ajax({
-					url: "/user/insertOntime",
+					url: "/user/insertCommute",
 					data: {},
 					datatype: "json",
 					success: function(result) {

@@ -20,9 +20,31 @@ public class CommuteServiceImpl implements CommuteService {
 		return commuteRepository.findByMemberVo(member);
 	}
 	
+	// 출근시간 기록
 	@Override
 	public void insertOntime(CommuteVo commuteVo) {
 		commuteRepository.save(commuteVo);
+	}
+	
+	// 퇴근시간 기록
+	@Override
+	public void updateOfftime(CommuteVo commuteVo) {
+		commuteRepository.save(commuteVo);
+	}
+
+	@Override
+	public String selectCurdate() {
+		return commuteRepository.selectCurdate();
+	}
+
+	@Override
+	public String selectCurtime() {
+		return commuteRepository.selectCurtime();
+	}
+
+	@Override
+	public CommuteVo selectTodayCommute(MemberVo memberVo, String curdate) {
+		return commuteRepository.findByMemberVoAndCommuteDate(memberVo, curdate);
 	}
 
 }

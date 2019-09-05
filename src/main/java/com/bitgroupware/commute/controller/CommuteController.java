@@ -18,35 +18,53 @@ import com.bitgroupware.security.config.SecurityUser;
 @Controller
 @RequestMapping("/user")
 public class CommuteController {
-	
+
 	@Autowired
 	CommuteService commuteService;
-	
-	@Autowired
-	MemberService MemberService;
 
 	// 근태 목록
 	@RequestMapping("/selectCommuteList")
 	public String selectCommuteList(Model model, @AuthenticationPrincipal SecurityUser principal) {
-		
+
 		List<CommuteVo> commuteList = commuteService.selectCommuteList(principal.getMember());
-		
+
 		model.addAttribute("commuteList", commuteList);
 
 		return "mypage/attendance";
 	}
-	
-	@RequestMapping("/insertOntime")
+
+	// 출퇴근
+	@RequestMapping("/insertCommute")
 	@ResponseBody
-	public String insertOntime(CommuteVo commuteVo, @AuthenticationPrincipal SecurityUser principal) {
-		
+	public String insertCommute(CommuteVo commuteVo, @AuthenticationPrincipal SecurityUser principal) {
+
 		MemberVo memberVo = principal.getMember();
-		String curdate = MemberService.selectCurdate();
-		
+		String curdate = commuteService.selectCurdate();
+		String curtime = commuteService.selectCurtime();
+
 		commuteVo.setMemberVo(memberVo);
-		commuteVo.setCommuteDate(curdate);
-		
-		commuteService.insertOntime(commuteVo);
-		return "출근완료";
+
+		try {
+			// 근태 번호 불러오기
+			CommuteVo commute = commuteService.selectTodayCommute(memberVo, curdate);
+//			System.out.println("commute = " + commute);
+			int commuteNo = commute.getCommuteNo();
+			if ("휴가".equals(commute.getCommuteStatus())) {
+				return "휴가중에는 출결할 수 없습니다.";
+			} else {
+				commuteVo.setCommuteNo(commuteNo);
+				commuteVo.setCommuteDate(commute.getCommuteDate());
+				commuteVo.setCommuteOntime(commute.getCommuteOntime());
+				commuteVo.setCommuteOfftime(curtime);
+				commuteService.updateOfftime(commuteVo);
+				return "퇴근시간 : " + curtime;
+			}
+		} catch (NullPointerException e) {
+			commuteVo.setCommuteDate(curdate);
+			commuteVo.setCommuteOntime(curtime);
+			commuteService.insertOntime(commuteVo);
+			return "출근시간 : " + curtime;
+		}
+
 	}
 }
