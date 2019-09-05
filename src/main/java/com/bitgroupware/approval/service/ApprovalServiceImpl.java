@@ -257,7 +257,6 @@ public class ApprovalServiceImpl implements ApprovalService {
 			count = apDao.countByToApContent(memId,searchKeyword);
 			break;
 		}
-		System.out.println(count);
 		return count;
 	}
 

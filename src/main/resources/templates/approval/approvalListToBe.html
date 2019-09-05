@@ -42,35 +42,64 @@ $(function(){
 <input type="hidden" id="searchKeyword" th:value="${search.searchKeyword}">
 <!-- 검색 종료 -->
 
-<a th:href="@{/user/selectApprovalListToBe}">전체</a>
-<a th:href="@{/user/selectApprovalListToBe?status=1}">대기</a>
-<a th:href="@{/user/selectApprovalListToBe?status=2}">진행</a>
-<a th:href="@{/user/selectApprovalListToBe?status=4}">완료</a>
-<a th:href="@{/user/selectApprovalListToBe?status=3}">반려</a>
-
-<table border="1">
-	<tr>
-		<td>번호</td>
-		<td>제목</td>
-		<td>상태</td>
-		<td>작성자</td>
-		<td>작성일자</td>
-	</tr>
-	<tr th:each="approval:${approvalListToBe}">
-		<td th:text="${approval.apNo}"></td>
-		<td><a th:href="@{/user/selectApprovalView(apNo=${approval.apNo})}" th:text="${approval.apTitle}"></a></td>
-		<td th:text="${approval.apDocstatus}"></td>
-		<td th:text="${approval.memId}"></td>
-		<div th:if="${today==#dates.format(approval.apInsertdate,'yyyy-MM-dd')}">
-			<td th:text="${#dates.format(approval.apInsertdate,'HH:mm')}"></td>
-		</div>
-		<div th:unless="${today==#dates.format(approval.apInsertdate,'yyyy-MM-dd')}">
-			<td th:text="${#dates.format(approval.apInsertdate,'yyyy-MM-dd')}"></td>
-		</div>
-	</tr>
-</table>
+<!-- //여기서 부터 긁어가세요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+<!-- //클래스명 하나도 빼지 말고 다 넣어주세요  -->
+		<h2>결재 받을(은) 문서</h2>
+		<a th:href="@{/user/selectApprovalListToBe}">전체</a>
+		<a th:href="@{/user/selectApprovalListToBe?status=1}">대기</a>
+		<a th:href="@{/user/selectApprovalListToBe?status=2}">진행</a>
+		<a th:href="@{/user/selectApprovalListToBe?status=4}">완료</a>
+		<a th:href="@{/user/selectApprovalListToBe?status=3}">반려</a>
+		<div class="article">
+				<div class="table_wrap list">
+					<table>
+						<colgroup>
+							<col width="50px">
+							<col width="50px">
+							<col width="*">
+							<col width="80px">
+							<col width="100px">
+							<col width="80px">
+						</colgroup>
+						<thead>
+							<tr>
+								<th>번호</th>
+								<th>분류</th>
+								<th>제목</th>
+								<th>작성자</th>
+								<th>등록일</th>
+								<th>첨부파일</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="approval,count :${approvalListToBe}">
+								<td th:text="${count.count}"></td>
+								<td th:text="${approval.apDocstatus}"></td>
+								<td class="tit"><a th:href="@{/user/selectApprovalView(apNo=${approval.apNo})}" class="ellipsis" th:text="${approval.apTitle}"></a></td>
+								<td class="writer" th:text="${approval.memName}"></td>
+								
+								<th:block th:if="${today==#dates.format(approval.apInsertdate,'yyyy-MM-dd')}">
+								<td class="date" th:text="${#dates.format(approval.apInsertdate,'HH:mm')}"></td>
+								</th:block>
+								<th:block th:unless="${today==#dates.format(approval.apInsertdate,'yyyy-MM-dd')}">
+								<td class="date" th:text="${#dates.format(approval.apInsertdate,'yyyy-MM-dd')}"></td>
+								</th:block>
+								
+								<th:block th:if=${approval.fileCheck==null}>
+								<td class="file"></td>
+								</th:block>
+								<th:block th:unless=${approval.fileCheck==null}>
+								<td class="file"><img src="./image/file.png"></td>
+								</th:block>
+							</tr>
+						</tbody>
+					</table>
+				</div><!-- //table_wrap end -->
+			</div>
+<!-- //여기까지!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 <!-- 페이징 -->
-<table th:align="center">
+<div th:align="center">
+<table>
 	<tr>
 		<td colspan="5">
 			<span th:if="${page.curBlock > 1 }">
@@ -96,6 +125,7 @@ $(function(){
 		</td>
 	</tr>
 </table>
+</div>
 </div><!-- //section end -->
 
 

@@ -31,4 +31,6 @@ public class ApprovalDto {
     private String apSignName5;
 	private int finalSign;
 	private String apComment;
+	private String fileCheck; // 파일체크
+	private String memName;
 }

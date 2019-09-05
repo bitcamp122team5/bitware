@@ -67,7 +67,7 @@ public interface ApprovalDao {
 	
 
 	// 기안
-	@Insert("insert into approval(ap_title,ap_content,ap_deleteflag,ap_docstatus,apdoc_no,ap_insertdate,mem_id,ap_signpath,ap_sign_url1,ap_sign_url2,ap_sign_url3,ap_sign_url4,ap_sign_url5,ap_sign_name1,ap_sign_name2,ap_sign_name3,ap_sign_name4,ap_sign_name5,final_sign) values(#{apTitle},#{apContent},#{apDeleteflag},#{apDocstatus},#{apdocNo},now(),#{memId},#{apSignpath},#{apSignUrl1},#{apSignUrl2},#{apSignUrl3},#{apSignUrl4},#{apSignUrl5},#{apSignName1},#{apSignName2},#{apSignName3},#{apSignName4},#{apSignName5},#{finalSign})")
+	@Insert("insert into approval(ap_title,ap_content,ap_deleteflag,ap_docstatus,apdoc_no,ap_insertdate,mem_id,ap_signpath,ap_sign_url1,ap_sign_url2,ap_sign_url3,ap_sign_url4,ap_sign_url5,ap_sign_name1,ap_sign_name2,ap_sign_name3,ap_sign_name4,ap_sign_name5,final_sign,mem_name) values(#{apTitle},#{apContent},#{apDeleteflag},#{apDocstatus},#{apdocNo},now(),#{memId},#{apSignpath},#{apSignUrl1},#{apSignUrl2},#{apSignUrl3},#{apSignUrl4},#{apSignUrl5},#{apSignName1},#{apSignName2},#{apSignName3},#{apSignName4},#{apSignName5},#{finalSign},#{memName})")
 	void insertApproval(ApprovalDto approval);
 
 	@Select("select mem_id from member where team_name=#{teamName} and ranks='팀장'")
@@ -106,9 +106,13 @@ public interface ApprovalDao {
 	@Insert("INSERT INTO APPROVAL_FILE (AP_NO,AP_FILENAME,AP_FILEURL) VALUES (#{apNo}, #{apFilename}, #{apFileurl})")
 	void insertApprovalFile(ApprovalFileDto approvalFileDto);
 	
-	
+	// 
 	@Select("select * from approval_file where ap_no = #{apNo}")
 	List<ApprovalFileDto> selectApprovalFile(String apNo);
+	
+	// 파일체크
+	@Select("update approval set file_check ='Y' where ap_no=#{apNo}")
+	void updateApprovalFileCheck(String apNo);
 
 	
 	@Select("select count( DISTINCT  ap_no,ap_title,ap_docstatus,approval.mem_id,ap_insertdate) from approval join member on (approval.ap_sign_name2 = member.mem_name or approval.ap_sign_name3 = member.mem_name or approval.ap_sign_name4 = member.mem_name or approval.ap_sign_name5 = member.mem_name) where not approval.mem_id in (#{memId}) and ap_docstatus in (2,3,4) and ap_deleteflag = 'N' and ap_content like #{searchKeyword}")
