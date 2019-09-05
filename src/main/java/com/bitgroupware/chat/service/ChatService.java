@@ -18,4 +18,8 @@ public interface ChatService {
 
     //public ChatMessageDto selectLastContentList(String receiver);
     List<ChatMessageDto> selectLastContentList(ChatMessageDto chatDto);
+
+	List<DepartmentDto> selectDepartureList();
+
+	List<MemberDto> selectMemberListByDepartmentAjax(String deptName);
 }
