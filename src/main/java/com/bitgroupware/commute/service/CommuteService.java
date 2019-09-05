@@ -8,7 +8,16 @@ import com.bitgroupware.member.vo.MemberVo;
 public interface CommuteService {
 
 	void insertOntime(CommuteVo commuteVo);
+	
+	void updateOfftime(CommuteVo commuteVo);
 
 	List<CommuteVo> selectCommuteList(MemberVo member);
+	
+	String selectCurdate();
+	
+	String selectCurtime();
+
+	CommuteVo selectTodayCommute(MemberVo memberVo, String curdate);
+
 
 }

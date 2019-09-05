@@ -9,9 +9,9 @@
 		<li><a href="#">주소록</a></li>
 	</ul>
 	<ul class="userInfo">
-		<li><a href="#" sec:authentication="principal.member.memName"></a><li>
-		<li class="commute on"><a id="onTime" href="#">출근</a><li>
-		<li class="commute"><a href="#">퇴근</a><li>
+		<li><a th:href="@{/user/mypage}" sec:authentication="principal.member.memName"></a><li>
+		<li class="commute on"><a id="onTime">출결</a><li>
+<!-- 		<li class="commute"><a href="#">퇴근</a><li> -->
 	</ul>
 
 	<div class="chat_wrap">
@@ -20,13 +20,11 @@
 			 <th:block th:replace="chat/chatList :: chatFragment"></th:block>
 		</div>
 	</div><!-- //chat_wrap end -->
-
-	<input type="text">
 	<script>
 		window.onload=function(){
 			document.getElementById("onTime").onclick=function(){
 				$.ajax({
-					url: "/user/insertOntime",
+					url: "/user/insertCommute",
 					data: {},
 					datatype: "json",
 					success: function(result) {
