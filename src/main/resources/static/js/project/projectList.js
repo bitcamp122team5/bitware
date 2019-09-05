@@ -129,62 +129,147 @@ $(function(){
 	});	
 })
 
-/*참여인원 추가 (추가사항) */
-function insertProjectAttendMembers(){
-	var confirm_val = confirm("선택을 완료하시겠습니까?");
-	if(confirm_val){
-		var checkBoxArr = new Array();
-		$("input[class='checkBox']:checked").each(function(){
-			checkBoxArr.push($(this).val());
-		})
-		var prjCode = $("#prjCode").val();
-		$.ajax({
-			url:"/user/insertProjectAttendMembers",
-			type:"post",
-			data:{
-				checkBoxArr:checkBoxArr,
-				prjCode:prjCode
-			},
-			success:function(){
-				location.href="/user/projectDetail?prjCode="+prjCode;
-			}
-		});
-	}
-}
-
 /*참여인원 삭제 모달*/
 function deleteProjectAttendMember(){
-	var confirm_val = confirm("인원을 삭제하시겠습니까?");
-	if(confirm_val){
-		var memId = $('#memId').val();
-		var prjCode = $("#prjCode").val();
-		$.ajax({
-			url:"/user/deleteProjectAttendMember",
-			type:"post",
-			data:{
-				memId : memId,
-				prjCode : prjCode
-			},
-			success:function(){
-				alert("해당 인원이 삭제 됐습니다.");
-				location.href="/user/projectDetail?prjCode="+prjCode;
-			}
-		});
+	if($('#sessionRanks').val() == "부장" && $('#sessionDeptName').val() == "개발부"){
+		var confirm_val = confirm("인원을 삭제하시겠습니까?");
+		if(confirm_val){
+			var memId = $('#memId').val();
+			var prjCode = $("#prjCode").val();
+			$.ajax({
+				url:"/user/deleteProjectAttendMember",
+				type:"post",
+				data:{
+					memId : memId,
+					prjCode : prjCode
+				},
+				success:function(){
+					alert("해당 인원이 삭제 됐습니다.");
+					location.href="/user/projectDetail?prjCode="+prjCode;
+				}
+			});
+		}
+	}else if($('#sessionRanks').val() == "사장" || $('#sessionRanks').val() == "이사" ){
+		var confirm_val = confirm("인원을 삭제하시겠습니까?");
+		if(confirm_val){
+			var memId = $('#memId').val();
+			var prjCode = $("#prjCode").val();
+			$.ajax({
+				url:"/user/deleteProjectAttendMember",
+				type:"post",
+				data:{
+					memId : memId,
+					prjCode : prjCode
+				},
+				success:function(){
+					alert("해당 인원이 삭제 됐습니다.");
+					location.href="/user/projectDetail?prjCode="+prjCode;
+				}
+			});
+		}
+	}else{
+		alert("인원을 삭제할 권한이 없습니다.");
 	}
 }
 
-/*프로젝트 생성 버튼 직급에 따라 show or hide*/
-$(function(){
+
+/*프로젝트 삭제 */
+function deleteProjectAjax(){
+	var confirm_val = confirm("프로젝트를 삭제하시겠습니까?");
+	if(confirm_val){
+		var prjCodeArr = new Array();
+		
+		$("input[class='checkBox']:checked").each(function(){
+			prjCodeArr.push($(this).val());
+		})
+		
+		$.ajax({
+			url:"/user/deleteProjectAjax",
+			type:"post",
+			data:{
+				prjCodeArr : prjCodeArr
+			},
+			success:function(){
+				alert("프로젝트가 삭제 되었습니다.");
+				location.href="redirect:/user/selectEndProjectList";
+			}
+		});
+	}
 	
-	if($('#sessionRanks').val() == "부장"){
+}
+///*참여인원 추가 (추가사항) */
+//function insertProjectAttendMembers(){
+//	var confirm_val = confirm("선택을 완료하시겠습니까?");
+//	if(confirm_val){
+//		var checkBoxArr = new Array();
+//		$("input[class='checkBox']:checked").each(function(){
+//			checkBoxArr.push($(this).val());
+//		})
+//		var prjCode = $("#prjCode").val();
+//		$.ajax({
+//			url:"/user/insertProjectAttendMembers",
+//			type:"post",
+//			data:{
+//				checkBoxArr:checkBoxArr,
+//				prjCode:prjCode
+//			},
+//			success:function(){
+//				location.href="/user/projectDetail?prjCode="+prjCode;
+//			}
+//		});
+//	}
+//}
+
+/*직급에 따라 프로젝트 생성, 삭제, 완료 / 참여인원 추가 버튼 show or hide*/
+$(function(){
+	if($('#sessionRanks').val() == "부장" && $('#sessionDeptName').val() == "개발부"){
+		$('#completeProjectBtn').show();
 		$('#insertProjectBtn').show();
-	}else if($('#sessionRanks').val() == "사장"){
+		$('#deleteProjectBtn').show();
+		$('#updateProjectBtn').show();
+		$('#projectAttendMembersBtn').show();
+	}else if($('#sessionRanks').val() == "사장" || $('#sessionRanks').val() == "이사" ){
+		$('#completeProjectBtn').show();
 		$('#insertProjectBtn').show();
+		$('#deleteProjectBtn').show();
+		$('#updateProjectBtn').show();
+		
 	}else{
+		$('#completeProjectBtn').hide();
 		$('#insertProjectBtn').hide();
+		$('#deleteProjectBtn').hide();
+		$('#updateProjectBtn').hide();
+		$('#projectAttendMembersBtn').hide();
 	}
 })
 
+//배열로 반환한다.
+function byNameArrays(data) {
+	var dataArray = new Array();
+	for(var i=0; i<data.length; i++) {
+		dataArray[i] = data[i].value;
+	}
+	return dataArray;
+}
+
+//$(function(){
+//	var buttons = byNameArrays(document.getElementsByName("btnChk"));
+//	alert(buttons.length);
+//	if($('#sessionRanks').val() == "부장" && $('#sessionDeptName').val() == "개발부"){
+//		for(var i=0; i<buttons.length ; i++){
+//			buttons[i].css('display: block;');
+//			}
+//		}else if($('#sessionRanks').val() == "사장" || $('#sessionRanks').val() == "이사" ){
+//		for(var i=0; i<buttons.length; i++){
+//			buttons[i].css('display: block;');
+//		}
+//	}else{
+//		for(var i=0; i<buttons.length; i++){
+//			buttons[i].css('display: none;');
+//		}
+//	}
+//	
+//})
 /*프로젝트 완료 처리*/
 function completeProject(){
 	var confirm_val = confirm("프로젝트를 완료 처리 하시겠습니까?");
@@ -192,6 +277,7 @@ function completeProject(){
 		$("#completeProjectFrm").submit();
 	}
 }
+
 
 //$(function(){
 //	var prjCode = new Array();

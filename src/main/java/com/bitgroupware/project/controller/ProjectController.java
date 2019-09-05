@@ -33,10 +33,11 @@ public class ProjectController {
 	@RequestMapping("/selectProjectList")
 	public String selectProjectList(Model model, @AuthenticationPrincipal SecurityUser principal) {
 		String sessionRanks = principal.getMember().getRanks().getRanks();
+		String seesionDeptName = principal.getMember().getDepartment().getDeptName();
 		List<ProjectInfoDto> prjInfos = projectService.selectProjectList();
 		model.addAttribute("prjInfos", prjInfos);
 		model.addAttribute("sessionRanks", sessionRanks);
-		
+		model.addAttribute("sessionDeptName", seesionDeptName);
 		//참여인원 추가 모달을 위함.
 		List<MemberDto> memOfficeInfo = projectService.selectProjectMemberList();
 		model.addAttribute("members", memOfficeInfo);
@@ -49,10 +50,11 @@ public class ProjectController {
 	public String selectAttendingProjectList(Model model, @AuthenticationPrincipal SecurityUser principal) {
 		String sessionId = principal.getMember().getMemId();
 		String sessionRanks = principal.getMember().getRanks().getRanks();
+		String seesionDeptName = principal.getMember().getDepartment().getDeptName();
 		List<ProjectInfoDto> prjInfos = projectService.selectAttendProjectList(sessionId);
 		model.addAttribute("prjInfos", prjInfos);
 		model.addAttribute("sessionRanks", sessionRanks);
-		
+		model.addAttribute("sessionDeptName", seesionDeptName);
 		//참여인원 추가 모달을 위함.
 		List<MemberDto> memOfficeInfo = projectService.selectProjectMemberList();
 		model.addAttribute("members", memOfficeInfo);
@@ -63,10 +65,11 @@ public class ProjectController {
 	@RequestMapping("/selectEndProjectList")
 	public String selectEndProjectList(Model model,  @AuthenticationPrincipal SecurityUser principal) {
 		String sessionRanks = principal.getMember().getRanks().getRanks();
+		String seesionDeptName = principal.getMember().getDepartment().getDeptName();
 		List<ProjectInfoDto> prjInfos = projectService.selectEndProjectList();
 		model.addAttribute("prjInfos", prjInfos);
 		model.addAttribute("sessionRanks", sessionRanks);
-		
+		model.addAttribute("sessionDeptName", seesionDeptName);
 		//참여인원 추가 모달을 위함.
 		List<MemberDto> memOfficeInfo = projectService.selectProjectMemberList();
 		model.addAttribute("members", memOfficeInfo);
@@ -76,12 +79,15 @@ public class ProjectController {
 	
 	/*프로젝트 상세페이지로 이동 및 프로젝트 WBS 불러오기*/
 	@RequestMapping("/projectDetail")
-	public String selectProjectView(Model model, int prjCode) {
+	public String selectProjectView(Model model, int prjCode, @AuthenticationPrincipal SecurityUser principal) {
 		
 		ProjectInfoDto prjInfo = projectService.selectProject(prjCode);
 		List<MemberDto> memInfos = projectService.selectProjectAttendMemberList(prjCode);
 		List<ProjectWbsDto> prjWbs = projectService.selectProjectWbsList(prjCode);
-		
+		String sessionRanks = principal.getMember().getRanks().getRanks();
+		String seesionDeptName = principal.getMember().getDepartment().getDeptName();
+		model.addAttribute("sessionRanks", sessionRanks);
+		model.addAttribute("sessionDeptName", seesionDeptName);
 		//참여인원 추가 모달을 위함.
 		List<MemberDto> memOfficeInfo = projectService.selectProjectMemberList();
 		model.addAttribute("members", memOfficeInfo);
@@ -163,14 +169,11 @@ public class ProjectController {
 	@RequestMapping(value="insertProjectWbsListAjaxCon", method=RequestMethod.POST)
 	@ResponseBody
 	public boolean insertProjectWbsListAjaxCon(ProjectInfoDto prjDto, HttpServletRequest req) {
-		System.out.println("컨트롤러 진입했습니다.");
 		
-		System.out.println("insertProjectWbsListAjax : " + prjDto);
+		
 		boolean isc = false;
 		
 		String[] prjTotalDaysSum = req.getParameterValues("inPrjTotalDays");
-		System.out.println("prjTotalDaysSum 출력 결과 : " + prjTotalDaysSum);
-		System.out.println("req.getParameterValues(\"inPrjTotalDays\") 출력 결과 : " + req.getParameterValues("inPrjTotalDays"));
 		
 		if(prjTotalDaysSum != null) {
 			String[] prjTotalDays = new Analysis(prjDto, prjTotalDaysSum).getTermsFormat();
@@ -191,6 +194,18 @@ public class ProjectController {
 				lists.add(prjWbsDto);
 				System.out.println("lists에 들어간 값 : "+lists);
 			}
+//			for(int i =0; i<prjTotalDays.length; i++) {
+//				try {
+//					int compare = DateForm.parse(req.getParameterValues("wbsStart")[i]).compareTo(DateForm.parse(prjDto.getPrjStart()));
+//					if(compare > 0 || compare == 0) {
+//						
+//					}else {
+//						//날짜 범위 벗어남.
+//					}
+//				} catch (ParseException e) {
+//					e.printStackTrace();
+//				}
+//			}
 			System.out.println("prjDto에서 가져온 코드 값" + prjDto.getPrjCode());
 			isc = projectService.deleteProjectWbsList(prjDto.getPrjCode());
 			
@@ -198,7 +213,8 @@ public class ProjectController {
 			
 			System.out.println("출력 결과입니다."+lists);
 		}else {
-			isc = projectService.deleteProjectWbsList(prjDto.getPrjCode());
+			
+			//isc = projectService.deleteProjectWbsList(prjDto.getPrjCode());
 		}
 		return isc;
 	}
@@ -214,6 +230,15 @@ public class ProjectController {
 		System.out.println("memId : "+memId);
 		System.out.println("prjMemNo  :  "+ prjMemDto.getPrjMemNo());
 		projectService.deleteProjectAttendMember(prjMemDto.getPrjMemNo());
+	}
+	
+	/*프로젝트 삭제 처리*/
+	@RequestMapping(value="deleteProjectAjax", method=RequestMethod.POST)
+	@ResponseBody
+	public void deleteProjectAjax(@RequestParam(value="prjCodeArr[]") List<Integer> prjCodeArr) {
+		for(int prjCode : prjCodeArr) {
+			projectService.deleteProject(prjCode);
+		}
 	}
 	
 	/*프로젝트 완료 처리 */

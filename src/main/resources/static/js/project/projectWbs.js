@@ -16,7 +16,6 @@ $(function(){
 			}
 	}
 	
-	
 	var prjCodes = $('#prjCode').val();
 
 	$.ajax({
@@ -95,21 +94,26 @@ function WBSProgress(){
 	var molecule = new Array();
 	//임시 배열 변수
 	var tempNum = new Array();
-	
+	//총 진행률 값 담을 임시 배열 변수
+	var tempNumTotal = new Array();
+	//총 진행률 계산 값
+	var totalProgress = 0;
+	//계산 완료된 총 진행률을 담을 값
+	var totalProgressPercent = 0;
 	//분모 구하기 (WBS종료일 - WBS시작일) 
 	for(var i=0; i<subData.cnt; i++){
 		denominator[i] = dayCalculation(subData.prjWbsStart[i], subData.prjWbsEnd[i]);
 	}
-	
 	//분자 구하기 (TODAY - WBS시작일)
 	for(var i=0; i<subData.cnt; i++){
 		molecule[i] = dayCalculation(subData.prjWbsStart[i], today);
 	}
-	//진행률 구하기
+	//개별 진행률 구하기
 	for(var i=0; i<subData.cnt; i++){
 		//alert('분자['+i+'] = '+molecule[i]);
 		//alert('분모['+i+'] = '+denominator[i]);
 		tempNum[i] = makeBaseRound((molecule[i] / denominator[i]) * 100);
+		tempNumTotal[i] = ((molecule[i] / denominator[i]) * 100); 
 		if(0 < tempNum[i] && tempNum[i] <= 100){
 			percentArray[i] = tempNum[i];
 		}else if(tempNum[i] > 100){
@@ -118,11 +122,31 @@ function WBSProgress(){
 			percentArray[i] = 0;
 		}
 	}
-	//진행률 입력
+	//개별 진행률 담기
+	for(var i=0; i<subData.cnt; i++){
+		if(0 < tempNumTotal[i] && tempNumTotal[i] <= 100){
+			totalProgress += tempNumTotal[i];
+		}else if(tempNumTotal[i] > 100){
+			totalProgress += 100;
+		}
+	}
+	// 총 진행률 합 / 작업 리스트 개수
+	if(totalProgress.length != 0){
+		totalProgressPercent = makeBaseRound(totalProgress / subData.cnt);
+	}
+	//개별 진행률 입력
 	for(var i=0; i<subData.cnt; i++){
 			$('.progressList').each(function(i){
 				$(this).text(percentArray[i]+'%');
 			});
+	}
+	// 총 진행률 입력
+	if(0 < totalProgressPercent && totalProgressPercent <= 100){
+		$('.totalProgress').text(totalProgressPercent+'%');
+	}else if(totalProgressPercent > 100){
+		$('.totalProgress').text('100%');
+	}else{
+		$('.totalProgress').text('0%');
 	}
 }
 
@@ -414,53 +438,68 @@ function byNameArray(data) {
 	return dataArray;
 }
 
-
+//parse a date in yyyy-mm-dd format
+function parseDate(input) {
+  var parts = input.match(/(\d+)/g);
+  // new Date(year, month [, date [, hours[, minutes[, seconds[, ms]]]]])
+  return new Date(parts[0], parts[1]-1, parts[2]); // months are 0-based
+}
 
 // 프로젝트 WBS 저장 전 검사
 function insertProjectWbsList(){
-	
-	
-	
+	//작업명 배열 담기
 	var prjWorkNames = byNameArray(document.getElementsByName("inPrjWorkName"));
+	//wbs시작일 배열 담기
 	var prjWbsStarts = byNameArray(document.getElementsByName("wbsStart"));
+	//wbs종료일 배열 담기
 	var prjWbsEnds = byNameArray(document.getElementsByName("wbsEnd"));
-	
-	var prjStart = document.getElementsByName("wbsStart");
-	var prjEnd = document.getElementsByName("wbsEnd");
-	
-	var startCal = $('#prjStart').val();
-	var endCal = $('#prjEnd').val().split("-");
-	
+	//프로젝트 시작일, 종료일 담기
+	var prjStart = parseDate($('#prjStart').val());
+	var prjEnd = parseDate($('#prjEnd').val());
 	var chk = true;
 	// split 하지 않고 하이픈을 제거하는 방법
-	var testc = startCal.replace(/-/gi , "");
+	//var testc = prjStart.replace(/-/gi , "");
 	
 	
-	
+	//업무구분 입력 여부 확인
 	for(var i=0; i<prjWorkNames.length; i++){
 			if(prjWorkNames[i].trim() == '' || prjWorkNames[i].trim().length == 0){
-				alert('업무구분 작업명을 모두 입력해주세요.')
+				alert('업무구분 작업명을 모두 입력해주세요.');
 				chk = false;
 				break;
 			}
-			
 		}
-	
+	//작업 시작일 입력 여부 확인
 	for(var i=0; i<prjWbsStarts.length; i++){
 			if(prjWbsStarts[i].trim() == '' || prjWbsStarts[i].trim().length == 0){
-				alert('작업 시작일을 모두 입력해주세요.')
+				alert('작업 시작일을 모두 입력해주세요.');
 				chk = false;
 				break;
 			}
 		}
+	//작업 종료일 입력 여부 확인
 	for(var i=0; i<prjWbsEnds.length; i++){
 			if(prjWbsEnds[i].trim() == '' || prjWbsEnds[i].trim().length == 0){
-				alert('작업 종료일을 모두 입력해주세요.')
+				alert('작업 종료일을 모두 입력해주세요.');
 				chk = false;
 				break;
 			}
 		}
-	
+	for(var i= 0; i<prjWbsStarts.length; i++){
+		if(prjStart.getTime() > parseDate(prjWbsStarts[i]).getTime()){
+			alert('작업 시작일은 프로젝트 시작일과 같거나 이후로 입력해주세요.');
+			chk = false;
+			break;
+		}
+	}
+	for(var i= 0; i<prjWbsEnds.length; i++){
+		if(parseDate(prjWbsEnds[i]).getTime() > prjEnd.getTime()){
+			alert('작업 종료일은 프로젝트 종료일과 같거나 이전으로 입력해주세요.');
+			chk = false;
+			break;
+		}
+	}
+	//전부 입력되어 chk true일경우 insertProjectWbsListAjax() 실행
 	if(chk){
 		insertProjectWbsListAjax();
 	}else{
@@ -499,55 +538,84 @@ function totalDaysAnalysis(data, cnt) {
 	return tag.toString();
 }
 
-//프로젝트 달력
-//function calendarModal() {
-//	$("#calendarModal").modal();
-//	
-//	var calendarEl = document.getElementById('calendar');
-//	  
-//	var calendar = new FullCalendar.Calendar(calendarEl, {
-//		plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
-//	  	header: {
-//      		left: 'prev,next today',
-//      		center: 'title',
-//     		right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
-//      	},
-//     	defaultDate: new Date(),
-//      	locale: 'ko',
-//      	navLinks: true, // can click day/week names to navigate views
-//      	businessHours: true, // display business hours
-//      	editable: false,
-//    });
-//	
-//	var prjCode = $('#prjCode').val();
-//	$.ajax({
-//		type: "post",
-//		url: "/user/selectProjectWbsOnCalendar",
-//		data: {prjCode : prjCode},
-//		dataType: "json",
-//		success:function(projectWbsList){
-//			for(ProjectWbsDto projectWbs : projectWbsList){
-//				if(projectWbs.prjDepth==0) var color = "#000000";
-//				if(projectWbs.prjDepth==1) var color = "#000000";
-//				if(projectWbs.prjDepth==2) var color = "#000000";
-//				if(projectWbs.prjDepth==3) var color = "#000000";
-//				if(projectWbs.prjDepth==4) var color = "#000000";
-//				if(projectWbs.prjDepth==5) var color = "#000000";
-//				if(projectWbs.prjDepth==6) var color = "#000000";
-//				if(projectWbs.prjDepth==7) var color = "#000000";
-//				if(projectWbs.prjDepth==8) var color = "#000000";
-//				if(projectWbs.prjDepth==9) var color = "#000000";
-//				calendar.addEvent({
-//	            	title: projectWbs.prjWorkName,
-//	                start: projectWbs.prjWbsStart,
-//	                end: projectWbs.prjWbsEnd,
-//	                color: color
-//	            });
-//			}
-//		}
-//	});
-//    calendar.render();
-//}
-//}
+//프로젝트 작업 목록 달력 View
+function viewGraph(){
+		
+		$("#viewGraphModal").modal();
+		
+		var calendarEl = document.getElementById('calendar');
+		  
+		var calendar = new FullCalendar.Calendar(calendarEl, {
+			plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
+		  	header: {
+	      		left: 'prev,next today',
+	      		center: 'title',
+	     		right: 'dayGridMonth, listMonth'
+	      	},
+	      	defaultView: 'dayGridMonth',
+	     	defaultDate: new Date(),
+	      	locale: 'ko',
+	      	navLinks: true, // can click day/week names to navigate views
+	      	businessHours: true, // display business hours
+	      	editable: false,
+	    });
+		
+		var prjCode = $('#prjCode').val();
+		$.ajax({
+			type: "post",
+			url: "/user/selectProjectWbsOnCalendar",
+			data: {prjCode : prjCode},
+			dataType: "json",
+			success:function(projectWbsList){
+				for(var i in projectWbsList){
+					if(projectWbsList[i].prjDepth==0) var color = "#ff0000";
+					if(projectWbsList[i].prjDepth==1) var color = "#ff6000";
+					if(projectWbsList[i].prjDepth==2) var color = "#ff9600";
+					if(projectWbsList[i].prjDepth==3) var color = "#ffd200";
+					if(projectWbsList[i].prjDepth==4) var color = "#ffe400";
+					if(projectWbsList[i].prjDepth==5) var color = "#c1ee0c";
+					if(projectWbsList[i].prjDepth==6) var color = "#66ee0c";
+					if(projectWbsList[i].prjDepth==7) var color = "#0cee76";
+					if(projectWbsList[i].prjDepth==8) var color = "#0c91ee";
+					if(projectWbsList[i].prjDepth==9) var color = "#0c6cee";
+					calendar.addEvent({
+		            	title: projectWbsList[i].prjWorkName,
+		                start: projectWbsList[i].prjWbsStart,
+		                end: projectWbsList[i].prjWbsEnd,
+		                color: color
+		            });
+				}
+			}
+		});
+	    calendar.render();
+	}
+
+/*부서에 따라 wbs와 달력 show or hide*/
+$(function(){
+	if($('#sessionDeptName').val() =="개발부"){
+		$('#tbody').show();
+		$('#viewGraphBtn').show();
+	}else if($('#sessionRanks').val() =="사장"||$('#sessionRanks').val() == "이사"){
+		$('#tbody').show();
+		$('#viewGraphBtn').show();
+	}else{
+		$('#tbody').hide();
+		$('#viewGraphBtn').hide();
+	}
+})
+
+/*직급에 따라 wbs저장, 삭제 Btn */
+$(function(){
+	if($('#sessionDeptName').val() =="개발부" && $('#sessionRanks').val() == "부장"){
+		$('#insertProjectWbsListBtn').show();
+		$('#checkListRemoveBtn').show();
+	}else if($('#sessionRanks').val() =="사장"||$('#sessionRanks').val() == "이사"){
+		$('#insertProjectWbsListBtn').show();
+		$('#checkListRemoveBtn').show();
+	}else{
+		$('#insertProjectWbsListBtn').hide();
+		$('#checkListRemoveBtn').hide();
+	}
+})
 
 
