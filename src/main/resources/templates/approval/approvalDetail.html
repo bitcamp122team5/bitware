@@ -41,6 +41,7 @@ $(function(){
 <input type="hidden" id="apNo" th:value="${approval.apNo}">
 <input type="hidden" id="finalSign" th:value="${approval.finalSign}">
 <input type="hidden" id="ranksNo" th:value="${ranksNo}">
+<!-- <input type="hidden" id="apFileno" th:value="${approvalFileList.apFileno}"> -->
 	<tr>
 		<td>사원</td>
 		<td>팀장</td>
@@ -198,6 +199,7 @@ $(function(){
 		<a th:href="@{/user/selectApprovalListToBe}">목록</a><br>
 		<a th:if="${approval.apDocstatus=='1'}" th:href="@{/user/deleteApproval(apNo=${approval.apNo})}">삭제</a><br>
 		<a th:if="${approval.apDocstatus=='1'}" th:href="@{/user/updateApprovalView(apNo=${approval.apNo})}">수정</a>
+<!-- 		<a th:if="${approval.apDocstatus=='1'}" th:href="@{/user/updateApprovalView(apFileno=${approvalFileList.apFileno})}">수정</a> -->
 	</div> <!-- //section end -->
 </body>
 </html>
