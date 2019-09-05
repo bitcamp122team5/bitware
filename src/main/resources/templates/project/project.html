@@ -29,32 +29,41 @@
 
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
-	
 	<input type="hidden" id="sessionRanks" th:value="${sessionRanks}">
-	<div>
-	<table class="table table-hover">
-		<thead>
-		<tr>
-			<th>프로젝트명</th>
-			<th>PM</th>
-			<th>시작일</th>
-			<th>종료일</th>
-			<th>마더업체</th>
-		</tr>
-		</thead>
-		<tbody>
-		<tr th:each="Infos : ${prjInfos}">
-			<input type="hidden" id="pmPrjCode" th:value="${Infos.PrjCode}">
-			<td><a th:href="@{/user/projectDetail(prjCode=${Infos.prjCode})}" th:text="${Infos.prjName}"></a></td>
-			<td th:text="${Infos.prjPm}"></td>
-			<td th:text="${Infos.prjStart}"></td>
-			<td th:text="${Infos.prjEnd}"></td>
-			<td th:text="${Infos.prjMothercompany}"></td>
-		</tr>
-		</tbody>
-	</table>
-	<input class='btn btn-sm btn-warning btn-center' type='button' value='프로젝트 생성' id="insertProjectBtn" onclick='insertProjectForm()'>
-	</div>
+		<h2>프로젝트 리스트</h2>
+		<div class="article">
+			<div class="table_wrap list">
+				<table>
+					<colgroup>
+						<col width="*">
+						<col width="80px">
+						<col width="80px">
+						<col width="80px">
+						<col width="100px">
+					</colgroup>
+					<thead>
+						<tr>
+							<th>프로젝트명</th>
+							<th>PM</th>
+							<th>시작일</th>
+							<th>종료일</th>
+							<th>마더업체</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="Infos : ${prjInfos}">
+							<input type="hidden" id="pmPrjCode" th:value="${Infos.PrjCode}">
+							<td><a th:href="@{/user/projectDetail(prjCode=${Infos.prjCode})}" th:text="${Infos.prjName}"></a></td>
+							<td th:text="${Infos.prjPm}"></td>
+							<td th:text="${Infos.prjStart}"></td>
+							<td th:text="${Infos.prjEnd}"></td>
+							<td th:text="${Infos.prjMothercompany}"></td>
+						</tr>
+					</tbody>
+				</table>
+				<input class='btn btn-sm btn-warning btn-center' type='button' value='프로젝트 생성' id="insertProjectBtn" onclick='insertProjectForm()'>
+			</div><!-- //table_wrap end -->
+		</div>
 	
 	<!-- 프로젝트 생성 modal -->
 	<div class="modal fade" id="insertProjectForm" role="dialog">
