@@ -16,11 +16,11 @@
 
 <!-- 사용자 script 추가 -->
 <th:block layout:fragment="script">
+<!-- <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script> -->
 <script type="text/javascript" th:src="@{/js/project/bootstrap.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/project/sweetalert.min.js?ver=1}"></script>
 <script type="text/javascript" th:src="@{/js/project/projectList.js}"></script>
 </th:block>
-
 </head>
 <body>
 <div th:replace="fragments/header :: headerFragment"></div>
@@ -30,11 +30,13 @@
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
 	<input type="hidden" id="sessionRanks" th:value="${sessionRanks}">
+	<input type="hidden" id="sessionDeptName" th:value="${sessionDeptName}">
 		<h2>프로젝트 리스트</h2>
 		<div class="article">
 			<div class="table_wrap list">
 				<table>
 					<colgroup>
+						<col width="50px">
 						<col width="*">
 						<col width="80px">
 						<col width="80px">
@@ -43,6 +45,7 @@
 					</colgroup>
 					<thead>
 						<tr>
+							<th><input type="checkbox" name="allCheckBox" id="allCheckBox"></th>
 							<th>프로젝트명</th>
 							<th>PM</th>
 							<th>시작일</th>
@@ -52,7 +55,8 @@
 					</thead>
 					<tbody>
 						<tr th:each="Infos : ${prjInfos}">
-							<input type="hidden" id="pmPrjCode" th:value="${Infos.PrjCode}">
+							<input type="hidden" id="pmPrjCode" th:value="${Infos.prjCode}">
+							<td><input type="checkbox" name="prjChk" id="prjCode" class="checkBox" th:value="${Infos.prjCode}"></td>
 							<td><a th:href="@{/user/projectDetail(prjCode=${Infos.prjCode})}" th:text="${Infos.prjName}"></a></td>
 							<td th:text="${Infos.prjPm}"></td>
 							<td th:text="${Infos.prjStart}"></td>
@@ -62,6 +66,7 @@
 					</tbody>
 				</table>
 				<input class='btn btn-sm btn-warning btn-center' type='button' value='프로젝트 생성' id="insertProjectBtn" onclick='insertProjectForm()'>
+				<input class="btn btn-sm btn-warning btn-center" type="button" value="프로젝트 삭제" id="deleteProjectBtn" onclick="deleteProjectAjax()">
 			</div><!-- //table_wrap end -->
 		</div>
 	
@@ -110,7 +115,7 @@
 						<th>직급</th>
 					</tr>
 					<tr th:each="worker : ${members}">
-						<td><input type="checkbox" name="memIdChk" id="memId" class="checkBoxArr" th:value="${worker.memId}"></td>
+						<td><input type="checkbox" name="memIdChk" id="memId" th:value="${worker.memId}" class="checkBoxArr"></td>
 							<td th:text="${worker.memName}"></td>
 							<td th:text="${worker.deptName}"></td>
 							<td th:text="${worker.teamName}"></td>

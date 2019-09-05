@@ -19,7 +19,7 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <!-- 사용자 script 추가 -->
 <th:block layout:fragment="script">
-<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+<!-- <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script> -->
 <script type="text/javascript" th:src="@{/js/project/bootstrap.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/project/sweetalert.min.js?ver=1}"></script>
 <script type="text/javascript" th:src="@{/js/project/projectWbs.js}"></script>
@@ -84,57 +84,7 @@ function commaNum(num){
 	return str;
 }
 
-function viewGraph(){
-		alert("111");
-		
-		$("#viewGraphModal").modal();
-		
-		var calendarEl = document.getElementById('calendar');
-		  
-		var calendar = new FullCalendar.Calendar(calendarEl, {
-			plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
-		  	header: {
-	      		left: 'prev,next today',
-	      		center: 'title',
-	     		right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
-	      	},
-	     	defaultDate: new Date(),
-	      	locale: 'ko',
-	      	navLinks: true, // can click day/week names to navigate views
-	      	businessHours: true, // display business hours
-	      	editable: false,
-	    });
-		
-		var prjCode = $('#prjCode').val();
-		alert(prjCode);
-		$.ajax({
-			type: "post",
-			url: "/user/selectProjectWbsOnCalendar",
-			data: {prjCode : prjCode},
-			dataType: "json",
-			success:function(projectWbsList){
-				for(var i in projectWbsList){
-					if(projectWbsList[i].prjDepth==0) var color = "#ff0000";
-					if(projectWbsList[i].prjDepth==1) var color = "#ff6000";
-					if(projectWbsList[i].prjDepth==2) var color = "#ff9600";
-					if(projectWbsList[i].prjDepth==3) var color = "#ffd200";
-					if(projectWbsList[i].prjDepth==4) var color = "#ffe400";
-					if(projectWbsList[i].prjDepth==5) var color = "#c1ee0c";
-					if(projectWbsList[i].prjDepth==6) var color = "#66ee0c";
-					if(projectWbsList[i].prjDepth==7) var color = "#0cee76";
-					if(projectWbsList[i].prjDepth==8) var color = "#0c91ee";
-					if(projectWbsList[i].prjDepth==9) var color = "#0c6cee";
-					calendar.addEvent({
-		            	title: projectWbsList[i].prjWorkName,
-		                start: projectWbsList[i].prjWbsStart,
-		                end: projectWbsList[i].prjWbsEnd,
-		                color: color
-		            });
-				}
-			}
-		});
-	    calendar.render();
-	}
+
 </script>
 </head>
 <body>
@@ -145,6 +95,8 @@ function viewGraph(){
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
 	<div>
+	<input type="hidden" id="sessionRanks" th:value="${sessionRanks}">
+	<input type="hidden" id="sessionDeptName" th:value="${sessionDeptName}">
 	<table class="table table-striped">
 		<thead>
 		<tr>
@@ -171,8 +123,7 @@ function viewGraph(){
 		</thead>
 	</table>
 	
-	<input class='btn btn-sm btn-warning btn-center' type="button" value="프로젝트 정보 수정" onclick="projectUpdateModal()">
-	<input type="button" value="참여인원 추가" onclick="insertProjectAttendMemberModal()" id="projectAttendMembersBtn" class="btn btn-sm btn-warning btn-center">
+	<input class='btn btn-sm btn-warning btn-center' type="button" id="updateProjectBtn" value="프로젝트 정보 수정" onclick="projectUpdateModal()">
 	</div>
 	<br /><br /><br />
 	<form action="#" method="post" id='insertProjectWbsList'>
@@ -182,18 +133,18 @@ function viewGraph(){
 			<input type="hidden" name="prjEnd" id="prjEnd" th:value="${prjInfo.prjEnd}">
 			<input type="hidden" name="prjCode" id="prjCode" th:value="${prjInfo.prjCode}">
 				<tr>
-					<td rowspan="5"><div style="width: 45px;"></div></td>
-					<td rowspan="5"></td>
+					<td rowspan="5" style="width: 50px;"></td>
+					<td rowspan="5" style="width: 60px;"></td>
 					<td rowspan="5">
 						<div style="width: 450px; height: 100px;">
 							<h1>업무구분</h1>
 						</div>
 					</td>
-					<td rowspan="5"><div style="width: 80px;"></div></td>
-					<td rowspan="5"><div style="width: 80px;"></div></td>
-					<td rowspan="5"><div style="width: 80px;"></div></td>
-					<td rowspan="5"><div style="width: 80px;"></div></td>
-					<td rowspan="5"><div style="width: 80px;"></div></td>
+					<td rowspan="5" style="width: 180px;"></td>
+					<td rowspan="5" style="width: 180px;"></td>
+					<td rowspan="5" style="width: 80px;"></td>
+					<td rowspan="5" style="width: 120px;"></td>
+					<td rowspan="5" style="width: 70px;"></td>
 				</tr>
 				<tr>
 				</tr>
@@ -218,16 +169,26 @@ function viewGraph(){
 			</thead>
 			<tbody id='tbody'>
 			</tbody>
+			<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td class="totalProgress">총 진행률</td>
+				</tr>
 		</table>
-		<input class="btn btn-sm btn-warning btn-center" type="button" value="저장" onclick="insertProjectWbsList()">
+		<input class="btn btn-sm btn-warning btn-center" type="button" id="insertProjectWbsListBtn" value="저장" onclick="insertProjectWbsList()">
 		<input class="btn btn-sm btn-warning btn-center" type="button" value="프로젝트 목록" onclick="location.href='/user/selectProjectList'">
-		<input class="btn btn-sm btn-warning btn-center" type="button" value="작업 삭제" onclick="checkListRemove()">
-		<input class="btn btn-sm btn-warning btn-center" type="button" value="달력" onclick="viewGraph()">
+		<input class="btn btn-sm btn-warning btn-center" type="button" id="checkListRemoveBtn" value="작업 삭제" onclick="checkListRemove()">
+		<input class="btn btn-sm btn-warning btn-center" type="button" id="viewGraphBtn" value="달력" onclick="viewGraph()">
 		
 	</form>
 		<form id="completeProjectFrm" action="completeProject">
 			<input type="hidden" name="prjCode" id="prjCode" th:value="${prjInfo.prjCode}">
-			<input class="btn btn-sm btn-warning btn-center" type="button" value="프로젝트 완료" onclick="completeProject()">
+			<input class="btn btn-sm btn-warning btn-center" id="completeProjectBtn" type="button" value="프로젝트 완료" onclick="completeProject()">
 		</form>
 	
 	<!-- 프로젝트 정보 수정 모달 -->
@@ -329,12 +290,12 @@ function viewGraph(){
 						<th></th>
 					</tr>
 					<tr th:each="memInfos : ${memInfos}">
-						<td class="prjMems" id="memId" th:text="${memInfos.memName}"></td>
+						<td id="memId" th:text="${memInfos.memName}"></td>
 						<td th:text="${memInfos.deptName}"></td>
 						<td th:text="${memInfos.teamName}"></td>
-						<td th:text="${memInfos.ranks}"></td>
+						<td name="btnChk" th:text="${memInfos.ranks}"></td>
 						<td><input type="hidden" name="prjCode" id="prjCode" th:value="${prjInfo.prjCode}"></td> 
-						<td><button type="button" class="close" aria-label="Close" onclick="deleteProjectAttendMember()" style="color: red;"><span aria-hidden="true">&times;</span></button></td>
+						<td><button type="button" class="close" aria-label="Close" onclick="deleteProjectAttendMember()" id="deleteProjectAttendMemberBtn" style="color: red;"><span aria-hidden="true">&times;</span></button></td>
 					</tr>
 					</table>
 					<div class="modal-footer">

@@ -40,6 +40,10 @@ public interface ProjectDao {
 	@Insert("INSERT INTO PROJECT_INFO (PRJ_NAME, PRJ_DEPOSIT, PRJ_WORKING_EXPENSES, PRJ_START, PRJ_END, PRJ_MOTHERCOMPANY, PRJ_PM) VALUES (#{prjName}, #{prjDeposit}, #{prjWorkingExpenses}, #{prjStart}, #{prjEnd}, #{prjMothercompany}, #{prjPm})")
 	public boolean insertProject(ProjectInfoDto prjDto);
 	
+	/*프로젝트 삭제 on delete cascade로 참여인원 테이블에서 참여인원도 같이 삭제 됨.*/
+	@Delete("DELETE FROM PROJECT_INFO WHERE PRJ_CODE = #{prj_code}")
+	public void deleteProject(int prjCode);
+	
 	/*프로젝트 참여인원 기본 리스트 출력*/
 	@Select("SELECT MEM_ID, MEM_NAME, DEPT_NAME, TEAM_NAME, RANKS FROM MEMBER WHERE DEPT_NAME='개발부' "
 			+ " ORDER BY (CASE RANKS WHEN '부장' THEN 1 WHEN '팀장' THEN 2 WHEN '사원' THEN 3 END); ")
@@ -85,7 +89,8 @@ public interface ProjectDao {
 	/*멤버 아이디로 멤버 정보 뽑아오기*/
 	@Select("SELECT MEM_NAME, DEPT_NAME, TEAM_NAME, RANKS FROM MEMBER WHERE MEM_ID = #{memId}")
 	public MemberDto selectMemberInfos(String memId);
-
+	
+	/*달력에 wbs List 뿌리기*/
 	@Select("select * from project_wbs where prj_code = #{prjCode}")
 	public List<ProjectWbsDto> selectProjectWbsOnCalendar(int prjCode);
 	

@@ -2,6 +2,7 @@ package com.bitgroupware.project.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Select;
 
 import com.bitgroupware.project.beans.MemberDto;
@@ -28,6 +29,9 @@ public interface ProjectService {
 	
 	/*프로젝트 정보 생성 */
 	public boolean insertProject(ProjectInfoDto prjInfoDto);
+	
+	/*프로젝트 삭제 on delete cascade로 참여인원 테이블에서 참여인원도 같이 삭제 됨.*/
+	public void deleteProject(int prjCode);
 	
 	/*프로젝트 참여인원 기본 리스트 출력*/
 	public List<MemberDto> selectProjectMemberList();
@@ -61,7 +65,8 @@ public interface ProjectService {
 	
 	/*멤버 아이디로 멤버 정보 뽑아오기*/
 	public MemberDto selectMemberInfos(String memId);
-
+	
+	/*달력에 wbs List 뿌리기*/
 	public List<ProjectWbsDto> selectProjectWbsOnCalendar(int prjCode);
 	
 }

@@ -94,7 +94,13 @@ public class ProjectServiceImpl implements ProjectService {
 		}
 		return chk;
 	}
-
+	
+	/*프로젝트 삭제 on delete cascade로 참여인원 테이블에서 참여인원도 같이 삭제 됨.*/
+	@Override
+	public void deleteProject(int prjCode) {
+		dao.deleteProject(prjCode);
+	}
+	
 	/*prjCode만 가져오기(완료되지 않은 프로젝트) */
 	@Override
 	public ProjectInfoDto selectPrjCode() {
@@ -125,11 +131,12 @@ public class ProjectServiceImpl implements ProjectService {
 	public MemberDto selectMemberInfos(String memId) {
 		return dao.selectMemberInfos(memId);
 	}
-
+	
+	/*달력에 wbs List 뿌리기*/
 	@Override
 	public List<ProjectWbsDto> selectProjectWbsOnCalendar(int prjCode) {
 		return dao.selectProjectWbsOnCalendar(prjCode);
 	}
-	
+
 	
 }

@@ -19,6 +19,7 @@ public class Analysis {
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			Date startDate = formatter.parse(prjDto.getPrjStart());
 			Date lastDate = formatter.parse(prjDto.getPrjEnd());
+			//프로젝트 일수
 			days = ((lastDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
 		} catch (ParseException e) {
 			e.printStackTrace();
