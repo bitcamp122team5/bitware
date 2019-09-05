@@ -207,6 +207,7 @@ public class ApprovalController {
 	@RequestMapping("/selectApprovalListToBe")
 	public String selectApprovalListToBe(Model model, @AuthenticationPrincipal SecurityUser principal, String status, 
 			@RequestParam(defaultValue = "1") int curPage, Search search,String apNo) {
+		List<ApprovalDocumentDto> approval = approvalDocService.selectApprovalDocList();
 		Date date = new Date();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		String today = format.format(date);
@@ -233,6 +234,7 @@ public class ApprovalController {
 			approvalListToBe = approvalService.selectApprovalListToBe(memId, status,begin, search);
 		}
 		model.addAttribute("approvalListToBe",approvalListToBe);
+		model.addAttribute("approval",approval);
 		model.addAttribute("today",today);
 		model.addAttribute("page",page);
 		model.addAttribute("block",block);
@@ -246,7 +248,7 @@ public class ApprovalController {
 	@RequestMapping("/selectApprovalListTo")
 	public String selectApprovalListTo(Model model, @AuthenticationPrincipal SecurityUser principal, 
 			@RequestParam(defaultValue = "1") int curPage, Search search) {
-		
+		List<ApprovalDocumentDto> approval = approvalDocService.selectApprovalDocList();
 		String memId = principal.getMember().getMemId();
 		int count = approvalService.countApproval(memId,search);
 
@@ -262,6 +264,7 @@ public class ApprovalController {
 		int begin = page.getPageBegin() - 1;
 		
 		List<ApprovalDto> approvalList = approvalService.selectApprovalListTo(memId,begin,search);
+		model.addAttribute("approval",approval);
 		model.addAttribute("approvalList",approvalList);
 		model.addAttribute("page",page);
 		model.addAttribute("block",block);
