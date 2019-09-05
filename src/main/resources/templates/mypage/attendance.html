@@ -5,11 +5,23 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <meta charset="UTF-8">
 <title>휴가 및 근태</title>
 <th:block th:replace="fragments/config :: configFragment"></th:block>
+	<script>
+		$(document).ready(function(){
+			$('#startDate').change(function(){
+				$("#endDate").attr('max', $('#startDate').val());
+			});
+		});
+		$(document).ready(function(){
+			$('#endDate').change(function(){
+				$("#startDate").attr('min', $('#endDate').val());
+			});
+		});
+	</script>
 </head>
 <body th:align="center">
 <div th:replace="fragments/header :: headerFragment"></div>
 
-<div th:replace="fragments/aside :: asideFragment"></div>
+<div th:replace="fragments/aside :: asideFragmentMypage"></div>
 
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
@@ -17,8 +29,8 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 		<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
 			<tr>
 				<td>
-					<input type="date">
-					<input type="date">
+					<input id="startDate" name="startDate" type="date">
+					<input id="endDate" name="endDate" type="date">
 				</td>
 				<td>
 					<input type="checkbox" th:text="출근" th:value="출근">

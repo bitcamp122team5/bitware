@@ -47,7 +47,6 @@ public class CommuteController {
 		try {
 			// 근태 번호 불러오기
 			CommuteVo commute = commuteService.selectTodayCommute(memberVo, curdate);
-//			System.out.println("commute = " + commute);
 			int commuteNo = commute.getCommuteNo();
 			if ("휴가".equals(commute.getCommuteStatus())) {
 				return "휴가중에는 출결할 수 없습니다.";
