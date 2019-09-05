@@ -71,27 +71,8 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	});
     calendar.render();
-});
-</script>
-<style>
-  #calendar {
-    max-width: 900px;
-    margin: 0 auto;
-  }
-</style>
-<script>
-window.onload=function(){
-	
-	var msg = document.getElementById('msg').value;
-	if(msg!=""){
-		alert(msg);
-	}
-	
-	var modal = document.getElementById('myModal');
-// 	document.getElementById("myBtn").onclick = function() {
-//     	modal.style.display = "block";
-// 	}
-	document.getElementsByClassName("close")[0].onclick = function() {
+    
+    document.getElementsByClassName("close")[0].onclick = function() {
     	modal.style.display = "none";
 	}
 	window.onclick = function(event) {
@@ -99,9 +80,19 @@ window.onload=function(){
         	modal.style.display = "none";
     	}
 	}
-}
+	
+	var msg = document.getElementById('msg').value;
+	if(msg!=""){
+		alert(msg);
+	}
+});
 </script>
 <style>
+#calendar {
+	max-width: 900px;
+	margin: 0 auto;
+}
+
 /* The Modal (background) */
 .modal {
     display: none; /* Hidden by default */
@@ -170,12 +161,16 @@ $(function(){
 </script>
 </head>
 <body>
-<div th:replace="fragments/header :: headerFragment"></div>
-
-<div th:replace="fragments/aside :: asideFragmentCommunity"></div>
+<div sec:authorize="hasRole('ROLE_ADMIN')" th:replace="fragments/headerAdmin :: headerFragmentAdmin"></div>
+<div sec:authorize="hasRole('ROLE_ADMIN')" th:replace="fragments/asideAdmin :: asideFragmentAdminCommunity"></div>
+<div sec:authorize="hasAnyRole('ROLE_USER','ROLE_PL','ROLE_PM')" th:replace="fragments/header :: headerFragment"></div>
+<div sec:authorize="hasAnyRole('ROLE_USER','ROLE_PL','ROLE_PM')" th:replace="fragments/aside :: asideFragmentCommunity"></div>
 
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
+
+<h2 sec:authorize="hasRole('ROLE_ADMIN')">법인차량 예약 (관리자)</h2>
+<h2 sec:authorize="hasAnyRole('ROLE_USER','ROLE_PL','ROLE_PM')">법인차량 예약</h2>
 
 <input type="hidden" th:value="${msg}" id="msg">
 <div id="myModal" class="modal">

@@ -56,6 +56,8 @@ $(document).ready(function() {
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
 
+<h2>공지사항</h2>
+
 <!-- 검색 시작 -->
 <form th:action="@{/user/selectNoticeList}">
 <table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
@@ -76,44 +78,62 @@ $(document).ready(function() {
 <input type="hidden" id="searchKeyword" th:value="${search.searchKeyword}">
 <!-- 검색 종료 -->
 
-<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
-	<tr>
-		<th bgcolor="orange" width="100">분류</th>
-		<th bgcolor="orange" width="400">제목</th>
-		<th bgcolor="orange" width="100">등록일</th>
-		<th bgcolor="orange" width="100">첨부파일</th>
-		<th bgcolor="orange" width="100">조회수</th>
-	</tr>
-	<tr th:each="notice:${noticeList}">
-		<td th:text="${notice.ntCate}"></td>
-        <td>
-        	<a th:href="@{/user/selectNotice(ntNo=${notice.ntNo})}" th:text="${notice.ntTitle}"></a>
-        	<span th:each="noticeFile:${notice.noticeFileList}">
-        		<span th:if="${noticeFile.ntFileType=='image'}">
-        			<img th:src="@{/images/fileImage.png}" style="width: 5px; height: 5px">
-        			<span th:text="${noticeFile.ntFileName}" class="thumbnail" th:value="${noticeFile.ntFileUrl}" style="font-size: 5px"></span>
-        		</span>
-        		<span th:if="${noticeFile.ntFileType=='document'}">
-        			<img th:src="@{/images/fileImage.png}" style="width: 5px; height: 5px">
-        			<span th:text="${noticeFile.ntFileName}" style="font-size: 5px"></span>
-        		</span>
-        	</span>
-        </td>
-    	<th:block th:if="${today==#dates.format(notice.ntDate,'yyyy-MM-dd')}">
-			<td th:text="${#dates.format(notice.ntDate,'HH:mm')}"></td>
-		</th:block>
-		<th:block th:unless="${today==#dates.format(notice.ntDate,'yyyy-MM-dd')}">
-			<td th:text="${#dates.format(notice.ntDate,'yyyy-MM-dd')}"></td>
-		</th:block>
-    	<th:block th:if="${notice.ntFileCheck=='Y'}">
-			<td><img th:src="@{/images/fileImage.png}" style="width: 10px; height: 10px"></td>
-		</th:block>
-		<th:block th:unless="${notice.ntFileCheck=='Y'}">
-			<td></td>
-		</th:block>
-		<td th:text="${notice.ntCnt}"></td>
-	</tr>
-</table>
+<div class="article">
+	<div class="table_wrap list">
+		<table>
+			<colgroup>
+				<col width="50px">
+				<col width="50px">
+				<col width="*">
+				<col width="100px">
+				<col width="80px">
+				<col width="70px">
+			</colgroup>
+			<thead>
+				<tr>
+					<th>번호</th>
+					<th>분류</th>
+					<th>제목</th>
+					<th>등록일</th>
+					<th>첨부파일</th>
+					<th>조회수</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="notice, count:${noticeList}">
+					<td th:text="${count.count}"></td>
+					<td th:text="${notice.ntCate}"></td>
+			        <td class="tit">
+			        	<a th:href="@{/user/selectNotice(ntNo=${notice.ntNo})}" th:text="${notice.ntTitle}"></a>
+			        	<span th:each="noticeFile:${notice.noticeFileList}">
+			        		<span th:if="${noticeFile.ntFileType=='image'}">
+			        			<img th:src="@{/images/fileImage.png}" style="width: 5px; height: 5px">
+			        			<span th:text="${noticeFile.ntFileName}" class="thumbnail" th:value="${noticeFile.ntFileUrl}" style="font-size: 5px"></span>
+			        		</span>
+			        		<span th:if="${noticeFile.ntFileType=='document'}">
+			        			<img th:src="@{/images/fileImage.png}" style="width: 5px; height: 5px">
+			        			<span th:text="${noticeFile.ntFileName}" style="font-size: 5px"></span>
+			        		</span>
+			        	</span>
+			        </td>
+			    	<th:block th:if="${today==#dates.format(notice.ntDate,'yyyy-MM-dd')}">
+						<td th:text="${#dates.format(notice.ntDate,'HH:mm')}"></td>
+					</th:block>
+					<th:block th:unless="${today==#dates.format(notice.ntDate,'yyyy-MM-dd')}">
+						<td th:text="${#dates.format(notice.ntDate,'yyyy-MM-dd')}"></td>
+					</th:block>
+			    	<th:block th:if="${notice.ntFileCheck=='Y'}">
+						<td class="file"><img th:src="@{/images/fileImage.png}"></td>
+					</th:block>
+					<th:block th:unless="${notice.ntFileCheck=='Y'}">
+						<td class="file"></td>
+					</th:block>
+					<td class="cnt" th:text="${notice.ntCnt}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
 <br>
 <table th:align="center">
 	<tr>
