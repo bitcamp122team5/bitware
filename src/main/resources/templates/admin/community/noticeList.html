@@ -116,15 +116,17 @@ $(document).ready(function() {
 		<table>
 			<colgroup>
 				<col width="50px">
-				<col width="80px">
+				<col width="50px">
+				<col width="50px">
 				<col width="*">
 				<col width="100px">
 				<col width="80px">
-				<col width="80px">
+				<col width="70px">
 			</colgroup>
 			<thead>
 				<tr>
 					<th><input type="checkbox" name="allCheckBox" id="allCheckBox"></th>
+					<th>번호</th>
 					<th>분류</th>
 					<th>제목</th>
 					<th>등록일</th>
@@ -133,11 +135,12 @@ $(document).ready(function() {
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="notice:${noticeList}">
+				<tr th:each="notice, count:${noticeList}">
 					<td><input type="checkbox" name="checkBox" class="checkBox" th:value="${notice.ntNo}"></td>
+					<td th:text="${count.count}"></td>
 					<td th:text="${notice.ntCate}"></td>
-		        	<td>
-		        		<a th:href="@{/admin/updateNoticeView(ntNo=${notice.ntNo})}" th:text="${notice.ntTitle}"></a>
+		        	<td class="tit">
+		        		<a th:href="@{/admin/updateNoticeView(ntNo=${notice.ntNo})}" class="ellipsis" th:text="${notice.ntTitle}"></a>
 		        		<span th:each="noticeFile:${notice.noticeFileList}">
 			        		<span th:if="${noticeFile.ntFileType=='image'}">
 			        			<img th:src="@{/images/fileImage.png}" style="width: 5px; height: 5px">
@@ -156,12 +159,12 @@ $(document).ready(function() {
 						<td th:text="${#dates.format(notice.ntDate,'yyyy-MM-dd')}"></td>
 					</th:block>
 			    	<th:block th:if="${notice.ntFileCheck=='Y'}">
-						<td><img th:src="@{/images/fileImage.png}" style="width: 10px; height: 10px"></td>
+						<td class="file"><img th:src="@{/images/fileImage.png}"></td>
 					</th:block>
 					<th:block th:unless="${notice.ntFileCheck=='Y'}">
-						<td></td>
+						<td class="file"></td>
 					</th:block>
-					<td th:text="${notice.ntCnt}"></td>
+					<td class="cnt" th:text="${notice.ntCnt}"></td>
 				</tr>
 			</tbody>
 		</table>
