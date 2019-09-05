@@ -34,6 +34,9 @@ public interface ChatDao {
 	List<ChatMessageDto> selectLastContentList();
 	//public ChatMessageDto selectLastContentList(String receiver);
 	
+	@Select("select * from member where dept_name = #{deptName}")
+	List<MemberDto> selectMemberListByDepartment(String deptName);
+	
 	
 	
 }

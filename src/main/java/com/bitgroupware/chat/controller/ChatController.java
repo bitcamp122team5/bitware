@@ -81,14 +81,18 @@ public class ChatController {
 	}
 
 	@RequestMapping("/chatList")
+	//@ResponseBody
 	public String chatList(Model model, MemberDto memberDto, DepartmentDto depDto, ChatMessageDto chatDto, @AuthenticationPrincipal SecurityUser principal) {
+		System.out.println("컨트롤러 진입");
 		List<MemberDto> memberList = chatservice.selectMemberList(memberDto);
 		List<DepartmentDto> depList = chatservice.selectDeptList(depDto);
 
 		String sessionName = principal.getMember().getMemName();
 		//chatDto = chatservice.selectLastContentList(receiver);
 		List<ChatMessageDto> lastContentList = chatservice.selectLastContentList(chatDto);
-		
+		for(ChatMessageDto dto : lastContentList) {
+			System.out.println(dto);
+		}
 		//model.addAttribute("sessionId", sessionId);
 		model.addAttribute("sessionName", sessionName);
 		
@@ -96,8 +100,7 @@ public class ChatController {
 		model.addAttribute("depList", depList);
 		model.addAttribute("chatDto", chatDto);
 		model.addAttribute("lastContentList", lastContentList);
-		
-		return "chat/chatList";
+		return "chat/chatList :: chatFragment";
 	}
 
 	@RequestMapping("/insertChat")
@@ -116,5 +119,20 @@ public class ChatController {
 		chatservice.insertChat(chatDto);
 
 
+	}
+	
+	@RequestMapping("/chatDepartmentListAjax")
+	@ResponseBody
+	public List<DepartmentDto> chatAjaxList() {
+		 List<DepartmentDto> departmentList = chatservice.selectDepartureList();
+		return departmentList;
+	}
+
+	@RequestMapping("/chatMemberListByDepartmentAjax")
+	@ResponseBody
+	public List<MemberDto> chatMemberListByDepartmentAjax(String deptName) {
+		System.out.println(deptName);
+		List<MemberDto> memberList = chatservice.selectMemberListByDepartmentAjax(deptName);
+		return memberList;
 	}
 }

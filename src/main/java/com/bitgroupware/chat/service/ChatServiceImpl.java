@@ -47,6 +47,16 @@ public class ChatServiceImpl implements ChatService {
 		return chatDao.selectLastContentList();
 	}
 
+	@Override
+	public List<DepartmentDto> selectDepartureList() {
+		 return chatDao.selectDepList();
+	}
+
+	@Override
+	public List<MemberDto> selectMemberListByDepartmentAjax(String deptName) {
+		return chatDao.selectMemberListByDepartment(deptName);
+	}
+
 //	@Override
 //	public ChatMessageDto selectLastContentList(String receiver) {
 //		// TODO Auto-generated method stub
