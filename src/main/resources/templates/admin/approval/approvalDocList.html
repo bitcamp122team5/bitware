@@ -4,9 +4,18 @@
 <head>
 <meta charset="UTF-8">
 <title>전자결재 문서양식 리스트(관리자)</title>
+<th:block th:replace="fragments/config :: configFragment"></th:block>
+
 </head>
 <body>
-	<table border="1">
+<div th:replace="fragments/headerAdmin :: headerFragmentAdmin"></div>
+
+<div th:replace="fragments/asideAdmin :: asideFragmentAdminApproval"></div>
+
+<!-- //무조건 section 안에서 내용 작성 -->
+<div layout:fragment="content" class="section" th:align="center">
+<h2>문서양식 목록</h2>
+	<table border="1" >
 		<tr>
 			<td>문서명</td>
 			<td>문서내용</td>
@@ -16,6 +25,8 @@
 			<td th:utext="${approval.apdocForm}"></td>
 		</tr>
 	</table>
+	<br>
 	<a th:href="@{/admin/insertApprovalDocView}">문서 등록</a>
+	</div>
 </body>
 </html>

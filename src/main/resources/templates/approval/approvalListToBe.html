@@ -6,14 +6,94 @@
 <meta charset="UTF-8">
 <title>결재 받은 문서</title>
 <th:block th:replace="fragments/config :: configFragment"></th:block>
+
+<style>
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 2; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%; /* Could be more or less, depending on screen size */                          
+}
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+</style>
+
 </head>
 <body>
 <div th:replace="fragments/header :: headerFragment"></div>
 
 <div th:replace="fragments/aside :: asideFragmentApproval"></div>
 
+<script>
+window.onload=function(){
+	var modal = document.getElementById('myModal');
+	document.getElementById("wrtBnt").onclick = function() {
+    	modal.style.display = "block";
+	}
+	document.getElementsByClassName("close")[0].onclick = function() {
+    	modal.style.display = "none";
+	}
+	window.onclick = function(event) {
+    	if (event.target == modal) {
+        	modal.style.display = "none";
+    	}
+	}
+}
+</script>
+
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
+
+	<!-- modal -->
+
+		<div id="myModal" class="modal">
+			<div class="modal-content">
+				<span class="close">&times;</span>
+				<h2>기안하기 - 문서양식 고르는 폼</h2>
+				<table border="1">
+					<tr>
+						<td>문서명</td>
+						<td>문서내용</td>
+					</tr>
+					<tr th:each="approval:${approval}">
+						<td><a
+							th:href="@{/user/insertApprovalView(apdocNo=${approval.apdocNo})}"
+							th:text="${approval.apdocName}"></a></td>
+						<td th:utext="${approval.apdocForm}"></td>
+					</tr>
+				</table>
+
+
+			</div>
+		</div>
+
 <script>
 $(function(){
 	var cate = $("#searchCondition").val();
@@ -25,7 +105,7 @@ $(function(){
 </script>
 <!-- 검색 시작 -->
 <form th:action="@{/user/selectApprovalListToBe}">
-<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
+<table th:align="center" th:cellpadding="0" th:cellspacing="0" th:width="700">
 <tr>
     <td align="right">
         <select name="searchCondition" id="category">

@@ -40,7 +40,8 @@ $(function(){
 <div th:replace="fragments/aside :: asideFragmentApproval"></div>
 
 <!-- //무조건 section 안에서 내용 작성 -->
-<div layout:fragment="content" class="section">
+<div layout:fragment="content" class="section" th:align="center">
+<h2>기안하기</h2>
 <!-- 글쓰기 -->
 	<div>
 		<form id="fom1" th:action="@{/user/insertApproval}" method="post" enctype="multipart/form-data">
@@ -48,17 +49,17 @@ $(function(){
 			<input type="hidden" name="finalSign" th:value="${approvalDocument.finalSign}">
 			<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
 				<tr>
-					<td th:text="제목" width="80"></td>
+					<td th:text="제목" width="80" th:align="center"></td>
 					<td><input name="apTitle" type="text" size="50"></td>
 				</tr>
 
 				<tr>
-					<td th:text="내용"></td>
+					<td th:text="내용" th:align="center"></td>
 					<td><textarea name="apContent" cols="50" rows="50" id="apContent" th:utext="${approvalDocument.apdocForm}"></textarea></td>
 				</tr>
 
 				<tr>
-					<td>파일</td>
+					<td th:align="center">파일</td>
 					<td>
 						<input multiple="multiple" type="file" name="file" id="file"><br>
 					</td>
@@ -71,7 +72,7 @@ $(function(){
 			</table>
 		</form>
 	</div>
-	<a th:href="@{/user/main}">목록</a><br>
+	<a th:href="@{/user/selectApprovalListToBe}">목록</a><br>
 </div><!-- //section end -->
 </body>
 </html>
