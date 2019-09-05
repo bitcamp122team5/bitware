@@ -134,18 +134,18 @@ $(document).ready(function() {
         		</span>
         	</span>
         </td>
-    	<div th:if="${today==#dates.format(docCenter.docDate,'yyyy-MM-dd')}">
+    	<th:block th:if="${today==#dates.format(docCenter.docDate,'yyyy-MM-dd')}">
 			<td th:text="${#dates.format(docCenter.docDate,'HH:mm')}"></td>
-		</div>
-		<div th:unless="${today==#dates.format(docCenter.docDate,'yyyy-MM-dd')}">
+		</th:block>
+		<th:block th:unless="${today==#dates.format(docCenter.docDate,'yyyy-MM-dd')}">
 			<td th:text="${#dates.format(docCenter.docDate,'yyyy-MM-dd')}"></td>
-		</div>
-    	<div th:if="${docCenter.docFileCheck=='Y'}">
+		</th:block>
+    	<th:block th:if="${docCenter.docFileCheck=='Y'}">
 			<td><img th:src="@{/images/fileImage.png}" style="width: 10px; height: 10px"></td>
-		</div>
-		<div th:unless="${docCenter.docFileCheck=='Y'}">
+		</th:block>
+		<th:block th:unless="${docCenter.docFileCheck=='Y'}">
 			<td></td>
-		</div>
+		</th:block>
 		<td th:text="${docCenter.docCnt}"></td>
 	</tr>
 </table>

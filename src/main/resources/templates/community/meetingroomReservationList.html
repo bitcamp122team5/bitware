@@ -176,9 +176,9 @@ $(function(){
     			<td>회의실 선택</td>
     			<td colspan="2">
     				<select name="mrNo">
-    					<span th:each="meetingroom:${meetingroomList}">
+    					<th:block th:each="meetingroom:${meetingroomList}">
 							<option th:value="${meetingroom.mrNo}" th:text="${meetingroom.mrName}"></option>
-						</span>
+						</th:block>
 					</select>
     			</td>
     		</tr>

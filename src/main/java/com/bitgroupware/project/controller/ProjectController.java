@@ -252,6 +252,12 @@ public class ProjectController {
 		return "redirect:/user/selectEndProjectList";
 	}
 	
+	@RequestMapping("/selectProjectWbsOnCalendar")
+	@ResponseBody
+	public List<ProjectWbsDto> selectProjectWbsOnCalendar(int prjCode) {
+		return projectService.selectProjectWbsOnCalendar(prjCode);
+	}
+	
 	
 //	@RequestMapping("selectProjectPMName")
 //	@ResponseBody

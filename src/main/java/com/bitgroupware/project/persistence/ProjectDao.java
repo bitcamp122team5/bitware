@@ -85,5 +85,8 @@ public interface ProjectDao {
 	/*멤버 아이디로 멤버 정보 뽑아오기*/
 	@Select("SELECT MEM_NAME, DEPT_NAME, TEAM_NAME, RANKS FROM MEMBER WHERE MEM_ID = #{memId}")
 	public MemberDto selectMemberInfos(String memId);
+
+	@Select("select * from project_wbs where prj_code = #{prjCode}")
+	public List<ProjectWbsDto> selectProjectWbsOnCalendar(int prjCode);
 	
 }

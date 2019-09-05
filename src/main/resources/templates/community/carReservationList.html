@@ -188,9 +188,9 @@ $(function(){
     			<td>차량 선택</td>
     			<td colspan="2">
     				<select name="carNo">
-						<span th:each="car:${carList}">
+						<th:block th:each="car:${carList}">
 							<option th:value="${car.carNo}" th:text="${car.carName}"></option>
-						</span>
+						</th:block>
 					</select>
     			</td>
     		</tr>

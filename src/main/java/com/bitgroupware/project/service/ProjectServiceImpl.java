@@ -125,6 +125,11 @@ public class ProjectServiceImpl implements ProjectService {
 	public MemberDto selectMemberInfos(String memId) {
 		return dao.selectMemberInfos(memId);
 	}
+
+	@Override
+	public List<ProjectWbsDto> selectProjectWbsOnCalendar(int prjCode) {
+		return dao.selectProjectWbsOnCalendar(prjCode);
+	}
 	
 	
 }

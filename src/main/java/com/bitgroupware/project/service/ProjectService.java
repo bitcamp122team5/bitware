@@ -61,5 +61,7 @@ public interface ProjectService {
 	
 	/*멤버 아이디로 멤버 정보 뽑아오기*/
 	public MemberDto selectMemberInfos(String memId);
+
+	public List<ProjectWbsDto> selectProjectWbsOnCalendar(int prjCode);
 	
 }

@@ -134,18 +134,18 @@ $(document).ready(function() {
         		</span>
         	</span>
         </td>
-    	<div th:if="${today==#dates.format(notice.ntDate,'yyyy-MM-dd')}">
+    	<th:block th:if="${today==#dates.format(notice.ntDate,'yyyy-MM-dd')}">
 			<td th:text="${#dates.format(notice.ntDate,'HH:mm')}"></td>
-		</div>
-		<div th:unless="${today==#dates.format(notice.ntDate,'yyyy-MM-dd')}">
+		</th:block>
+		<th:block th:unless="${today==#dates.format(notice.ntDate,'yyyy-MM-dd')}">
 			<td th:text="${#dates.format(notice.ntDate,'yyyy-MM-dd')}"></td>
-		</div>
-    	<div th:if="${notice.ntFileCheck=='Y'}">
+		</th:block>
+    	<th:block th:if="${notice.ntFileCheck=='Y'}">
 			<td><img th:src="@{/images/fileImage.png}" style="width: 10px; height: 10px"></td>
-		</div>
-		<div th:unless="${notice.ntFileCheck=='Y'}">
+		</th:block>
+		<th:block th:unless="${notice.ntFileCheck=='Y'}">
 			<td></td>
-		</div>
+		</th:block>
 		<td th:text="${notice.ntCnt}"></td>
 	</tr>
 </table>
