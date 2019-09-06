@@ -11,6 +11,7 @@ import com.bitgroupware.project.beans.ProjectInfoDto;
 import com.bitgroupware.project.beans.ProjectMembersDto;
 import com.bitgroupware.project.beans.ProjectWbsDto;
 import com.bitgroupware.project.persistence.ProjectDao;
+import com.bitgroupware.utils.Search;
 
 @Service("ProjectService")
 public class ProjectServiceImpl implements ProjectService {
@@ -18,22 +19,129 @@ public class ProjectServiceImpl implements ProjectService {
 	@Autowired
 	private ProjectDao dao;
 	
-	//전체 프로젝트 조회 (진행중인 프로젝트)
+	//진행중인 프로젝트 카운트 (페이징을 위한 값)
 	@Override
-	public List<ProjectInfoDto> selectProjectList() {
-		return dao.selectProjectList();
+	public int countProject(Search search) {
+		if(search.getSearchCondition() == null)
+			search.setSearchCondition("prjName");
+		if(search.getSearchKeyword() == null)
+			search.setSearchKeyword("");
+		String searchCondition = search.getSearchCondition();
+		String searchKeyword = "%" + search.getSearchKeyword().trim() + "%";
+		int count = 0;
+		System.out.println("카운트에서 condition : " + searchCondition);
+		System.out.println("카운트에서 keyword : " + searchKeyword);
+		switch(searchCondition) {
+		case "prjName":
+			count = dao.countByPrjName(searchKeyword); //
+			break;
+		case "prjMothercompany":
+			count = dao.countByPrjMothercompany(searchKeyword);
+			break;
+		}
+		return count;
 	}
 	
-	//완료된 프로젝트 조회
+	//완료된 프로젝트 카운트 (페이징을 위한 값)
 	@Override
-	public List<ProjectInfoDto> selectEndProjectList() {
-		return dao.selectEndProjectList();
+	public int countCompletedProject(Search search) {
+		if(search.getSearchCondition() == null)
+			search.setSearchCondition("prjName");
+		if(search.getSearchKeyword() == null)
+			search.setSearchKeyword("");
+		String searchCondition = search.getSearchCondition();
+		String searchKeyword = "%" + search.getSearchKeyword().trim() + "%";
+		int count = 0;
+		switch(searchCondition) {
+		case "prjName":
+			count = dao.countByCompletedPrjName(searchKeyword); //
+			break;
+		case "prjMothercompany":
+			count = dao.countByCompletedPrjMothercompany(searchKeyword);
+			break;
+		}
+		return count;
+	}
+	
+//	//전체 프로젝트 조회 (진행중인 프로젝트)
+//	@Override
+//	public List<ProjectInfoDto> selectProjectList() {
+//		return dao.selectProjectList();
+//	}
+	
+	//전체 프로젝트 조회 (진행중인 프로젝트+ 페이징, 검색) PRJ_NAME OR PRJ_MOTHERCOMPNAY
+	@Override
+	public List<ProjectInfoDto> selectProjectList(int begin, Search search) {
+		if (search.getSearchCondition() == null)
+			search.setSearchCondition("prjName");
+		if (search.getSearchKeyword() == null)
+			search.setSearchKeyword("");
+		String searchCondition = search.getSearchCondition();
+		String searchKeyword = "%" + search.getSearchKeyword().trim() + "%";
+		
+		System.out.println("impl에서 condition : " + searchCondition);
+		System.out.println("impl에서 keyword : " + searchKeyword);
+		
+		List<ProjectInfoDto> prjInfoDto = null;
+		switch(searchCondition) {
+		case "prjName":
+			prjInfoDto = dao.selectProjectListToPrjName(begin, searchKeyword);
+			break;
+		case "prjMothercompany":
+			prjInfoDto = dao.selectProjectListToPrjMothercompany(begin, searchKeyword);
+			break;
+		}
+		return prjInfoDto;
+	}
+	
+	//완료된 프로젝트 조회 (페이징, 검색) PRJ_NAME OR PRJ_MOTHERCOMPNAY
+	@Override
+	public List<ProjectInfoDto> selectEndProjectList(int begin, Search search) {
+		if (search.getSearchCondition() == null)
+			search.setSearchCondition("prjName");
+		if (search.getSearchKeyword() == null)
+			search.setSearchKeyword("");
+		String searchCondition = search.getSearchCondition();
+		String searchKeyword = "%" + search.getSearchKeyword().trim() + "%";
+		
+		System.out.println("impl에서 condition : " + searchCondition);
+		System.out.println("impl에서 keyword : " + searchKeyword);
+		
+		List<ProjectInfoDto> prjInfoDto = null;
+		switch(searchCondition) {
+		case "prjName":
+			prjInfoDto = dao.selectEndProjectListToPrjName(begin, searchKeyword);
+			break;
+		case "prjMothercompany":
+			prjInfoDto = dao.selectEndProjectListToPrjMothercompany(begin, searchKeyword);
+			break;
+		}
+		return prjInfoDto;
 	}
 
-	//참여중인 프로젝트 조회
+	//참여중인 프로젝트 조회 (페이징, 검색) PRJ_NAME OR PRJ_MOTHERCOMPNAY
 	@Override
-	public List<ProjectInfoDto> selectAttendProjectList(String memId) {
-		return dao.selectAttendProjectList(memId);
+	public List<ProjectInfoDto> selectAttendProjectList(int begin, Search search, String memId) {
+		if (search.getSearchCondition() == null)
+			search.setSearchCondition("prjName");
+		if (search.getSearchKeyword() == null)
+			search.setSearchKeyword("");
+		String searchCondition = search.getSearchCondition();
+		String searchKeyword = "%" + search.getSearchKeyword().trim() + "%";
+		
+		System.out.println("impl에서 condition : " + searchCondition);
+		System.out.println("impl에서 keyword : " + searchKeyword);
+		
+		List<ProjectInfoDto> prjInfoDto = null;
+		switch(searchCondition) {
+		case "prjName":
+			prjInfoDto = dao.selectAttendProjectListToPrjName(begin, searchKeyword, memId);
+			break;
+		case "prjMothercompany":
+			prjInfoDto = dao.selectAttendProjectListToPrjMothercompany(begin, searchKeyword, memId);
+			break;
+		}
+		return prjInfoDto;
 	}
 
 	//프로젝트 상세페이지 조회
