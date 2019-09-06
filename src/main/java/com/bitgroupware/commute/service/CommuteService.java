@@ -13,11 +13,12 @@ public interface CommuteService {
 
 	List<CommuteVo> selectCommuteList(MemberVo member);
 	
+	List<CommuteVo> selectCommuteList(MemberVo memberVo, String startDate, String endDate);
+	
 	String selectCurdate();
 	
 	String selectCurtime();
 
 	CommuteVo selectTodayCommute(MemberVo memberVo, String curdate);
-
 
 }

@@ -20,6 +20,11 @@ public class CommuteServiceImpl implements CommuteService {
 		return commuteRepository.findByMemberVo(member);
 	}
 	
+	@Override
+	public List<CommuteVo> selectCommuteList(MemberVo memberVo, String startDate, String endDate) {
+		return commuteRepository.findByMemberVoAndCommuteDateBetween(memberVo, startDate, endDate);
+	}
+
 	// 출근시간 기록
 	@Override
 	public void insertOntime(CommuteVo commuteVo) {
@@ -42,6 +47,7 @@ public class CommuteServiceImpl implements CommuteService {
 		return commuteRepository.selectCurtime();
 	}
 
+	// 오늘 근태 확인
 	@Override
 	public CommuteVo selectTodayCommute(MemberVo memberVo, String curdate) {
 		return commuteRepository.findByMemberVoAndCommuteDate(memberVo, curdate);
