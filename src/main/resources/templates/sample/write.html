@@ -3,6 +3,7 @@
 <h2>공지사항</h2>
 <div class="article">
 	<div class="table_wrap write">
+	<form>
 		<table>
 			<colgroup class="pc">
 				<col width="120px">
@@ -31,7 +32,7 @@
 						<div class="file_wrap">
 							<div class="file_txt">
 								<p>파일은 <span class="txt_point_01">10개</span>까지 첨부가 가능하며, 용량은 <span class="txt_point_01">100MB</span>를 넘을 수 없습니다.</p>
-								<form name="setFileList" method="post" target="invisible" action="fileMngr?cmd=delete">
+								<div class="fileSelect">
 									<select name="list" multiple="">
 										<option>파일1파일1파일1파일1파일1파일1파일1파일1파일1파일1파일1파일1파일1파일1파일1파일1파일1파일1파일1파일1파일1파일1파일1파일1파일1파일1파일1파일1파일1파일1파일1파일1파일1파일1파일1.jpg</option>
 										<option>파일1.jpg</option>
@@ -40,13 +41,7 @@
 										<option>파일1.jpg</option>
 										<option>파일1.jpg</option>
 									</select>
-									<input type="hidden" name="semaphore" value="1487660803506">
-									<input type="hidden" name="vaccum">
-									<input type="hidden" name="delBoardId" value="kicpatest">
-									<input type="hidden" name="unDelList">
-									<input type="hidden" name="delList">
-									<input type="hidden" name="subId" value="sub01">
-								</form>
+								</div>
 							</div> <!-- //file_txt -->
 							<div class="file_attach">
 								<input type="file" id="in_file_01">
@@ -58,6 +53,7 @@
 				</tr>
 			</tbody>
 		</table>
+		</form>
 	</div><!-- //table_wrap -->
 
 	<div class="btn_wrap">
