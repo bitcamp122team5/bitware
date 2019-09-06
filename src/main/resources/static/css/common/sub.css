@@ -27,8 +27,8 @@ button{outline:none;}
 .table_wrap.write .txt_point_01{color:#fd951b;}
 .table_wrap.write .file_txt{}
 .table_wrap.write .file_txt p{margin-bottom:10px;}
-.table_wrap.write .file_txt form select{width:100%;height:100px;overflow-y:auto;border:1px solid #ddd;padding:10px;box-sizing:border-box}
-.table_wrap.write .file_txt form select option{display:block;max-width:97%;overflow:hidden;padding:2px 5px;white-space:nowrap;text-overflow:ellipsis;}
+.table_wrap.write .file_txt .fileSelect select{width:100%;height:100px;overflow-y:auto;border:1px solid #ddd;padding:10px;box-sizing:border-box}
+.table_wrap.write .file_txt .fileSelect select option{display:block;max-width:97%;overflow:hidden;padding:2px 5px;white-space:nowrap;text-overflow:ellipsis;}
 .table_wrap.write .file_attach{margin-top:10px;text-align:right;}
 .table_wrap.write .file_attach:after{content:'';display:block;clear:both;}
 .table_wrap.write .file_attach #in_file_01{position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip:rect(0,0,0,0); border: 0;}
