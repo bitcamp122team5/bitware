@@ -27,16 +27,16 @@
 	</div>
 	<script type="text/javascript">
 
-	$(function(){
-		$(".memberByDept").click(function(){
-			var memId = $(this).attr('value');
-			var url = "/user/chat?memId=" + memId;
-			var name = "chatPopup";
-			var option = "width=500, height=500, top=100, left=200, location=no"
-			window.open(url, name, option);
+		$(function(){
+			$(".memberByDept").click(function(){
+				var memId = $(this).attr('value');
+				var url = "/user/chat?memId=" + memId;
+				var name = "chatPopup";
+				var option = "width=500, height=500, top=100, left=200, location=no"
+				window.open(url, name, option);
+			})
 		})
-	})
-</script>
+	</script>
 </div>
 </body>
 </html>

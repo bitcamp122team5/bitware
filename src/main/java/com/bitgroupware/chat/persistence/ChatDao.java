@@ -35,7 +35,8 @@ public interface ChatDao {
 	List<ChatMessageDto> selectLastContentList();
 	//public ChatMessageDto selectLastContentList(String receiver);
 	
-	@Select("select * from member where dept_name = #{deptName}")
+//	@Select("select * from member where dept_name = #{deptName}")
+	@Select("SELECT M.*, R.RANKS_NO FROM MEMBER AS M JOIN RANKS AS R ON M.RANKS = R.RANKS WHERE DEPT_NAME = #{deptName} ORDER BY R.RANKS_NO DESC")
 	List<MemberDto> selectMemberListByDepartment(String deptName);
 	
 	

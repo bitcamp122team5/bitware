@@ -24,6 +24,10 @@ public class QCarReservationVo extends EntityPathBase<CarReservationVo> {
 
     public final QCarVo car;
 
+    public final StringPath carArrival = createString("carArrival");
+
+    public final StringPath carDeparture = createString("carDeparture");
+
     public final DateTimePath<java.util.Date> carResDate = createDateTime("carResDate", java.util.Date.class);
 
     public final StringPath carResEnd = createString("carResEnd");
