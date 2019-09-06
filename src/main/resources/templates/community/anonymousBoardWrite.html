@@ -86,29 +86,41 @@ window.onload=function(){
 
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
+
 <form th:action="@{/user/insertAnonymousBoard}" id="form">
-	<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
-		<tr>
-			<td bgcolor="orange">제목</td>
-			<td><input type="text" name="btitle" id="btitle"></td>
-		</tr>
-		<tr>
-			<td bgcolor="orange">내용</td>
-			<td><textarea name="bcontent" id="bcontent" rows="10"></textarea></td>
-		</tr>
-		<tr>
-			<td bgcolor="orange">비밀번호</td>
-			<td><input type="password" name="bpw" id="bpw"></td>
-		</tr>
-		<tr>
-			<td bgcolor="orange">비밀번호 확인</td>
-			<td><input type="password" id="bpwCheck"></td>
-		</tr>
-		<tr>
-			<td colspan="2"><input type="button" id="insertBtn" value="입력">
-			<a th:href="@{/user/selectAnonymousBoardList}">목록보기</a>
-		</tr>
-	</table>
+
+<h2>익명게시판</h2>
+
+<div class="article">
+	<div class="table_wrap view">
+		<table>
+			<colgroup>
+				<col width="120px">
+				<col width="*">
+			</colgroup>
+			<tbody>
+				<tr>
+					<td>제목</td>
+					<td><input type="text" name="btitle" id="btitle"></td>
+				</tr>
+				<tr>
+					<td>내용</td>
+					<td><textarea name="bcontent" id="bcontent" rows="10"></textarea></td>
+				</tr>
+				<tr>
+					<td>비밀번호</td>
+					<td><input type="password" name="bpw" id="bpw"></td>
+				</tr>
+				<tr>
+					<td>비밀번호 확인</td>
+					<td><input type="password" id="bpwCheck"></td>
+				</tr>
+			</tbody>
+		</table>
+		<input type="button" id="insertBtn" value="입력">
+		<a th:href="@{/user/selectAnonymousBoardList}">목록보기</a>
+	</div>
+</div>
 </form>
 </div><!-- //section end -->
 </body>

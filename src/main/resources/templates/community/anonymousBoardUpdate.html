@@ -86,44 +86,50 @@ window.onload=function(){
 
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
+
 <form action="/user/updateAnonymousBoard" id="form">
-	<input type="hidden" name="bno" id="bno" th:value="${anonymousBoard.bno}">
-	<input type="hidden" name="bgroup" th:value="${anonymousBoard.bgroup}">
-	<input type="hidden" name="bstep" th:value="${anonymousBoard.bstep}">
-	<input type="hidden" name="bindent" th:value="${anonymousBoard.bindent}">
-	<input type="hidden" name="bcnt" th:value="${anonymousBoard.bcnt}">
-	<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
-		<tr>
-			<td bgcolor="orange">번호</td>
-			<td th:text="${anonymousBoard.bno}"></td>
-		</tr>
-		<tr>
-			<td bgcolor="orange">조회수</td>
-			<td th:text="${anonymousBoard.bcnt}"></td>
-		</tr>
-		<tr>
-			<td bgcolor="orange">제목</td>
-			<td><input type="text" name="btitle" id="btitle" th:value="${anonymousBoard.btitle}"></td>
-		</tr>
-		<tr>
-			<td bgcolor="orange">내용</td>
-			<td><textarea name="bcontent" rows="10" id="bcontent" th:text="${anonymousBoard.bcontent}"></textarea></td>
-		</tr>
-		<tr>
-			<td bgcolor="orange">비밀번호</td>
-			<td><input type="password" name="bpw" id="bpw" th:value="${anonymousBoard.bpw}"></td>
-		</tr>
-		<tr>
-			<td bgcolor="orange">비밀번호 확인</td>
-			<td><input type="password" id="bpwCheck" th:value="${anonymousBoard.bpw}"></td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<input type="button" id="updateBtn" value="수정하기">
-				<a th:href="@{/user/selectAnonymousBoardList}">목록보기</a>
-			</td>
-		</tr>
-	</table>
+<input type="hidden" name="bno" id="bno" th:value="${anonymousBoard.bno}">
+<input type="hidden" name="bgroup" th:value="${anonymousBoard.bgroup}">
+<input type="hidden" name="bstep" th:value="${anonymousBoard.bstep}">
+<input type="hidden" name="bindent" th:value="${anonymousBoard.bindent}">
+<input type="hidden" name="bcnt" th:value="${anonymousBoard.bcnt}">
+
+<h2>익명게시판</h2>
+
+<div class="article">
+	<div class="table_wrap view">
+		<table>
+			<colgroup>
+				<col width="120px">
+				<col width="*">
+			</colgroup>
+			<tbody>
+				<tr>
+					<td>번호</td>
+					<td th:text="${anonymousBoard.bno}"></td>
+				</tr>
+				<tr>
+					<td>제목</td>
+					<td><input type="text" name="btitle" id="btitle" th:value="${anonymousBoard.btitle}"></td>
+				</tr>
+				<tr>
+					<td>내용</td>
+					<td><textarea name="bcontent" rows="10" id="bcontent" th:text="${anonymousBoard.bcontent}"></textarea></td>
+				</tr>
+				<tr>
+					<td>비밀번호</td>
+					<td><input type="password" name="bpw" id="bpw" th:value="${anonymousBoard.bpw}"></td>
+				</tr>
+				<tr>
+					<td>비밀번호 확인</td>
+					<td><input type="password" id="bpwCheck" th:value="${anonymousBoard.bpw}"></td>
+				</tr>
+			</tbody>
+		</table>
+		<input type="button" id="updateBtn" value="수정하기">
+		<a th:href="@{/user/selectAnonymousBoardList}">목록보기</a>
+	</div>
+</div>
 </form>
 </div><!-- //section end -->
 </body>

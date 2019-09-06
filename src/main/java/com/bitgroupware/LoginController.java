@@ -25,9 +25,13 @@ public class LoginController {
 	@RequestMapping("/loginCheck")
 	@ResponseBody
 	public String loginCheck(@AuthenticationPrincipal SecurityUser principal) {
-		if(principal.getMember()!=null) {
-			return "success";
-		}else {
+		try {
+			if(principal.getMember()!=null) {
+				return "success";
+			}else {
+				return "fail";
+			}
+		}catch (NullPointerException e) {
 			return "fail";
 		}
 	}

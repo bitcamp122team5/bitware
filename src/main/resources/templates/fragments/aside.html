@@ -18,6 +18,7 @@
 	</ul>
 </div><!-- //aside end -->
 
+<!-- Community -->
 <div th:fragment="asideFragmentCommunity" class="aside">
 	<div class="aside_tit">
 		<a href="#"></a>
@@ -64,6 +65,24 @@
 	<ul class="aside_con">
 		<li class="dep1"><a th:href="@{/user/mypage}">내 정보</a></li>
 		<li class="dep1"><a th:href="@{/user/selectCommuteList}">근태 및 휴가</a></li>
+	</ul>
+</div><!-- //aside end -->
+
+<!-- OrganizationChart -->
+<div th:fragment="asideFragmentOrganizationChart" class="aside">
+	<div class="aside_tit">
+		<a href="#"></a>
+	</div>
+	<ul class="aside_con">
+		<li class="dep1 have"><a href="#" class="dep1 have">조직도</a>
+			<ul class="dep2ul">
+				<li><a th:href="@{/user/selectOrganizationChartList?deptName=임원진}">임원진</a></li>
+				<li><a th:href="@{/user/selectOrganizationChartList?deptName=지원부}">지원부</a></li>
+				<li><a th:href="@{/user/selectOrganizationChartList?deptName=영업부}">영업부</a></li>
+				<li><a th:href="@{/user/selectOrganizationChartList?deptName=개발부}">개발부</a></li>
+			</ul>
+		</li>
+		<li class="dep1"><a th:href="@{/user/selectClientList}">고객사</a></li>
 	</ul>
 </div><!-- //aside end -->
 
