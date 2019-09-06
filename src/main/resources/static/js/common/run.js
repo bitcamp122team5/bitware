@@ -44,7 +44,7 @@ $(function(){
 							success: function(memberList){
 								var str = "";
 								for(var i in memberList){
-									str += "<li class='memberByDept' value='"+memberList[i].memName+"'>"+memberList[i].memName+"</li>";
+									str += "<li class='memberByDept' value='"+memberList[i].memName+"'>"+"<p>"+memberList[i].teamName+" "+memberList[i].ranks+"</p>"+memberList[i].memName+"</li>";
 								}
 								$("#memberByDepartment li").remove();
 								$("#memberByDepartment").append(str);

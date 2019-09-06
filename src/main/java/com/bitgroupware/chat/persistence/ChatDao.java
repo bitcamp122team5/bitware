@@ -15,7 +15,8 @@ import com.bitgroupware.chat.Beans.MemberDto;
 public interface ChatDao {
 	
 	//직원불러오기
-	@Select("SELECT M.MEM_ID, M.MEM_NAME, D.DEPT_NAME FROM MEMBER AS M JOIN DEPARTMENT AS D ON M.DEPT_NAME = D.DEPT_NAME")
+	//@Select("SELECT M.MEM_ID, M.MEM_NAME, D.DEPT_NAME FROM MEMBER AS M JOIN DEPARTMENT AS D ON M.DEPT_NAME = D.DEPT_NAME")
+	@Select("SELECT * FROM MEMBER")
 	List<MemberDto> selectMemberList();
 	
 	//부서명불러오기

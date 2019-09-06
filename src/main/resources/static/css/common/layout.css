@@ -50,3 +50,5 @@
 .chat_wrap .chat_inner .tab ul li{text-align:center;}
 .chat_wrap .chat_inner .tab ul li a{display:block;padding:20px;box-sizing:border-box;color:#fff;}
 .chat_wrap .chat_inner .info{float:left;display:none;width:0px;height:calc(100vh - 60px);}
+.chat_wrap .chat_inner .info ul li{padding:20px;box-sizing:border-box;border-bottom:1px solid #e2e2e2;}
+.chat_wrap .chat_inner .info ul li p{font-weight:700;}
