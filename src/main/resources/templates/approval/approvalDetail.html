@@ -31,7 +31,7 @@ $(function(){
 
 <div th:replace="fragments/header :: headerFragment"></div>
 
-<div th:replace="fragments/aside :: asideFragment"></div>
+<div th:replace="fragments/aside :: asideFragmentApproval"></div>
 
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
@@ -41,16 +41,17 @@ $(function(){
 <input type="hidden" id="finalSign" th:value="${approval.finalSign}">
 <input type="hidden" id="ranksNo" th:value="${ranksNo}">
 <!-- <input type="hidden" id="apFileno" th:value="${approvalFileList.apFileno}"> -->
-
-	<div th:align="center">
-		<table border="1" th:align="center">
-		<tr>
-			<td>사원</td>
-			<td>팀장</td>
-			<td>부장</td>
-			<td>이사</td>
-			<td>사장</td>
-		</tr>
+<h2>상세페이지</h2>
+<div th:align="right">
+	<table border="1" th:align="center">
+	<tr>
+		<td>사원</td>
+		<td>팀장</td>
+		<td>부장</td>
+		<td>이사</td>
+		<td>사장</td>
+	</tr>
+	
 	<tr>
 		<td>
 			<th:block th:if="${approval.apSignUrl1!=null}">
@@ -70,6 +71,7 @@ $(function(){
 				</th:block>
 			</th:block>
 		</td>
+		
 		<td>
 			<th:block th:if="${approval.apSignUrl2!=null}">
 				<img th:src="${approval.apSignUrl2}">
@@ -88,6 +90,7 @@ $(function(){
 				</th:block>
 			</th:block>
 		</td>
+		
 		<td>
 			<th:block th:if="${approval.apSignUrl3!=null}">
 				<img th:src="${approval.apSignUrl3}">
@@ -106,6 +109,7 @@ $(function(){
 				</th:block>
 			</th:block>
 		</td>
+		
 		<td>
 			<th:block th:if="${approval.apSignUrl4!=null}">
 				<img th:src="${approval.apSignUrl4}">
@@ -124,6 +128,7 @@ $(function(){
 				</th:block>
 			</th:block>
 		</td>
+		
 		<td>
 			<th:block th:if="${approval.apSignUrl5!=null}">
 				<img th:src="${approval.apSignUrl5}">
@@ -142,7 +147,9 @@ $(function(){
 				</th:block>
 			</th:block>
 		</td>
+		
 	</tr>
+	
 	<tr>
 		<td th:text="${approval.apSignName1}"></td>
 		<td th:text="${approval.apSignName2}"></td>
@@ -153,58 +160,77 @@ $(function(){
 	</table>
 	</div>
 
-	<div th:align="center">
-		<table border="1" width="1000" height="500">
-		<tr>
-			<td>문서명</td>
-			<td th:text="${approval.apTitle}"/>
-		</tr>
-		<tr>
-			<td>문서내용</td>
-			<td><span name="apContent" cols="50" rows="50" id="apContent" th:utext="${approval.apContent}"></span></td>
-		</tr>
-		
-<!-- 		<tr> -->
-<!-- 			<td>첨부파일</td> -->
-<!-- 			<td>  -->
-<!-- 				<span th:each="approvalFile:${approvalFileList}" > -->
-<!-- 					<span th:if="${approvalFile.apFileno!=null}" th:text="${approvalFile.apFilename}"></span><br> -->
-<!-- 					<span th:unless="${approvalFile.apFileno==null}">첨부파일이 없습니다.</span> -->
-<!-- 				</span> -->
-<!-- 			</td> -->
-<!-- 		</tr> -->
-		
-		<tr>
-			<td>첨부파일</td>
-			<td>
+
+<!-- //여기서 부터 긁어가세요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+<!-- //클래스명 하나도 빼지 말고 다 넣어주세요  -->
+<div class="article">
+	<div class="table_wrap view">
+		<table>
+			<colgroup>
+				<col width="120px">
+				<col width="*">
+			</colgroup>
+			<tbody>
+				<tr>
+					<th>문서명</th>
+					<td th:text="${approval.apTitle}"></td>
+				</tr>
+				<tr>
+					<th>문서내용</th>
+					<td th:utext="${approval.apContent}"></td>
+<!-- 					<td><span name="apContent" cols="50" rows="50" id="apContent" th:utext="${approval.apContent}"></span></td> -->
+				</tr>
+				
+				<tr>
+					<th>등록일</th>
+					<th:block th:if="${today==#dates.format(approval.apInsertdate,'yyyy-MM-dd')}">
+						<td class="date" th:text="${#dates.format(approval.apInsertdate,'HH:mm')}"></td>
+					</th:block>
+					<th:block th:unless="${today==#dates.format(approval.apInsertdate,'yyyy-MM-dd')}">
+						<td class="date" th:text="${#dates.format(approval.apInsertdate,'yyyy-MM-dd')}"></td>
+					</th:block>
+				</tr>
+				
+				<tr>
+					<th>첨부파일</th>
+					<td>
 			
-			<span th:if="${approvalFileList.isEmpty()}">
-				<span>첨부파일이 없습니다.</span>
-			</span>
+					<span th:if="${approvalFileList.isEmpty()}">
+						<span>첨부파일이 없습니다.</span>
+					</span>
 			
-			<span th:unless="${approvalFileList.isEmpty()}">
-				<span th:each="approvalFile:${approvalFileList}">
-				<input type="hidden" id="apFileno" th:value="${approvalFile.apFileno}">
-					<a th:href="@{/user/downloadFile(apFileurl=${approvalFile.apFileurl},apFilename=${approvalFile.apFilename})}" th:name="file" th:text="${approvalFile.apFilename}"></a><br>
-				</span>
-			</span>
-			</td>
-		</tr>
-		
-		
-		<th:block th:if="${approval.apComment != null}">
-		<tr>
-			<td>반려사유</td>
-			<td th:text="${approval.apComment}"></td>
-		</tr>
-		</th:block>
+					<span th:unless="${approvalFileList.isEmpty()}">
+						<span th:each="approvalFile:${approvalFileList}">
+						<input type="hidden" id="apFileno" th:value="${approvalFile.apFileno}">
+						<a th:href="@{/user/downloadFile(apFileurl=${approvalFile.apFileurl},apFilename=${approvalFile.apFilename})}" th:name="file" th:text="${approvalFile.apFilename}"></a><br>
+						</span>
+					</span>
+					</td>
+				</tr>
+				<th:block th:if="${approval.apComment != null}">
+				<tr>
+					<th>반려사유</th>
+					<td th:text="${approval.apComment}"></td>
+				</tr>
+				</th:block>
+			</tbody>
 		</table>
 		
-	
-		<a th:href="@{/user/selectApprovalListToBe}">목록</a><br>
-		<a th:if="${approval.apDocstatus=='1'}" th:href="@{/user/deleteApproval(apNo=${approval.apNo})}">삭제</a><br>
-		<a th:if="${approval.apDocstatus=='1'}" th:href="@{/user/updateApprovalView(apNo=${approval.apNo})}">수정</a>
-<!-- 		<a th:if="${approval.apDocstatus=='1'}" th:href="@{/user/updateApprovalView(apFileno=${approvalFileList.apFileno})}">수정</a> -->
+		<div class="btn_wrap">
+		<div class="box_right">
+			<a  class="btn btn_point" th:href="@{/user/selectApprovalListToBe}">목록</a>
+			<a  class="btn btn_point" th:if="${approval.apDocstatus=='1'}" th:href="@{/user/deleteApproval(apNo=${approval.apNo})}">삭제</a>
+			<a  class="btn btn_point" th:if="${approval.apDocstatus=='1'}" th:href="@{/user/updateApprovalView(apNo=${approval.apNo})}">수정</a>
+		</div>
+	</div>
+		
+		
+<!-- 		<a  class="btn btn_point" th:href="@{/user/selectApprovalListToBe}">목록</a><br> -->
+<!-- 		<a  class="btn btn_point" th:if="${approval.apDocstatus=='1'}" th:href="@{/user/deleteApproval(apNo=${approval.apNo})}">삭제</a><br> -->
+<!-- 		<a  class="btn btn_point" th:if="${approval.apDocstatus=='1'}" th:href="@{/user/updateApprovalView(apNo=${approval.apNo})}">수정</a> -->
+	</div><!-- //table_wrap -->
+</div>
+<!-- //여기까지!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 	</div> <!-- //section end -->
 </body>
 </html>
