@@ -12,21 +12,38 @@ import com.bitgroupware.project.beans.MemberDto;
 import com.bitgroupware.project.beans.ProjectInfoDto;
 import com.bitgroupware.project.beans.ProjectMembersDto;
 import com.bitgroupware.project.beans.ProjectWbsDto;
+import com.bitgroupware.utils.Search;
 
 @Mapper
 public interface ProjectDao {
 	
-	//전체 프로젝트 조회(진행중인 프로젝트)
-	@Select("SELECT * FROM PROJECT_INFO WHERE PRJ_COMPLETION = 0 ORDER BY PRJ_CODE DESC")
-	public List<ProjectInfoDto> selectProjectList();
+//	//전체 프로젝트 조회(진행중인 프로젝트)
+//	@Select("SELECT * FROM PROJECT_INFO WHERE PRJ_COMPLETION = 0 ORDER BY PRJ_CODE DESC")
+//	public List<ProjectInfoDto> selectProjectList();
 	
-	//완료된 프로젝트 조회
-	@Select("SELECT * FROM PROJECT_INFO WHERE PRJ_COMPLETION = 1 ORDER BY PRJ_CODE DESC")
-	public List<ProjectInfoDto> selectEndProjectList();
+	//전체 프로젝트 조회(진행중인 프로젝트+ 페이징, 검색) PRJ_NAME
+	@Select("select r1.* from (SELECT * FROM PROJECT_INFO WHERE PRJ_COMPLETION = 0 AND PRJ_NAME LIKE #{searchKeyword} ORDER BY PRJ_CODE DESC) r1 limit 10 offset #{begin}")
+	public List<ProjectInfoDto> selectProjectListToPrjName(int begin, String searchKeyword);
 	
-	//참여중인 프로젝트 조회
-	@Select("SELECT * FROM PROJECT_INFO WHERE PRJ_COMPLETION = 0 AND PRJ_CODE = ANY(SELECT PRJ_CODE FROM PROJECT_MEMBERS WHERE MEM_ID = #{memId}) ORDER BY PRJ_CODE DESC")
-	public List<ProjectInfoDto> selectAttendProjectList(String memId);
+	//전체 프로젝트 조회(진행중인 프로젝트+ 페이징, 검색) PRJ_MOTHERCOMPANY
+	@Select("select r1.* from (SELECT * FROM PROJECT_INFO WHERE PRJ_COMPLETION = 0 AND PRJ_MOTHERCOMPANY LIKE #{searchKeyword} ORDER BY PRJ_CODE DESC) r1 limit 10 offset #{begin}")
+	public List<ProjectInfoDto> selectProjectListToPrjMothercompany(int begin, String searchKeyword);
+	
+	//완료된 프로젝트 조회(페이징, 검색) PRJ_NAME
+	@Select("select r1.* from (SELECT * FROM PROJECT_INFO WHERE PRJ_COMPLETION = 1 AND PRJ_NAME LIKE #{searchKeyword} ORDER BY PRJ_CODE DESC) r1 limit 10 offset #{begin}")
+	public List<ProjectInfoDto> selectEndProjectListToPrjName(int begin, String searchKeyword);
+	
+	//완료된 프로젝트 조회(페이징, 검색) PRJ_MOTHERCOMPANY
+	@Select("select r1.* from (SELECT * FROM PROJECT_INFO WHERE PRJ_COMPLETION = 1 AND PRJ_MOTHERCOMPANY LIKE #{searchKeyword} ORDER BY PRJ_CODE DESC) r1 limit 10 offset #{begin}")
+	public List<ProjectInfoDto> selectEndProjectListToPrjMothercompany(int begin, String searchKeyword);
+	
+	//참여중인 프로젝트 조회(페이징, 검색) PRJ_NAME
+	@Select("select r1.* from (SELECT * FROM PROJECT_INFO WHERE PRJ_COMPLETION = 0 AND PRJ_NAME LIKE #{searchKeyword} AND PRJ_CODE = ANY(SELECT PRJ_CODE FROM PROJECT_MEMBERS WHERE MEM_ID = #{memId}) ORDER BY PRJ_CODE DESC) r1 limit 10 offset #{begin}")
+	public List<ProjectInfoDto> selectAttendProjectListToPrjName(int begin, String searchKeyword, String memId);
+	
+	//참여중인 프로젝트 조회(페이징, 검색) PRJ_NAME
+	@Select("select r1.* from (SELECT * FROM PROJECT_INFO WHERE PRJ_COMPLETION = 0 AND PRJ_MOTHERCOMPANY LIKE #{searchKeyword} AND PRJ_CODE = ANY(SELECT PRJ_CODE FROM PROJECT_MEMBERS WHERE MEM_ID = #{memId}) ORDER BY PRJ_CODE DESC) r1 limit 10 offset #{begin}")
+	public List<ProjectInfoDto> selectAttendProjectListToPrjMothercompany(int begin, String searchKeyword, String memId);
 	
 	//프로젝트 상세페이지 조회
 	@Select("SELECT * FROM PROJECT_INFO WHERE PRJ_CODE = #{prjCode}")
@@ -91,7 +108,23 @@ public interface ProjectDao {
 	public MemberDto selectMemberInfos(String memId);
 	
 	/*달력에 wbs List 뿌리기*/
-	@Select("select * from project_wbs where prj_code = #{prjCode}")
+	@Select("SELECT * FROM PROJECT_WBS WHERE PRJ_CODE = #{prjCode}")
 	public List<ProjectWbsDto> selectProjectWbsOnCalendar(int prjCode);
 	
+	/*프로젝트 카운트(페이징을 위한 카운트 값)*/
+	//진행중인 프로젝트 이름 기준 데이터 카운트
+	@Select("SELECT COUNT(*) FROM PROJECT_INFO WHERE PRJ_COMPLETION = 0 AND PRJ_NAME LIKE #{searchKeyword}")
+	public int countByPrjName(String searchKeyword);
+	
+	//진행중인 프로젝트의 마더업체 이름 기준 데이터 카운트
+	@Select("SELECT COUNT(*) FROM PROJECT_INFO WHERE PRJ_COMPLETION = 0 AND PRJ_MOTHERCOMPANY LIKE #{searchKeyword}")
+	public int countByPrjMothercompany(String searchKeyword);
+	
+	//완료된 프로젝트 이름 기준 데이터 카운트
+	@Select("SELECT COUNT(*) FROM PROJECT_INFO WHERE PRJ_COMPLETION = 1 AND PRJ_NAME LIKE #{searchKeyword}")
+	public int countByCompletedPrjName(String searchKeyword);
+	
+	//완료된 프로젝트의 마더업체 이름 기준 데이터 카운트
+	@Select("SELECT COUNT(*) FROM PROJECT_INFO WHERE PRJ_COMPLETION = 1 AND PRJ_MOTHERCOMPANY LIKE #{searchKeyword}")
+	public int countByCompletedPrjMothercompany(String searchKeyword);
 }

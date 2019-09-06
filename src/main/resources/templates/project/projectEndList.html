@@ -29,6 +29,25 @@
 
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
+<!-- 검색 시작 -->
+<form th:action="@{/user/selectEndProjectList}">
+<table th:align="center" th:cellpadding="0" th:cellspacing="0" th:width="700">
+	<tr>
+		<td align="right">
+			<select name="searchCondition" id="category">
+				<option value="prjName">프로젝트명</option>
+				<option value="prjMothercompany">마더업체</option>
+			</select>
+			<input type="text" name="searchKeyword" id="keyword" placeholder="검색">
+			<input type="submit" value="검색">
+		</td>
+	</tr>
+</table>
+</form>
+<input type="hidden" id="searchCondition" th:value="${search.searchCondition}">
+<input type="hidden" id="searchKeyword" th:value="${search.searchKeyword}">
+<!-- 검색 종료 -->
+
 	<input type="hidden" id="sessionRanks" th:value="${sessionRanks}">
 	<input type="hidden" id="sessionDeptName" th:value="${sessionDeptName}">
 		<h2>프로젝트 리스트</h2>
@@ -132,5 +151,35 @@
 		</div>
 	</div>
 </div><!-- //section end -->
+<!-- 페이징 -->
+<div th:align="center">
+<table th:align="center">
+	<tr>
+		<td colspan="5">
+			<span th:if="${page.curBlock > 1}">
+				<a th:href="@{/user/selectEndProjectList(curPage=${page.prevPage}, searchCondition=${search.searchCondition}, searchKeyword=${search.searchKeyword})}">[이전]</a>
+			</span>
+			<span th:if="${page.curBlock > 1 }">
+				<a th:href="@{/user/selectEndProjectList(curPage=1,searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}">1</a>
+			</span>
+			<span th:each="num:${block}">
+				<span th:if="${num==page.curPage }">
+					<a th:href="@{/user/selectEndProjectList(curPage=${num},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${num}" style="color:orange;"></a>
+				</span>
+				<span th:unless="${num==page.curPage }">
+					<a th:href="@{/user/selectEndProjectList(curPage=${num},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${num}"></a>
+				</span>
+			</span>
+			<span th:if="${page.curBlock < page.totBlock }">
+				<a th:href="@{/user/selectEndProjectList(curPage=${page.totPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${page.totPage}"></a>
+			</span>
+			<span th:if="${page.curBlock < page.totBlock }">
+				<a th:href="@{/user/selectEndProjectList(curPage=${page.nextPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}">[다음]</a>
+			</span>
+		</td>
+	</tr>
+</table>
+</div>
+<!-- 페이징 끝 -->
 </body>
 </html>

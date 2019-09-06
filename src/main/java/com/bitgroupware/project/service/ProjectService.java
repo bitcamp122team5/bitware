@@ -2,24 +2,32 @@ package com.bitgroupware.project.service;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Select;
 
 import com.bitgroupware.project.beans.MemberDto;
 import com.bitgroupware.project.beans.ProjectInfoDto;
 import com.bitgroupware.project.beans.ProjectMembersDto;
 import com.bitgroupware.project.beans.ProjectWbsDto;
+import com.bitgroupware.utils.Search;
 
 public interface ProjectService {
 	
-	//전체 프로젝트 조회(진행중인 프로젝트)
-	public List<ProjectInfoDto> selectProjectList();
+	//프로젝트 카운트 (페이징을 위한 값)
+	public int countProject(Search search);
+	
+	//프로젝트 카운트 (페이징을 위한 값)
+	public int countCompletedProject(Search search);
+	
+//	//전체 프로젝트 조회(진행중인 프로젝트)
+//	public List<ProjectInfoDto> selectProjectList();
+	
+	//전체 프로젝트 조회(진행중인 프로젝트+ 페이징, 검색)
+	public List<ProjectInfoDto> selectProjectList(int begin, Search search);
 	
 	//완료된 프로젝트 조회
-	public List<ProjectInfoDto> selectEndProjectList();
+	public List<ProjectInfoDto> selectEndProjectList(int begin, Search search);
 	
 	//참여중인 프로젝트 조회
-	public List<ProjectInfoDto> selectAttendProjectList(String memId);
+	public List<ProjectInfoDto> selectAttendProjectList(int begin, Search search, String memId);
 	
 	//프로젝트 상세페이지 조회
 	public ProjectInfoDto selectProject(int prjCode);
