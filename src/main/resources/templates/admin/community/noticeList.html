@@ -159,7 +159,7 @@ $(document).ready(function() {
 						<td th:text="${#dates.format(notice.ntDate,'yyyy-MM-dd')}"></td>
 					</th:block>
 			    	<th:block th:if="${notice.ntFileCheck=='Y'}">
-						<td class="file"><img th:src="@{/images/fileImage.png}"></td>
+						<td class="file"><img th:src="@{/images/file.png}"></td>
 					</th:block>
 					<th:block th:unless="${notice.ntFileCheck=='Y'}">
 						<td class="file"></td>

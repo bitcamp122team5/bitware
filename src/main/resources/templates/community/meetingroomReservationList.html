@@ -171,11 +171,13 @@ $(function(){
 					<colgroup>
 						<col width="120px">
 						<col width="*">
+						<col width="120px">
+						<col width="*">
 					</colgroup>
 					<tbody>
     					<tr>
 			    			<th>회의실 선택</th>
-			    			<td colspan="2">
+			    			<td colspan="3">
 			    				<select name="mrNo">
 			    					<th:block th:each="meetingroom:${meetingroomList}">
 										<option th:value="${meetingroom.mrNo}" th:text="${meetingroom.mrName}"></option>
@@ -186,8 +188,6 @@ $(function(){
 			    		<tr>
 			    			<th>사용 시작</th>
 			    			<td><input type="text" id="startDateElem" name="mrResStart" class="form-control" autocomplete="off"></td>
-			    		</tr>
-			    		<tr>
 			    			<th>사용 종료</th>
 			    			<td><input type="text" id="endDateElem" name="mrResEnd" class="form-control" autocomplete="off"></td>
 			    		</tr>
@@ -201,7 +201,7 @@ $(function(){
    			</div>
 		</div>
 		</form>
-		<h3>회의실 예약 취소</h3>
+		<h2>회의실 예약 취소</h2>
 		<div class="article">
 			<div class="table_wrap list">
 				<table>

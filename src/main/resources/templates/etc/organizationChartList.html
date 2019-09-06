@@ -15,6 +15,7 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
+<input type="hidden" id="toggleCheck" value="toggleOn">
 
 <h2 sec:authorize="hasRole('ROLE_ADMIN')">조직도 (관리자)</h2>
 <h2 sec:authorize="hasAnyRole('ROLE_USER','ROLE_PL','ROLE_PM')">조직도</h2>
