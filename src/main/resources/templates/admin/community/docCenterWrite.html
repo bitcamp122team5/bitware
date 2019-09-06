@@ -102,46 +102,55 @@ function checkImageType(fileUrl){
 <div layout:fragment="content" class="section">
 
 <form th:action="@{/admin/insertDocCenter}" method="post">
-<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
-<tr>
-	<td bgcolor="orange" th:text="분류" width="80"></td>
-	<td>
-		<select name="docCate">
-        	<option value="일반">일반</option>
-        	<option value="개발">개발</option>
-        	<option value="영업">영업</option>
-        </select>
-    </td>
-</tr>
-<tr>
-	<td bgcolor="orange" th:text="제목" width="80"></td>
-	<td><input name="docTitle" type="text" size="50"></td>
-</tr>
-<tr>
-	<td bgcolor="orange" th:text="작성자"></td>
-	<td><span sec:authentication="principal.member.memName"></span></td>
-</tr>
-<tr>
-	<td bgcolor="orange" th:text="내용"></td>
-	<td><textarea name="docContent" cols="50" rows="10" id="docContent"></textarea></td>
-</tr>
-<tr>
-	<td bgcolor="orange" th:text="첨부파일" width="80"></td>
-	<td th:align="left">
-		<div> 첨부파일을 드래그앤 드롭 하여 등록하세요
-			<div class="fileDrop"></div>
-			<div class="uploadList"></div>
-		</div>
-	</td>
-</tr>	
-<tr>
-	<td colspan="2" align="center">
+
+<h2>자료실</h2>
+
+<div class="article">
+	<div class="table_wrap view">
+		<table>
+			<colgroup>
+				<col width="120px">
+				<col width="*">
+			</colgroup>
+			<tbody>
+				<tr>
+					<td th:text="분류"></td>
+					<td>
+						<select name="docCate">
+				        	<option value="일반">일반</option>
+				        	<option value="개발">개발</option>
+				        	<option value="영업">영업</option>
+				        </select>
+				    </td>
+				</tr>
+				<tr>
+					<td th:text="제목"></td>
+					<td><input name="docTitle" type="text" size="50"></td>
+				</tr>
+				<tr>
+					<td th:text="작성자"></td>
+					<td><span sec:authentication="principal.member.memName"></span></td>
+				</tr>
+				<tr>
+					<td th:text="내용"></td>
+					<td><textarea name="docContent" cols="50" rows="10" id="docContent"></textarea></td>
+				</tr>
+				<tr>
+					<td th:text="첨부파일"></td>
+					<td th:align="left">
+						<div> 첨부파일을 드래그앤 드롭 하여 등록하세요
+							<div class="fileDrop"></div>
+							<div class="uploadList"></div>
+						</div>
+					</td>
+				</tr>	
+			</tbody>
+		</table>
 		<input type="submit" value="게시글 작성">
-	</td>
-</tr>
-</table>
+		<a th:href="@{/admin/selectDocCenterList}">글목록</a>
+	</div>
+</div>
 </form>
-<a th:href="@{/admin/selectDocCenterList}">글목록</a>
 </div>
 </body>
 </html>

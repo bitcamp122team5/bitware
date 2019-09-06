@@ -7,7 +7,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 		<li><a th:href="@{/user/selectNoticeList}">커뮤니티</a></li>
 		<li><a th:href="@{/user/selectApprovalListToBe}">전자결제</a></li>
 		<li><a th:href="@{/user/selectProjectList}">프로젝트</a></li>
-		<li><a href="#">주소록</a></li>
+		<li><a th:href="@{/user/selectOrganizationChartList?deptName=임원진}">주소록</a></li>
 	</ul>
 	<ul class="userInfo">
 		<li><a th:href="@{/user/mypage}" sec:authentication="principal.member.memName"></a><li>
@@ -23,7 +23,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 		</div>
 	</div><!-- //chat_wrap end -->
 	<script>
-		window.onload=function(){
+		$(function(){
 			document.getElementById("onTime").onclick=function(){
 				$.ajax({
 					url: "/user/insertCommute",
@@ -34,7 +34,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 					}
 				});
 			};
-		}
+		});
 	</script>
 </div><!-- //header end -->
 </html>

@@ -22,42 +22,54 @@ $(function(){
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
 
-<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
-<tr>
-	<td bgcolor="orange" th:text="분류" width="80"></td>
-	<td th:text="${docCenter.docCate}"></td>
-</tr>
-<tr>
-	<td bgcolor="orange" th:text="제목" width="80"></td>
-	<td th:text="${docCenter.docTitle}"></td>
-</tr>
-<tr>
-	<td bgcolor="orange" th:text="작성자"></td>
-	<td><span sec:authentication="principal.member.memName"></span></td>
-</tr>
-<tr>
-	<td bgcolor="orange" th:text="내용"></td>
-	<td th:utext="${docCenter.docContent}"></td>
-</tr>
-<tr>
-	<td bgcolor="orange" th:text="첨부파일" width="80"></td>
-	<td align="left">
-		<div th:each="docCenterFile:${docCenter.docCenterFileList}">
-			<div th:if="${docCenterFile.docFileType=='image'}">
-				<div class="resizable ui-widget-content" style="border: 0px solid #c5c5c5;">
-				<img th:src="${docCenterFile.docFileUrl}" style="height:100px"></div>
-				<a th:href="@{/user/displayFile(fileUrl=${docCenterFile.docFileUrl})}" th:text="${docCenterFile.docFileName}"></a>
-			</div>
-			<div th:if="${docCenterFile.docFileType=='document'}">
-				<div class="resizable ui-widget-content" style="border: 0px solid #c5c5c5;">
-				<img th:src="@{/images/fileImage.png}" style="height:100px"></div>
-				<a th:href="@{/user/displayFile(fileUrl=${docCenterFile.docFileUrl})}" th:text="${docCenterFile.docFileName}"></a>
-			</div>
-		</div>
-	</td>
-</tr>	
-</table>
-<a th:href="@{/user/selectDocCenterList}">글목록</a>
+<h2>자료실</h2>
+
+<div class="article">
+	<div class="table_wrap view">
+		<table>
+			<colgroup>
+				<col width="120px">
+				<col width="*">
+			</colgroup>
+			<tbody>
+				<tr>
+					<td th:text="분류"></td>
+					<td th:text="${docCenter.docCate}"></td>
+				</tr>
+				<tr>
+					<td th:text="제목"></td>
+					<td th:text="${docCenter.docTitle}"></td>
+				</tr>
+				<tr>
+					<td th:text="작성자"></td>
+					<td><span sec:authentication="principal.member.memName"></span></td>
+				</tr>
+				<tr>
+					<td th:text="내용"></td>
+					<td th:utext="${docCenter.docContent}"></td>
+				</tr>
+				<tr>
+					<td th:text="첨부파일"></td>
+					<td align="left">
+						<div th:each="docCenterFile:${docCenter.docCenterFileList}">
+							<div th:if="${docCenterFile.docFileType=='image'}">
+								<div class="resizable ui-widget-content" style="border: 0px solid #c5c5c5;">
+								<img th:src="${docCenterFile.docFileUrl}" style="height:100px"></div>
+								<a th:href="@{/user/displayFile(fileUrl=${docCenterFile.docFileUrl})}" th:text="${docCenterFile.docFileName}"></a>
+							</div>
+							<div th:if="${docCenterFile.docFileType=='document'}">
+								<div class="resizable ui-widget-content" style="border: 0px solid #c5c5c5;">
+								<img th:src="@{/images/fileImage.png}" style="height:100px"></div>
+								<a th:href="@{/user/displayFile(fileUrl=${docCenterFile.docFileUrl})}" th:text="${docCenterFile.docFileName}"></a>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<a th:href="@{/user/selectDocCenterList}">글목록</a>
+	</div>
+</div>
 </div><!-- //section end -->
 </body>
 </html>

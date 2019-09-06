@@ -20,7 +20,7 @@
 .aside_tit{width:100%;height:150px;background:#3a4150;text-align:center;}
 /* .aside_tit a{display:block;padding:10px 15px;box-sizing:border-box;color:#fff;font-size:20px;background:#3a4150;} */
 .aside_con{padding:10px;box-sizing:border-box;}
-.aside_con .dep1{margin:5px 0;}
+.aside_con .dep1{margin:5px 0;text-align:left;}
 .aside_con .dep1 > a{display:block;padding:9px 10px;box-sizing:border-box;font-size:15px;color:#fff;border-radius:5px;}
 .aside_con .dep1 > a:hover{background:#fff;color:#1d212a;}
 .aside_con .dep1.have > a{background:url(/images/menu_arrow.png) right center no-repeat;background-size:11%;}
