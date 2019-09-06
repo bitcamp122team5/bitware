@@ -184,11 +184,13 @@ $(function(){
 					<colgroup>
 						<col width="120px">
 						<col width="*">
+						<col width="120px">
+						<col width="*">
 					</colgroup>
 					<tbody>
 			    		<tr>
 			    			<th>차량 선택</th>
-			    			<td colspan="2">
+			    			<td colspan="3">
 			    				<select name="carNo">
 									<th:block th:each="car:${carList}">
 										<option th:value="${car.carNo}" th:text="${car.carName}"></option>
@@ -199,20 +201,16 @@ $(function(){
 			    		<tr>
 			    			<th>사용 시작</th>
 			    			<td><input type="text" id="startDateElem" name="carResStart" class="form-control" autocomplete="off"></td>
-			    		</tr>
-			    		<tr>
 			    			<th>사용 종료</th>
 			    			<td><input type="text" id="endDateElem" name="carResEnd" class="form-control" autocomplete="off"></td>
 			    		</tr>
 			    		<tr>
 			    			<th>출발지</th>
-			    			<td><input type="text" id="departure" name="carDeparture" class="w100p">
+			    			<td><input type="text" id="departure" name="carDeparture">
 			    				<input type="button" id="departureMapBtn" value="지도 검색">
 			    			</td>
-			    		</tr>
-			    		<tr>
 			    			<th>도착지</th>
-			    			<td><input type="text" id="arrival" name="carArrival" class="w100p">
+			    			<td><input type="text" id="arrival" name="carArrival">
 			    				<input type="button" id="arrivalMapBtn" value="지도 검색">
 			    			</td>
 			    		</tr>
