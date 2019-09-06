@@ -9,16 +9,15 @@ $(function(){
 $(function(){
 	$(".chat_wrap button").click(function(){
 		$(this).toggleClass("on");
-		if($(this).hasClass("on") == true){			
-			$(this).siblings().children().children('.tab').css("display","block").animate({"width":"100px"},500);
-			
+		if($(this).hasClass("on") == true){
+			$(this).parent(".chat_inner").css("transform","translateX(-100px)");	
 			$(".tab").click(function(){
-				$(".info").css("display","block").animate({"width":"300px"},500);
+				$(this).parent().parent(".chat_inner").css("transform","translateX(-300px)");
 			});
 			
 		}else{
-			$(this).siblings().children().children('.tab').css("display","none").animate({"width":"0"},1000);
-			$(".info").css("display","none").animate({"width":"0"},500);
+			$(this).parent(".chat_inner").css("transform","translateX(0px)");
+			$(this).parent().parent(".chat_inner").css("transform","translateX(0px)");
 		}
 		
 		
@@ -44,10 +43,22 @@ $(function(){
 							success: function(memberList){
 								var str = "";
 								for(var i in memberList){
-									str += "<li class='memberByDept' value='"+memberList[i].memName+"'>"+"<p>"+memberList[i].teamName+" "+memberList[i].ranks+"</p>"+memberList[i].memName+"</li>";
+									if(memberList[i].teamName==null){
+										str += "<li class='memberByDept' value='"+memberList[i].memId+"'>"+"<p>"+memberList[i].ranks+"</p>"+memberList[i].memName+"</li>";
+									}else{
+										str += "<li class='memberByDept' value='"+memberList[i].memId+"'>"+"<p>"+memberList[i].teamName+" "+memberList[i].ranks+"</p>"+memberList[i].memName+"</li>";
+									}
 								}
 								$("#memberByDepartment li").remove();
 								$("#memberByDepartment").append(str);
+								
+								$(".memberByDept").click(function(){
+									var memId = $(this).attr('value');
+									var url = "/user/chat?memId=" + memId;
+									var name = "chatPopup";
+									var option = "width=500, height=500, top=100, left=200, location=no"
+									window.open(url, name, option);
+								})
 							}
 						});
 					});

@@ -73,15 +73,16 @@ public class ChatController {
 		Arrays.sort(roomArray, Collections.reverseOrder());
 		
 		String roomId = Arrays.stream(roomArray).collect(Collectors.joining());
-		
-		System.out.println("rooId =" + roomId);
+		System.out.println("////////////////////////////");
+		System.out.println(sessionName);
+		System.out.println("roomId =" + roomId);
 		model.addAttribute("roomId", roomId);
 
 		return "chat/chat";
 	}
 
 	@RequestMapping("/chatList")
-	//@ResponseBody
+	@ResponseBody
 	public String chatList(Model model, MemberDto memberDto, DepartmentDto depDto, ChatMessageDto chatDto, @AuthenticationPrincipal SecurityUser principal) {
 		System.out.println("컨트롤러 진입");
 		List<MemberDto> memberList = chatservice.selectMemberList(memberDto);

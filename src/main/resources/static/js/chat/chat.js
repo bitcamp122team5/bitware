@@ -1,7 +1,10 @@
 'use strict';
 
-var nameInput = $('#name');
+var nameInput = $('#name').val();
 var roomInput = $('#room-id').val();
+
+console.log("룸아이디 ="+roomInput);
+
 var usernamePage = document.querySelector('#username-page');
 var chatPage = document.querySelector('#chat-page');
 var usernameForm = document.querySelector('#usernameForm');
@@ -23,7 +26,7 @@ var colors = [
 ];
 
 function connect(event) {
-  username = nameInput.val().trim();
+  username = nameInput.trim();
   Cookies.set('name', username);
   if (username) {
     usernamePage.classList.add('hidden');
@@ -56,7 +59,8 @@ function enterRoom(newRoomId) {
 }
 
 function onConnected() {
-  enterRoom(roomInput);
+	var roomIdValue = document.getElementById("room-id").value;
+  enterRoom(roomIdValue);
   connectingElement.classList.add('hidden');
 }
 
@@ -135,9 +139,8 @@ $(document).ready(function() {
 	document.getElementById("room-Id");
   var savedName = Cookies.get('name');
   if (savedName) {
-    nameInput.val(savedName);
+    nameInput = savedName;
   }
-
   var savedRoom = Cookies.get('roomId');
   if (savedRoom) {
     roomInput = savedRoom;
