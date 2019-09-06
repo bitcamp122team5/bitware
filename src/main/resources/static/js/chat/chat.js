@@ -26,8 +26,10 @@ var colors = [
 ];
 
 function connect(event) {
-  username = nameInput.trim();
-  Cookies.set('name', username);
+	var nameValue = document.getElementById("name").value;
+  //username = nameInput.trim();
+  username = nameValue;
+	Cookies.set('name', username);
   if (username) {
     usernamePage.classList.add('hidden');
     chatPage.classList.remove('hidden');
