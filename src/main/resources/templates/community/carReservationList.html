@@ -177,57 +177,94 @@ $(function(){
 	<div class="modal-content">
 		<span class="close">&times;</span>                                                               
     	<form action="/user/insertCarReservation">
-    	<h3>예약하기</h3>
-    	<table>
-    		<tr>
-    			<td>차량 선택</td>
-    			<td colspan="2">
-    				<select name="carNo">
-						<th:block th:each="car:${carList}">
-							<option th:value="${car.carNo}" th:text="${car.carName}"></option>
-						</th:block>
-					</select>
-    			</td>
-    		</tr>
-    		<tr>
-    			<td>Start Date</td>
-    			<td><input type="text" id="startDateElem" name="carResStart" class="form-control" autocomplete="off"></td>
-    		</tr>
-    		<tr>
-    			<td>End Date</td>
-    			<td><input type="text" id="endDateElem" name="carResEnd" class="form-control" autocomplete="off"></td>
-    		</tr>
-    		<tr>
-    			<td>출발지</td>
-    			<td><input type="text" id="departure" name="carDeparture">
-    				<input type="button" id="departureMapBtn" value="검색">
-    			</td>
-    		</tr>
-    		<tr>
-    			<td>도착지</td>
-    			<td><input type="text" id="arrival" name="carArrival">
-    				<input type="button" id="arrivalMapBtn" value="검색">
-    			</td>
-    		</tr>
-    	</table>
-		<input type="submit" value="예약하기">
+    	<h2>법인차량 예약</h2>
+		<div class="article">
+			<div class="table_wrap view">
+				<table>
+					<colgroup>
+						<col width="120px">
+						<col width="*">
+					</colgroup>
+					<tbody>
+			    		<tr>
+			    			<th>차량 선택</th>
+			    			<td colspan="2">
+			    				<select name="carNo">
+									<th:block th:each="car:${carList}">
+										<option th:value="${car.carNo}" th:text="${car.carName}"></option>
+									</th:block>
+								</select>
+			    			</td>
+			    		</tr>
+			    		<tr>
+			    			<th>사용 시작</th>
+			    			<td><input type="text" id="startDateElem" name="carResStart" class="form-control" autocomplete="off"></td>
+			    		</tr>
+			    		<tr>
+			    			<th>사용 종료</th>
+			    			<td><input type="text" id="endDateElem" name="carResEnd" class="form-control" autocomplete="off"></td>
+			    		</tr>
+			    		<tr>
+			    			<th>출발지</th>
+			    			<td><input type="text" id="departure" name="carDeparture" class="w100p">
+			    				<input type="button" id="departureMapBtn" value="지도 검색">
+			    			</td>
+			    		</tr>
+			    		<tr>
+			    			<th>도착지</th>
+			    			<td><input type="text" id="arrival" name="carArrival" class="w100p">
+			    				<input type="button" id="arrivalMapBtn" value="지도 검색">
+			    			</td>
+			    		</tr>
+			    	</tbody>	
+    			</table>
+    			<div class="btn_wrap">
+					<div class="box_right">
+						<input type="submit" class="btn btn_point" value="예약">
+    				</div>
+    			</div>
+    		</div>
+    	</div>
 		</form>
-		<h3>예약취소하기</h3>
-		<table>
-			<tr>
-				<td>예약</td>
-				<td>취소</td>
-			</tr>
-			<tr th:each="carReservation:${carReservationList}">
-				<td>
-					<span th:text="${carReservation.car.carName}"></span>&nbsp;
-					<span th:text="${carReservation.carResStart}"></span>&nbsp;
-					<span th:text="${carReservation.carResEnd}"></span>&nbsp;
-					<span th:text="${#dates.format(carReservation.carResDate,'yyyy-MM-dd HH:mm')}"></span>
-				</td>
-				<td><a th:href="@{/user/deleteCarReservation(carResNo=${carReservation.carResNo})}">취소</a></td>
-			</tr>
-		</table>
+		
+		<h2>법인차량 예약 취소</h2>
+		<div class="article">
+			<div class="table_wrap list">
+				<table>
+					<colgroup>
+						<col width="50px">
+						<col width="80px">
+						<col width="80px">
+						<col width="80px">
+						<col width="80px">
+						<col width="80px">
+						<col width="80px">
+					</colgroup>
+					<thead>
+						<tr>
+							<th>차량명</th>
+							<th>출발시각</th>
+							<th>도착시각</th>
+							<th>출발지</th>
+							<th>도착지</th>
+							<th>예약날짜</th>
+							<th>취소</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="carReservation:${carReservationList}">
+							<td th:text="${carReservation.car.carName}"></td>
+							<td th:text="${carReservation.carResStart}"></td>
+							<td th:text="${carReservation.carResEnd}"></td>
+							<td th:text="${carReservation.carDeparture}"></td>
+							<td th:text="${carReservation.carArrival}"></td>
+							<td th:text="${#dates.format(carReservation.carResDate,'yyyy-MM-dd HH:mm')}"></td>
+							<td><a th:href="@{/user/deleteCarReservation(carResNo=${carReservation.carResNo})}" class="btn btn_point">취소</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
 	</div>
 </div>
 <div id='calendar'></div>

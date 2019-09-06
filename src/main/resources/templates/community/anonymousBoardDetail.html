@@ -88,28 +88,32 @@ window.onload=function(){
 			</colgroup>
 			<tbody>
 				<tr>
-					<td>번호</td>
+					<th>번호</th>
 					<td th:text="${anonymousBoard.bno}"></td>
 				</tr>
 				<tr>
-					<td>제목</td>
+					<th>제목</th>
 					<td th:text="${anonymousBoard.btitle}"></td>
 				</tr>
 				<tr>
-					<td>내용</td>
+					<th>내용</th>
 					<td th:text="${anonymousBoard.bcontent}"></td>
 				</tr>
 				<tr>
-					<td>비밀번호</td>
-					<td><input type="password" name="bpw" id="bpw"></td>
+					<th>비밀번호</th>
+					<td><input type="password" name="bpw" id="bpw" class="w100p"></td>
 				</tr>
 			</tbody>
 		</table>
-		<input type="button" id="updateBtn" value="수정하기">
-		<input type="button" id="deleteBtn" value="삭제하기">
-		<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/user/deleteAnonymousBoard(bno=${anonymousBoard.bno})}">삭제하기(관리자)</a>
-		<input type="button" id="replyBtn" value="답변달기">
-		<a th:href="@{/user/selectAnonymousBoardList}">목록보기</a>
+		<div class="btn_wrap">
+			<div class="box_right">
+				<input type="button" id="updateBtn" class="btn btn_point" value="수정">
+				<input type="button" id="deleteBtn" class="btn btn_point" value="삭제">
+				<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/user/deleteAnonymousBoard(bno=${anonymousBoard.bno})}" class="btn btn_point">삭제(관리자)</a>
+				<input type="button" id="replyBtn" class="btn btn_point" value="답변">
+				<a th:href="@{/user/selectAnonymousBoardList}" class="btn btn_point">목록보기</a>
+			</div>
+		</div>
 	</div>
 </div>
 </form>

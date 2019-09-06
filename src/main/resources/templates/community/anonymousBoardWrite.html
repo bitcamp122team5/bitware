@@ -100,25 +100,29 @@ window.onload=function(){
 			</colgroup>
 			<tbody>
 				<tr>
-					<td>제목</td>
-					<td><input type="text" name="btitle" id="btitle"></td>
+					<th>제목</th>
+					<td><input type="text" name="btitle" id="btitle" class="w100p"></td>
 				</tr>
 				<tr>
-					<td>내용</td>
-					<td><textarea name="bcontent" id="bcontent" rows="10"></textarea></td>
+					<th>내용</th>
+					<td><textarea name="bcontent" id="bcontent" class="w100p"></textarea></td>
 				</tr>
 				<tr>
-					<td>비밀번호</td>
-					<td><input type="password" name="bpw" id="bpw"></td>
+					<th>비밀번호</th>
+					<td><input type="password" name="bpw" id="bpw" class="w100p"></td>
 				</tr>
 				<tr>
-					<td>비밀번호 확인</td>
-					<td><input type="password" id="bpwCheck"></td>
+					<th>비밀번호 확인</th>
+					<td><input type="password" id="bpwCheck" class="w100p"></td>
 				</tr>
 			</tbody>
 		</table>
-		<input type="button" id="insertBtn" value="입력">
-		<a th:href="@{/user/selectAnonymousBoardList}">목록보기</a>
+		<div class="btn_wrap">
+			<div class="box_right">
+				<input type="button" id="insertBtn" class="btn btn_point" value="등록">
+				<a th:href="@{/user/selectAnonymousBoardList}" class="btn btn_point">목록보기</a>
+			</div>
+		</div>
 	</div>
 </div>
 </form>
