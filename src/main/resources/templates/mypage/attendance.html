@@ -8,14 +8,23 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	<script>
 		$(document).ready(function(){
 			$('#startDate').change(function(){
-				$("#endDate").attr('max', $('#startDate').val());
+				$("#endDate").attr('min', $('#startDate').val());
 			});
 		});
 		$(document).ready(function(){
 			$('#endDate').change(function(){
-				$("#startDate").attr('min', $('#endDate').val());
+				$("#startDate").attr('max', $('#endDate').val());
 			});
 		});
+	</script>
+	<script>
+		function selectCommute() {
+			var selectCommute = document.searchCommuteForm;
+			
+			selectCommute.action = "/user/selectCommuteList"
+			selectCommute.method = "post"
+			selectCommute.submit();
+		}
 	</script>
 </head>
 <body th:align="center">
@@ -25,7 +34,7 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
-	<form>
+	<form name="searchCommuteForm">
 		<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
 			<tr>
 				<td>
@@ -40,7 +49,7 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 					<input type="checkbox" th:text="휴가" th:value="휴가">
 				</td>
 				<td>
-					<a href="#">검색</a>
+					<a th:onclick="javascript:selectCommute()" th:text="검색"></a>
 				</td>
 			</tr>
 		</table>
@@ -54,7 +63,7 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 				<th>구분</th>
 			</tr>
 			<tr th:each="commute : ${commuteList}">
-				<td th:text="${commute.commuteDate}"></td>
+				<td th:text="${commute?.commuteDate}"></td>
 				<td th:text="${commute?.commuteOntime}"></td>
 				<td th:text="${commute?.commuteOfftime}"></td>
 				<td th:text="${commute?.commuteStatus}"></td>

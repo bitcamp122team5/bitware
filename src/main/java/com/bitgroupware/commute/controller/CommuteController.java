@@ -2,6 +2,8 @@ package com.bitgroupware.commute.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -11,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bitgroupware.commute.service.CommuteService;
 import com.bitgroupware.commute.vo.CommuteVo;
-import com.bitgroupware.member.service.MemberService;
 import com.bitgroupware.member.vo.MemberVo;
 import com.bitgroupware.security.config.SecurityUser;
 
@@ -24,11 +25,24 @@ public class CommuteController {
 
 	// 근태 목록
 	@RequestMapping("/selectCommuteList")
-	public String selectCommuteList(Model model, @AuthenticationPrincipal SecurityUser principal) {
+	public String selectCommuteList(Model model, @AuthenticationPrincipal SecurityUser principal, HttpServletRequest httpServletRequest) {
 
-		List<CommuteVo> commuteList = commuteService.selectCommuteList(principal.getMember());
+		// 검색에서 선택한 날짜를 받아옴
+		String startDate = httpServletRequest.getParameter("startDate");
+		String endDate = httpServletRequest.getParameter("endDate");
 
-		model.addAttribute("commuteList", commuteList);
+		// 처음 페이지 로딩 시
+		if ((startDate == null) && (endDate == null)) {
+			List<CommuteVo> commuteList = commuteService.selectCommuteList(principal.getMember());
+			model.addAttribute("commuteList", commuteList);
+		} 
+		// 날짜 입력 없이 검색한 경우
+//		else if ((startDate == "") || (endDate == "")) {}
+		// 날짜를 모두 입력 후 검색한 경우
+		else {
+			List<CommuteVo> commuteList = commuteService.selectCommuteList(principal.getMember(), startDate, endDate);
+			model.addAttribute("commuteList", commuteList);
+		}
 
 		return "mypage/attendance";
 	}
