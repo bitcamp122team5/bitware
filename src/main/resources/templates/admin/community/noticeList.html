@@ -60,7 +60,7 @@ $(document).ready(function() {
 	$(".checkBox").click(function(){
 		$("#allCheckBox").prop("checked",false);
 	});
-	$(".deleteBtn").click(function(){
+	$("#deleteBtn").click(function(){
 		var confirm_val = confirm("정말 삭제하시겠습니까?");
 		if(confirm_val){
 			var checkBoxArr = new Array();
@@ -168,8 +168,12 @@ $(document).ready(function() {
 				</tr>
 			</tbody>
 		</table>
-		<button type="button" class="deleteBtn">삭제</button>
-		<a th:href="@{/admin/insertNoticeView}">게시글 등록</a>
+		<div class="btn_wrap">
+			<div class="box_right">
+				<button type="button" id="deleteBtn" class="btn btn_point">삭제</button>
+				<a th:href="@{/admin/insertNoticeView}" class="btn btn_point">등록</a>
+			</div>
+		</div>
 	</div>
 </div>
 <br>

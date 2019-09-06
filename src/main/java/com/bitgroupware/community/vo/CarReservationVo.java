@@ -27,6 +27,8 @@ public class CarReservationVo {
 	private int carResNo;
 	private String carResStart;
 	private String carResEnd;
+	private String carDeparture;
+	private String carArrival;
 	@Column(updatable = false)
 	private Date carResDate = new Date();
 	

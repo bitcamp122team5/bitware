@@ -33,23 +33,23 @@ $(function(){
 			</colgroup>
 			<tbody>
 				<tr>
-					<td th:text="분류"></td>
+					<th th:text="분류"></th>
 					<td th:text="${docCenter.docCate}"></td>
 				</tr>
 				<tr>
-					<td th:text="제목"></td>
+					<th th:text="제목"></th>
 					<td th:text="${docCenter.docTitle}"></td>
 				</tr>
 				<tr>
-					<td th:text="작성자"></td>
+					<th th:text="작성자"></th>
 					<td><span sec:authentication="principal.member.memName"></span></td>
 				</tr>
 				<tr>
-					<td th:text="내용"></td>
+					<th th:text="내용"></th>
 					<td th:utext="${docCenter.docContent}"></td>
 				</tr>
 				<tr>
-					<td th:text="첨부파일"></td>
+					<th th:text="첨부파일"></th>
 					<td align="left">
 						<div th:each="docCenterFile:${docCenter.docCenterFileList}">
 							<div th:if="${docCenterFile.docFileType=='image'}">
@@ -67,7 +67,11 @@ $(function(){
 				</tr>
 			</tbody>
 		</table>
-		<a th:href="@{/user/selectDocCenterList}">글목록</a>
+		<div class="btn_wrap">
+			<div class="box_right">
+				<a th:href="@{/user/selectDocCenterList}" class="btn btn_point">목록보기</a>
+			</div>
+		</div>
 	</div>
 </div>
 </div><!-- //section end -->

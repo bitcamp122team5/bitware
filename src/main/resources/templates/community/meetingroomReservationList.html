@@ -164,45 +164,75 @@ $(function(){
 	<div class="modal-content">
 		<span class="close">&times;</span>                                                               
     	<form action="/user/insertMeetingroomReservation">
-    	<h3>예약하기</h3>
-    	<table>
-    		<tr>
-    			<td>회의실 선택</td>
-    			<td colspan="2">
-    				<select name="mrNo">
-    					<th:block th:each="meetingroom:${meetingroomList}">
-							<option th:value="${meetingroom.mrNo}" th:text="${meetingroom.mrName}"></option>
-						</th:block>
-					</select>
-    			</td>
-    		</tr>
-    		<tr>
-    			<td>Start Date</td>
-    			<td><input type="text" id="startDateElem" name="mrResStart" class="form-control" autocomplete="off"></td>
-    		</tr>
-    		<tr>
-    			<td>End Date</td>
-    			<td><input type="text" id="endDateElem" name="mrResEnd" class="form-control" autocomplete="off"></td>
-    		</tr>
-    	</table>
-		<input type="submit" value="예약하기">
+    	<h2>회의실 예약</h2>
+    	<div class="article">
+			<div class="table_wrap view">
+				<table>
+					<colgroup>
+						<col width="120px">
+						<col width="*">
+					</colgroup>
+					<tbody>
+    					<tr>
+			    			<th>회의실 선택</th>
+			    			<td colspan="2">
+			    				<select name="mrNo">
+			    					<th:block th:each="meetingroom:${meetingroomList}">
+										<option th:value="${meetingroom.mrNo}" th:text="${meetingroom.mrName}"></option>
+									</th:block>
+								</select>
+			    			</td>
+    					</tr>
+			    		<tr>
+			    			<th>사용 시작</th>
+			    			<td><input type="text" id="startDateElem" name="mrResStart" class="form-control" autocomplete="off"></td>
+			    		</tr>
+			    		<tr>
+			    			<th>사용 종료</th>
+			    			<td><input type="text" id="endDateElem" name="mrResEnd" class="form-control" autocomplete="off"></td>
+			    		</tr>
+    				</tbody>
+    			</table>
+    			<div class="btn_wrap">
+					<div class="box_right">
+						<input type="submit" class="btn btn_point" value="예약">
+   					</div>
+   				</div>
+   			</div>
+		</div>
 		</form>
-		<h3>예약취소하기</h3>
-		<table>
-			<tr>
-				<td>예약</td>
-				<td>취소</td>
-			</tr>
-			<tr th:each="meetingroomReservation:${meetingroomReservationList}">
-				<td>
-					<span th:text="${meetingroomReservation.meetingroom.mrName}"></span>&nbsp;
-					<span th:text="${meetingroomReservation.mrResStart}"></span>&nbsp;
-					<span th:text="${meetingroomReservation.mrResEnd}"></span>&nbsp;
-					<span th:text="${#dates.format(meetingroomReservation.mrResDate,'yyyy-MM-dd HH:mm')}"></span>
-				</td>
-				<td><a th:href="@{/user/deleteMeetingroomReservation(mrResNo=${meetingroomReservation.mrResNo})}">취소</a></td>
-			</tr>
-		</table>
+		<h3>회의실 예약 취소</h3>
+		<div class="article">
+			<div class="table_wrap list">
+				<table>
+					<colgroup>
+						<col width="50px">
+						<col width="80px">
+						<col width="80px">
+						<col width="80px">
+						<col width="80px">
+					</colgroup>
+					<thead>
+						<tr>
+							<th>차량명</th>
+							<th>출발시각</th>
+							<th>도착시각</th>
+							<th>예약날짜</th>
+							<th>취소</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="meetingroomReservation:${meetingroomReservationList}">
+							<td th:text="${meetingroomReservation.meetingroom.mrName}"></td>
+							<td th:text="${meetingroomReservation.mrResStart}"></td>
+							<td th:text="${meetingroomReservation.mrResEnd}"></td>
+							<td th:text="${#dates.format(meetingroomReservation.mrResDate,'yyyy-MM-dd HH:mm')}"></td>
+							<td><a th:href="@{/user/deleteMeetingroomReservation(mrResNo=${meetingroomReservation.mrResNo})}" class="btn btn_point">취소</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
 	</div>
 </div>
 <div id='calendar'></div>

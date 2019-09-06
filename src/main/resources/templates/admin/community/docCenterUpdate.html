@@ -120,7 +120,7 @@ function checkImageType(fileUrl){
 			</colgroup>
 			<tbody>
 				<tr>
-					<td th:text="분류"></td>
+					<th th:text="분류"></th>
 					<td>
 						<select name="docCate" id="category">
 				        	<option value="일반">일반</option>
@@ -130,19 +130,19 @@ function checkImageType(fileUrl){
 				    </td>
 				</tr>
 				<tr>
-					<td th:text="제목"></td>
-					<td><input name="docTitle" type="text" size="50" th:value="${docCenter.docTitle}"></td>
+					<th th:text="제목"></th>
+					<td><input name="docTitle" type="text" class="w100p" th:value="${docCenter.docTitle}"></td>
 				</tr>
 				<tr>
-					<td th:text="작성자"></td>
+					<th th:text="작성자"></th>
 					<td><span sec:authentication="principal.member.memName"></span></td>
 				</tr>
 				<tr>
-					<td th:text="내용"></td>
-					<td><textarea name="docContent" cols="50" rows="10" id="docContent" th:utext="${docCenter.docContent}"></textarea></td>
+					<th th:text="내용"></th>
+					<td><textarea name="docContent" id="docContent" th:utext="${docCenter.docContent}"></textarea></td>
 				</tr>
 				<tr>
-					<td th:text="첨부파일"></td>
+					<th th:text="첨부파일"></th>
 					<td align="left">
 					<div> 첨부파일을 드래그앤 드롭 하여 등록하세요
 						<div class="fileDrop"></div>
@@ -167,9 +167,13 @@ function checkImageType(fileUrl){
 				</tr>	
 			</tbody>
 		</table>
-		<input type="submit" value="수정하기">
-		<a th:href="@{/admin/deleteDocCenter(docNo=${docCenter.docNo})}">삭제</a>
-		<a th:href="@{/admin/selectDocCenterList}">글목록</a>
+		<div class="btn_wrap">
+			<div class="box_right">
+				<input type="submit" class="btn btn_point" value="수정">
+				<a th:href="@{/admin/deleteDocCenter(docNo=${docCenter.docNo})}" class="btn btn_point">삭제</a>
+				<a th:href="@{/admin/selectDocCenterList}" class="btn btn_point">목록보기</a>
+			</div>
+		</div>
 	</div>
 </div>
 </form>
