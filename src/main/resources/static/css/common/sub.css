@@ -6,6 +6,20 @@ button{outline:none;}
 .check_wrap input[type=checkbox] + label {width:20px;height:20px;display:inline-block;cursor:pointer;line-height:22px;background:url('../image/check_off.png')left/22px no-repeat;}
 .check_wrap input[type=checkbox]:checked + label {background-image:url('../image/check_on.png');}
 
+/* board_search */
+.board_search{width:100%;padding:10px;box-sizing:border-box;margin-bottom:10px;background:#f4f4f4;border:1px solid #ccc;}
+.board_search::after{content:'';display:block;clear:both;}
+.board_search .board_search_inner{float:right;}
+.board_search .board_search_inner::after{content:'';display:block;clear:both;}
+.board_search .board_search_inner > div{float:left;margin-right:10px;}
+.board_search .board_search_inner > div:last-child{margin-right:0;}
+.board_search .board_search_inner .calendar_wrap ul::after{content:'';display:block;clear:both;}
+.board_search .board_search_inner .calendar_wrap ul li{float:left;}
+.board_search .board_search_inner .calendar_wrap ul li.wave{margin:0 10px;line-height:33px;}
+.board_search .board_search_inner .calendar_wrap ul li input[type="text"]{width:100px;margin-right:0px;}
+.board_search .board_search_inner .search input[type="text"]{width:200px;margin-right:0px;}
+.board_search .board_search_inner .search a{display:inline-block;padding:6px 10px 6px 35px;box-sizing:border-box;background:#003263 url(/images/btn_search.png) left 10px center no-repeat;background-size:20px;font-size:14px;color:#fff;}
+
 
 /* table */
 .table_wrap{width:98%;margin:0 auto;}
@@ -49,3 +63,19 @@ button{outline:none;}
 .btn_line{background:#fff;border:1px solid #062f6e;color:#062f6e;}
 .btn_gray{background:#f3f3f3;border:1px solid #e6e6e6;color:#333;}
 .btn_pdf{display:block;width:120px; margin:40px auto;}
+
+/* paging */
+.paging{text-align:center;margin-top:40px;}
+.paging a{display:inline-block;min-width: 26px;height:26px;padding: 0 5px;color:#777;line-height:26px;box-sizing:border-box;}
+.paging .page{border:1px solid #eee;text-indent:-9999px;}
+.paging .prev_02{background:url(/images/paging_prev_02.png) center center no-repeat;}
+.paging .prev_01{background:url(/images/paging_prev_01.png) center center no-repeat;}
+.paging .next_02{background:url(/images/paging_next_02.png) center center no-repeat;}
+.paging .next_01{background:url(/images/paging_next_01.png) center center no-repeat;}
+.paging .paging_click{color:#fff;background:#003263;font-weight:400;}
+
+.paging a:hover{color:#fff;background:#003263;}
+.paging .prev_02:hover{border:1px solid #333;background:#003263 url(/images/paging_prev_02_on.png) center center no-repeat;}
+.paging .prev_01:hover{border:1px solid #333;background:#003263 url(/images/paging_prev_01_on.png) center center no-repeat;}
+.paging .next_02:hover{border:1px solid #333;background:#003263 url(/images/paging_next_02_on.png) center center no-repeat;}
+.paging .next_01:hover{border:1px solid #333;background:#003263 url(/images/paging_next_01_on.png) center center no-repeat;}

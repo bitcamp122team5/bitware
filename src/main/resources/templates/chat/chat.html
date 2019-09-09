@@ -31,14 +31,18 @@
 
 <div id="chat-page" class="hidden">
   <div class="chat-container">
-    <div class="chat-header">
+    <div class="chat-header hidden">
       <h2>Chatroom [<span id="room-id-display"></span>]</h2>
     </div>
     <div class="connecting">
       Connecting...
     </div>
     <ul id="messageArea">
-
+		<li class="chat-message" th:each="cmList : ${chatMessageList}" th:if="${cmList.sender == sessionName && cmList.receiver == memDto.memName}">
+			<i th:text="${cmList.receiver}"></i>
+			<span th:text="${cmList.sender}"></span>
+			<p th:text="${cmList.content}"></p>
+		</li>
     </ul>
     <form id="messageForm" name="messageForm" nameForm="messageForm">
       <div class="form-group">
