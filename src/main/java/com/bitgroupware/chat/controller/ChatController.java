@@ -57,7 +57,7 @@ public class ChatController {
 
 	/* chat 메인 페이지로 이동 */
 	@RequestMapping("/chat")
-	public String chatView(String memId, @AuthenticationPrincipal SecurityUser principal, Model model, HttpSession session) {
+	public String chatView(String memId, @AuthenticationPrincipal SecurityUser principal, Model model, HttpSession session, ChatMessageDto chatMessageDto) {
 		if(memId!=null) {
 			session.setAttribute("memId", memId);
 		}else {
@@ -85,6 +85,11 @@ public class ChatController {
 //		System.out.println(sessionName);
 //		System.out.println("roomId =" + roomId);
 		model.addAttribute("roomId", roomId);
+		
+		
+		List<ChatMessageDto> chatMessageList = chatservice.selectChatMessageList(chatMessageDto);
+		model.addAttribute("chatMessageList", chatMessageList);
+		
 
 		return "chat/chat";
 	}
@@ -144,4 +149,9 @@ public class ChatController {
 		List<MemberDto> memberList = chatservice.selectMemberListByDepartmentAjax(deptName);
 		return memberList;
 	}
+	
+//	public List<ChatMessageDto> chatMessageList(){
+//		List<ChatMessageDto> chatMessageList = chatservice.selectChatMessageList();
+//		return chatMessageList;
+//	}
 }
