@@ -4,7 +4,7 @@ window.onload=function(){
 	if(toggleCheck=="toggleOn"){
 		$("#toggleOpenCheck").click();
 	}
-}
+};
 $(function(){
 	$(".aside_con .dep1.have").click(function(){
 		$(this).toggleClass("on");
@@ -65,15 +65,12 @@ $(function(){
 									var option = "width=500, height=500, top=100, left=200, location=no"
 									window.open(url, name, option);
 								})
-								
-								
 							}
 						});
 					});
 				});
 			}
 		})
-		
 	});
 });
 
