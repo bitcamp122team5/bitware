@@ -16,6 +16,7 @@ function insertProject() {
 	var start = new Date(prjStart);
 	var end = new Date(prjEnd);
 	var memIdChk = $("input[class='checkBoxArr']:checked").length;
+	var checkBoxArr = new Array();
 	
 	
 	if(prjName == ''){
@@ -48,8 +49,27 @@ function insertProject() {
 	}else if(memIdChk < 1 ){
 		swal('참여인원을 선택해주세요');
 		return false;
+	}else{
+		//참여인원 체크된 인원 중 부장급 인원이 있는지 확인
+		$("input[class='checkBoxArr']:checked").each(function(){
+			checkBoxArr.push($(this).val());
+		})
+		$.ajax({
+		url: "/user/selectMemberRanksByMemId",
+		type: "post",
+		data: {
+			checkBoxArr : checkBoxArr
+			},
+		success:function(chk){
+			if(chk){
+				$('#frmInsertProjcet').submit();
+			}else{
+				alert('참여인원에 부장급 인원을 추가해주세요.');
+			}
+			
+		}
+	})
 	}
-	$('#frmInsertProjcet').submit();
 }
 
 /*프로젝트 정보 수정 모달 팝업*/
@@ -67,6 +87,11 @@ function updateProject() {
 	var prjMothercompany = $('#prjMothercompany').val();
 	var start = new Date(prjStart);
 	var end = new Date(prjEnd);
+	
+	//wbs시작일 배열 담기
+	var prjWbsStarts = byNameArray(document.getElementsByName("wbsStart"));
+	//wbs종료일 배열 담기
+	var prjWbsEnds = byNameArray(document.getElementsByName("wbsEnd"));
 	
 	//var prjCode = $('#prjCode').val();
 	if(prjName == ''){
@@ -96,6 +121,20 @@ function updateProject() {
 	}else if(prjMothercompany == ''){
 		swal('마더업체', '마더업체를 입력해주세요');
 		return false;
+	}
+	//변결할 프로젝트 시작일의 범위에 작업 시작일이 포함되는지 체크
+	for(var i=0; i<prjWbsStarts.length; i++){
+		if(start.getTime() > parseDate(prjWbsStarts[i]).getTime()){
+			alert('작업 시작일은 변경할 프로젝트 시작일과 같거나 이후로 입력해주세요. 참고 : '+(i+1)+"번째 작업 시작일");
+			return false;
+		}
+	}
+	//변결할 프로젝트 시작일의 범위에 작업 시작일이 포함되는지 체크
+	for(var i=0; i<prjWbsEnds.length; i++){
+		if(end.getTime() < parseDate(prjWbsEnds[i]).getTime()){
+			alert('작업 종료일은 변경할 프로젝트 종료일과 같거나 이전으로 입력해주세요. 참고 : '+(i+1)+"번째 작업 종료일");
+			return false;
+		}
 	}
 	$('#frmUpdateProjcet').submit();
 }
@@ -172,7 +211,6 @@ function deleteProjectAttendMember(){
 	}
 }
 
-
 /*프로젝트 삭제 */
 function deleteProjectAjax(){
 	var confirm_val = confirm("프로젝트를 삭제하시겠습니까?");
@@ -195,45 +233,38 @@ function deleteProjectAjax(){
 			}
 		});
 	}
-	
 }
-///*참여인원 추가 (추가사항) */
-//function insertProjectAttendMembers(){
-//	var confirm_val = confirm("선택을 완료하시겠습니까?");
-//	if(confirm_val){
-//		var checkBoxArr = new Array();
-//		$("input[class='checkBox']:checked").each(function(){
-//			checkBoxArr.push($(this).val());
-//		})
-//		var prjCode = $("#prjCode").val();
-//		$.ajax({
-//			url:"/user/insertProjectAttendMembers",
-//			type:"post",
-//			data:{
-//				checkBoxArr:checkBoxArr,
-//				prjCode:prjCode
-//			},
-//			success:function(){
-//				location.href="/user/projectDetail?prjCode="+prjCode;
-//			}
-//		});
-//	}
-//}
 
-/*직급에 따라 프로젝트 생성, 삭제, 완료 / 참여인원 추가 버튼 show or hide*/
+/*직급과 프로젝트 완료 여부에 따라 프로젝트 생성, 삭제, 완료 / 참여인원 추가 버튼 show or hide*/
 $(function(){
 	if($('#sessionRanks').val() == "부장" && $('#sessionDeptName').val() == "개발부"){
-		$('#completeProjectBtn').show();
-		$('#insertProjectBtn').show();
-		$('#deleteProjectBtn').show();
-		$('#updateProjectBtn').show();
-		$('#projectAttendMembersBtn').show();
+		if($('#prjCompletion').val() > 0){
+			$('#completeProjectBtn').hide();
+			$('#insertProjectBtn').hide();
+			$('#deleteProjectBtn').hide();
+			$('#updateProjectBtn').hide();
+			$('#projectAttendMembersBtn').hide();
+		}else{
+			$('#completeProjectBtn').show();
+			$('#insertProjectBtn').show();
+			$('#deleteProjectBtn').show();
+			$('#updateProjectBtn').show();
+			$('#projectAttendMembersBtn').show();
+		}
 	}else if($('#sessionRanks').val() == "사장" || $('#sessionRanks').val() == "이사" ){
-		$('#completeProjectBtn').show();
-		$('#insertProjectBtn').show();
-		$('#deleteProjectBtn').show();
-		$('#updateProjectBtn').show();
-		
+		if($('#prjCompletion').val() > 0){
+			$('#completeProjectBtn').hide();
+			$('#insertProjectBtn').hide();
+			$('#deleteProjectBtn').hide();
+			$('#updateProjectBtn').hide();
+			$('#projectAttendMembersBtn').hide();
+		}else{
+			$('#completeProjectBtn').show();
+			$('#insertProjectBtn').show();
+			$('#deleteProjectBtn').show();
+			$('#updateProjectBtn').show();
+			$('#projectAttendMembersBtn').show();
+		}
 	}else{
 		$('#completeProjectBtn').hide();
 		$('#insertProjectBtn').hide();
@@ -252,24 +283,7 @@ function byNameArrays(data) {
 	return dataArray;
 }
 
-//$(function(){
-//	var buttons = byNameArrays(document.getElementsByName("btnChk"));
-//	alert(buttons.length);
-//	if($('#sessionRanks').val() == "부장" && $('#sessionDeptName').val() == "개발부"){
-//		for(var i=0; i<buttons.length ; i++){
-//			buttons[i].css('display: block;');
-//			}
-//		}else if($('#sessionRanks').val() == "사장" || $('#sessionRanks').val() == "이사" ){
-//		for(var i=0; i<buttons.length; i++){
-//			buttons[i].css('display: block;');
-//		}
-//	}else{
-//		for(var i=0; i<buttons.length; i++){
-//			buttons[i].css('display: none;');
-//		}
-//	}
-//	
-//})
+
 /*프로젝트 완료 처리*/
 function completeProject(){
 	var confirm_val = confirm("프로젝트를 완료 처리 하시겠습니까?");
@@ -277,53 +291,3 @@ function completeProject(){
 		$("#completeProjectFrm").submit();
 	}
 }
-
-
-//$(function(){
-//	var prjCode = new Array();
-//	var list = {};
-//	
-//	$('#pmPrjCode').each(function(){
-//		prjCode.push($(this).val());
-//	})
-//	
-//	$.ajax({
-//		type: "post",
-//		url: "selectProjectPMName",
-//		data: { prjCode : prjCode },
-//		success: function(members){
-//			if(members.lenght != 0){
-//				list.cnt = members.length;
-//				list.names = new Array();
-//				alert(list.cnt);
-//				$.each(members, function(i, MemberDto){
-//					list.names[i] = MemberDto.memName;
-//				});
-//				for(var i=0; i<list.cnt; i++){
-//					$('#pmNames').each(function(i){
-//						$(this).text(list.names[i]);
-//					});
-//				}
-//			}
-//		}
-//	});
-//});
-//참여인원 선택 생성 폼
-//function selectProjectMember() {
-//	$("#memberForm").modal();
-//}
-
-//function selectProjectMemberListAjax() {
-//
-//	$.ajax({
-//		type: "post",
-//		url: "/selectProjectMemberListAjax",
-//		data: {},
-//		dataType: 'text',
-//		
-//		error:function(request,status,error){
-//		    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);}
-//		
-//		});
-//	
-//}

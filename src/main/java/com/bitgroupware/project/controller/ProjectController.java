@@ -31,46 +31,19 @@ public class ProjectController {
 	@Autowired
 	private ProjectService projectService;
 	
-//	/*전체 프로젝트 조회 */
-//	@RequestMapping("/selectProjectList")
-//	public String selectProjectList(Model model, @AuthenticationPrincipal SecurityUser principal) {
-//		String sessionRanks = principal.getMember().getRanks().getRanks();
-//		String seesionDeptName = principal.getMember().getDepartment().getDeptName();
-//		List<ProjectInfoDto> prjInfos = projectService.selectProjectList();
-//		model.addAttribute("prjInfos", prjInfos);
-//		model.addAttribute("sessionRanks", sessionRanks);
-//		model.addAttribute("sessionDeptName", seesionDeptName);
-//		//참여인원 추가 모달을 위함.
-//		List<MemberDto> memOfficeInfo = projectService.selectProjectMemberList();
-//		model.addAttribute("members", memOfficeInfo);
-//		
-//		return "project/project"; 
-//	}
-	
-	
-//	/*참여중인 프로젝트 조회 */
-//	@RequestMapping("/selectAttendingProjectList")
-//	public String selectAttendingProjectList(Model model, @AuthenticationPrincipal SecurityUser principal) {
-//		String sessionId = principal.getMember().getMemId();
-//		String sessionRanks = principal.getMember().getRanks().getRanks();
-//		String seesionDeptName = principal.getMember().getDepartment().getDeptName();
-//		List<ProjectInfoDto> prjInfos = projectService.selectAttendProjectList(sessionId);
-//		model.addAttribute("prjInfos", prjInfos);
-//		model.addAttribute("sessionRanks", sessionRanks);
-//		model.addAttribute("sessionDeptName", seesionDeptName);
-//		//참여인원 추가 모달을 위함.
-//		List<MemberDto> memOfficeInfo = projectService.selectProjectMemberList();
-//		model.addAttribute("members", memOfficeInfo);
-//		return "project/project"; 
-//	}
-	
 	/*전체 프로젝트 조회(+페이징, 검색) */
 	@RequestMapping("/selectProjectList")
 	public String selectProjectList(Model model, @AuthenticationPrincipal SecurityUser principal, 
 									@RequestParam(defaultValue = "1") int curPage, Search search) {
 		System.out.println("search 컨트롤러에서 : "+search);
 		String sessionRanks = principal.getMember().getRanks().getRanks();
-		String seesionDeptName = principal.getMember().getDepartment().getDeptName();
+		String seesionDeptName = "";
+		if(sessionRanks.equals("사장") || sessionRanks.equals("이사")) {
+			seesionDeptName = "경영진";
+		}else {
+			seesionDeptName = principal.getMember().getDepartment().getDeptName();
+		}
+		 
 		System.out.println("컨트롤러에서 condition : " + search.getSearchCondition());
 		System.out.println("컨트롤러에서 keyword : " + search.getSearchKeyword());
 		int count;
@@ -108,7 +81,13 @@ public class ProjectController {
 											@RequestParam(defaultValue = "1") int curPage, Search search) {
 		String sessionId = principal.getMember().getMemId();
 		String sessionRanks = principal.getMember().getRanks().getRanks();
-		String seesionDeptName = principal.getMember().getDepartment().getDeptName();
+		
+		String seesionDeptName = "";
+		if(sessionRanks.equals("사장") || sessionRanks.equals("이사")) {
+			seesionDeptName = "경영진";
+		}else {
+			seesionDeptName = principal.getMember().getDepartment().getDeptName();
+		}
 		
 		int count;
 		count = projectService.countProject(search);
@@ -142,8 +121,12 @@ public class ProjectController {
 	public String selectEndProjectList(Model model,  @AuthenticationPrincipal SecurityUser principal,
 										@RequestParam(defaultValue = "1") int curPage, Search search) {
 		String sessionRanks = principal.getMember().getRanks().getRanks();
-		String seesionDeptName = principal.getMember().getDepartment().getDeptName();
-		
+		String seesionDeptName = "";
+		if(sessionRanks.equals("사장") || sessionRanks.equals("이사")) {
+			seesionDeptName = "경영진";
+		}else {
+			seesionDeptName = principal.getMember().getDepartment().getDeptName();
+		}
 		int count;
 		count = projectService.countCompletedProject(search);
 		
@@ -180,9 +163,17 @@ public class ProjectController {
 		List<MemberDto> memInfos = projectService.selectProjectAttendMemberList(prjCode);
 		List<ProjectWbsDto> prjWbs = projectService.selectProjectWbsList(prjCode);
 		String sessionRanks = principal.getMember().getRanks().getRanks();
-		String seesionDeptName = principal.getMember().getDepartment().getDeptName();
+		String sessionDeptName = "";
+		System.out.println("상세페이지 이동 Ranks : " +  sessionRanks);
+		if(sessionRanks.equals("사장") || sessionRanks.equals("이사")) {
+			sessionDeptName = "경영진";
+		}else {
+			sessionDeptName = principal.getMember().getDepartment().getDeptName();
+		}
+		System.out.println("상세페이지 진입할 때 부서명"+sessionDeptName);
+		System.out.println("상세페이지 진입할 때 직급"+sessionRanks);
 		model.addAttribute("sessionRanks", sessionRanks);
-		model.addAttribute("sessionDeptName", seesionDeptName);
+		model.addAttribute("sessionDeptName", sessionDeptName);
 		//참여인원 추가 모달을 위함.
 		List<MemberDto> memOfficeInfo = projectService.selectProjectMemberList();
 		model.addAttribute("members", memOfficeInfo);
@@ -225,6 +216,7 @@ public class ProjectController {
 		System.out.println("pmName 출력 : "+ pmName);
 		prjDto.setPrjPm(pmName);
 		System.out.println("prjDto.getPrjPm() 결과 : "+prjDto.getPrjPm());
+		String code = "";
 		if(projectService.insertProject(prjDto)) {
 			
 			ProjectInfoDto prjInfo;
@@ -233,8 +225,10 @@ public class ProjectController {
 			for(String memId : memArr) {
 				projectService.insertProjectAttendMembers(memId, prjInfo.getPrjCode());
 			}
+			code = Integer.toString(prjInfo.getPrjCode()); 
 		}
-		return "redirect:/user/selectProjectList";
+		 
+		return "redirect:/user/projectDetail?prjCode="+code;
 	}
 	
 	/*프로젝트 참여인원 추가 */
@@ -281,8 +275,10 @@ public class ProjectController {
 						Integer.parseInt(req.getParameterValues("inPrjDepth")[i]),
 						Integer.parseInt(req.getParameterValues("workCompletion")[i]),
 						req.getParameterValues("inPrjWorkName")[i],
-						req.getParameterValues("wbsStart")[i],
-						req.getParameterValues("wbsEnd")[i],
+						req.getParameterValues("planStart")[i],
+						req.getParameterValues("planEnd")[i],
+						req.getParameterValues("realStart")[i],
+						req.getParameterValues("realEnd")[i],
 						req.getParameterValues("inPrjManager")[i],
 						req.getParameterValues("inPrjOutput")[i],
 						prjTotalDays[i]);
@@ -350,6 +346,28 @@ public class ProjectController {
 		return projectService.selectProjectWbsOnCalendar(prjCode);
 	}
 	
+	//프로젝트 참여인원 중 부장을 추가했는지 체크
+	@RequestMapping(value="/selectMemberRanksByMemId", method=RequestMethod.POST)
+	@ResponseBody
+	public boolean selectMemberRanksByMemId(@RequestParam(value="checkBoxArr[]") List<String> checkBoxArr, HttpServletRequest req){
+		
+//		String[] memArr = req.getParameterValues("memIdChk");
+		MemberDto memDto;
+		boolean chk = false;
+		for(String memId : checkBoxArr) {
+			
+			memDto = projectService.selectMemberRanksByMemId(memId);
+			System.out.println("컨트롤러에서 부장 체크 중 : "+memDto);
+			if(memDto.getRanks().equals("부장")) {
+				chk = true;
+			}
+		}
+		if(chk) {
+			return chk;
+		}else {
+			return false;
+		}
+	}
 	
 //	@RequestMapping("selectProjectPMName")
 //	@ResponseBody
