@@ -12,7 +12,7 @@ public interface CommuteRepository extends JpaRepository<CommuteVo, Integer>{
 
 	List<CommuteVo> findByMemberVo(MemberVo member);
 	
-	List<CommuteVo> findByMemberVoAndCommuteDateBetween(MemberVo member, String startDate, String endDate);
+	List<CommuteVo> findByMemberVoAndCommuteDateBetweenAndCommuteStatusIn(MemberVo member, String startDate, String endDate, String[] status);
 
 	@Query(value = "select curdate()", nativeQuery = true)
 	String selectCurdate();
