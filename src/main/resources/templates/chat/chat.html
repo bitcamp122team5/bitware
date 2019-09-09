@@ -43,8 +43,8 @@
     <form id="messageForm" name="messageForm" nameForm="messageForm">
       <div class="form-group">
         <div class="input-group clearfix">
-        	<input type="hidden" id="sender" name="sender" th:value="${memDto.memName}">
-        	<input type="hidden" id="receiver" name="receiver" th:value="${sessionName}"/>
+        	<input type="hidden" id="sender" name="sender" th:value="${sessionName}">
+        	<input type="hidden" id="receiver" name="receiver" th:value="${memDto.memName}"/>
         	<input type="hidden" id="roomId" name="roomId" th:value="${roomId}"/>
           <input type="text" id="message" name="content" placeholder="Type a message... or /join [room-id] to join another room."
                  autocomplete="off" class="form-control"/>
