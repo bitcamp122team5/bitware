@@ -32,10 +32,7 @@ $(function(){
 		$.ajax({
 			url:"/admin/deleteNoticeFileAjax",
 			type:"post",
-			data:{
-				fileUrl:$(this).attr("data-src"),
-				ntNo:0
-			},
+			data:{fileUrl:$(this).attr("data-src")},
 			dataType:"text",
 			success:function(result){
 				if(result=="deleted"){
@@ -85,13 +82,6 @@ function checkImageType(fileUrl){
 	return fileUrl.match(pattern); 
 }
 </script>
-<style>
-.fileDrop {
-	width: 100%;
-	height: 200px;
-	border: 1px dotted gray;
-}
-</style>
 </head>
 <body>
 <div th:replace="fragments/headerAdmin :: headerFragmentAdmin"></div>
@@ -137,9 +127,9 @@ function checkImageType(fileUrl){
 				</tr>
 				<tr>
 					<th th:text="첨부파일"></th>
-					<td th:align="left">
+					<td th:align="left" class="fileDrop" height="200px">
 						<div> 첨부파일을 드래그앤 드롭 하여 등록하세요
-							<div class="fileDrop"><div class="uploadList"></div></div>
+							<div class="uploadList"></div>
 						</div>
 					</td>
 				</tr>

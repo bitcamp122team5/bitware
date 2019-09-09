@@ -88,14 +88,6 @@ function checkImageType(fileUrl){
 	return fileUrl.match(pattern); 
 }
 </script>
-<style>
-.fileDrop {
-	width: 100%;
-	height: 200px;
-	border: 1px dotted gray;
-	background-color: gray;
-}
-</style>
 </head>
 <body>
 <div th:replace="fragments/headerAdmin :: headerFragmentAdmin"></div>
@@ -145,9 +137,8 @@ function checkImageType(fileUrl){
 				</tr>
 				<tr>
 					<th th:text="첨부파일"></th>
-					<td align="left">
+					<td align="left" class="fileDrop" height="200px">
 					<div> 첨부파일을 드래그앤 드롭 하여 등록하세요
-						<div class="fileDrop"></div>
 						<div class="uploadList">
 							<div th:each="noticeFile:${notice.noticeFileList}">
 								<div th:if="${noticeFile.ntFileType=='image'}">
