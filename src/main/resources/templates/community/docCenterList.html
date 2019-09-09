@@ -124,7 +124,7 @@ $(document).ready(function() {
 						<td th:text="${#dates.format(docCenter.docDate,'yyyy-MM-dd')}"></td>
 					</th:block>
 			    	<th:block th:if="${docCenter.docFileCheck=='Y'}">
-						<td class="file"><img th:src="@{/images/fileImage.png}"></td>
+						<td class="file"><img th:src="@{/images/file.png}"></td>
 					</th:block>
 					<th:block th:unless="${docCenter.docFileCheck=='Y'}">
 						<td class="file"></td>
