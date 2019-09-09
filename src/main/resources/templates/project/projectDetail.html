@@ -38,6 +38,8 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
     max-width: 900px;
     margin: 0 auto;
   }
+  
+  #insertProjectWbsList{width:100%;overflow-x:auto;}
 </style>
 
 <style>
@@ -98,12 +100,13 @@ function commaNum(num){
 	<input type="hidden" id="sessionRanks" th:value="${sessionRanks}">
 	<input type="hidden" id="sessionDeptName" th:value="${sessionDeptName}">
 	<table class="table table-striped">
+		<!-- 상단의 프로젝트 정보 -->
 		<thead>
 		<tr>
 			<th>프로젝트명</th><td th:text="${prjInfo.prjName}"></td>
 		</tr>
 		<tr>
-			<th>PM</th><td>PM 추가해주세요</td>
+			<th>PM</th><td th:text="${prjInfo.prjPm}"></td>
 		</tr>
 		<tr>
 			<th>계약금</th><td th:text="${prjInfo.prjDeposit}" class="commaN"></td>
@@ -120,7 +123,9 @@ function commaNum(num){
 			<th>참여인원</th><td><input class='btn btn-sm btn-warning btn-center' type="button"
 					value="참여인원 리스트" onclick="projectAttendMemberModal()"></td>
 		</tr>
+			<input type="hidden" id="prjCompletion" th:value="${prjInfo.prjCompletion}">
 		</thead>
+		<!-- 상단의 프로젝트 정보 끝-->
 	</table>
 	
 	<input class='btn btn-sm btn-warning btn-center' type="button" id="updateProjectBtn" value="프로젝트 정보 수정" onclick="projectUpdateModal()">
@@ -128,23 +133,42 @@ function commaNum(num){
 	<br /><br /><br />
 	<form action="#" method="post" id='insertProjectWbsList'>
 		<table border="1" class="table table-bordered">
+			<colgroup>
+				<col width="50px">
+				<col width="100px">
+				<col width="450px">
+				<col width="180px">
+				<col width="180px">
+				<col width="180px">
+				<col width="180px">
+				<col width="80px">
+				<col width="120px">
+				<col width="70px">
+				<col width="70px">			
+			</colgroup>
+			<!-- 업무구분 등 WBS 구분열 -->
 			<thead id='thead'>
 			<input type="hidden" name="prjStart" id="prjStart" th:value="${prjInfo.prjStart}">
 			<input type="hidden" name="prjEnd" id="prjEnd" th:value="${prjInfo.prjEnd}">
 			<input type="hidden" name="prjCode" id="prjCode" th:value="${prjInfo.prjCode}">
 				<tr>
-					<td rowspan="5" style="width: 50px;"></td>
-					<td rowspan="5" style="width: 60px;"></td>
-					<td rowspan="5">
-						<div style="width: 450px; height: 100px;">
-							<h1>업무구분</h1>
-						</div>
-					</td>
-					<td rowspan="5" style="width: 180px;"></td>
-					<td rowspan="5" style="width: 180px;"></td>
-					<td rowspan="5" style="width: 80px;"></td>
-					<td rowspan="5" style="width: 120px;"></td>
-					<td rowspan="5" style="width: 70px;"></td>
+					<td rowspan="5"></td>
+					<td rowspan="5"></td>
+					<td rowspan="5" style="height: 100px;"><h1>업무구분</h1></td>
+					<td rowspan="5"></td>
+					<td rowspan="5"></td>
+					<td rowspan="5"></td>
+					<td rowspan="5"></td>
+					<td rowspan="5"></td>
+					<td rowspan="5"></td>
+					<td rowspan="5"></td>
+					<td rowspan="5"></td>
+				</tr>
+				<tr>
+				</tr>
+				<tr>
+				</tr>
+				<tr>
 				</tr>
 				<tr>
 				</tr>
@@ -160,32 +184,37 @@ function commaNum(num){
 						<button type='button' class='btn btn-sm btn-info' onclick='createTopList()'>생성</button>
 					</td>
 					<td align="center">WBS 작업 목록</td>
-					<td>작업 시작일</td>
-					<td>작업 종료일</td>
+					<td>계획 작업 시작일</td>
+					<td>계획 작업 종료일</td>
+					<td>실제 작업 시작일</td>
+					<td>실제 작업 종료일</td>
 					<td>담당자</td>
 					<td>산출물</td>
-					<td>진행률</td>
+					<td>계획 진행률</td>
+					<td>실제 진행률</td>
 				</tr>
 			</thead>
+			<!-- 업무구분 등 WBS 구분열 끝-->
+			<!-- WBS 출력 -->
 			<tbody id='tbody'>
 			</tbody>
-			<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td class="totalProgress">총 진행률</td>
-				</tr>
+			<!-- WBS 출력 끝-->
+			<tfoot id="tfooter">
+				<tr id='tfooter'>
+				<td colspan="8"></td>
+				<td>총 진행률</td>
+				<td class="planTotalProgress"></td>
+				<td class="realTotalProgress"></td>
+			</tr>
+			</tfoot>
 		</table>
+		
+		
+	</form>
 		<input class="btn btn-sm btn-warning btn-center" type="button" id="insertProjectWbsListBtn" value="저장" onclick="insertProjectWbsList()">
 		<input class="btn btn-sm btn-warning btn-center" type="button" value="프로젝트 목록" onclick="location.href='/user/selectProjectList'">
 		<input class="btn btn-sm btn-warning btn-center" type="button" id="checkListRemoveBtn" value="작업 삭제" onclick="checkListRemove()">
 		<input class="btn btn-sm btn-warning btn-center" type="button" id="viewGraphBtn" value="달력" onclick="viewGraph()">
-		
-	</form>
 		<form id="completeProjectFrm" action="completeProject">
 			<input type="hidden" name="prjCode" id="prjCode" th:value="${prjInfo.prjCode}">
 			<input class="btn btn-sm btn-warning btn-center" id="completeProjectBtn" type="button" value="프로젝트 완료" onclick="completeProject()">
@@ -294,8 +323,19 @@ function commaNum(num){
 						<td th:text="${memInfos.deptName}"></td>
 						<td th:text="${memInfos.teamName}"></td>
 						<td name="btnChk" th:text="${memInfos.ranks}"></td>
-						<td><input type="hidden" name="prjCode" id="prjCode" th:value="${prjInfo.prjCode}"></td> 
-						<td><button type="button" class="close" aria-label="Close" onclick="deleteProjectAttendMember()" id="deleteProjectAttendMemberBtn" style="color: red;"><span aria-hidden="true">&times;</span></button></td>
+						<td style="display: none;"><input type="hidden" name="prjCode" id="prjCode" th:value="${prjInfo.prjCode}"></td>
+						<th:block th:if="${sessionRanks}=='부장' and ${sessionDeptName}=='개발부'">
+							<td><button type="button" class="close" aria-label="Close" onclick="deleteProjectAttendMember()" id="deleteProjectAttendMemberBtn" style="color: red;"><span aria-hidden="true">&times;</span></button></td>
+						</th:block> 
+						<th:block th:unless="${sessionRanks}=='부장' and ${sessionDeptName}=='개발부'">
+							<td style="display: none;"></td>
+						</th:block>
+						<th:block th:if="${sessionRanks}=='사장' or ${sessionRanks}=='이사'">
+							<td><button type="button" class="close" aria-label="Close" onclick="deleteProjectAttendMember()" id="deleteProjectAttendMemberBtn" style="color: red;"><span aria-hidden="true">&times;</span></button></td>
+						</th:block>
+						<th:block th:unless="${sessionRanks}=='사장' or ${sessionRanks}=='이사'">
+							<td style="display: none;"></td>
+						</th:block>
 					</tr>
 					</table>
 					<div class="modal-footer">
@@ -306,6 +346,7 @@ function commaNum(num){
 		</div>
 	</div>
 	
+	<!-- WBS리스트 달력 모달 -->
 	<div class="modal fade" id="viewGraphModal" role="dialog" style="z-index: 9999;">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -319,6 +360,7 @@ function commaNum(num){
 			</div>
 		</div>
 	</div>
+	<!-- WBS리스트 달력 모달 끝-->
 </div><!-- //section end -->
 </body>
 </html>

@@ -246,5 +246,11 @@ public class ProjectServiceImpl implements ProjectService {
 		return dao.selectProjectWbsOnCalendar(prjCode);
 	}
 
+	//memId로 Ranks(직급명) 가져오기
+	@Override
+	public MemberDto selectMemberRanksByMemId(String memId) {
+		return dao.selectMemberRanksByMemId(memId);
+	}
+
 	
 }

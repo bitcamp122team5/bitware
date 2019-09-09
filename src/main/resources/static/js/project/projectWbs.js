@@ -35,8 +35,10 @@ $(function(){
 				subData.prjDepth = new Array();
 				subData.prjManager = new Array();
 				subData.prjOutput = new Array();
-				subData.prjWbsStart = new Array();
-				subData.prjWbsEnd = new Array();
+				subData.prjPlanStart = new Array();
+				subData.prjPlanEnd = new Array();
+				subData.prjRealStart = new Array();
+				subData.prjRealEnd = new Array();
 				subData.prjWorkCompletion = new Array();
 				subData.prjTotalDays = new Array();
 				$.each(lists, function(i, projectWbsDto){
@@ -46,25 +48,42 @@ $(function(){
 					subData.prjDepth[i] = projectWbsDto.prjDepth;
 					subData.prjManager[i] = projectWbsDto.prjManager;
 					subData.prjOutput[i] = projectWbsDto.prjOutput;
-					subData.prjWbsStart[i] = projectWbsDto.prjWbsStart;
-					subData.prjWbsEnd[i] = projectWbsDto.prjWbsEnd;
+					subData.prjPlanStart[i] = projectWbsDto.prjPlanStart;
+					subData.prjPlanEnd[i] = projectWbsDto.prjPlanEnd;
+					subData.prjRealStart[i] = projectWbsDto.prjRealStart;
+					subData.prjRealEnd[i] = projectWbsDto.prjRealEnd;
 					subData.prjWorkCompletion[i] = projectWbsDto.prjWorkCompletion;
 					subData.prjTotalDays[i] = projectWbsDto.prjTotalDays;
 					});
 				}else{
 					baseData.chk = false;
-					swal("오류", "WBS가 생성되지 않았거나, WBS를 불러오던 중 오류가 발생했습니다.");
-				}
+ 				}
 			}
 	});
 	
 	if(baseData.chk) {
-		for(var i=0; i<subData.cnt; i++){
-			$('#tbody').append(screenWriteTbody(i, subData.prjGroup[i], subData.prjStep[i], subData.prjDepth[i],
-						subData.prjWorkName[i], subData.prjManager[i], subData.prjOutput[i], 
-						subData.prjWbsStart[i], subData.prjWbsEnd[i], subData.prjWorkCompletion[i], subData.prjTotalDays[i]));
+		if($('#sessionRanks').val() == "부장" && $('#sessionDeptName').val() == "개발부"){
+			for(var i=0; i<subData.cnt; i++){
+				$('#tbody').append(screenWriteTbodyEdit(i, subData.prjGroup[i], subData.prjStep[i], subData.prjDepth[i],
+							subData.prjWorkName[i], subData.prjManager[i], subData.prjOutput[i], subData.prjPlanStart[i], 
+							subData.prjPlanEnd[i], subData.prjRealStart[i], subData.prjRealEnd[i],
+							subData.prjWorkCompletion[i], subData.prjTotalDays[i]));
+			}
+		}else if($('#sessionRanks').val() == "사장" || $('#sessionRanks').val() == "이사"){
+			for(var i=0; i<subData.cnt; i++){
+				$('#tbody').append(screenWriteTbodyEdit(i, subData.prjGroup[i], subData.prjStep[i], subData.prjDepth[i],
+						subData.prjWorkName[i], subData.prjManager[i], subData.prjOutput[i], subData.prjPlanStart[i], 
+						subData.prjPlanEnd[i], subData.prjRealStart[i], subData.prjRealEnd[i],
+						subData.prjWorkCompletion[i], subData.prjTotalDays[i]));
+			}
+		}else{
+			for(var i=0; i<subData.cnt; i++){
+				$('#tbody').append(screenWriteTbodyText(i, subData.prjGroup[i], subData.prjStep[i], subData.prjDepth[i],
+							subData.prjWorkName[i], subData.prjManager[i], subData.prjOutput[i], subData.prjPlanStart[i], 
+							subData.prjPlanEnd[i], subData.prjRealStart[i], subData.prjRealEnd[i], 
+							subData.prjWorkCompletion[i], subData.prjTotalDays[i]));
+			}
 		}
-		
 		//WBS 진행률 통계
 		WBSProgress();
 	}
@@ -89,31 +108,31 @@ function WBSProgress(){
 	//wbs항목들의 percent 값을 담을 배열 생성
 	var percentArray = new Array();
 	//분모 구하기 (WBS종료일 - WBS시작일)
-	var denominator = new Array();
+	var planDenominator = new Array();
 	//분자 구하기 (TODAY - WBS시작일)
-	var molecule = new Array();
+	var planMolecule = new Array();
 	//임시 배열 변수
 	var tempNum = new Array();
 	//총 진행률 값 담을 임시 배열 변수
 	var tempNumTotal = new Array();
 	//총 진행률 계산 값
-	var totalProgress = 0;
+	var planTotalProgress = 0;
 	//계산 완료된 총 진행률을 담을 값
-	var totalProgressPercent = 0;
+	var planTotalProgressPercent = 0;
 	//분모 구하기 (WBS종료일 - WBS시작일) 
 	for(var i=0; i<subData.cnt; i++){
-		denominator[i] = dayCalculation(subData.prjWbsStart[i], subData.prjWbsEnd[i]);
+		planDenominator[i] = dayCalculation(subData.prjPlanStart[i], subData.prjPlanEnd[i]);
 	}
 	//분자 구하기 (TODAY - WBS시작일)
 	for(var i=0; i<subData.cnt; i++){
-		molecule[i] = dayCalculation(subData.prjWbsStart[i], today);
+		planMolecule[i] = dayCalculation(subData.prjPlanStart[i], today);
 	}
 	//개별 진행률 구하기
 	for(var i=0; i<subData.cnt; i++){
 		//alert('분자['+i+'] = '+molecule[i]);
 		//alert('분모['+i+'] = '+denominator[i]);
-		tempNum[i] = makeBaseRound((molecule[i] / denominator[i]) * 100);
-		tempNumTotal[i] = ((molecule[i] / denominator[i]) * 100); 
+		tempNum[i] = makeBaseRound((planMolecule[i] / planDenominator[i]) * 100);
+		tempNumTotal[i] = ((planMolecule[i] / planDenominator[i]) * 100); 
 		if(0 < tempNum[i] && tempNum[i] <= 100){
 			percentArray[i] = tempNum[i];
 		}else if(tempNum[i] > 100){
@@ -125,28 +144,28 @@ function WBSProgress(){
 	//개별 진행률 담기
 	for(var i=0; i<subData.cnt; i++){
 		if(0 < tempNumTotal[i] && tempNumTotal[i] <= 100){
-			totalProgress += tempNumTotal[i];
+			planTotalProgress += tempNumTotal[i];
 		}else if(tempNumTotal[i] > 100){
-			totalProgress += 100;
+			planTotalProgress += 100;
 		}
 	}
 	// 총 진행률 합 / 작업 리스트 개수
-	if(totalProgress.length != 0){
-		totalProgressPercent = makeBaseRound(totalProgress / subData.cnt);
+	if(planTotalProgress.length != 0){
+		planTotalProgressPercent = makeBaseRound(planTotalProgress / subData.cnt);
 	}
-	//개별 진행률 입력
+	//개별 계획 진행률 입력
 	for(var i=0; i<subData.cnt; i++){
-			$('.progressList').each(function(i){
+			$('.planProgressList').each(function(i){
 				$(this).text(percentArray[i]+'%');
 			});
 	}
-	// 총 진행률 입력
-	if(0 < totalProgressPercent && totalProgressPercent <= 100){
-		$('.totalProgress').text(totalProgressPercent+'%');
-	}else if(totalProgressPercent > 100){
-		$('.totalProgress').text('100%');
+	// 계획 총 진행률 입력
+	if(0 < planTotalProgressPercent && planTotalProgressPercent <= 100){
+		$('.planTotalProgress').text(planTotalProgressPercent+'%');
+	}else if(planTotalProgressPercent > 100){
+		$('.planTotalProgress').text('100%');
 	}else{
-		$('.totalProgress').text('0%');
+		$('.planTotalProgress').text('0%');
 	}
 }
 
@@ -161,8 +180,8 @@ function dayCalculation(start, end){
 	return ((ends.getTime() - starts.getTime()) / (1000*60*60*24)) + 1;
 }
 
-/*테이블 tbody 화면에 그리는 함수 (projectWbs 출력) */
-function screenWriteTbody(num, group, step, depth, workName, manager, output, WbsStart, WbsEnd, workCompletion, totalDays) {
+/*테이블 tbody 화면에 그리는 함수 (개발부 부장 수정 가능 projectWbs 출력) */
+function screenWriteTbodyEdit(num, group, step, depth, workName, manager, output, planStart, planEnd, realStart, realEnd, workCompletion, totalDays) {
 	var tag = new StringBuffer();
 	
 	// 텍스트 "null"이나 값의 null인 경우 대체해서 넣어 줄 텍스트
@@ -193,11 +212,55 @@ function screenWriteTbody(num, group, step, depth, workName, manager, output, Wb
 	tag.append("<input type='hidden' name='workCompletion' value='"+workCompletion+"'>");
 	tag.append("</td>");
 	tag.append("<td style='overflow: hidden;'><input style='margin-left: "+(25*depth)+"px;' type='text' name='inPrjWorkName' value='"+workName+"'></td>");
-	tag.append("<td><input type='date' name='wbsStart' value='"+WbsStart+"'></td>");
-	tag.append("<td><input type='date' name='wbsEnd' value='"+WbsEnd+"'></td>");
+	tag.append("<td><input type='date' name='planStart' value='"+planStart+"'></td>");
+	tag.append("<td><input type='date' name='planEnd' value='"+planEnd+"'></td>");
+	tag.append("<td><input type='date' name='realStart' value='"+realStart+"'></td>");
+	tag.append("<td><input type='date' name='realEnd' value='"+realEnd+"'></td>");
 	tag.append("<td><input type='text' name='inPrjManager' value='"+manager+"'></td>");
 	tag.append("<td><input type='text' name='inPrjOutput' value='"+output+"'></td>")
-	tag.append("<td class='progressList'>0%</td>");
+	tag.append("<td class='planProgressList'>0%</td>");
+	tag.append("<td class='realProgressList'>0%</td>");
+	tag.append(totalDaysAnalysis(totalDays, baseData.schedule()));
+	tag.append("</tr>");
+	
+	return tag.toString();
+}
+
+/*테이블 tbody 화면에 그리는 함수 (읽기 전용 projectWbs 출력) */
+function screenWriteTbodyText(num, group, step, depth, workName, manager, output, planStart, planEnd, realStart, realEnd, workCompletion, totalDays) {
+	var tag = new StringBuffer();
+	
+	// 텍스트 "null"이나 값의 null인 경우 대체해서 넣어 줄 텍스트
+	var substitute = " ";
+	
+	// 담당자와 산출물   텍스트 "null" 이나 값의 null인지 체크 후 대체해주는 과정
+	if(manager == "null" || manager == null){
+		manager = substitute;
+	}
+	if(output == "null" || output == null){
+		output = substitute;
+	}
+	tag.append("<tr id='"+num+"'>");
+	tag.append("<td><input type='checkbox' name='chkVal' value='"+num+"'/></td>")
+	tag.append("<td>");
+	tag.append('<div class="dropdown">');
+	tag.append('<button class="btn btn-info" id="dLabel" type="button" aria-haspopup="true" aria-expanded="false">');
+	tag.append(numFormat(Number(num)+1));
+	tag.append('</button>');
+	tag.append("<input type='hidden' name='inPrjGroup' value='"+group+"'>");
+	tag.append("<input type='hidden' name='inPrjStep' value='"+step+"'>");
+	tag.append("<input type='hidden' name='inPrjDepth' value='"+depth+"'>");
+	tag.append("<input type='hidden' name='workCompletion' value='"+workCompletion+"'>");
+	tag.append("</td>");
+	tag.append("<td style='overflow: hidden;'><input style='margin-left: "+(25*depth)+"px;' type='text' name='inPrjWorkName' value='"+workName+"' readonly='readonly'></td>");
+	tag.append("<td><input type='date' name='planStart' value='"+planStart+"' readonly='readonly'></td>");
+	tag.append("<td><input type='date' name='planEnd' value='"+planEnd+"' readonly='readonly'></td>");
+	tag.append("<td><input type='date' name='realStart' value='"+realStart+"' readonly='readonly'></td>");
+	tag.append("<td><input type='date' name='realEnd' value='"+realEnd+"' readonly='readonly'></td>");
+	tag.append("<td><input type='text' name='inPrjManager' value='"+manager+"' readonly='readonly'></td>");
+	tag.append("<td><input type='text' name='inPrjOutput' value='"+output+"' readonly='readonly'></td>")
+	tag.append("<td class='planProgressList'>0%</td>");
+	tag.append("<td class='realProgressList'>0%</td>");
 	tag.append(totalDaysAnalysis(totalDays, baseData.schedule()));
 	tag.append("</tr>");
 	
@@ -234,7 +297,7 @@ function createTopList(){
 			}
 		});
 	}
-	$('#tbody').prepend(screenWriteTbody(0, 0, 0, 0, '', '', '', '', '', 0, ''));
+	$('#tbody').prepend(screenWriteTbodyEdit(0, 0, 0, 0, '', '', '', '', '', '', '', 0, ''));
 	subData.cnt = $('#tbody tr').length;
 	baseData.chk = true;
 }
@@ -281,11 +344,11 @@ function createParentList(num){
 	});
 	
 	if(myPrjDepth == '0'){
-		$('#tbody tr:eq('+num+')').after(screenWriteTbody(num+1, Number(myPrjGroup)+1, 0, 0, '', '', '', '', '', 0, ''));
+		$('#tbody tr:eq('+num+')').after(screenWriteTbodyEdit(num+1, Number(myPrjGroup)+1, 0, 0, '', '', '', '', '', '', '', 0, ''));
 	}else if(myPrjDepth == '1'){
-		$('#tbody tr:eq('+num+')').after(screenWriteTbody(num+1, Number(myPrjGroup)+1, 0, 0, '', '', '', '', '', 0, ''));
+		$('#tbody tr:eq('+num+')').after(screenWriteTbodyEdit(num+1, Number(myPrjGroup)+1, 0, 0, '', '', '', '', '', '', '', 0, ''));
 	}else{
-		$('#tbody tr:eq('+num+')').after(screenWriteTbody(num+1, myPrjGroup, Number(myPrjStep)+1, Number(myPrjDepth)-1, '', '', '', '', '', 0, ''));
+		$('#tbody tr:eq('+num+')').after(screenWriteTbodyEdit(num+1, myPrjGroup, Number(myPrjStep)+1, Number(myPrjDepth)-1, '', '', '', '', '', '', '', 0, ''));
 	}
 	subData.cnt = $('#tbody tr').length;
 }
@@ -326,9 +389,9 @@ function createList(num) {
 		}
 	});
 	if(myPrjStep == '0') {
-		$('#tbody tr:eq('+num+')').after(screenWriteTbody(num+1, Number(myPrjGroup)+1, 0, 0, '', '', '', '', '', 0, ''));
+		$('#tbody tr:eq('+num+')').after(screenWriteTbodyEdit(num+1, Number(myPrjGroup)+1, 0, 0, '', '', '', '', '', '', '', 0, ''));
 	}else {
-		$('#tbody tr:eq('+num+')').after(screenWriteTbody(num+1, myPrjGroup, Number(myPrjStep)+1, myPrjDepth, '', '', '', '', '', 0, ''));
+		$('#tbody tr:eq('+num+')').after(screenWriteTbodyEdit(num+1, myPrjGroup, Number(myPrjStep)+1, myPrjDepth, '', '', '', '', '', '', '', 0, ''));
 	}
 	subData.cnt = $('#tbody tr').length;
 }
@@ -359,7 +422,7 @@ function createChildList(num) {
 			return 'createList('+$(this).parents("tr").attr("id")+')';
 		}
 	});
-	$('#tbody tr:eq('+num+')').after(screenWriteTbody(num+1, myPrjGroup, Number(myPrjStep)+1, Number(myPrjDepth)+1, '', '', '', '', '', 0, ''));
+	$('#tbody tr:eq('+num+')').after(screenWriteTbodyEdit(num+1, myPrjGroup, Number(myPrjStep)+1, Number(myPrjDepth)+1, '', '', '', '', '', '', '', 0, ''));
 
 	subData.cnt = $('#tbody tr').length;
 }
@@ -449,10 +512,16 @@ function parseDate(input) {
 function insertProjectWbsList(){
 	//작업명 배열 담기
 	var prjWorkNames = byNameArray(document.getElementsByName("inPrjWorkName"));
-	//wbs시작일 배열 담기
-	var prjWbsStarts = byNameArray(document.getElementsByName("wbsStart"));
-	//wbs종료일 배열 담기
-	var prjWbsEnds = byNameArray(document.getElementsByName("wbsEnd"));
+	//계획 작업 시작일 배열 담기
+	var prjPlanStarts = byNameArray(document.getElementsByName("planStart"));
+	//계획 작업 종료일 배열 담기
+	var prjPlanEnds = byNameArray(document.getElementsByName("planEnd"));
+	
+	//실제 작업 시작일 배열 담기
+	var prjRealStarts = byNameArray(document.getElementsByName("realStart"));
+	//실제 작업 종료일 배열 담기
+	var prjRealEnds = byNameArray(document.getElementsByName("realEnd"));
+	
 	//프로젝트 시작일, 종료일 담기
 	var prjStart = parseDate($('#prjStart').val());
 	var prjEnd = parseDate($('#prjEnd').val());
@@ -464,39 +533,61 @@ function insertProjectWbsList(){
 	//업무구분 입력 여부 확인
 	for(var i=0; i<prjWorkNames.length; i++){
 			if(prjWorkNames[i].trim() == '' || prjWorkNames[i].trim().length == 0){
-				alert('업무구분 작업명을 모두 입력해주세요.');
+				alert('업무구분 작업명을 모두 입력해주세요. 참고 : '+(i+1)+"번째 작업명");
 				chk = false;
 				break;
 			}
 		}
-	//작업 시작일 입력 여부 확인
-	for(var i=0; i<prjWbsStarts.length; i++){
-			if(prjWbsStarts[i].trim() == '' || prjWbsStarts[i].trim().length == 0){
-				alert('작업 시작일을 모두 입력해주세요.');
+	//계획 작업 시작일 입력 여부 확인
+	for(var i=0; i<prjPlanStarts.length; i++){
+			if(prjPlanStarts[i].trim() == '' || prjPlanStarts[i].trim().length == 0){
+				alert('계획 작업 시작일을 모두 입력해주세요. 참고 : '+(i+1)+"번째 계획 작업 시작일");
 				chk = false;
 				break;
 			}
 		}
-	//작업 종료일 입력 여부 확인
-	for(var i=0; i<prjWbsEnds.length; i++){
-			if(prjWbsEnds[i].trim() == '' || prjWbsEnds[i].trim().length == 0){
-				alert('작업 종료일을 모두 입력해주세요.');
-				chk = false;
-				break;
-			}
-		}
-	for(var i= 0; i<prjWbsStarts.length; i++){
-		if(prjStart.getTime() > parseDate(prjWbsStarts[i]).getTime()){
-			alert('작업 시작일은 프로젝트 시작일과 같거나 이후로 입력해주세요.');
+	//계획 작업 시작일 프로젝트 시작일 범위 초과 확인
+	for(var i= 0; i<prjPlanStarts.length; i++){
+		if(prjStart.getTime() > parseDate(prjPlanStarts[i]).getTime()){
+			alert('계획 작업 시작일은 프로젝트 시작일과 같거나 이후로 입력해주세요. 참고 : '+(i+1)+"번째 계획 작업 시작일");
 			chk = false;
 			break;
 		}
 	}
-	for(var i= 0; i<prjWbsEnds.length; i++){
-		if(parseDate(prjWbsEnds[i]).getTime() > prjEnd.getTime()){
-			alert('작업 종료일은 프로젝트 종료일과 같거나 이전으로 입력해주세요.');
+	//계획 작업 종료일 입력 여부 확인
+	for(var i=0; i<prjPlanEnds.length; i++){
+			if(prjPlanEnds[i].trim() == '' || prjPlanEnds[i].trim().length == 0){
+				alert('계획 작업 종료일을 모두 입력해주세요. 참고 : '+(i+1)+"번째 계획 작업 종료일");
+				chk = false;
+				break;
+			}
+		}
+	//계획 작업 종료일 프로젝트 시작일 범위 초과 확인
+	for(var i= 0; i<prjPlanEnds.length; i++){
+		if(parseDate(prjPlanEnds[i]).getTime() > prjEnd.getTime()){
+			alert('계획 작업 종료일은 프로젝트 종료일과 같거나 이전으로 입력해주세요. 참고 : '+(i+1)+"번째 계획 작업 종료일");
 			chk = false;
 			break;
+		}
+	}
+	//실제 작업 시작일 프로젝트 시작일 범위 초과 확인
+	for(var i= 0; i<prjRealStarts.length; i++){
+		if(nvl(prjRealStarts[i], "")){
+			if(prjStart.getTime() > parseDate(prjRealStarts[i]).getTime()){
+				alert('계획 작업 시작일은 프로젝트 시작일과 같거나 이후로 입력해주세요. 참고 : '+(i+1)+"번째 계획 작업 시작일");
+				chk = false;
+				break;
+			}
+		}
+	}
+	//실제 작업 종료일 프로젝트 시작일 범위 초과 확인
+	for(var i= 0; i<prjRealEnds.length; i++){
+		if(nvl(prjRealEnds[i], "")){
+			if(parseDate(prjRealEnds[i]).getTime() > prjEnd.getTime()){
+				alert('계획 작업 종료일은 프로젝트 종료일과 같거나 이전으로 입력해주세요. 참고 : '+(i+1)+"번째 계획 작업 종료일");
+				chk = false;
+				break;
+			}
 		}
 	}
 	//전부 입력되어 chk true일경우 insertProjectWbsListAjax() 실행
@@ -506,6 +597,16 @@ function insertProjectWbsList(){
 		
 	}
 }
+
+//undefined 처리
+function nvl(str, defaultStr){
+    
+    if(typeof str == "undefined" || str == null || str == "")
+        str = defaultStr ;
+     
+    return str ;
+}
+
 
 // 프로젝트 WBS 저장
 var insertProjectWbsListAjax = function(){
@@ -538,30 +639,28 @@ function totalDaysAnalysis(data, cnt) {
 	return tag.toString();
 }
 
-//프로젝트 작업 목록 달력 View
-function viewGraph(){
-		
-		$("#viewGraphModal").modal();
-		
-		var calendarEl = document.getElementById('calendar');
-		  
-		var calendar = new FullCalendar.Calendar(calendarEl, {
-			plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
-		  	header: {
-	      		left: 'prev,next today',
-	      		center: 'title',
-	     		right: 'dayGridMonth, listMonth'
-	      	},
-	      	defaultView: 'dayGridMonth',
-	     	defaultDate: new Date(),
-	      	locale: 'ko',
-	      	navLinks: true, // can click day/week names to navigate views
-	      	businessHours: true, // display business hours
-	      	editable: false,
-	    });
-		
-		var prjCode = $('#prjCode').val();
-		$.ajax({
+// 프로젝트 작업 목록 달력에 값 붙이기
+$(function(){
+	var calendarEl = document.getElementById('calendar');
+	  
+	var calendar = new FullCalendar.Calendar(calendarEl, {
+		plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
+	  	header: {
+      		left: 'prev,next today',
+      		center: 'title',
+     		right: 'dayGridMonth, listMonth'
+      	},
+      	defaultView: 'dayGridMonth',
+     	defaultDate: new Date(),
+      	locale: 'ko',
+      	navLinks: true, // can click day/week names to navigate views
+      	businessHours: true, // display business hours
+      	editable: false,
+    });
+	
+	var prjCode = $('#prjCode').val();
+	
+	$.ajax({
 			type: "post",
 			url: "/user/selectProjectWbsOnCalendar",
 			data: {prjCode : prjCode},
@@ -580,42 +679,62 @@ function viewGraph(){
 					if(projectWbsList[i].prjDepth==9) var color = "#0c6cee";
 					calendar.addEvent({
 		            	title: projectWbsList[i].prjWorkName,
-		                start: projectWbsList[i].prjWbsStart,
-		                end: projectWbsList[i].prjWbsEnd,
+		                start: projectWbsList[i].prjPlanStart,
+		                end: projectWbsList[i].prjPlanEnd,
 		                color: color
 		            });
 				}
 			}
 		});
-	    calendar.render();
+	  calendar.render();
+})
+
+//프로젝트 작업 목록 달력 모달
+function viewGraph(){
+		$("#viewGraphModal").modal();
 	}
 
 /*부서에 따라 wbs와 달력 show or hide*/
 $(function(){
 	if($('#sessionDeptName').val() =="개발부"){
 		$('#tbody').show();
+		$('#thead').show();
+		$('#tfooter').show();
 		$('#viewGraphBtn').show();
 	}else if($('#sessionRanks').val() =="사장"||$('#sessionRanks').val() == "이사"){
 		$('#tbody').show();
+		$('#thead').show();
+		$('#tfooter').show();
 		$('#viewGraphBtn').show();
 	}else{
 		$('#tbody').hide();
+		$('#thead').hide();
+		$('#tfooter').hide();
 		$('#viewGraphBtn').hide();
 	}
 })
 
-/*직급에 따라 wbs저장, 삭제 Btn */
+/*직급과 프로젝트 완료 여부에 따라 wbs저장, 삭제 Btn */
 $(function(){
 	if($('#sessionDeptName').val() =="개발부" && $('#sessionRanks').val() == "부장"){
-		$('#insertProjectWbsListBtn').show();
-		$('#checkListRemoveBtn').show();
+		if($('#prjCompletion').val() > 0){
+			$('#insertProjectWbsListBtn').hide();
+			$('#checkListRemoveBtn').hide();
+		}else{
+			$('#insertProjectWbsListBtn').show();
+			$('#checkListRemoveBtn').show();
+		}
 	}else if($('#sessionRanks').val() =="사장"||$('#sessionRanks').val() == "이사"){
-		$('#insertProjectWbsListBtn').show();
-		$('#checkListRemoveBtn').show();
+		if($('#prjCompletion').val() > 0){
+			$('#insertProjectWbsListBtn').hide();
+			$('#checkListRemoveBtn').hide();
+		}else{
+			$('#insertProjectWbsListBtn').show();
+			$('#checkListRemoveBtn').show();
+		}
 	}else{
 		$('#insertProjectWbsListBtn').hide();
 		$('#checkListRemoveBtn').hide();
 	}
 })
-
 

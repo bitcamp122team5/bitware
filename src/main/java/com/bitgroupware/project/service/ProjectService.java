@@ -2,6 +2,7 @@ package com.bitgroupware.project.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Select;
 
 import com.bitgroupware.project.beans.MemberDto;
 import com.bitgroupware.project.beans.ProjectInfoDto;
@@ -76,5 +77,8 @@ public interface ProjectService {
 	
 	/*달력에 wbs List 뿌리기*/
 	public List<ProjectWbsDto> selectProjectWbsOnCalendar(int prjCode);
+	
+	//memId로 Ranks(직급명) 가져오기
+	public MemberDto selectMemberRanksByMemId(String memId);
 	
 }
