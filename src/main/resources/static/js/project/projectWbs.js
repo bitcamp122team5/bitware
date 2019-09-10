@@ -245,10 +245,10 @@ function screenWriteTbodyEdit(num, group, step, depth, workName, manager, output
 		output = substitute;
 	}
 	tag.append("<tr id='"+num+"'>");
-	tag.append("<td><input type='checkbox' name='chkVal' value='"+num+"'/></td>")
+	tag.append("<td align='center'><input type='checkbox' name='chkVal' value='"+num+"'/></td>")
 	tag.append("<td>");
 	tag.append('<div class="dropdown">');
-	tag.append('<button class="btn btn-info" id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">');
+	tag.append('<button class="btn btn_point" id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">');
 	tag.append(numFormat(Number(num)+1));
 	tag.append('</button>');
 	tag.append('<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">');
@@ -261,7 +261,7 @@ function screenWriteTbodyEdit(num, group, step, depth, workName, manager, output
 	tag.append("<input type='hidden' name='inPrjDepth' value='"+depth+"'>");
 	tag.append("<input type='hidden' name='workCompletion' value='"+workCompletion+"'>");
 	tag.append("</td>");
-	tag.append("<td style='overflow: hidden;'><input style='margin-left: "+(25*depth)+"px;' type='text' name='inPrjWorkName' value='"+workName+"'></td>");
+	tag.append("<td style='overflow: hidden;'><input style='margin-left: "+(25*depth)+"px;' type='text' name='inPrjWorkName' value='"+workName+"' autocomplete='off'></td>");
 	tag.append("<td><input type='date' name='planStart' value='"+planStart+"'></td>");
 	tag.append("<td><input type='date' name='planEnd' value='"+planEnd+"'></td>");
 	tag.append("<td><input type='date' name='realStart' value='"+realStart+"'></td>");
@@ -291,10 +291,10 @@ function screenWriteTbodyText(num, group, step, depth, workName, manager, output
 		output = substitute;
 	}
 	tag.append("<tr id='"+num+"'>");
-	tag.append("<td><input type='checkbox' name='chkVal' value='"+num+"'/></td>")
+	tag.append("<td align='center'><input type='checkbox' name='chkVal' value='"+num+"'/></td>")
 	tag.append("<td>");
 	tag.append('<div class="dropdown">');
-	tag.append('<button class="btn btn-info" id="dLabel" type="button" aria-haspopup="true" aria-expanded="false">');
+	tag.append('<button class="btn btn_point" id="dLabel" type="button" aria-haspopup="true" aria-expanded="false">');
 	tag.append(numFormat(Number(num)+1));
 	tag.append('</button>');
 	tag.append("<input type='hidden' name='inPrjGroup' value='"+group+"'>");
