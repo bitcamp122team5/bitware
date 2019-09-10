@@ -10,8 +10,6 @@ public interface CommuteService {
 	void insertOntime(CommuteVo commuteVo);
 	
 	void updateOfftime(CommuteVo commuteVo);
-
-	List<CommuteVo> selectCommuteList(MemberVo member);
 	
 	List<CommuteVo> selectCommuteList(MemberVo memberVo, String startDate, String endDate);
 	

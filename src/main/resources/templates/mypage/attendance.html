@@ -27,43 +27,60 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 		}
 	</script>
 </head>
-<body th:align="center">
+<body>
 <div th:replace="fragments/header :: headerFragment"></div>
 
 <div th:replace="fragments/aside :: asideFragmentMypage"></div>
 
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
-
+<h2>근태 및 휴가</h2>
 	<form name="searchCommuteForm">
-		<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
-			<tr>
-				<td>
-					<input id="startDate" name="startDate" type="date">
-					<input id="endDate" name="endDate" type="date">
-				</td>
-				<td>
-					<a th:onclick="javascript:selectCommute()" th:text="검색"></a>
-				</td>
-			</tr>
-		</table>
+		<div class="board_search">
+			<div class="board_search_inner">
+				<div class="calendar_wrap">
+					<ul>
+						<li><input type="date" id="startDate" name="startDate"><label for="startDate" class="btn_calendar"></label></li>
+						<li class="wave">~</li>
+						<li><input type="date" id="endDate" name="endDate"><label for="endDate" class="btn_calendar"></label></li>
+					</ul>
+				</div>
+				<div class="search">
+					<a href="#" class="btn_search" th:onclick="javascript:selectCommute()">검색</a>
+				</div>
+			</div>
+		</div><!-- //board_search -->
 	</form>
+	<div class="article">
 	<form>
-		<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">
-			<tr>
-				<th>날짜</th>
-				<th>출근시간</th>
-				<th>퇴근시간</th>
-				<th>구분</th>
-			</tr>
-			<tr th:each="commute : ${commuteList}">
-				<td th:text="${commute?.commuteDate}"></td>
-				<td th:text="${commute?.commuteOntime}"></td>
-				<td th:text="${commute?.commuteOfftime}"></td>
-				<td th:text="${commute?.commuteStatus}"></td>
-			</tr>
-		</table>	
+		<div class="table_wrap list">
+			<table>
+				<colgroup>
+					<col width="*">
+					<col width="*">
+					<col width="*">
+					<col width="*">
+				</colgroup>
+				<thead>
+					<tr>
+						<th>날짜</th>
+						<th>출근시간</th>
+						<th>퇴근시간</th>
+						<th>비고</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="commute : ${commuteList}">
+						<td th:text="${commute?.commuteDate}"></td>
+					<td th:text="${commute?.commuteOntime}"></td>
+					<td th:text="${commute?.commuteOfftime}"></td>
+					<td th:text="${commute?.commuteStatus}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div><!-- //table_wrap end -->	
 	</form>
+	</div>
 </div><!-- //section end -->
 </body>
 </html>

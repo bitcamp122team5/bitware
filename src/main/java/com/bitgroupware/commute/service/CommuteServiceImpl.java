@@ -16,13 +16,8 @@ public class CommuteServiceImpl implements CommuteService {
 	CommuteRepository commuteRepository;
 	
 	@Override
-	public List<CommuteVo> selectCommuteList(MemberVo member) {
-		return commuteRepository.findByMemberVo(member);
-	}
-	
-	@Override
 	public List<CommuteVo> selectCommuteList(MemberVo memberVo, String startDate, String endDate) {
-		return commuteRepository.findByMemberVoAndCommuteDateBetween(memberVo, startDate, endDate);
+		return commuteRepository.findByMemberVoAndCommuteDateBetweenOrderByCommuteDateDesc(memberVo, startDate, endDate);
 	}
 
 	// 출근시간 기록
