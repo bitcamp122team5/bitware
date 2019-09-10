@@ -25,7 +25,7 @@ public class CommuteController {
 
 	// 근태 목록
 	@RequestMapping("/selectCommuteList")
-	public String selectCommuteList(Model model, @AuthenticationPrincipal SecurityUser principal, HttpServletRequest httpServletRequest, String[] status) {
+	public String selectCommuteList(Model model, @AuthenticationPrincipal SecurityUser principal, HttpServletRequest httpServletRequest) {
 
 		// 검색에서 선택한 날짜를 받아옴
 		String startDate = httpServletRequest.getParameter("startDate");
@@ -37,10 +37,16 @@ public class CommuteController {
 			model.addAttribute("commuteList", commuteList);
 		} 
 		// 날짜 입력 없이 검색한 경우
-//		else if ((startDate == "") || (endDate == "")) {}
-		// 날짜를 모두 입력 후 검색한 경우
+		else if ((startDate == "") && (endDate == "")) {
+			List<CommuteVo> commuteList = commuteService.selectCommuteList(principal.getMember());
+			model.addAttribute("commuteList", commuteList);
+		}
+		// 날짜 입력 후 검색한 경우
 		else {
-			List<CommuteVo> commuteList = commuteService.selectCommuteList(principal.getMember(), startDate, endDate, status);
+			// startDate 혹은 endDate가 입력 안된경우 default 값 주입
+			if(startDate == "") startDate = "1990-01-01";
+			if(endDate == "") endDate = "2099-12-31";
+			List<CommuteVo> commuteList = commuteService.selectCommuteList(principal.getMember(), startDate, endDate);
 			model.addAttribute("commuteList", commuteList);
 		}
 
