@@ -84,8 +84,8 @@
 						</tr>
 					</tbody>
 				</table>
-				<input class='btn btn-sm btn-warning btn-center' type='button' value='프로젝트 생성' id="insertProjectBtn" onclick='insertProjectForm()'>
-				<input class="btn btn-sm btn-warning btn-center" type="button" value="프로젝트 삭제" id="deleteProjectBtn" onclick="deleteProjectAjax()">
+				<input class="btn btn_point" type="button" value="프로젝트 생성" id="insertProjectBtn" onclick="insertProjectForm()">
+				<input class="btn btn_point" type="button" value="프로젝트 삭제" id="deleteProjectBtn" onclick="deleteProjectAjax()">
 			</div><!-- //table_wrap end -->
 		</div>
 	
@@ -98,31 +98,31 @@
 					<h4 class="modal-title">프로젝트 생성</h4>
 				</div>
 				<div class="modal-body">
-				<form action="/user/insertProject" method='post' id='frmInsertProjcet'>
+				<form action="/user/insertProject" method="post" id="frmInsertProjcet">
 					<!-- 프로젝트 생성처리 form -->
-						<div class='form-group'>
+						<div class="form-group">
 							<label>프로젝트명</label>
-							<input class='form-control' type="text" name='prjName' id='prjName' />
+							<input class="form-control" type="text" name="prjName" id="prjName" autocomplete="off" />
 						</div>
-						<div class='form-group'>
+						<div class="form-group">
 							<label>계약금</label>
-							<input class='form-control' type="number" name='prjDeposit' id='prjDeposit' />
+							<input class="form-control" type="number" name="prjDeposit" id="prjDeposit" autocomplete="off" />
 						</div>
-						<div class='form-group'>
+						<div class="form-group">
 							<label>사업비</label>
-							<input class='form-control' type="number" name='prjWorkingExpenses' id='prjWorkingExpenses' />
+							<input class="form-control" type="number" name="prjWorkingExpenses" id="prjWorkingExpenses" autocomplete="off" />
 						</div>
-						<div class='form-group'>
+						<div class="form-group">
 							<label>시작일</label>
-							<input class='form-control' type="date" name='prjStart' id='prjStart' />
+							<input class="form-control" type="date" name="prjStart" id="prjStart" autocomplete="off" />
 						</div>
-						<div class='form-group'>
+						<div class="form-group">
 							<label>종료일</label>
-							<input class='form-control' type="date" name='prjEnd' id='prjEnd' />
+							<input class="form-control" type="date" name="prjEnd" id="prjEnd" autocomplete="off" />
 						</div>
-						<div class='form-group'>
+						<div class="form-group">
 							<label>마더업체</label>
-							<input class='form-control' type="text" name='prjMothercompany' id='prjMothercompany' />
+							<input class="form-control" type="text" name="prjMothercompany" id="prjMothercompany" autocomplete="off" />
 						</div>
 					<table class="table table-hover">
 					<h4>프로젝트 참여인원 선택</h4>
@@ -143,9 +143,9 @@
 				</table>
 				</form>
 				</div>
-				<div class='modal-footer'>
-					<input type="button" class='btn btn-sm btn-warning' value="생성" onclick="insertProject()" />
-					<input type='button' class='btn btn-sm btn-warning' data-dismiss='modal' value="취소" />
+				<div class="modal-footer">
+					<input type="button" class="btn btn_point" value="생성" onclick="insertProject()" />
+					<input type="button" class="btn btn_point" data-dismiss="modal" value="취소" />
 				</div>
 			</div>
 		</div>
