@@ -13,7 +13,9 @@ $(function(){
 
 /* 채팅 아코디언  */
 $(function(){
-	$(".chat_wrap button").click(function(){
+	$(".btn_chat").bind("click", function(){
+		if($(this).data("dragging")) return;
+		
 		$(this).toggleClass("on");
 		if($(this).hasClass("on") == true){
 			$(this).parent(".chat_inner").css("transform","translateX(-100px)");	
@@ -71,26 +73,24 @@ $(function(){
 				});
 			}
 		})
+		
 	});
+	
+	$( ".btn_chat" ).draggable({
+		containment:".chat_inner",
+		axis:"y",
+		start: function(event, ui){
+			$(this).data("dragging", true);
+		},
+		stop: function(event, ui){
+			setTimeout(function(){
+				$(event.target).data("dragging", false);
+			}, 1);
+		}
+    });
+
 });
 
-/*function personBtn(){
-	var deptName = $(this).attr("value");
-	alert(deptName);
-	$.ajax({
-		url: "/user/chatMemberListByDepartmentAjax",
-		data: {deptName:deptName},
-		datatype: "json",
-		success: function(memberList){
-			var str = "";
-			for(var i in memberList){
-				str += "<li class='memberByDept' value='"+memberList[i].memName+"'>"+memberList[i].memName+"</li>";
-			}
-			$("#memberByDepartment").append(str);
-		}
-	});
-};*/
-	
 
 //tab 
 $(function(){   

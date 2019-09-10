@@ -42,12 +42,12 @@
 /* chat */
 .chat_wrap{position:absolute;top:60px;right:0;z-index:9999;}
 .chat_wrap::after{content:'';display:block;clear:both;}
-.chat_wrap .btn_chat{float:left;width:40px;height:50px;background:#777;box-sizing:border-box;border: 1px solid #555;border-radius: 30% 0px 0px 30%;}
-.chat_wrap .btn_chat i{font-size:25px;color:#fff;}
+.chat_wrap .btn_chat{float:left;width:40px;height:50px;text-align:center;background:#777;box-sizing:border-box;border: 1px solid #555;border-radius: 30% 0px 0px 30%;}
+.chat_wrap .btn_chat i{font-size:25px;line-height:50px;color:#fff;}
 .chat_wrap .chat_inner{position:fixed;right:-360px;float:left;width:400px;height:calc(100vh - 60px);transition:all 0.5s;}
 .chat_wrap .chat_inner::after{content:'';display:block;clear:both;}
-.chat_wrap .chat_inner > div{float:left;}
-.chat_wrap .chat_inner > div::after{content:'';display:block;clear:both;}
+.chat_wrap .chat_inner #chatFragment{float:left;}
+.chat_wrap .chat_inner #chatFragment::after{content:'';display:block;clear:both;}
 .chat_wrap .chat_inner .tab {float:left;width:100px;height:calc(100vh - 60px);background:#3a4150;transition:all 0.5s;}
 .chat_wrap .chat_inner .tab ul li{text-align:center;}
 .chat_wrap .chat_inner .tab ul li a{display:block;padding:20px;box-sizing:border-box;color:#fff;}
