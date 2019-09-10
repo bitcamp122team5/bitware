@@ -3,7 +3,7 @@
 xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <meta charset="UTF-8">
-<title>휴가 및 근태</title>
+<title>마이페이지</title>
 <th:block th:replace="fragments/config :: configFragment"></th:block>
 	<script>
 		$(document).ready(function(){
@@ -72,9 +72,9 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 				<tbody>
 					<tr th:each="commute : ${commuteList}">
 						<td th:text="${commute?.commuteDate}"></td>
-					<td th:text="${commute?.commuteOntime}"></td>
-					<td th:text="${commute?.commuteOfftime}"></td>
-					<td th:text="${commute?.commuteStatus}"></td>
+						<td th:text="${commute?.commuteOntime}"></td>
+						<td th:text="${commute?.commuteOfftime}"></td>
+						<td th:text="${commute?.commuteStatus}"></td>
 					</tr>
 				</tbody>
 			</table>
