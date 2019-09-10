@@ -29,68 +29,81 @@ $(function(){
 
 <!-- 검색 시작 -->
 <form th:action="@{/user/selectClientList}">
-<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
-<tr>
-    <td align="right">
-        <select name="searchCondition" id="category">
-        	<option value="clientName">이름</option>
-        	<option value="clientCompany">회사명</option>
-        </select>
-        <input name="searchKeyword" id="keyword" type="text">
-        <input type="submit" value="검색">
-    </td>
-</tr>
-</table>
+<div class="board_search">
+	<div class="board_search_inner">
+		<div class="select_wrap">
+	        <select name="searchCondition" id="category">
+	        	<option value="clientName">이름</option>
+	        	<option value="clientCompany">회사명</option>
+	        </select>
+	    </div>
+	    <div class="search">
+	        <input name="searchKeyword" id="keyword" type="text">
+	        <input type="submit" value="검색">
+		</div>
+	</div>
+</div>
 </form>
 <input type="hidden" id="searchCondition" th:value="${search.searchCondition}">
 <input type="hidden" id="searchKeyword" th:value="${search.searchKeyword}">
 <!-- 검색 종료 -->
 
-<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
-	<tr>
-		<th bgcolor="orange" width="100">이름</th>
-		<th bgcolor="orange" width="300">전화번호</th>
-		<th bgcolor="orange" width="100">회사명</th>
-		<th bgcolor="orange" width="100">부서명</th>
-		<th bgcolor="orange" width="100">직책</th>
-		<th bgcolor="orange" width="100">비고</th>
-	</tr>
-	<tr th:each="client:${clientList}">
-		<td th:text="${client.clientName}"></td>
-		<td th:text="${client.clientTel}"></td>
-		<td th:text="${client.clientCompany}"></td>
-		<td th:text="${client.clientDeptName}"></td>
-		<td th:text="${client.clientRanks}"></td>
-		<td th:text="${client.clientNote}"></td>
-	</tr>
-</table>
-<br>
-<table th:align="center">
-	<tr>
-		<td colspan="5">
+<div class="article">
+	<div class="table_wrap list">
+		<table>
+			<colgroup>
+				<col width="80px">
+				<col width="*">
+				<col width="100px">
+				<col width="80px">
+				<col width="80px">
+				<col width="80px">
+			</colgroup>
+			<thead>
+				<tr>
+					<th>이름</th>
+					<th>전화번호</th>
+					<th>회사명</th>
+					<th>부서명</th>
+					<th>직책</th>
+					<th>비고</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="client:${clientList}">
+					<td th:text="${client.clientName}"></td>
+					<td th:text="${client.clientTel}"></td>
+					<td th:text="${client.clientCompany}"></td>
+					<td th:text="${client.clientDeptName}"></td>
+					<td th:text="${client.clientRanks}"></td>
+					<td th:text="${client.clientNote}"></td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="paging">
 			<span th:if="${page.curBlock > 1 }">
-				<a th:href="@{/admin/selectClientList(curPage=${page.prevPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}">[이전]</a>
+				<a th:href="@{/admin/selectClientList(curPage=1,searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" class="page prev_02">1</a>
 			</span>
 			<span th:if="${page.curBlock > 1 }">
-				<a th:href="@{/admin/selectClientList(curPage=1,searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}">1</a>
+				<a th:href="@{/admin/selectClientList(curPage=${page.prevPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" class="page prev_01">[이전]</a>
 			</span>
 			<span th:each="num:${block}">
 				<span th:if="${num==page.curPage }">
-					<a th:href="@{/admin/selectClientList(curPage=${num},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${num}" style="color:orange;"></a>
+					<a th:href="@{/admin/selectClientList(curPage=${num},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${num}" class="paging_click"></a>
 				</span>
 				<span th:unless="${num==page.curPage }">
 					<a th:href="@{/admin/selectClientList(curPage=${num},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${num}"></a>
 				</span>
 			</span>
 			<span th:if="${page.curBlock < page.totBlock }">
-				<a th:href="@{/admin/selectClientList(curPage=${page.totPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${page.totPage}"></a>
+				<a th:href="@{/admin/selectClientList(curPage=${page.nextPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" class="page next_01">[다음]</a>
 			</span>
 			<span th:if="${page.curBlock < page.totBlock }">
-				<a th:href="@{/admin/selectClientList(curPage=${page.nextPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}">[다음]</a>
+				<a th:href="@{/admin/selectClientList(curPage=${page.totPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${page.totPage}" class="page next_02"></a>
 			</span>
-		</td>
-	</tr>
-</table>
+		</div><!-- //paging -->
+	</div>
+</div>
 </div><!-- //section end -->
 </body>
 </html>
