@@ -72,6 +72,20 @@ public class CommuteController {
 				commuteVo.setCommuteDate(commute.getCommuteDate());
 				commuteVo.setCommuteOntime(commute.getCommuteOntime());
 				commuteVo.setCommuteOfftime(curtime);
+				// 테스트코드
+				System.out.println("출근시간" + Integer.parseInt(commute.getCommuteOntime().replace(":", "")));
+				// 구분 정상인경우
+				// 출석시간이 09시 01분 00초 이전 && 퇴근시간이 18시 00분 00초 이후 정상
+				if(Integer.parseInt(commute.getCommuteOntime().replace(":", "")) < 90100 && Integer.parseInt(curtime.replace(":", "")) >= 180000)
+					commuteVo.setCommuteStatus("정상");
+				// 출석시간이 09시 01분 00초 부터 지각
+				if(Integer.parseInt(commute.getCommuteOntime().replace(":", "")) >= 90100)
+					commuteVo.setCommuteStatus("지각");
+				// 퇴근시간이  19시 00분 00초 이전 조퇴
+				// 지각 여부와 상관 없이 조퇴로 처리
+				if(Integer.parseInt(curtime.replace(":", "")) < 180000)
+					commuteVo.setCommuteStatus("조퇴");
+				//테스트코드 끝
 				commuteService.updateOfftime(commuteVo);
 				return "퇴근시간 : " + curtime;
 			}
