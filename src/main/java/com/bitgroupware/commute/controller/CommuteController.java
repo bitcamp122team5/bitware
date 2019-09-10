@@ -9,14 +9,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bitgroupware.commute.service.CommuteService;
 import com.bitgroupware.commute.vo.CommuteVo;
 import com.bitgroupware.member.vo.MemberVo;
 import com.bitgroupware.security.config.SecurityUser;
-import com.bitgroupware.utils.Search;
 
 @Controller
 @RequestMapping("/user")
@@ -35,14 +33,11 @@ public class CommuteController {
 
 		// 처음 페이지 로딩 시
 		if ((startDate == null) && (endDate == null)) {
-			List<CommuteVo> commuteList = commuteService.selectCommuteList(principal.getMember());
+			startDate = "1990-01-01";
+			endDate = "2099-12-31";
+			List<CommuteVo> commuteList = commuteService.selectCommuteList(principal.getMember(), startDate, endDate);
 			model.addAttribute("commuteList", commuteList);
 		} 
-		// 날짜 입력 없이 검색한 경우
-		else if ((startDate == "") && (endDate == "")) {
-			List<CommuteVo> commuteList = commuteService.selectCommuteList(principal.getMember());
-			model.addAttribute("commuteList", commuteList);
-		}
 		// 날짜 입력 후 검색한 경우
 		else {
 			// startDate 혹은 endDate가 입력 안된경우 default 값 주입
