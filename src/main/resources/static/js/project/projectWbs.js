@@ -106,59 +106,102 @@ function WBSProgress(){
 	var today = year+"-"+month+"-"+day;
 	
 	//wbs항목들의 percent 값을 담을 배열 생성
-	var percentArray = new Array();
+	var planPercentArray = new Array();
+	var realPercentArray = new Array();
 	//분모 구하기 (WBS종료일 - WBS시작일)
 	var planDenominator = new Array();
+	var realDenominator = new Array();
 	//분자 구하기 (TODAY - WBS시작일)
 	var planMolecule = new Array();
+	var realMolecule = new Array();
 	//임시 배열 변수
-	var tempNum = new Array();
+	var planTempNum = new Array();
+	var realTempNum = new Array();
 	//총 진행률 값 담을 임시 배열 변수
-	var tempNumTotal = new Array();
+	var planTempNumTotal = new Array();
+	var realTempNumTotal = new Array();
 	//총 진행률 계산 값
 	var planTotalProgress = 0;
+	var realTotalProgress = 0;
 	//계산 완료된 총 진행률을 담을 값
 	var planTotalProgressPercent = 0;
+	var realTotalProgressPercent = 0;
+	
 	//분모 구하기 (WBS종료일 - WBS시작일) 
 	for(var i=0; i<subData.cnt; i++){
 		planDenominator[i] = dayCalculation(subData.prjPlanStart[i], subData.prjPlanEnd[i]);
+	}
+	for(var i=0; i<subData.cnt; i++){
+		if(nvl(subData.prjRealStart[i], "") != "" && nvl(subData.prjRealEnd[i], "") != ""){
+			realDenominator[i] = dayCalculation(subData.prjRealStart[i], subData.prjRealEnd[i]);	
+		}
 	}
 	//분자 구하기 (TODAY - WBS시작일)
 	for(var i=0; i<subData.cnt; i++){
 		planMolecule[i] = dayCalculation(subData.prjPlanStart[i], today);
 	}
+	for(var i=0; i<subData.cnt; i++){
+		if(nvl(subData.prjRealStart[i], "") != ""){
+			realMolecule[i] = dayCalculation(subData.prjRealStart[i], today);
+		}
+	}
+	
 	//개별 진행률 구하기
 	for(var i=0; i<subData.cnt; i++){
-		//alert('분자['+i+'] = '+molecule[i]);
-		//alert('분모['+i+'] = '+denominator[i]);
-		tempNum[i] = makeBaseRound((planMolecule[i] / planDenominator[i]) * 100);
-		tempNumTotal[i] = ((planMolecule[i] / planDenominator[i]) * 100); 
-		if(0 < tempNum[i] && tempNum[i] <= 100){
-			percentArray[i] = tempNum[i];
-		}else if(tempNum[i] > 100){
-			percentArray[i] = 100;
+		planTempNum[i] = makeBaseRound((planMolecule[i] / planDenominator[i]) * 100);
+		planTempNumTotal[i] = ((planMolecule[i] / planDenominator[i]) * 100); 
+		if(0 < planTempNum[i] && planTempNum[i] <= 100){
+			planPercentArray[i] = planTempNum[i];
+		}else if(planTempNum[i] > 100){
+			planPercentArray[i] = 100;
 		}else{
-			percentArray[i] = 0;
+			planPercentArray[i] = 0;
+		}
+	}
+	for(var i=0; i<subData.cnt; i++){
+		realTempNum[i] = makeBaseRound((realMolecule[i] / realDenominator[i]) * 100);
+		realTempNumTotal[i] = ((realMolecule[i] / realDenominator[i]) * 100); 
+		if(0 < realTempNum[i] && realTempNum[i] <= 100){
+			realPercentArray[i] = realTempNum[i];
+		}else if(realTempNum[i] > 100){
+			realPercentArray[i] = 100;
+		}else{
+			realPercentArray[i] = 0;
 		}
 	}
 	//개별 진행률 담기
 	for(var i=0; i<subData.cnt; i++){
-		if(0 < tempNumTotal[i] && tempNumTotal[i] <= 100){
-			planTotalProgress += tempNumTotal[i];
-		}else if(tempNumTotal[i] > 100){
+		if(0 < planTempNumTotal[i] && planTempNumTotal[i] <= 100){
+			planTotalProgress += planTempNumTotal[i];
+		}else if(planTempNumTotal[i] > 100){
 			planTotalProgress += 100;
+		}
+	}
+	for(var i=0; i<subData.cnt; i++){
+		if(0 < realTempNumTotal[i] && realTempNumTotal[i] <= 100){
+			realTotalProgress += realTempNumTotal[i];
+		}else if(realTempNumTotal[i] > 100){
+			realTotalProgress += 100;
 		}
 	}
 	// 총 진행률 합 / 작업 리스트 개수
 	if(planTotalProgress.length != 0){
 		planTotalProgressPercent = makeBaseRound(planTotalProgress / subData.cnt);
 	}
+	if(realTotalProgress.length != 0){
+		realTotalProgressPercent = makeBaseRound(realTotalProgress / subData.cnt);
+	}
 	//개별 계획 진행률 입력
 	for(var i=0; i<subData.cnt; i++){
 			$('.planProgressList').each(function(i){
-				$(this).text(percentArray[i]+'%');
+				$(this).text(planPercentArray[i]+'%');
 			});
 	}
+	for(var i=0; i<subData.cnt; i++){
+		$('.realProgressList').each(function(i){
+			$(this).text(realPercentArray[i]+'%');
+		});
+}
 	// 계획 총 진행률 입력
 	if(0 < planTotalProgressPercent && planTotalProgressPercent <= 100){
 		$('.planTotalProgress').text(planTotalProgressPercent+'%');
@@ -166,6 +209,13 @@ function WBSProgress(){
 		$('.planTotalProgress').text('100%');
 	}else{
 		$('.planTotalProgress').text('0%');
+	}
+	if(0 < realTotalProgressPercent && realTotalProgressPercent <= 100){
+		$('.realTotalProgress').text(realTotalProgressPercent+'%');
+	}else if(realTotalProgressPercent > 100){
+		$('.realTotalProgress').text('100%');
+	}else{
+		$('.realTotalProgress').text('0%');
 	}
 }
 
@@ -603,7 +653,6 @@ function nvl(str, defaultStr){
     
     if(typeof str == "undefined" || str == null || str == "")
         str = defaultStr ;
-     
     return str ;
 }
 
