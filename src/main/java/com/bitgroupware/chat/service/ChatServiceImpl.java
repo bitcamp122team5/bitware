@@ -42,12 +42,6 @@ public class ChatServiceImpl implements ChatService {
 	}
 
 	@Override
-	public List<ChatMessageDto> selectLastContentList(ChatMessageDto chatDto) {
-		// TODO Auto-generated method stub
-		return chatDao.selectLastContentList();
-	}
-
-	@Override
 	public List<DepartmentDto> selectDepartureList() {
 		 return chatDao.selectDepList();
 	}
@@ -55,6 +49,12 @@ public class ChatServiceImpl implements ChatService {
 	@Override
 	public List<MemberDto> selectMemberListByDepartmentAjax(String deptName) {
 		return chatDao.selectMemberListByDepartment(deptName);
+	}
+
+	@Override
+	public List<ChatMessageDto> selectLastContentList(String sender) {
+		// TODO Auto-generated method stub
+		return chatDao.selectLastContentList(sender);
 	}
 
 //	@Override

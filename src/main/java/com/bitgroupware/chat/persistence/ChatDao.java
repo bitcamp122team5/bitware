@@ -30,15 +30,13 @@ public interface ChatDao {
 	void insertChat(ChatMessageDto chatDto);
 	
 	//@Select("select max(message_id), sender, content, receiver, room_id from chat_message group by room_id having receiver = #{receiver}")
-	//@Select("select max(message_id), sender, content, receiver, room_id from chat_message where receiver = #{receiver} group by room_id")
-	@Select("select max(message_id), sender, content, receiver, room_id from chat_message group by room_id")
-	List<ChatMessageDto> selectLastContentList();
+//	@Select("select max(message_id), sender, content, receiver, room_id from chat_message group by room_id")
+	@Select("select max(message_id), sender, content, receiver, room_id from chat_message where sender = #{sender} group by room_id")
+	List<ChatMessageDto> selectLastContentList(String sender);
 	//public ChatMessageDto selectLastContentList(String receiver);
 	
 //	@Select("select * from member where dept_name = #{deptName}")
-	@Select("SELECT M.*, R.RANKS_NO FROM MEMBER AS M JOIN RANKS AS R ON M.RANKS = R.RANKS WHERE DEPT_NAME = #{deptName} ORDER BY R.RANKS_NO DESC")
+//	@Select("SELECT M.*, R.RANKS_NO FROM MEMBER AS M JOIN RANKS AS R ON M.RANKS = R.RANKS WHERE DEPT_NAME = #{deptName} ORDER BY R.RANKS_NO DESC")
+	@Select("SELECT M.*, R.RANKS_NO, C.* FROM MEMBER AS M JOIN RANKS AS R ON M.RANKS = R.RANKS join chat_message as c on m.mem_name = c.sender WHERE DEPT_NAME = #{deptName} ORDER BY R.RANKS_NO DESC;")
 	List<MemberDto> selectMemberListByDepartment(String deptName);
-	
-	
-	
 }
