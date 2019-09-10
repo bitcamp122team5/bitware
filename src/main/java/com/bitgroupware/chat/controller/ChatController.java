@@ -86,11 +86,6 @@ public class ChatController {
 //		System.out.println("roomId =" + roomId);
 		model.addAttribute("roomId", roomId);
 		
-		
-		List<ChatMessageDto> chatMessageList = chatservice.selectChatMessageList(chatMessageDto);
-		model.addAttribute("chatMessageList", chatMessageList);
-		
-
 		return "chat/chat";
 	}
 

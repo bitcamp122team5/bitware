@@ -57,12 +57,6 @@ public class ChatServiceImpl implements ChatService {
 		return chatDao.selectMemberListByDepartment(deptName);
 	}
 
-	@Override
-	public List<ChatMessageDto> selectChatMessageList(ChatMessageDto chatDto) {
-		// TODO Auto-generated method stub
-		return chatDao.selectChatMessageList();
-	}
-
 //	@Override
 //	public ChatMessageDto selectLastContentList(String receiver) {
 //		// TODO Auto-generated method stub
