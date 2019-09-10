@@ -18,6 +18,8 @@ import com.bitgroupware.member.utils.Role;
 import com.bitgroupware.security.config.SecurityUser;
 import com.bitgroupware.utils.Pager;
 import com.bitgroupware.utils.Search;
+import com.bitgroupware.utils.TemporaryPaging;
+import com.bitgroupware.utils.TemporaryPaging;
 
 @Controller
 @RequestMapping("/user")
@@ -44,11 +46,21 @@ public class NoticeController {
 		
 		List<NoticeVo> noticeList = noticeService.selectNoticeList(begin, search);
 		
+		List<TemporaryPaging> pagingList = new ArrayList<TemporaryPaging>();
+
+		count = count - ((curPage-1) * 10);
+		for (NoticeVo notice : noticeList) {
+			TemporaryPaging paging = new TemporaryPaging();
+			paging.setNotice(notice);
+			paging.setCount(count--);
+			pagingList.add(paging);
+		}
+		
 		Date date = new Date();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		String today = format.format(date);
 		
-		model.addAttribute("noticeList", noticeList);
+		model.addAttribute("pagingList", pagingList);
 		model.addAttribute("today",today);
 		model.addAttribute("page",page);
 		model.addAttribute("block",block);

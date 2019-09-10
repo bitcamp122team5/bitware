@@ -54,18 +54,20 @@ $(document).ready(function() {
 
 <!-- 검색 시작 -->
 <form th:action="@{/user/selectAnonymousBoardList}">
-<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
-<tr>
-    <td align="right">
-        <select name="searchCondition" id="category">
-        	<option value="btitle">제목</option>
-        	<option value="bcontent">내용</option>
-        </select>
-        <input name="searchKeyword" id="keyword" type="text">
-        <input type="submit" value="검색">
-    </td>
-</tr>
-</table>
+<div class="board_search">
+	<div class="board_search_inner">
+		<div class="select_wrap">
+	        <select name="searchCondition" id="category">
+	        	<option value="btitle">제목</option>
+	        	<option value="bcontent">내용</option>
+	        </select>
+	    </div>
+	    <div class="search">
+	        <input name="searchKeyword" id="keyword" type="text">
+	        <input type="submit" value="검색">
+	    </div>
+	</div>
+</div>
 </form>
 <input type="hidden" id="searchCondition" th:value="${search.searchCondition}">
 <input type="hidden" id="searchKeyword" th:value="${search.searchKeyword}">
@@ -91,24 +93,24 @@ $(document).ready(function() {
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="anonymousBoard, count:${anonymousBoardList}">
-					<td sec:authorize="hasRole('ROLE_ADMIN')"><input type="checkbox" name="checkBox" class="checkBox" th:value="${anonymousBoard.bno}"></td>
-					<td th:text="${count.count}"></td>
-					<td class="tit" style="text-align: left;"><span th:each="num:${anonymousBoard.bindentcnt}"><span>&nbsp;</span></span>
-						<span th:if="${anonymousBoard.bindent>0 }">
-							<a th:href="@{/user/selectAnonymousBoard(bno=${anonymousBoard.bno})}" th:text="'re:'+${anonymousBoard.btitle}"></a>
+				<tr th:each="paging:${pagingList}">
+					<td sec:authorize="hasRole('ROLE_ADMIN')"><input type="checkbox" name="checkBox" class="checkBox" th:value="${paging.anonymousBoard.bno}"></td>
+					<td th:text="${paging.count}"></td>
+					<td class="tit" style="text-align: left;"><span th:each="num:${paging.anonymousBoard.bindentcnt}"><span>&nbsp;</span></span>
+						<span th:if="${paging.anonymousBoard.bindent>0 }">
+							<a th:href="@{/user/selectAnonymousBoard(bno=${paging.anonymousBoard.bno})}" th:text="'re:'+${paging.anonymousBoard.btitle}"></a>
 						</span>
-						<span th:unless="${anonymousBoard.bindent>0 }">
-							<a th:href="@{/user/selectAnonymousBoard(bno=${anonymousBoard.bno})}" th:text="${anonymousBoard.btitle}"></a>
+						<span th:unless="${paging.anonymousBoard.bindent>0 }">
+							<a th:href="@{/user/selectAnonymousBoard(bno=${paging.anonymousBoard.bno})}" th:text="${paging.anonymousBoard.btitle}"></a>
 						</span>
 					</td>
-					<th:block th:if="${today==#dates.format(anonymousBoard.bdate,'yyyy-MM-dd')}">
-						<td th:text="${#dates.format(anonymousBoard.bdate,'HH:mm')}"></td>
+					<th:block th:if="${today==#dates.format(paging.anonymousBoard.bdate,'yyyy-MM-dd')}">
+						<td th:text="${#dates.format(paging.anonymousBoard.bdate,'HH:mm')}"></td>
 					</th:block>
-					<th:block th:unless="${today==#dates.format(anonymousBoard.bdate,'yyyy-MM-dd')}">
-						<td th:text="${#dates.format(anonymousBoard.bdate,'yyyy-MM-dd')}"></td>
+					<th:block th:unless="${today==#dates.format(paging.anonymousBoard.bdate,'yyyy-MM-dd')}">
+						<td th:text="${#dates.format(paging.anonymousBoard.bdate,'yyyy-MM-dd')}"></td>
 					</th:block>
-					<td class="cnt" th:text="${anonymousBoard.bcnt}"></td>
+					<td class="cnt" th:text="${paging.anonymousBoard.bcnt}"></td>
 				</tr>
 			</tbody>
 		</table>
@@ -118,34 +120,30 @@ $(document).ready(function() {
 				<a th:href="@{/user/insertAnonymousBoardView}" class="btn btn_point">등록</a>
 			</div>
 		</div>
-	</div>
-</div>
-<table th:align="center">
-	<tr>
-		<td colspan="5">
+		<div class="paging">
 			<span th:if="${page.curBlock > 1 }">
-				<a th:href="@{/user/selectAnonymousBoardList(curPage=${page.prevPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}">[이전]</a>
+				<a th:href="@{/user/selectAnonymousBoardList(curPage=1,searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" class="page prev_02">1</a>
 			</span>
 			<span th:if="${page.curBlock > 1 }">
-				<a th:href="@{/user/selectAnonymousBoardList(curPage=1,searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}">1</a>
+				<a th:href="@{/user/selectAnonymousBoardList(curPage=${page.prevPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" class="page prev_01">[이전]</a>
 			</span>
 			<span th:each="num:${block}">
 				<span th:if="${num==page.curPage }">
-					<a th:href="@{/user/selectAnonymousBoardList(curPage=${num},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${num}" style="color:orange;"></a>
+					<a th:href="@{/user/selectAnonymousBoardList(curPage=${num},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${num}" class="paging_click"></a>
 				</span>
 				<span th:unless="${num==page.curPage }">
 					<a th:href="@{/user/selectAnonymousBoardList(curPage=${num},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${num}"></a>
 				</span>
 			</span>
 			<span th:if="${page.curBlock < page.totBlock }">
-				<a th:href="@{/user/selectAnonymousBoardList(curPage=${page.totPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${page.totPage}"></a>
+				<a th:href="@{/user/selectAnonymousBoardList(curPage=${page.nextPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" class="page next_01">[다음]</a>
 			</span>
 			<span th:if="${page.curBlock < page.totBlock }">
-				<a th:href="@{/user/selectAnonymousBoardList(curPage=${page.nextPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}">[다음]</a>
+				<a th:href="@{/user/selectAnonymousBoardList(curPage=${page.totPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${page.totPage}" class="page next_02"></a>
 			</span>
-		</td>
-	</tr>
-</table>
+		</div><!-- //paging -->
+	</div>
+</div>
 </div><!-- //section end -->
 </body>
 </html>

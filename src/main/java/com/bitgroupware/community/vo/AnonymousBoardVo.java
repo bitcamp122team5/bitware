@@ -34,6 +34,7 @@ public class AnonymousBoardVo {
 	private int bindent;
 	@Column(insertable = false, columnDefinition = "int(10) default 0")
 	private int bcnt;
+
 	@Transient
 	private List<Integer> bindentcnt = new ArrayList<Integer>();
 }

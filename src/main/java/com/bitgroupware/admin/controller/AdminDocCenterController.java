@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bitgroupware.community.service.DocCenterService;
 import com.bitgroupware.community.utils.TemporaryFileUrl;
 import com.bitgroupware.community.vo.DocCenterVo;
+import com.bitgroupware.community.vo.NoticeVo;
 import com.bitgroupware.security.config.SecurityUser;
 import com.bitgroupware.utils.Pager;
 import com.bitgroupware.utils.Search;
+import com.bitgroupware.utils.TemporaryPaging;
 
 @Controller
 @RequestMapping("/admin")
@@ -46,11 +48,21 @@ public class AdminDocCenterController {
 		
 		List<DocCenterVo> docCenterList = docCenterService.selectDocCenterList(begin, search);
 		
+		List<TemporaryPaging> pagingList = new ArrayList<TemporaryPaging>();
+
+		count = count - ((curPage-1) * 10);
+		for (DocCenterVo docCenter : docCenterList) {
+			TemporaryPaging paging = new TemporaryPaging();
+			paging.setDocCenter(docCenter);
+			paging.setCount(count--);
+			pagingList.add(paging);
+		}
+		
 		Date date = new Date();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		String today = format.format(date);
 		
-		model.addAttribute("docCenterList", docCenterList);
+		model.addAttribute("pagingList", pagingList);
 		model.addAttribute("today",today);
 		model.addAttribute("page",page);
 		model.addAttribute("block",block);
