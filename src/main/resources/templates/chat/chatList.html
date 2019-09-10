@@ -32,8 +32,10 @@
 				var memId = $(this).attr('value');
 				var url = "/user/chat?memId=" + memId;
 				var name = "chatPopup";
-				var option = "width=500, height=500, top=100, left=200, location=no"
+				var option = "width=1000px, height=300px, resizable=no, location=no, top=300px, left=300px;"
 				window.open(url, name, option);
+				$('#usernameForm').submit();
+				
 			})
 		})
 	</script>
