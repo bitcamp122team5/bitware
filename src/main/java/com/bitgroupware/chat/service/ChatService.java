@@ -17,9 +17,10 @@ public interface ChatService {
     public MemberDto selectMemeberInfo(String memId); 
 
     //public ChatMessageDto selectLastContentList(String receiver);
-    List<ChatMessageDto> selectLastContentList(ChatMessageDto chatDto);
+    List<ChatMessageDto> selectLastContentList(String sender);
 
 	List<DepartmentDto> selectDepartureList();
 
 	List<MemberDto> selectMemberListByDepartmentAjax(String deptName);
+
 }
