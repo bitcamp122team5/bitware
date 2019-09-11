@@ -1,17 +1,35 @@
 ﻿@charset "utf-8";
 
-
+/* Noto Sans */
 @font-face{
-   font-family:'HelveticaNeueLTPro-Md';
+  font-family:'NotoSansCJKkr';
+  font-style:normal;
+  font-weight:300;
+  src:url(/font/NotoSansCJKkr-Light.woff2) format('woff2'),
+       url(/font/NotoSansCJKkr-Light.woff) format('woff'),
+       url(/font/NotoSansCJKkr-Light.otf) format('opentype');
+}
+@font-face{
+   font-family:'NotoSansCJKkr';
    font-style:normal;
    font-weight:400;
-   src:url(../font/HelveticaNeueLTPro-Md.otf) format('opentype');
+   src:url(/font/NotoSansCJKkr-Regular.woff2) format('woff2'),
+        url(/font/NotoSansCJKkr-Regular.woff) format('woff'),
+        url(/font/NotoSansCJKkr-Regular.otf) format('opentype');
+}
+@font-face{
+   font-family:'NotoSansCJKkr';
+   font-style:normal;
+   font-weight:500;
+   src:url(/font/NotoSansCJKkr-Medium.woff2) format('woff2'),
+        url(/font/NotoSansCJKkr-Medium.woff) format('woff'),
+        url(/font/NotoSansCJKkr-Medium.otf) format('opentype');
 }
 
 
 /* DEFAULT */
 html, body{padding:0;margin:0;height:100%;}
-body, th, td, select, textarea, input{font-family:"Helvetica Neue","Helvetica","Arial",sans-serif;font-size:15px;color:#333}
+body, th, td, select, textarea, input{font-family:'NotoSansCJKkr', sans-serif;font-size:15px;color:#333}
 html, body, div, /* span ,*/  applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 abbr, acronym, address, big, cite, code,
@@ -26,7 +44,7 @@ table, caption, tbody, tfoot, thead, tr, th, td, input{
 	vertical-align:top;
 	font-weight:300;
 	font-size:15px;
-	font-family:"Helvetica Neue","Helvetica","Arial", sans-serif;
+	font-family:'NotoSansCJKkr', sans-serif;
 	letter-spacing:0;
 	word-break: keep-all;
 }
@@ -42,7 +60,7 @@ strong{font-weight:400;}
 i{font-style:normal;}
 
 /* BUTTON */
-button{padding:0;border:none;cursor:pointer;font-family:"Helvetica Neue","Helvetica","Arial", sans-serif;background-color:transparent;font-size:15px;font-weight:300;cursor:pointer;}
+button{padding:0;border:none;cursor:pointer;font-family:'NotoSansCJKkr', sans-serif;background-color:transparent;font-size:15px;font-weight:300;cursor:pointer;}
 
 /* LIST */
 ol, ul{list-style:none;}

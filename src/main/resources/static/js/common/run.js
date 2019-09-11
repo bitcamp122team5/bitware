@@ -64,8 +64,12 @@ $(function(){
 									var memId = $(this).attr('value');
 									var url = "/user/chat?memId=" + memId;
 									var name = "chatPopup";
-									var option = "width=500, height=500, top=100, left=200, location=no"
-									window.open(url, name, option);
+									
+									var popupX=(document.body.offsetWidth/2) - (500/2);
+									var popupY=(document.body.offsetHeight/2) - (700/2);
+									
+									var options = "width=500, height=700, scrollbars, resizable, toolbar=2, left="+popupX+", top="+popupY;
+									window.open(url, name, options);
 								})
 							}
 						});

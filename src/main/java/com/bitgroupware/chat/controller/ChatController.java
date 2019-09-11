@@ -86,6 +86,9 @@ public class ChatController {
 //		System.out.println("roomId =" + roomId);
 		model.addAttribute("roomId", roomId);
 		
+		List<ChatMessageDto> chatList = chatservice.selectChatMessageList(chatMessageDto);
+		model.addAttribute("chatList" , chatList);
+		
 		return "chat/chat";
 	}
 
@@ -143,10 +146,4 @@ public class ChatController {
 		List<MemberDto> memberList = chatservice.selectMemberListByDepartmentAjax(deptName);
 		return memberList;
 	}
-	
-	
-//	public List<ChatMessageDto> chatMessageList(){
-//		List<ChatMessageDto> chatMessageList = chatservice.selectChatMessageList();
-//		return chatMessageList;
-//	}
 }

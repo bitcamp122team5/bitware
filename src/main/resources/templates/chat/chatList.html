@@ -25,20 +25,6 @@
 	<div class="info">
 		<ul id="memberByDepartment"></ul>
 	</div>
-	<script type="text/javascript">
-
-		$(function(){
-			$(".memberByDept").click(function(){
-				var memId = $(this).attr('value');
-				var url = "/user/chat?memId=" + memId;
-				var name = "chatPopup";
-				var option = "width=1000px, height=300px, resizable=no, location=no, top=300px, left=300px;"
-				window.open(url, name, option);
-				$('#usernameForm').submit();
-				
-			})
-		})
-	</script>
 </div>
 </body>
 </html>

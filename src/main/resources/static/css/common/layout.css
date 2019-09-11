@@ -2,7 +2,7 @@
 .header{width:100%;height:60px;background:#fff;}
 .header::after{content:'';display:block;clear:both;}
 .header .logo{float:left;width:240px;height:60px;line-height:60px;text-align:center;}
-.header .logo a{font-size:25px;}
+.header .logo a{font-size:25px;font-weight:600;}
 .header .gnb{float:left;height:60px;line-height:60px;text-align:center;}
 .header .gnb::after{content:'';display:block;clear:both;}
 .header .gnb li{float:left;}
