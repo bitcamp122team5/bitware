@@ -28,6 +28,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		
 		security.formLogin().loginPage("/login").defaultSuccessUrl("/user/", true);
 		security.formLogin().loginPage("/login").failureUrl("/loginFail");
+		security.formLogin().usernameParameter("username").passwordParameter("password");
+		//로그인창의 name들을 매칭 시켜준다.
 		security.exceptionHandling().accessDeniedPage("/accessDenied");
 		security.logout().logoutUrl("/logout").invalidateHttpSession(true).logoutSuccessUrl("/login");
 		

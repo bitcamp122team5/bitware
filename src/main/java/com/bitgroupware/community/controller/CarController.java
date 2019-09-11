@@ -28,7 +28,7 @@ public class CarController {
 	
 	@RequestMapping("/selectCarReservationList")
 	public String selectCarReservationList(Model model, String msg, @AuthenticationPrincipal SecurityUser principal) {
-//		meetingroomReservationService.deleteCheck();
+		carReservationService.deleteCheck();
 		List<CarVo> carList = carReservationService.selectCarList();
 		MemberVo member = principal.getMember();
 		List<CarReservationVo> carReservationList = carReservationService.selectCarReservationList(member);
