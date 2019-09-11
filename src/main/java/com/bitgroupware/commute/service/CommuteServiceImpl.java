@@ -1,5 +1,6 @@
 package com.bitgroupware.commute.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +12,25 @@ import com.bitgroupware.member.vo.MemberVo;
 
 @Service
 public class CommuteServiceImpl implements CommuteService {
-	
+
 	@Autowired
 	CommuteRepository commuteRepository;
-	
+
+	// 근태 목록
 	@Override
 	public List<CommuteVo> selectCommuteList(MemberVo memberVo, String startDate, String endDate) {
-		return commuteRepository.findByMemberVoAndCommuteDateBetweenOrderByCommuteDateDesc(memberVo, startDate, endDate);
+		return commuteRepository.findByMemberVoAndCommuteDateBetweenOrderByCommuteDateDesc(memberVo, startDate,endDate);
+	}
+
+	// 근태 구분 count
+	@Override
+	public List<String> selectStatusCount(MemberVo memberVo) {
+		List<String> selectStatusCount = new ArrayList<String>();
+		String[] commuteStatus = { "정상", "지각", "조퇴", "결근", "휴가" };
+		for (int i = 0; i < commuteStatus.length; i++) {
+			selectStatusCount.add(String.valueOf(commuteRepository.countByMemberVoAndCommuteStatus(memberVo, commuteStatus[i])));
+		}
+		return selectStatusCount;
 	}
 
 	// 출근시간 기록
@@ -25,18 +38,20 @@ public class CommuteServiceImpl implements CommuteService {
 	public void insertOntime(CommuteVo commuteVo) {
 		commuteRepository.save(commuteVo);
 	}
-	
+
 	// 퇴근시간 기록
 	@Override
 	public void updateOfftime(CommuteVo commuteVo) {
 		commuteRepository.save(commuteVo);
 	}
 
+	// DB서버 날짜
 	@Override
 	public String selectCurdate() {
 		return commuteRepository.selectCurdate();
 	}
 
+	// DB서버 시간
 	@Override
 	public String selectCurtime() {
 		return commuteRepository.selectCurtime();

@@ -45,6 +45,36 @@ layout:decorator="layout/default">
 				</table>
 			</div><!-- //table_wrap end -->
 		</div>
+		<div class="article">
+			<div class="table_wrap list">
+				<table>
+					<colgroup>
+						<col width="*">
+						<col width="*">
+						<col width="*">
+						<col width="*">
+						<col width="*">
+						<col width="*">
+					</colgroup>
+					<thead>
+						<tr>
+							<th>정상</th>
+							<th>지각</th>
+							<th>조퇴</th>
+							<th>결근</th>
+							<th>휴가</th>
+							<th>총</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td th:each="statusCount:${commuteStatusCount}" th:text="${statusCount}"></td>
+							<td th:text="${#lists.size(commuteTotalCount)}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
 	</div> <!-- //section end -->
 </body>
 </html>
