@@ -13,7 +13,7 @@ public class SecurityUser extends User{
 	
 	public SecurityUser(MemberVo member) {
 		super(member.getMemId(), member.getMemPw(), AuthorityUtils.createAuthorityList(member.getRole().toString()));
-
+		//member.getId는 꼭 주키일 필요는 없고 id로 사용할 것을 넣는다. 
 		this.member = member;
 	}
 

@@ -27,7 +27,7 @@ public class MeetingroomController {
 	
 	@RequestMapping("/selectMeetingroomReservationList")
 	public String selectMeetingroomReservationList(Model model, String msg, @AuthenticationPrincipal SecurityUser principal) {
-//		meetingroomReservationService.deleteCheck();
+		meetingroomReservationService.deleteCheck();
 		List<MeetingroomVo> meetingroomList = meetingroomReservationService.selectMeetingroomList();
 		MemberVo member = principal.getMember();
 		List<MeetingroomReservationVo> meetingroomReservationList = meetingroomReservationService.selectMeetingroomReservationList(member);
