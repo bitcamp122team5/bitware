@@ -12,6 +12,8 @@ public interface CommuteRepository extends JpaRepository<CommuteVo, Integer>{
 	
 	List<CommuteVo> findByMemberVoAndCommuteDateBetweenOrderByCommuteDateDesc(MemberVo member, String startDate, String endDate);
 
+	long countByMemberVoAndCommuteStatus(MemberVo memberVo, String string);
+	
 	@Query(value = "select curdate()", nativeQuery = true)
 	String selectCurdate();
 
