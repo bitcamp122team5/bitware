@@ -6,6 +6,117 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <meta charset="UTF-8">
 <title>조직도</title>
 <th:block th:replace="fragments/config :: configFragment"></th:block>
+<script>
+$(function(){
+	
+	var modal = document.getElementById('myModal');
+	
+    document.getElementsByClassName("close")[0].onclick = function() {
+    	modal.style.display = "none";
+	}
+    
+	window.onclick = function(event) {
+    	if (event.target == modal) {
+        	modal.style.display = "none";
+    	}
+	}	
+
+	$(".showProjectByMember").click(function(){
+		var memId = $(this).next().val();
+		$.ajax({
+			url:"/user/selectProjectListForOrganizationChartByMemIdWithZero",
+			data:{
+				memId:memId
+			},
+			dataType:'json',
+			success:function(projectListWithZero){
+				var str="";
+				if(projectListWithZero!=null){
+					str += "<table><colgroup><col width='*'><col width='80px'><col width='80px'><col width='80px'><col width='100px'></colgroup><tr><thead><tr><th>프로젝트명</th><th>PM</th><th>시작일</th><th>종료일</th><th>마더업체</th></tr></thead>";
+					for (var i in projectListWithZero){
+						str += "<tbody><tr><td><a href='/user/projectDetail?prjCode="+projectListWithZero[i].prjCode+"'>"+projectListWithZero[i].prjName+"</a></td>";
+						str += "<td>"+projectListWithZero[i].prjPm+"</td>";
+						str += "<td>"+projectListWithZero[i].prjStart+"</td>";
+						str += "<td>"+projectListWithZero[i].prjEnd+"</td>";
+						str += "<td>"+projectListWithZero[i].prjMothercompany+"</td></tr></tbody>";
+					}
+					str += "</table>";
+				}else{
+					str += "현재 진행 중인 프로젝트가 없습니다.";
+				}
+				$("#projectListByMemIdWithZero table").remove();
+				$("#projectListByMemIdWithZero").append(str);
+			}
+		});
+		$.ajax({
+			url:"/user/selectProjectListForOrganizationChartByMemIdWithOne",
+			data:{
+				memId:memId
+			},
+			dataType:'json',
+			success:function(projectListWithOne){
+				var str="";
+				if(projectListWithOne!=null){
+					str += "<table><colgroup><col width='*'><col width='80px'><col width='80px'><col width='80px'><col width='100px'></colgroup><tr><thead><th>프로젝트명</th><th>PM</th><th>시작일</th><th>종료일</th><th>마더업체</th></tr></thead>";
+					for (var i in projectListWithOne){
+						str += "<tbody><tr><td><a href='/user/projectDetail?prjCode="+projectListWithOne[i].prjCode+"'>"+projectListWithOne[i].prjName+"</a></td>";
+						str += "<td>"+projectListWithOne[i].prjPm+"</td>";
+						str += "<td>"+projectListWithOne[i].prjStart+"</td>";
+						str += "<td>"+projectListWithOne[i].prjEnd+"</td>";
+						str += "<td>"+projectListWithOne[i].prjMothercompany+"</td></tr></tbody>";
+					}
+					str += "</table>";
+				}else{
+					str += "현재 완료된 프로젝트가 없습니다."
+				}
+				$("#projectListByMemIdWithOne table").remove();
+				$("#projectListByMemIdWithOne").append(str);
+			}
+		});
+		
+		modal.style.display = "block";
+		
+	});
+	
+});
+</script>
+<style>
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 2; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%; /* Could be more or less, depending on screen size */                          
+}
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+</style>
 </head>
 <body>
 <div sec:authorize="hasRole('ROLE_ADMIN')" th:replace="fragments/headerAdmin :: headerFragmentAdmin"></div>
@@ -20,50 +131,100 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <h2 sec:authorize="hasRole('ROLE_ADMIN')">조직도 (관리자)</h2>
 <h2 sec:authorize="hasAnyRole('ROLE_USER','ROLE_PL','ROLE_PM')">조직도</h2>
 
-<div th:text="${deptName}" th:align="center"></div>
-<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
-	<tr>
-		<td bgcolor="orange" width="100">이름</td>
-		<td bgcolor="orange" width="100">전화번호</td>
-		<td bgcolor="orange" width="100">내선번호</td>
-		<td bgcolor="orange" width="100">부서명</td>
-		<td bgcolor="orange" width="100">직책</td>
-	</tr>
-	<tr>
-		<td th:text="${header.memName}"></td>
-		<td th:text="${header.memTel}"></td>
-		<td th:text="${header.memOfficeTel}"></td>
-		<td th:text="${header.department.deptName}"></td>
-		<td th:text="${header.ranks.ranks}"></td>
-	</tr>
-</table>
+<br>
+<div th:text="'&nbsp&nbsp&nbsp&nbsp>&nbsp'+${deptName}"></div>
+<div class="table_wrap list">
+	<table>
+		<colgroup>
+			<col width="50px">
+			<col width="80px">
+			<col width="80px">
+			<col width="50px">
+			<col width="50px">
+		</colgroup>
+		<thead>
+			<tr>
+				<th>이름</th>
+				<th>전화번호</th>
+				<th>내선번호</th>
+				<th>부서명</th>
+				<th>직책</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td th:text="${header.memName}" class="showProjectByMember"></td>
+				<input type="hidden" th:value="${header.memId}">
+				<td th:text="${header.memTel}"></td>
+				<td th:text="${header.memOfficeTel}"></td>
+				<td th:text="${header.department.deptName}"></td>
+				<td th:text="${header.ranks.ranks}"></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
 <th:block th:each="repetition:${repetitions}">
 <br>
-<div th:text="${deptName}+' '+${repetition.team.teamName}" th:align="center"></div>
-<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
-	<tr>
-		<td bgcolor="orange" width="100">이름</td>
-		<td bgcolor="orange" width="100">전화번호</td>
-		<td bgcolor="orange" width="100">내선번호</td>
-		<td bgcolor="orange" width="100">부서명</td>
-		<td bgcolor="orange" width="100">직책</td>
-	</tr>
-	<tr>
-		<td th:text="${repetition.leader.memName}"></td>
-		<td th:text="${repetition.leader.memTel}"></td>
-		<td th:text="${repetition.leader.memOfficeTel}"></td>
-		<td th:text="${repetition.leader.department.deptName}+' '+${repetition.leader.team.teamName}"></td>
-		<td th:text="${repetition.leader.ranks.ranks}"></td>
-	</tr>
-	<tr th:each="teamMember:${repetition.teamMemberList}">
-		<td th:text="${teamMember.memName}"></td>
-		<td th:text="${teamMember.memTel}"></td>
-		<td th:text="${teamMember.memOfficeTel}"></td>
-		<td th:text="${teamMember.department.deptName}+' '+${teamMember.team.teamName}"></td>
-		<td th:text="${teamMember.ranks.ranks}"></td>
-	</tr>
-</table>
+<div th:text="'&nbsp&nbsp&nbsp&nbsp>&nbsp'+${deptName}+'&nbsp'+${repetition.team.teamName}"></div>
+<div class="table_wrap list">
+	<table>
+		<colgroup>
+			<col width="50px">
+			<col width="80px">
+			<col width="80px">
+			<col width="50px">
+			<col width="50px">
+		</colgroup>
+		<thead>
+			<tr>
+				<th>이름</th>
+				<th>전화번호</th>
+				<th>내선번호</th>
+				<th>부서명</th>
+				<th>직책</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td th:text="${repetition.leader.memName}" class="showProjectByMember"></td>
+				<input type="hidden" th:value="${repetition.leader.memId}">
+				<td th:text="${repetition.leader.memTel}"></td>
+				<td th:text="${repetition.leader.memOfficeTel}"></td>
+				<td th:text="${repetition.leader.department.deptName}+'&nbsp'+${repetition.leader.team.teamName}"></td>
+				<td th:text="${repetition.leader.ranks.ranks}"></td>
+			</tr>
+			<tr th:each="teamMember:${repetition.teamMemberList}">
+				<td th:text="${teamMember.memName}" class="showProjectByMember"></td>
+				<input type="hidden" th:value="${teamMember.memId}">
+				<td th:text="${teamMember.memTel}"></td>
+				<td th:text="${teamMember.memOfficeTel}"></td>
+				<td th:text="${teamMember.department.deptName}+'&nbsp'+${teamMember.team.teamName}"></td>
+				<td th:text="${teamMember.ranks.ranks}"></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
 </th:block>
+
+<div id="myModal" class="modal">
+	<div class="modal-content">
+		<span class="close">&times;</span>
+		<p>진행중인 프로젝트</p>
+		<div class="article">
+			<div class="table_wrap list">
+				<div id="projectListByMemIdWithZero"></div>
+			</div>
+		</div>
+		<br>
+		<p>완료된 프로젝트</p>
+		<div class="article">
+			<div class="table_wrap list">
+				<div id="projectListByMemIdWithOne"></div>
+			</div>
+		</div>
+	</div>
+</div>
 </div><!-- //section end -->
 </body>
 </html>
