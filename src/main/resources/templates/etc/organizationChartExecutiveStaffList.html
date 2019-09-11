@@ -21,22 +21,34 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <h2 sec:authorize="hasAnyRole('ROLE_USER','ROLE_PL','ROLE_PM')">조직도</h2>
 
 <th:block th:each="repetition:${repetitions}">
-<div th:text="${repetition.ranks.ranks}" th:align="center"></div>
-<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
-	<tr>
-		<td bgcolor="orange" width="100">이름</td>
-		<td bgcolor="orange" width="100">전화번호</td>
-		<td bgcolor="orange" width="100">내선번호</td>
-		<td bgcolor="orange" width="100">직책</td>
-	</tr>
-	<tr th:each="executiveStaff:${repetition.executiveStaffList}">
-		<td th:text="${executiveStaff.memName}"></td>
-		<td th:text="${executiveStaff.memTel}"></td>
-		<td th:text="${executiveStaff.memOfficeTel}"></td>
-		<td th:text="${executiveStaff.ranks.ranks}"></td>
-	</tr>
-</table>
 <br>
+<div th:text="'&nbsp&nbsp&nbsp&nbsp>&nbsp'+${repetition.ranks.ranks}"></div>
+<div class="table_wrap list">
+	<table>
+		<colgroup>
+			<col width="50px">
+			<col width="80px">
+			<col width="80px">
+			<col width="50px">
+		</colgroup>
+		<thead>
+			<tr>
+				<th>이름</th>
+				<th>전화번호</th>
+				<th>내선번호</th>
+				<th>직책</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="executiveStaff:${repetition.executiveStaffList}">
+				<td th:text="${executiveStaff.memName}"></td>
+				<td th:text="${executiveStaff.memTel}"></td>
+				<td th:text="${executiveStaff.memOfficeTel}"></td>
+				<td th:text="${executiveStaff.ranks.ranks}"></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
 </th:block>
 </div><!-- //section end -->
 </body>

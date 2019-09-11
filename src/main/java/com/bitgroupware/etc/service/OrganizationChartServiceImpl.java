@@ -11,9 +11,11 @@ import com.bitgroupware.company.persistence.TeamRepository;
 import com.bitgroupware.company.vo.DepartmentVo;
 import com.bitgroupware.company.vo.RanksVo;
 import com.bitgroupware.company.vo.TeamVo;
+import com.bitgroupware.etc.persistence.OrganizationChartDao;
 import com.bitgroupware.etc.utils.TemporaryRepetition;
 import com.bitgroupware.member.persistence.MemberRepository;
 import com.bitgroupware.member.vo.MemberVo;
+import com.bitgroupware.project.beans.ProjectInfoDto;
 
 @Service
 public class OrganizationChartServiceImpl implements OrganizationChartService{
@@ -24,6 +26,8 @@ public class OrganizationChartServiceImpl implements OrganizationChartService{
 	private TeamRepository teamRepo;
 	@Autowired
 	private RanksRepository ranksRepo;
+	@Autowired
+	private OrganizationChartDao organizationChartDao;
 
 	public List<TeamVo> selectTeamListByDeptName(String deptName) {
 		DepartmentVo department = new DepartmentVo();
@@ -49,5 +53,13 @@ public class OrganizationChartServiceImpl implements OrganizationChartService{
 			repetitions.add(repetition);
 		}
 		return repetitions;
+	}
+
+	public List<ProjectInfoDto> selectProjectListByMemIdWithZero(String memId) {
+		return organizationChartDao.selectProjectListByMemIdWithZero(memId);
+	}
+
+	public List<ProjectInfoDto> selectProjectListByMemIdWithOne(String memId) {
+		return organizationChartDao.selectProjectListByMemIdWithOne(memId);
 	}
 }

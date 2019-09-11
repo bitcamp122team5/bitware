@@ -16,5 +16,6 @@ public class TemporaryPaging {
 	public NoticeVo notice;
 	public DocCenterVo docCenter;
 	public AnonymousBoardVo anonymousBoard;
+	
 	public int count;
 }

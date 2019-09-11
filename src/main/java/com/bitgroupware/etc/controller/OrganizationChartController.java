@@ -7,11 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bitgroupware.company.vo.TeamVo;
 import com.bitgroupware.etc.service.OrganizationChartService;
 import com.bitgroupware.etc.utils.TemporaryRepetition;
 import com.bitgroupware.member.vo.MemberVo;
+import com.bitgroupware.project.beans.ProjectInfoDto;
 
 @Controller
 @RequestMapping("/user")
@@ -48,5 +50,19 @@ public class OrganizationChartController {
 			model.addAttribute("header", header);
 			return "etc/organizationChartList";
 		}
+	}
+	
+	@RequestMapping("/selectProjectListForOrganizationChartByMemIdWithZero")
+	@ResponseBody
+	public List<ProjectInfoDto> selectProjectListForOrganizationChartByMemIdWithZero(String memId) {
+		return organizationChartService.selectProjectListByMemIdWithZero(memId);
+		
+	}
+
+	@RequestMapping("/selectProjectListForOrganizationChartByMemIdWithOne")
+	@ResponseBody
+	public List<ProjectInfoDto> selectProjectListForOrganizationChartByMemIdWithOne(String memId) {
+		return organizationChartService.selectProjectListByMemIdWithOne(memId);
+		
 	}
 }
