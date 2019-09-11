@@ -97,39 +97,59 @@ function commaNum(num){
 
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
+<h2>프로젝트 상세페이지</h2>
 	<div>
 	<input type="hidden" id="sessionRanks" th:value="${sessionRanks}">
 	<input type="hidden" id="sessionDeptName" th:value="${sessionDeptName}">
-	<table class="table table-striped">
+	<div class="table_wrap view">
+		<table>
 		<!-- 상단의 프로젝트 정보 -->
-		<thead>
-		<tr>
-			<th>프로젝트명</th><td th:text="${prjInfo.prjName}"></td>
-		</tr>
-		<tr>
-			<th>PM</th><td th:text="${prjInfo.prjPm}"></td>
-		</tr>
-		<tr>
-			<th>계약금</th><td th:text="${prjInfo.prjDeposit}" class="commaN"></td>
-			<th>사업비</th><td th:text="${prjInfo.prjWorkingExpenses}" class="commaN"></td>
-		</tr>
-		<tr>
-			<th>시작일</th><td th:text="${prjInfo.prjStart}"></td>
-			<input type="hidden" id="prjStart" th:value="${prjInfo.prjStart}">
-			<th>종료일</th><td th:text="${prjInfo.prjEnd}"></td>
-			<input type="hidden" id="prjEnd" th:value="${prjInfo.prjEnd}">
-		</tr>
-		<tr>
-			<th>마더업체</th><td th:text="${prjInfo.prjMothercompany}"></td>
-			<th>참여인원</th><td><input class="btn btn_point" type="button"
-					value="참여인원 리스트" onclick="projectAttendMemberModal()"></td>
-		</tr>
-			<input type="hidden" id="prjCompletion" th:value="${prjInfo.prjCompletion}">
-		</thead>
+			<colgroup>
+				<col width="60px">
+				<col width="120px">
+				<col width="60px">
+				<col width="120px">
+			</colgroup>
+				<thead>
+				<tr>
+					<th>프로젝트명</th>
+					<td th:text="${prjInfo.prjName}"></td>
+					<td></td><td></td>
+				</tr>
+				<tr>
+					<th>PM</th>
+					<td th:text="${prjInfo.prjPm}"></td>
+					<td></td><td></td>
+				</tr>
+				<tr>
+					<th>계약금</th>
+					<td th:text="${prjInfo.prjDeposit}" class="commaN"></td>
+					<th>사업비</th>
+					<td th:text="${prjInfo.prjWorkingExpenses}" class="commaN"></td>
+				</tr>
+				<tr>
+					<th>시작일</th>
+					<td th:text="${prjInfo.prjStart}"></td>
+					<input type="hidden" id="prjStart" th:value="${prjInfo.prjStart}">
+					<th>종료일</th>
+					<td th:text="${prjInfo.prjEnd}"></td>
+					<input type="hidden" id="prjEnd" th:value="${prjInfo.prjEnd}">
+				</tr>
+				<tr>
+					<th>마더업체</th>
+					<td th:text="${prjInfo.prjMothercompany}"></td>
+					<th>참여인원</th>
+					<td><input class="btn btn_point" type="button"
+							value="참여인원 리스트" onclick="projectAttendMemberModal()"></td>
+				</tr>
+				<input type="hidden" id="prjCompletion" th:value="${prjInfo.prjCompletion}">
+				</thead>
 		<!-- 상단의 프로젝트 정보 끝-->
-	</table>
-	
-	<input class="btn btn_point" type="button" id="updateProjectBtn" value="프로젝트 정보 수정" onclick="projectUpdateModal()">
+		</table>
+	</div>
+		<div class="btn_warp">
+			<a class="btn btn_point" id="updateProjectBtn" onclick="projectUpdateModal()">프로젝트 정보 수정</a>
+		</div>	
 	</div>
 	<br /><br /><br />
 	<form action="#" method="post" id="insertProjectWbsList">
@@ -220,18 +240,17 @@ function commaNum(num){
 				</tr>
 			</tfoot>
 		</table>
-		
-		
 	</form>
-		<input class="btn btn_point" type="button" id="insertProjectWbsListBtn" value="저장" onclick="insertProjectWbsList()">
-		<input class="btn btn_point" type="button" value="프로젝트 목록" onclick="location.href='/user/selectProjectList'">
-		<input class="btn btn_point" type="button" id="checkListRemoveBtn" value="작업 삭제" onclick="checkListRemove()">
-		<input class="btn btn_point" type="button" id="viewGraphBtn" value="달력" onclick="viewGraph()">
+	<div class="btn_wrap">
+		<a class="btn btn_point" id="insertProjectWbsListBtn" onclick="insertProjectWbsList()">저장</a>
+		<a class="btn btn_point" onclick="location.href='/user/selectProjectList'">프로젝트 목록</a>
+		<a class="btn btn_point" id="checkListRemoveBtn" onclick="checkListRemove()">작업 삭제</a>
+		<a class="btn btn_point" id="viewGraphBtn" onclick="viewGraph()">달력</a>
 		<form id="completeProjectFrm" action="completeProject">
 			<input type="hidden" name="prjCode" id="prjCode" th:value="${prjInfo.prjCode}">
-			<input class="btn btn_point" id="completeProjectBtn" type="button" value="프로젝트 완료" onclick="completeProject()">
+			<a class="btn btn_point" id="completeProjectBtn" onclick="completeProject()">프로젝트 완료</a>
 		</form>
-	
+	</div>
 	<!-- 프로젝트 정보 수정 모달 -->
 	<div class="modal fade" id="projectUpdateModal" role="dialog">
 		<div class="modal-dialog">
@@ -268,9 +287,11 @@ function commaNum(num){
 							<input class='form-control' type="text" name="prjMothercompany" id="prjMothercompany" th:value="${prjInfo.prjMothercompany}" autocomplete="off"/>
 						</div>
 						<div class="modal-footer">
-							<input type="button" class="btn btn_point" value="확인" onclick="updateProject()" />
-							<input type="reset" class="btn btn_point" value="초기화" />
-							<input type="button" class="btn btn_point" data-dismiss="modal" value="취소" />
+							<div class="btn_wrap">
+								<a class="btn btn_point" onclick="updateProject()">확인</a>
+								<input type="reset" class="btn btn_point" value="초기화" />	
+								<a class="btn btn_point" data-dismiss="modal">취소</a>
+							</div>						
 						</div>
 					</form>
 				</div>
@@ -306,7 +327,9 @@ function commaNum(num){
 				</table>					
 				</div>
 				<div class="modal-footer">
-				<tr><button type="button" onclick="insertProjectAttendMembers()" class="btn btn_point">프로젝트 참여인원 선택 완료</button></tr>				
+					<div class="btn_wrap">
+						<a class="btn btn_point" onclick="insertProjectAttendMembers()">프로젝트 참여인원 선택 완료</a>
+					</div>				
 				</div>
 			</div>
 		</div>
@@ -350,7 +373,9 @@ function commaNum(num){
 					</tr>
 					</table>
 					<div class="modal-footer">
-					<input type="button" value="참여인원 추가" onclick="insertProjectAttendMemberModal()" id="projectAttendMembersBtn" class="btn btn_point">
+						<div class="btn_wrap">
+							<a class="btn btn_point" onclick="insertProjectAttendMemberModal()">참여인원 추가</a>
+						</div>
 					</div>
 				</div>
 			</div>
