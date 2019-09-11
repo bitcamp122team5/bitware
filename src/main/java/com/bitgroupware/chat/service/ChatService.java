@@ -23,4 +23,6 @@ public interface ChatService {
 
 	List<MemberDto> selectMemberListByDepartmentAjax(String deptName);
 
+	List<ChatMessageDto> selectChatMessageList(ChatMessageDto chatMessageDto);
+
 }

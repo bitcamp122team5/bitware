@@ -5,12 +5,15 @@
   <title>Chat Application</title>
   <link rel="stylesheet" href="../css/chat/chat.css" />
   <style>
+  #username-page{width:100%;height:100%;}
+  .username-page-container{height:100%;}
   .chat-container{width:100%;height:100%;margin:0;}
   #chat-page ul{height:calc(100% - 100px);}
   #chat-page #messageForm{padding:0;}
   .form-group{margin-bottom:0;}
   .input-group{}
   #messageForm .input-group input{}
+  .accent{position: fixed;width: 120px;left: 50%;margin-left: -60px;top: 40%;}
   </style>
 </head>
 <body>
@@ -20,14 +23,14 @@
 
 <div id="username-page">
   <div class="username-page-container">
-    <h1 class="title">Enter a username and room ID</h1>
+    <!-- <h1 class="title">Enter a username and room ID</h1> -->
     <form id="usernameForm" name="usernameForm">
     	<input type="hidden" th:value="${memDto.memId}"/>
       <div class="form-group">
-        <input type="text" id="name" placeholder="Username" th:value="${sessionName}" autocomplete="off" class="form-control" />
+        <input type="hidden" id="name" placeholder="Username" th:value="${sessionName}" autocomplete="off" class="form-control" />
       </div>
       <div class="form-group">
-        <input type="text" id="room-id" placeholder="Room ID" th:value="${roomId}" autocomplete="off" class="form-control" />
+        <input type="hidden" id="room-id" placeholder="Room ID" th:value="${roomId}" autocomplete="off" class="form-control" />
       </div>
       <input type="hidden" id="chance" value="1">
       <div class="form-group">
@@ -47,11 +50,20 @@
       Connecting...
     </div>
     <ul id="messageArea">
-		<li class="chat-message" th:each="cmList : ${chatMessageList}" th:if="${cmList.sender == sessionName && cmList.receiver == memDto.memName}">
-			<i th:text="${cmList.receiver}"></i>
-			<span th:text="${cmList.sender}"></span>
-			<p th:text="${cmList.content}"></p>
-		</li>
+    	<th:block th:each="chatList : ${chatList}" th:if="${chatList.sender == sessionName && chatList.receiver == memDto.memName}">
+			<li class="chat-message">
+				<i th:text="${chatList.receiver}"></i>
+				<span th:text="${chatList.sender}"></span>
+				<p th:text="${chatList.content}"></p>
+			</li>
+		</th:block>
+		<th:block th:each="chatList : ${chatList}" th:if="${chatList.sender == memDto.memName && chatList.receiver == sessionName}">
+			<li class="chat-message">
+				<i th:text="${chatList.receiver}"></i>
+				<span th:text="${chatList.sender}"></span>
+				<p th:text="${chatList.content}"></p>
+			</li>
+		</th:block>
     </ul>
     <form id="messageForm" name="messageForm" nameForm="messageForm">
       <div class="form-group">
