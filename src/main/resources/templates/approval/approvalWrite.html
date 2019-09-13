@@ -37,21 +37,9 @@ $(function(){
 	});
 });
 
-// //this is your code
-// $(function(){ // wait for page to load
-  
-//   // this is your selector
-//   $('#in_file_01').MultiFile({
-//     // your options go here
-//     max: 2,
-//     accept: 'jpg'
-//   });
-
-// });
-
 $(function(){ // wait for page to load
 	$('#multiform input[name=file]').MultiFile({
-        max: 2, //업로드 최대 파일 갯수 (지정하지 않으면 무한대)
+        max: 10, //업로드 최대 파일 갯수 (지정하지 않으면 무한대)
         accept: 'jpg|png|gif', //허용할 확장자(지정하지 않으면 모든 확장자 허용)
         maxfile: 1024, //각 파일 최대 업로드 크기
         maxsize: 3024,  //전체 파일 최대 업로드 크기
@@ -67,6 +55,24 @@ $(function(){ // wait for page to load
         list:"#afile3-list" //파일목록을 출력할 요소 지정가능
     });
 });
+
+window.onload=function(){
+	document.getElementById("writeBtn").onclick=function(){
+		var apTitle = document.getElementById("apTitle").value;
+		var apContent = document.getElementById("apContent").value;
+		if(apTitle==""){
+			alert("문서명을 입력하세요");
+			document.getElementById("apTitle").focus();
+			return;
+		}
+		if(apContent==""){
+			alert("내용을 입력하세요");
+			document.getElementById("apContent").focus();
+			return;
+		}
+		document.getElementById("multiform").submit();
+	}
+}
 </script>
 </head>
 <body th:align="center">
@@ -92,7 +98,7 @@ $(function(){ // wait for page to load
 			<tbody>
 				<tr>
 					<th>제목</th>
-					<td><input type="text" name="apTitle" class="w100p"></td>
+					<td><input type="text" name="apTitle" class="w100p" id="apTitle"></td>
 				</tr>
 				<tr>
 					<th>내용</th>
@@ -103,16 +109,14 @@ $(function(){ // wait for page to load
 					<td>
 						<div class="file_wrap">
 							<div class="file_txt">
-								<p>파일은 <span class="txt_point_01">10개</span>까지 첨부가 가능하며, 용량은 <span class="txt_point_01">100MB</span>를 넘을 수 없습니다.</p>
+								<p>파일은 <span class="txt_point_01">5개</span>까지 첨부가 가능하며, 용량은 <span class="txt_point_01">100MB</span>를 넘을 수 없습니다.</p>
 								<div id="afile3-list" style="border:1px solid #c9c9c9;min-height:50px">
 							</div> <!-- //file_txt -->
 							<div class="file_attach">
-								<input name="file" type="file" id="in_file_01">
-								<label for="in_file_01" class="btn btn_file" >파일첨부</label>
-								
-<!-- 								여기껄 쓰면 먹어 ! -->
-								<label><input type="file" name="file" class="btn btn_file"></label>
-								<a href="#" class="btn btn_file">파일삭제</a>
+<!-- 								<input name="file" type="file" id="in_file_01"> -->
+<!-- 								<label for="in_file_01" class="btn btn_file" >파일첨부</label> -->
+								<input type="file" name="file" >
+<!-- 								<a href="#" class="btn btn_file">파일삭제</a> -->
 							</div>  <!-- //file_attach -->
 								
 							</div> 
