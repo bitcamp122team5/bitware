@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.bitgroupware.community.service.NoticeService;
 import com.bitgroupware.community.vo.NoticeVo;
+import com.bitgroupware.commute.persistence.CommuteRepository;
 import com.bitgroupware.commute.service.CommuteService;
 import com.bitgroupware.commute.vo.CommuteVo;
 import com.bitgroupware.member.utils.Role;
@@ -26,6 +27,9 @@ public class MainController {
 	
 	@Autowired
 	CommuteService commuteService;
+	
+	@Autowired
+	CommuteRepository commuteRepository;
 
 	@RequestMapping("/")
 	public String index(Model model, @AuthenticationPrincipal SecurityUser principal) {
@@ -46,13 +50,16 @@ public class MainController {
 			String endDate = "2099-12-31";
 			List<CommuteVo> commuteTotalCount = commuteService.selectCommuteList(principal.getMember(), startDate, endDate);
 			List<String> commuteStatusCount = commuteService.selectStatusCount(principal.getMember());
-
-
+			int totalVacation = principal.getMember().getMemVacation();
+			long usedVacation = commuteRepository.countByMemberVoAndCommuteStatus(principal.getMember(), "휴가");
+			
 			model.addAttribute("noticeList", noticeList);
 			model.addAttribute("today", today);
 			model.addAttribute("commuteTotalCount", commuteTotalCount);
 			model.addAttribute("commuteStatusCount", commuteStatusCount);
-
+			model.addAttribute("totalVacation", totalVacation);
+			model.addAttribute("usedVacation", usedVacation);
+			
 			return "index";
 		}
 	}

@@ -4,6 +4,16 @@
 	layout:decorator="layout/default">
 <head>
 <meta charset="UTF-8">
+<style type="text/css">
+div.commuteChart {
+	width: 50%;
+	float: left;
+}
+div.vacationChart {
+	width:50%;
+	float: right;
+}
+</style>
 <!-- 차트  -->
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
@@ -12,6 +22,7 @@
 		'packages' : [ 'corechart' ]
 	});
 	google.charts.setOnLoadCallback(commuteChart);
+	google.charts.setOnLoadCallback(vacationChart);
 
 	// Draw the chart and set the chart values
 	function commuteChart() {
@@ -26,7 +37,7 @@
 
 		// Optional; add a title and set the width and height of the chart
 		var commuteStatusOptions = {
-			// 'title':'근태 현황', // 타이틀
+			'title':'근태 현황', // 타이틀
 			'pieHole' : 0.4,
 			// 'pieSliceTextStyle': {
 			//	color: 'black',
@@ -39,6 +50,30 @@
 		// Display the chart inside the <div> element with id="piechart"
 		var commuteChart = new google.visualization.PieChart(document.getElementById('commuteChart'));
 		commuteChart.draw(commuteStatus, commuteStatusOptions);
+	}
+	
+	function vacationChart() {
+		var vacationStatus = google.visualization.arrayToDataTable([
+				[ '휴가', '휴가 현황' ], 
+				[ '남은 휴가', [[${totalVacation}]]-[[${usedVacation}]] ], 
+				[ '사용 휴가', [[${usedVacation}]] ] 
+		]);
+
+		// Optional; add a title and set the width and height of the chart
+		var vacationStatusOptions = {
+			'title':'휴가 현황', // 타이틀
+			'pieHole' : 0.4,
+			// 'pieSliceTextStyle': {
+			//	color: 'black',
+			// }, // 글자 색
+			'legend' : 'none', // 범례옵션
+			'width' : 400,
+			'height' : 400
+		};
+
+		// Display the chart inside the <div> element with id="piechart"
+		var vacationChart = new google.visualization.PieChart(document.getElementById('vacationChart'));
+		vacationChart.draw(vacationStatus, vacationStatusOptions);
 	}
 </script>
 <!-- 차트 끝 -->
@@ -74,8 +109,7 @@
 							<div th:if="${today==#dates.format(notice.ntDate,'yyyy-MM-dd')}">
 								<td th:text="${#dates.format(notice.ntDate,'HH:mm')}"></td>
 							</div>
-							<div
-								th:unless="${today==#dates.format(notice.ntDate,'yyyy-MM-dd')}">
+							<div th:unless="${today==#dates.format(notice.ntDate,'yyyy-MM-dd')}">
 								<td th:text="${#dates.format(notice.ntDate,'yyyy-MM-dd')}"></td>
 							</div>
 						</tr>
@@ -88,7 +122,8 @@
 		<div class="article">
 			<div class="table_wrap list">
 				<!-- 그래프 적용 시작 -->
-				<div id="commuteChart"></div>
+				<div class="commuteChart" id="commuteChart"></div>
+				<div class="vacationChart" id="vacationChart"></div>
 				<!-- 그래프 적용 끝 -->
 				<table>
 					<colgroup>
