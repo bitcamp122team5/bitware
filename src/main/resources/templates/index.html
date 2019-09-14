@@ -1,9 +1,82 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-layout:decorator="layout/default">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout/default">
 <head>
 <meta charset="UTF-8">
+<style type="text/css">
+div.commuteChart {
+	width: 50%;
+	float: left;
+}
+div.vacationChart {
+	width:50%;
+	float: right;
+}
+</style>
+<!-- 차트  -->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+	// Load google charts
+	google.charts.load('current', {
+		'packages' : [ 'corechart' ]
+	});
+	google.charts.setOnLoadCallback(commuteChart);
+	google.charts.setOnLoadCallback(vacationChart);
+
+	// Draw the chart and set the chart values
+	function commuteChart() {
+		var commuteStatus = google.visualization.arrayToDataTable([
+				[ '근태', '근태 구분별 현황' ], 
+				[ '정상', [[${commuteStatusCount[0]}]] ], 
+				[ '지각', [[${commuteStatusCount[1]}]] ], 
+				[ '조퇴', [[${commuteStatusCount[2]}]] ],
+				[ '결근', [[${commuteStatusCount[3]}]] ], 
+				[ '휴가', [[${commuteStatusCount[4]}]] ] 
+		]);
+
+		// Optional; add a title and set the width and height of the chart
+		var commuteStatusOptions = {
+			'title':'근태 현황', // 타이틀
+			'pieHole' : 0.4,
+			// 'pieSliceTextStyle': {
+			//	color: 'black',
+			// }, // 글자 색
+			'legend' : 'none', // 범례옵션
+			'width' : 400,
+			'height' : 400
+		};
+
+		// Display the chart inside the <div> element with id="piechart"
+		var commuteChart = new google.visualization.PieChart(document.getElementById('commuteChart'));
+		commuteChart.draw(commuteStatus, commuteStatusOptions);
+	}
+	
+	function vacationChart() {
+		var vacationStatus = google.visualization.arrayToDataTable([
+				[ '휴가', '휴가 현황' ], 
+				[ '남은 휴가', [[${totalVacation}]]-[[${usedVacation}]] ], 
+				[ '사용 휴가', [[${usedVacation}]] ] 
+		]);
+
+		// Optional; add a title and set the width and height of the chart
+		var vacationStatusOptions = {
+			'title':'휴가 현황', // 타이틀
+			'pieHole' : 0.4,
+			// 'pieSliceTextStyle': {
+			//	color: 'black',
+			// }, // 글자 색
+			'legend' : 'none', // 범례옵션
+			'width' : 400,
+			'height' : 400
+		};
+
+		// Display the chart inside the <div> element with id="piechart"
+		var vacationChart = new google.visualization.PieChart(document.getElementById('vacationChart'));
+		vacationChart.draw(vacationStatus, vacationStatusOptions);
+	}
+</script>
+<!-- 차트 끝 -->
 <title>메인페이지</title>
 <th:block th:replace="fragments/config :: configFragment"></th:block>
 
@@ -31,9 +104,8 @@ layout:decorator="layout/default">
 					<tbody>
 						<tr th:each="notice:${noticeList}">
 							<td th:text="${notice.ntCate}"></td>
-							<td>
-								<a th:href="@{/user/selectNotice(ntNo=${notice.ntNo})}" th:text="${notice.ntTitle}"></a>
-							</td>
+							<td><a th:href="@{/user/selectNotice(ntNo=${notice.ntNo})}"
+								th:text="${notice.ntTitle}"></a></td>
 							<div th:if="${today==#dates.format(notice.ntDate,'yyyy-MM-dd')}">
 								<td th:text="${#dates.format(notice.ntDate,'HH:mm')}"></td>
 							</div>
@@ -43,10 +115,16 @@ layout:decorator="layout/default">
 						</tr>
 					</tbody>
 				</table>
-			</div><!-- //table_wrap end -->
+			</div>
+			<!-- //table_wrap end -->
 		</div>
+
 		<div class="article">
 			<div class="table_wrap list">
+				<!-- 그래프 적용 시작 -->
+				<div class="commuteChart" id="commuteChart"></div>
+				<div class="vacationChart" id="vacationChart"></div>
+				<!-- 그래프 적용 끝 -->
 				<table>
 					<colgroup>
 						<col width="*">
@@ -68,13 +146,15 @@ layout:decorator="layout/default">
 					</thead>
 					<tbody>
 						<tr>
-							<td th:each="statusCount:${commuteStatusCount}" th:text="${statusCount}"></td>
+							<td th:each="statusCount:${commuteStatusCount}"
+								th:text="${statusCount}"></td>
 							<td th:text="${#lists.size(commuteTotalCount)}"></td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 		</div>
-	</div> <!-- //section end -->
+	</div>
+	<!-- //section end -->
 </body>
 </html>
