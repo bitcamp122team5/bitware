@@ -17,10 +17,6 @@ import com.bitgroupware.utils.Search;
 @Mapper
 public interface ProjectDao {
 	
-//	//전체 프로젝트 조회(진행중인 프로젝트)
-//	@Select("SELECT * FROM PROJECT_INFO WHERE PRJ_COMPLETION = 0 ORDER BY PRJ_CODE DESC")
-//	public List<ProjectInfoDto> selectProjectList();
-	
 	//전체 프로젝트 조회(진행중인 프로젝트+ 페이징, 검색) PRJ_NAME
 	@Select("select r1.* from (SELECT * FROM PROJECT_INFO WHERE PRJ_COMPLETION = 0 AND PRJ_NAME LIKE #{searchKeyword} ORDER BY PRJ_CODE DESC) r1 limit 10 offset #{begin}")
 	public List<ProjectInfoDto> selectProjectListToPrjName(int begin, String searchKeyword);
