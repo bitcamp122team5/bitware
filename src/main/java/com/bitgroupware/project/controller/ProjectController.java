@@ -38,7 +38,7 @@ public class ProjectController {
 		System.out.println("search 컨트롤러에서 : "+search);
 		String sessionRanks = principal.getMember().getRanks().getRanks();
 		String seesionDeptName = "";
-		if(sessionRanks.equals("사장") || sessionRanks.equals("이사")) {
+		if(sessionRanks.equals("대표") || sessionRanks.equals("이사")) {
 			seesionDeptName = "경영진";
 		}else {
 			seesionDeptName = principal.getMember().getDepartment().getDeptName();
@@ -83,7 +83,7 @@ public class ProjectController {
 		String sessionRanks = principal.getMember().getRanks().getRanks();
 		
 		String seesionDeptName = "";
-		if(sessionRanks.equals("사장") || sessionRanks.equals("이사")) {
+		if(sessionRanks.equals("대표") || sessionRanks.equals("이사")) {
 			seesionDeptName = "경영진";
 		}else {
 			seesionDeptName = principal.getMember().getDepartment().getDeptName();
@@ -122,7 +122,7 @@ public class ProjectController {
 										@RequestParam(defaultValue = "1") int curPage, Search search) {
 		String sessionRanks = principal.getMember().getRanks().getRanks();
 		String seesionDeptName = "";
-		if(sessionRanks.equals("사장") || sessionRanks.equals("이사")) {
+		if(sessionRanks.equals("대표") || sessionRanks.equals("이사")) {
 			seesionDeptName = "경영진";
 		}else {
 			seesionDeptName = principal.getMember().getDepartment().getDeptName();
@@ -165,7 +165,7 @@ public class ProjectController {
 		String sessionRanks = principal.getMember().getRanks().getRanks();
 		String sessionDeptName = "";
 		System.out.println("상세페이지 이동 Ranks : " +  sessionRanks);
-		if(sessionRanks.equals("사장") || sessionRanks.equals("이사")) {
+		if(sessionRanks.equals("대표") || sessionRanks.equals("이사")) {
 			sessionDeptName = "경영진";
 		}else {
 			sessionDeptName = principal.getMember().getDepartment().getDeptName();

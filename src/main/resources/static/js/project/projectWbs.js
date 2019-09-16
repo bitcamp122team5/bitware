@@ -91,7 +91,7 @@ $(function(){
 							subData.prjPlanEnd[i], subData.prjRealStart[i], subData.prjRealEnd[i],
 							subData.prjWorkCompletion[i], subData.prjTotalDays[i]));
 			}
-		}else if($('#sessionRanks').val() == "사장" || $('#sessionRanks').val() == "이사"){
+		}else if($('#sessionRanks').val() == "대표" || $('#sessionRanks').val() == "이사"){
 			for(var i=0; i<subData.cnt; i++){
 				$('#tbody').append(screenWriteTbodyEdit(i, subData.prjGroup[i], subData.prjStep[i], subData.prjDepth[i],
 						subData.prjWorkName[i], subData.prjManager[i], subData.prjOutput[i], subData.prjPlanStart[i], 
@@ -772,7 +772,7 @@ $(function(){
 		$('#thead').show();
 		$('#tfooter').show();
 		$('#viewGraphBtn').show();
-	}else if($('#sessionRanks').val() =="사장"||$('#sessionRanks').val() == "이사"){
+	}else if($('#sessionRanks').val() =="대표"||$('#sessionRanks').val() == "이사"){
 		$('#tbody').show();
 		$('#thead').show();
 		$('#tfooter').show();
@@ -795,7 +795,7 @@ $(function(){
 			$('#insertProjectWbsListBtn').show();
 			$('#checkListRemoveBtn').show();
 		}
-	}else if($('#sessionRanks').val() =="사장"||$('#sessionRanks').val() == "이사"){
+	}else if($('#sessionRanks').val() =="대표"||$('#sessionRanks').val() == "이사"){
 		if($('#prjCompletion').val() > 0){
 			$('#insertProjectWbsListBtn').hide();
 			$('#checkListRemoveBtn').hide();
