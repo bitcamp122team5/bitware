@@ -1,30 +1,9 @@
-// 화면 불러오며 사업비, 계약금에 3자리마다 콤마 찍어 출력
-$(function(){
-	for (i = 0 ; i<$(".commaN").length; i++){
-		$(".commaN").eq(i).text(commaNum($(".commaN").eq(i).html()));
-	}
-})
-// 3자리마다 콤마 찍기
-function commaNum(num){
-	var len, point, str;
-	num = num + "";
-	point = num.length % 3
-	len = num.length;
-	
-	str = num.substring(0, point);
-	while (point < len){
-		if(str != "") str += ",";
-		str += num.substring(point, point + 3);
-		point +=3;
-	}
-	return str;
-}
+/*WBS 화면 구성*/
 
+/*최초 ProjectWbs 화면 그리기 */
 var baseData = {} // ProjectInfoDto
 var subData = {} // List<ProjectWbsDto>
 
-
-/*최초 ProjectWbs 화면 그리기 */
 $(function(){
 	
 	// 기본데이터 저장 객체
@@ -110,147 +89,6 @@ $(function(){
 		WBSProgress();
 	}
 });
-	
-// 진행률 통계 구하기
-function WBSProgress(){
-	
-	var date = new Date();
-	var year = date.getFullYear();
-	var month = date.getMonth()+1
-	var day = date.getDate();
-	
-	if(month < 10){
-		month = "0"+month;
-	}
-	if(day < 10){
-		day = "0"+day;
-	}
-	var today = year+"-"+month+"-"+day;
-	
-	//wbs항목들의 percent 값을 담을 배열 생성
-	var planPercentArray = new Array();
-	var realPercentArray = new Array();
-	//분모 구하기 (WBS종료일 - WBS시작일)
-	var planDenominator = new Array();
-	var realDenominator = new Array();
-	//분자 구하기 (TODAY - WBS시작일)
-	var planMolecule = new Array();
-	var realMolecule = new Array();
-	//임시 배열 변수
-	var planTempNum = new Array();
-	var realTempNum = new Array();
-	//총 진행률 값 담을 임시 배열 변수
-	var planTempNumTotal = new Array();
-	var realTempNumTotal = new Array();
-	//총 진행률 계산 값
-	var planTotalProgress = 0;
-	var realTotalProgress = 0;
-	//계산 완료된 총 진행률을 담을 값
-	var planTotalProgressPercent = 0;
-	var realTotalProgressPercent = 0;
-	
-	//분모 구하기 (WBS종료일 - WBS시작일) 
-	for(var i=0; i<subData.cnt; i++){
-		planDenominator[i] = dayCalculation(subData.prjPlanStart[i], subData.prjPlanEnd[i]);
-	}
-	for(var i=0; i<subData.cnt; i++){
-		if(nvl(subData.prjRealStart[i], "") != "" && nvl(subData.prjRealEnd[i], "") != ""){
-			realDenominator[i] = dayCalculation(subData.prjRealStart[i], subData.prjRealEnd[i]);	
-		}
-	}
-	//분자 구하기 (TODAY - WBS시작일)
-	for(var i=0; i<subData.cnt; i++){
-		planMolecule[i] = dayCalculation(subData.prjPlanStart[i], today);
-	}
-	for(var i=0; i<subData.cnt; i++){
-		if(nvl(subData.prjRealStart[i], "") != ""){
-			realMolecule[i] = dayCalculation(subData.prjRealStart[i], today);
-		}
-	}
-	
-	//개별 진행률 구하기
-	for(var i=0; i<subData.cnt; i++){
-		planTempNum[i] = makeBaseRound((planMolecule[i] / planDenominator[i]) * 100);
-		planTempNumTotal[i] = ((planMolecule[i] / planDenominator[i]) * 100); 
-		if(0 < planTempNum[i] && planTempNum[i] <= 100){
-			planPercentArray[i] = planTempNum[i];
-		}else if(planTempNum[i] > 100){
-			planPercentArray[i] = 100;
-		}else{
-			planPercentArray[i] = 0;
-		}
-	}
-	for(var i=0; i<subData.cnt; i++){
-		realTempNum[i] = makeBaseRound((realMolecule[i] / realDenominator[i]) * 100);
-		realTempNumTotal[i] = ((realMolecule[i] / realDenominator[i]) * 100); 
-		if(0 < realTempNum[i] && realTempNum[i] <= 100){
-			realPercentArray[i] = realTempNum[i];
-		}else if(realTempNum[i] > 100){
-			realPercentArray[i] = 100;
-		}else{
-			realPercentArray[i] = 0;
-		}
-	}
-	//개별 진행률 담기
-	for(var i=0; i<subData.cnt; i++){
-		if(0 < planTempNumTotal[i] && planTempNumTotal[i] <= 100){
-			planTotalProgress += planTempNumTotal[i];
-		}else if(planTempNumTotal[i] > 100){
-			planTotalProgress += 100;
-		}
-	}
-	for(var i=0; i<subData.cnt; i++){
-		if(0 < realTempNumTotal[i] && realTempNumTotal[i] <= 100){
-			realTotalProgress += realTempNumTotal[i];
-		}else if(realTempNumTotal[i] > 100){
-			realTotalProgress += 100;
-		}
-	}
-	// 총 진행률 합 / 작업 리스트 개수
-	if(planTotalProgress.length != 0){
-		planTotalProgressPercent = makeBaseRound(planTotalProgress / subData.cnt);
-	}
-	if(realTotalProgress.length != 0){
-		realTotalProgressPercent = makeBaseRound(realTotalProgress / subData.cnt);
-	}
-	//개별 계획 진행률 입력
-	for(var i=0; i<subData.cnt; i++){
-			$('.planProgressList').each(function(i){
-				$(this).text(planPercentArray[i]+'%');
-			});
-	}
-	for(var i=0; i<subData.cnt; i++){
-		$('.realProgressList').each(function(i){
-			$(this).text(realPercentArray[i]+'%');
-		});
-}
-	// 계획 총 진행률 입력
-	if(0 < planTotalProgressPercent && planTotalProgressPercent <= 100){
-		$('.planTotalProgress').text(planTotalProgressPercent+'%');
-	}else if(planTotalProgressPercent > 100){
-		$('.planTotalProgress').text('100%');
-	}else{
-		$('.planTotalProgress').text('0%');
-	}
-	if(0 < realTotalProgressPercent && realTotalProgressPercent <= 100){
-		$('.realTotalProgress').text(realTotalProgressPercent+'%');
-	}else if(realTotalProgressPercent > 100){
-		$('.realTotalProgress').text('100%');
-	}else{
-		$('.realTotalProgress').text('0%');
-	}
-}
-
-//날짜 차이 일수 구하기
-function dayCalculation(start, end){
-	var tempStart = start.split("-");
-	var tempEnd = end.split("-");
-	
-	var starts = new Date(tempStart[0], tempStart[1]-1, tempStart[2]);
-	var ends = new Date(tempEnd[0], tempEnd[1]-1, tempEnd[2]);
-	
-	return ((ends.getTime() - starts.getTime()) / (1000*60*60*24)) + 1;
-}
 
 /*테이블 tbody 화면에 그리는 함수 (개발부 부장 수정 가능 projectWbs 출력) */
 function screenWriteTbodyEdit(num, group, step, depth, workName, manager, output, planStart, planEnd, realStart, realEnd, workCompletion, totalDays) {
@@ -337,15 +175,6 @@ function screenWriteTbodyText(num, group, step, depth, workName, manager, output
 	tag.append("</tr>");
 	
 	return tag.toString();
-}
-
-//숫자 5 -> 05 변경
-function numFormat(num) {
-	var str = ''+num;
-	if(num<10 && str.indexOf('0') == -1) {
-		str = '0'+num;
-	}
-	return str;
 }
 
 // 맨 처음 목록 생성
@@ -499,13 +328,9 @@ function createChildList(num) {
 	subData.cnt = $('#tbody tr').length;
 }
 
-//전체체크
-function checkAll(bool) {
-	var chkVal = document.getElementsByName("chkVal");
-	for (var i = 0; i < chkVal.length; i++) {
-		chkVal[i].checked = bool;
-	}
-}
+
+/*프로젝트 WBS CRUD*/
+
 // 삭제처리
 function checkListRemove() {
 	var isc = 0;
@@ -556,28 +381,12 @@ function checkListRemove() {
 		}
 	}
 	if(isc==0) {
-		swal("삭제", '선택해주세요');
+		alert('삭제할 작업을 선택해주세요');
 	}
 	if($('#tbody tr').length == 0) {
 		baseData.chk = false;
 	}
 	subData.cnt = $('#tbody tr').length;
-}
-
-//배열로 반환한다.
-function byNameArray(data) {
-	var dataArray = new Array();
-	for(var i=0; i<data.length; i++) {
-		dataArray[i] = data[i].value;
-	}
-	return dataArray;
-}
-
-//parse a date in yyyy-mm-dd format
-function parseDate(input) {
-  var parts = input.match(/(\d+)/g);
-  // new Date(year, month [, date [, hours[, minutes[, seconds[, ms]]]]])
-  return new Date(parts[0], parts[1]-1, parts[2]); // months are 0-based
 }
 
 // 프로젝트 WBS 저장 전 검사
@@ -670,28 +479,19 @@ function insertProjectWbsList(){
 	}
 }
 
-//undefined 처리
-function nvl(str, defaultStr){
-    
-    if(typeof str == "undefined" || str == null || str == "")
-        str = defaultStr ;
-    return str ;
-}
-
-
 // 프로젝트 WBS 저장
 var insertProjectWbsListAjax = function(){
 	
 	$.ajax({
-		url: '/user/insertProjectWbsListAjaxCon',
+		url: '/user/insertProjectWbsListAjax',
 		type: 'post',
 		async: false,
 		data: $('#insertProjectWbsList').serialize(),
 		success: function(msg){
 			if(msg){
-				swal('저장', '저장에 성공했습니다.');
+				alert('저장에 성공했습니다.');
 			}else{
-				swal('저장', '저장에 실패했습니다.');
+				alert('저장에 실패했습니다.');
 			}
 		},
 		error : function(msg){
@@ -699,6 +499,180 @@ var insertProjectWbsListAjax = function(){
 		}
 	});
 	
+}
+
+
+/*통계 */
+
+//진행률 통계 구하기
+function WBSProgress(){
+	
+	var date = new Date();
+	var year = date.getFullYear();
+	var month = date.getMonth()+1
+	var day = date.getDate();
+	
+	if(month < 10){
+		month = "0"+month;
+	}
+	if(day < 10){
+		day = "0"+day;
+	}
+	var today = year+"-"+month+"-"+day;
+	
+	//wbs항목들의 percent 값을 담을 배열 생성
+	var planPercentArray = new Array();
+	var realPercentArray = new Array();
+	//분모 구하기 (WBS종료일 - WBS시작일)
+	var planDenominator = new Array();
+	var realDenominator = new Array();
+	//분자 구하기 (TODAY - WBS시작일)
+	var planMolecule = new Array();
+	var realMolecule = new Array();
+	//임시 배열 변수
+	var planTempNum = new Array();
+	var realTempNum = new Array();
+	//총 진행률 값 담을 임시 배열 변수
+	var planTempNumTotal = new Array();
+	var realTempNumTotal = new Array();
+	//총 진행률 계산 값
+	var planTotalProgress = 0;
+	var realTotalProgress = 0;
+	//계산 완료된 총 진행률을 담을 값
+	var planTotalProgressPercent = 0;
+	var realTotalProgressPercent = 0;
+	
+	//분모 구하기 (WBS종료일 - WBS시작일) 
+	for(var i=0; i<subData.cnt; i++){
+		planDenominator[i] = dayCalculation(subData.prjPlanStart[i], subData.prjPlanEnd[i]);
+	}
+	for(var i=0; i<subData.cnt; i++){
+		if(nvl(subData.prjRealStart[i], "") != "" && nvl(subData.prjRealEnd[i], "") != ""){
+			realDenominator[i] = dayCalculation(subData.prjRealStart[i], subData.prjRealEnd[i]);	
+		}
+	}
+	//분자 구하기 (TODAY - WBS시작일)
+	for(var i=0; i<subData.cnt; i++){
+		planMolecule[i] = dayCalculation(subData.prjPlanStart[i], today);
+	}
+	for(var i=0; i<subData.cnt; i++){
+		if(nvl(subData.prjRealStart[i], "") != ""){
+			realMolecule[i] = dayCalculation(subData.prjRealStart[i], today);
+		}
+	}
+	
+	//개별 진행률 구하기
+	for(var i=0; i<subData.cnt; i++){
+		planTempNum[i] = makeBaseRound((planMolecule[i] / planDenominator[i]) * 100);
+		planTempNumTotal[i] = ((planMolecule[i] / planDenominator[i]) * 100); 
+		if(0 < planTempNum[i] && planTempNum[i] <= 100){
+			planPercentArray[i] = planTempNum[i];
+		}else if(planTempNum[i] > 100){
+			planPercentArray[i] = 100;
+		}else{
+			planPercentArray[i] = 0;
+		}
+	}
+	for(var i=0; i<subData.cnt; i++){
+		realTempNum[i] = makeBaseRound((realMolecule[i] / realDenominator[i]) * 100);
+		realTempNumTotal[i] = ((realMolecule[i] / realDenominator[i]) * 100); 
+		if(0 < realTempNum[i] && realTempNum[i] <= 100){
+			realPercentArray[i] = realTempNum[i];
+		}else if(realTempNum[i] > 100){
+			realPercentArray[i] = 100;
+		}else{
+			realPercentArray[i] = 0;
+		}
+	}
+	//개별 진행률 담기
+	for(var i=0; i<subData.cnt; i++){
+		if(0 < planTempNumTotal[i] && planTempNumTotal[i] <= 100){
+			planTotalProgress += planTempNumTotal[i];
+		}else if(planTempNumTotal[i] > 100){
+			planTotalProgress += 100;
+		}
+	}
+	for(var i=0; i<subData.cnt; i++){
+		if(0 < realTempNumTotal[i] && realTempNumTotal[i] <= 100){
+			realTotalProgress += realTempNumTotal[i];
+		}else if(realTempNumTotal[i] > 100){
+			realTotalProgress += 100;
+		}
+	}
+	// 총 진행률 합 / 작업 리스트 개수
+	if(planTotalProgress.length != 0){
+		planTotalProgressPercent = makeBaseRound(planTotalProgress / subData.cnt);
+	}
+	if(realTotalProgress.length != 0){
+		realTotalProgressPercent = makeBaseRound(realTotalProgress / subData.cnt);
+	}
+	//개별 계획 진행률 입력
+	for(var i=0; i<subData.cnt; i++){
+			$('.planProgressList').each(function(i){
+				$(this).text(planPercentArray[i]+'%');
+			});
+	}
+	for(var i=0; i<subData.cnt; i++){
+		$('.realProgressList').each(function(i){
+			$(this).text(realPercentArray[i]+'%');
+		});
+}
+	// 계획 총 진행률 입력
+	if(0 < planTotalProgressPercent && planTotalProgressPercent <= 100){
+		$('.planTotalProgress').text(planTotalProgressPercent+'%');
+	}else if(planTotalProgressPercent > 100){
+		$('.planTotalProgress').text('100%');
+	}else{
+		$('.planTotalProgress').text('0%');
+	}
+	if(0 < realTotalProgressPercent && realTotalProgressPercent <= 100){
+		$('.realTotalProgress').text(realTotalProgressPercent+'%');
+	}else if(realTotalProgressPercent > 100){
+		$('.realTotalProgress').text('100%');
+	}else{
+		$('.realTotalProgress').text('0%');
+	}
+}
+
+//날짜 차이 일수 구하기
+function dayCalculation(start, end){
+	var tempStart = start.split("-");
+	var tempEnd = end.split("-");
+	
+	var starts = new Date(tempStart[0], tempStart[1]-1, tempStart[2]);
+	var ends = new Date(tempEnd[0], tempEnd[1]-1, tempEnd[2]);
+	
+	return ((ends.getTime() - starts.getTime()) / (1000*60*60*24)) + 1;
+}
+
+
+
+
+/*부가 기능*/
+
+//숫자 5 -> 05 변경
+function numFormat(num) {
+	var str = ''+num;
+	if(num<10 && str.indexOf('0') == -1) {
+		str = '0'+num;
+	}
+	return str;
+}
+
+//배열로 반환한다.
+function byNameArray(data) {
+	var dataArray = new Array();
+	for(var i=0; i<data.length; i++) {
+		dataArray[i] = data[i].value;
+	}
+	return dataArray;
+}
+
+//parse a date in yyyy-mm-dd format
+function parseDate(input) {
+  var parts = input.match(/(\d+)/g);
+  // new Date(year, month [, date [, hours[, minutes[, seconds[, ms]]]]])
+  return new Date(parts[0], parts[1]-1, parts[2]); // months are 0-based
 }
 
 //totalDays 문자열을 쪼개서 날짜만큼 inPrjTotalDays를 만들어 둠.
@@ -710,60 +684,21 @@ function totalDaysAnalysis(data, cnt) {
 	return tag.toString();
 }
 
-// 프로젝트 작업 목록 달력에 값 붙이기
-$(function(){
-	var calendarEl = document.getElementById('calendar');
-	  
-	var calendar = new FullCalendar.Calendar(calendarEl, {
-		plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
-	  	header: {
-      		left: 'prev,next today',
-      		center: 'title',
-     		right: 'dayGridMonth, listMonth'
-      	},
-      	defaultView: 'dayGridMonth',
-     	defaultDate: new Date(),
-      	locale: 'ko',
-      	navLinks: true, // can click day/week names to navigate views
-      	businessHours: true, // display business hours
-      	editable: false,
-    });
-	
-	var prjCode = $('#prjCode').val();
-	
-	$.ajax({
-			type: "post",
-			url: "/user/selectProjectWbsOnCalendar",
-			data: {prjCode : prjCode},
-			dataType: "json",
-			success:function(projectWbsList){
-				for(var i in projectWbsList){
-					if(projectWbsList[i].prjDepth==0) var color = "#ff0000";
-					if(projectWbsList[i].prjDepth==1) var color = "#ff6000";
-					if(projectWbsList[i].prjDepth==2) var color = "#ff9600";
-					if(projectWbsList[i].prjDepth==3) var color = "#ffd200";
-					if(projectWbsList[i].prjDepth==4) var color = "#ffe400";
-					if(projectWbsList[i].prjDepth==5) var color = "#c1ee0c";
-					if(projectWbsList[i].prjDepth==6) var color = "#66ee0c";
-					if(projectWbsList[i].prjDepth==7) var color = "#0cee76";
-					if(projectWbsList[i].prjDepth==8) var color = "#0c91ee";
-					if(projectWbsList[i].prjDepth==9) var color = "#0c6cee";
-					calendar.addEvent({
-		            	title: projectWbsList[i].prjWorkName,
-		                start: projectWbsList[i].prjPlanStart,
-		                end: projectWbsList[i].prjPlanEnd,
-		                color: color
-		            });
-				}
-			}
-		});
-	  calendar.render();
-})
+//undefined 처리
+function nvl(str, defaultStr){
+    
+    if(typeof str == "undefined" || str == null || str == "")
+        str = defaultStr ;
+    return str ;
+}
 
-//프로젝트 작업 목록 달력 모달
-function viewGraph(){
-		$("#viewGraphModal").modal();
+//전체체크
+function checkAll(bool) {
+	var chkVal = document.getElementsByName("chkVal");
+	for (var i = 0; i < chkVal.length; i++) {
+		chkVal[i].checked = bool;
 	}
+}
 
 /*부서에 따라 wbs와 달력 show or hide*/
 $(function(){
@@ -809,9 +744,62 @@ $(function(){
 	}
 })
 
-//
-//$(function(){
-//	if($('.prjMems').length > 0){
-//		$('#projectAttendMembersBtn').hide();
-//	}
-//})
+	
+
+
+/*달력 기능 */
+
+//프로젝트 작업 목록 달력 모달
+function viewGraph(){
+		$("#viewGraphModal").modal();
+	}
+
+//프로젝트 작업 목록 달력에 값 붙이기
+$(function(){
+	var calendarEl = document.getElementById('calendar');
+	  
+	var calendar = new FullCalendar.Calendar(calendarEl, {
+		plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
+	  	header: {
+    		left: 'prev,next today',
+    		center: 'title',
+   		right: 'dayGridMonth, listMonth'
+    	},
+    	defaultView: 'dayGridMonth',
+   	defaultDate: new Date(),
+    	locale: 'ko',
+    	navLinks: true, // can click day/week names to navigate views
+    	businessHours: true, // display business hours
+    	editable: false,
+  });
+	
+	var prjCode = $('#prjCode').val();
+	
+	$.ajax({
+			type: "post",
+			url: "/user/selectProjectWbsOnCalendar",
+			data: {prjCode : prjCode},
+			dataType: "json",
+			success:function(projectWbsList){
+				for(var i in projectWbsList){
+					if(projectWbsList[i].prjDepth==0) var color = "#ff0000";
+					if(projectWbsList[i].prjDepth==1) var color = "#ff6000";
+					if(projectWbsList[i].prjDepth==2) var color = "#ff9600";
+					if(projectWbsList[i].prjDepth==3) var color = "#ffd200";
+					if(projectWbsList[i].prjDepth==4) var color = "#ffe400";
+					if(projectWbsList[i].prjDepth==5) var color = "#c1ee0c";
+					if(projectWbsList[i].prjDepth==6) var color = "#66ee0c";
+					if(projectWbsList[i].prjDepth==7) var color = "#0cee76";
+					if(projectWbsList[i].prjDepth==8) var color = "#0c91ee";
+					if(projectWbsList[i].prjDepth==9) var color = "#0c6cee";
+					calendar.addEvent({
+		            	title: projectWbsList[i].prjWorkName,
+		                start: projectWbsList[i].prjPlanStart,
+		                end: projectWbsList[i].prjPlanEnd,
+		                color: color
+		            });
+				}
+			}
+		});
+	  calendar.render();
+})

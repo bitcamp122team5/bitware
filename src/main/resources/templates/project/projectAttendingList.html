@@ -9,23 +9,20 @@
 
 <!-- 사용자 css 추가 -->
 <th:block layout:fragment="css">
-<link rel="stylesheet" type="text/css" th:href="@{/css/project/sweetalert.css?ver=1.2}">
 <link rel="stylesheet" type="text/css" th:href="@{/css/project/bootstrap-theme.min.css}">
 <link rel="stylesheet" type="text/css" th:href="@{/css/project/bootstrap.min.css}">
 </th:block>
 
 <!-- 사용자 script 추가 -->
 <th:block layout:fragment="script">
-<!-- <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script> -->
 <script type="text/javascript" th:src="@{/js/project/bootstrap.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/project/sweetalert.min.js?ver=1}"></script>
 <script type="text/javascript" th:src="@{/js/project/projectList.js}"></script>
 </th:block>
 </head>
 <body>
 <div th:replace="fragments/header :: headerFragment"></div>
 
-<div th:replace="fragments/aside :: asideFragmentProject"></div>
+<div th:replace="fragments/aside :: asideFragment"></div>
 
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
@@ -55,6 +52,7 @@
 
 	<input type="hidden" id="sessionRanks" th:value="${sessionRanks}">
 	<input type="hidden" id="sessionDeptName" th:value="${sessionDeptName}">
+		
 		<div class="article">
 			<div class="table_wrap list">
 				<table>
@@ -90,15 +88,15 @@
 				</table>
 				<div class="btn_wrap">
 					<div class="box_right">
-						<a class="btn btn_point" id="insertProjectBtn" onclick="insertProjectForm()">프로젝트 생성</a>
-						<a class="btn btn_point" id="deleteProjectBtn" onclick="deleteProjectAjax()">프로젝트 삭제</a>
+						<a class="btn btn_point" id="insertProjectBtn" onclick="insertProjectModal()">프로젝트 생성</a>
+						<a class="btn btn_point" id="deleteProjectBtn" onclick="deleteProjectAjax()">프로젝트 삭제</a>	
 					</div>
 				</div>
 			</div><!-- //table_wrap end -->
 		</div>
 	
 	<!-- 프로젝트 생성 modal -->
-	<div class="modal fade" id="insertProjectForm" role="dialog">
+	<div class="modal" id="insertProjectModal" role="dialog">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -132,7 +130,8 @@
 							<label>마더업체</label>
 							<input class="form-control" type="text" name="prjMothercompany" id="prjMothercompany" autocomplete="off" />
 						</div>
-					<table class="table table-hover">
+				<div class="table_wrap list">
+				<table>
 					<h4>프로젝트 참여인원 선택</h4>
 					<tr>
 						<th><input type="checkbox" name="allCheckBox" id="allCheckBox"></th>
@@ -149,34 +148,30 @@
 							<td th:text="${worker.ranks}"></td>
 					</tr>
 				</table>
+				</div>
 				</form>
 				</div>
-				<div class="modal-footer">
-					<div class="btn_wrap">
-						<div class="box_right">
-							<a class="btn btn_point" onclick="insertProject()">생성</a>
-							<a class="btn btn_point" data-dismiss="modal">취소</a>
-						</div>
+				<div class="btn_wrap">
+					<div class="box_right">
+						<a class="btn btn_point" onclick="insertProject()">생성</a>
+						<a class="btn btn_point" data-dismiss="modal">취소</a>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div><!-- //section end -->
-<!-- 페이징 -->
-<div th:align="center">
-<table th:align="center">
-	<tr>
-		<td colspan="5">
+	<!-- 페이징 -->
+	<div th:align="center">
+		<div class="paging">
 			<span th:if="${page.curBlock > 1}">
-				<a th:href="@{/user/selectAttendingProjectList(curPage=${page.prevPage}, searchCondition=${search.searchCondition}, searchKeyword=${search.searchKeyword})}">[이전]</a>
+				<a th:href="@{/user/selectAttendingProjectList(curPage=${page.prevPage}, searchCondition=${search.searchCondition}, searchKeyword=${search.searchKeyword})}" class="page prev_02">[이전]</a>
 			</span>
 			<span th:if="${page.curBlock > 1 }">
-				<a th:href="@{/user/selectAttendingProjectList(curPage=1,searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}">1</a>
+				<a th:href="@{/user/selectAttendingProjectList(curPage=1,searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" class="page prev_01">1</a>
 			</span>
 			<span th:each="num:${block}">
 				<span th:if="${num==page.curPage }">
-					<a th:href="@{/user/selectAttendingProjectList(curPage=${num},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${num}" style="color:orange;"></a>
+					<a th:href="@{/user/selectAttendingProjectList(curPage=${num},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${num}" class="paging_click"></a>
 				</span>
 				<span th:unless="${num==page.curPage }">
 					<a th:href="@{/user/selectAttendingProjectList(curPage=${num},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${num}"></a>
@@ -186,12 +181,11 @@
 				<a th:href="@{/user/selectAttendingProjectList(curPage=${page.totPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${page.totPage}"></a>
 			</span>
 			<span th:if="${page.curBlock < page.totBlock }">
-				<a th:href="@{/user/selectAttendingProjectList(curPage=${page.nextPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}">[다음]</a>
+				<a th:href="@{/user/selectAttendingProjectList(curPage=${page.nextPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" class="page next_01">[다음]</a>
 			</span>
-		</td>
-	</tr>
-</table>
-</div>
+		</div>
+	</div>
 <!-- 페이징 끝 -->
+</div><!-- //section end -->
 </body>
 </html>
