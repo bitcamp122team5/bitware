@@ -31,7 +31,7 @@ $(function(){
 			dataType:'json',
 			success:function(projectListWithZero){
 				var str="";
-				if(projectListWithZero!=null){
+				if(projectListWithZero.length!=0){
 					str += "<table><colgroup><col width='*'><col width='80px'><col width='80px'><col width='80px'><col width='100px'></colgroup><tr><thead><tr><th>프로젝트명</th><th>PM</th><th>시작일</th><th>종료일</th><th>마더업체</th></tr></thead>";
 					for (var i in projectListWithZero){
 						str += "<tbody><tr><td><a href='/user/projectDetail?prjCode="+projectListWithZero[i].prjCode+"'>"+projectListWithZero[i].prjName+"</a></td>";
@@ -56,7 +56,7 @@ $(function(){
 			dataType:'json',
 			success:function(projectListWithOne){
 				var str="";
-				if(projectListWithOne!=null){
+				if(projectListWithOne.length!=0){
 					str += "<table><colgroup><col width='*'><col width='80px'><col width='80px'><col width='80px'><col width='100px'></colgroup><tr><thead><th>프로젝트명</th><th>PM</th><th>시작일</th><th>종료일</th><th>마더업체</th></tr></thead>";
 					for (var i in projectListWithOne){
 						str += "<tbody><tr><td><a href='/user/projectDetail?prjCode="+projectListWithOne[i].prjCode+"'>"+projectListWithOne[i].prjName+"</a></td>";
