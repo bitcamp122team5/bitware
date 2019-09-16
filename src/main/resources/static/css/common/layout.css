@@ -16,22 +16,34 @@
 .header .userInfo .commute a{background:#27b6af;color:#fff;border-radius:5px;}
 
 /* aside */
-.aside{position:absolute;width:240px;min-height:100%;background:#1d212a;}
-.aside_tit{width:100%;height:150px;background:#3a4150;text-align:center;}
+.aside{position:absolute;width:240px;min-height:100%;background:#3e5165;}
+.aside_con{width:100%;}
+.aside_con .dep1{}
+.aside_con .dep1 > a{position:relative;display:block;padding:16px 20px;background:#3e5165;color:#fff;font-size:13px;}
+.aside_con .dep2ul {display:none;background:#23313f;}
+.aside_con .dep2ul li a{position:relative;display:block;padding:16px 26px;color:#fff;font-size:12px;}
+.aside_con .dep2ul li a::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:#fff;transition:0.3s;opacity:0;}
+.aside_con .dep2ul li a:hover::before{opacity:1;}
+
+.aside_con .dep1.have.on .dep2ul{display:block;}
+.aside_con .dep1.have.on .dep2ul li a:active::before{opacity:1;}
+
+
+/* .aside_tit{width:100%;height:150px;background:#3a4150;text-align:center;} */
 /* .aside_tit a{display:block;padding:10px 15px;box-sizing:border-box;color:#fff;font-size:20px;background:#3a4150;} */
-.aside_con{padding:10px;box-sizing:border-box;}
-.aside_con .dep1{margin:5px 0;text-align:left;}
-.aside_con .dep1 > a{display:block;padding:9px 10px;box-sizing:border-box;font-size:15px;color:#fff;border-radius:5px;}
-.aside_con .dep1 > a:hover{background:#fff;color:#1d212a;}
-.aside_con .dep1.have > a{background:url(/images/menu_arrow.png) right center no-repeat;background-size:11%;}
-.aside_con .dep1.have > a:hover{background:#fff url(/images/menu_arrow.png) right center no-repeat;background-size:11%;color:#1d212a;}
-.aside_con .dep1.on > a:focus,
-.aside_con .dep1.have.on > a:active{background:#27b6af url(/images/menu_arrow_on.png) right center no-repeat;background-size:11%;color:#fff;}
-.aside_con .dep1.have.on > a{}
-.aside_con .dep1.have .dep2ul{display:none;}
-.aside_con .dep1.have.on .dep2ul{display:block;transition: all 0.1s ease-in-out;}
-.aside_con .dep1.have.on .dep2ul a:hover{font-weight:bold;}
-.aside_con .dep2ul a{display:block;padding:15px 18px 15px 30px;box-sizing:border-box;font-size:12px;color:#fff;}
+/* .aside_con{padding:10px;box-sizing:border-box;} */
+/* .aside_con .dep1{margin:5px 0;text-align:left;} */
+/* .aside_con .dep1 > a{display:block;padding:9px 10px;box-sizing:border-box;font-size:15px;color:#fff;border-radius:5px;} */
+/* .aside_con .dep1 > a:hover{background:#fff;color:#1d212a;} */
+/* .aside_con .dep1.have > a{background:url(/images/menu_arrow.png) right center no-repeat;background-size:11%;} */
+/* .aside_con .dep1.have > a:hover{background:#fff url(/images/menu_arrow.png) right center no-repeat;background-size:11%;color:#1d212a;} */
+/* .aside_con .dep1.on > a:focus, */
+/* .aside_con .dep1.have.on > a:active{background:#27b6af url(/images/menu_arrow_on.png) right center no-repeat;background-size:11%;color:#fff;} */
+/* .aside_con .dep1.have.on > a{} */
+/* .aside_con .dep1.have .dep2ul{display:none;} */
+/* .aside_con .dep1.have.on .dep2ul{display:block;transition: all 0.1s ease-in-out;} */
+/* .aside_con .dep1.have.on .dep2ul a:hover{font-weight:bold;} */
+/* .aside_con .dep2ul a{display:block;padding:15px 18px 15px 30px;box-sizing:border-box;font-size:12px;color:#fff;} */
 
 .section{position:absolute;width:calc(100% - 240px);height:calc(100vh - 60px);margin-left:240px;background:#F0F3F3;}
 .section.no_aside{width:100%;height:calc(100vh - 60px);margin-left:0;background:#F0F3F3;}
