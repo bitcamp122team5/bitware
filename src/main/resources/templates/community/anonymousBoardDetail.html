@@ -107,11 +107,13 @@ window.onload=function(){
 		</table>
 		<div class="btn_wrap">
 			<div class="box_right">
-				<input type="button" id="updateBtn" class="btn btn_point" value="수정">
-				<input type="button" id="deleteBtn" class="btn btn_point" value="삭제">
-				<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/user/deleteAnonymousBoard(bno=${anonymousBoard.bno})}" class="btn btn_point">삭제(관리자)</a>
-				<input type="button" id="replyBtn" class="btn btn_point" value="답변">
 				<a th:href="@{/user/selectAnonymousBoardList}" class="btn btn_point">목록보기</a>
+				<th:block sec:authorize="hasAnyRole('ROLE_USER','ROLE_PL','ROLE_PM')">
+					<input type="button" id="updateBtn" class="btn btn_point" value="수정">
+					<input type="button" id="deleteBtn" class="btn btn_point" value="삭제">
+					<input type="button" id="replyBtn" class="btn btn_point" value="답변">
+				</th:block>
+				<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/user/deleteAnonymousBoard(bno=${anonymousBoard.bno})}" class="btn btn_point">삭제(관리자)</a>
 			</div>
 		</div>
 	</div>

@@ -41,10 +41,6 @@ $(function(){
 					<td th:text="${docCenter.docTitle}"></td>
 				</tr>
 				<tr>
-					<th th:text="작성자"></th>
-					<td><span sec:authentication="principal.member.memName"></span></td>
-				</tr>
-				<tr>
 					<th th:text="내용"></th>
 					<td th:utext="${docCenter.docContent}"></td>
 				</tr>
