@@ -93,6 +93,9 @@
 
 </head>
 <body th:align="center">
+<div th:replace="fragments/headerAdmin :: headerFragmentAdmin"></div>
+
+<div th:replace="fragments/asideAdmin :: asideFragmentAdmin"></div>
 	<h1>사원 수정</h1>
 	<form name="memberForm">
 		<input name="memId" type="hidden" th:value="${member.memId}">

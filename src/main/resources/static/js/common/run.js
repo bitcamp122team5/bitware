@@ -11,6 +11,13 @@ $(function(){
 	});
 });
 
+/* 전체페이지 autocomplete off */
+$(document).ready(function(){
+    $( document ).on( 'focus', ':input', function(){
+        $( this ).attr( 'autocomplete', 'off' );
+    });
+});
+
 /* 채팅 아코디언  */
 $(function(){
 	$(".btn_chat").bind("click", function(){

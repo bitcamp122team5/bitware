@@ -45,6 +45,9 @@
 
 </head>
 <body th:align="center">
+<div th:replace="fragments/headerAdmin :: headerFragmentAdmin"></div>
+
+<div th:replace="fragments/asideAdmin :: asideFragmentAdmin"></div>
 	<h1>사원 등록</h1>
 	<form th:action="@{/admin/insertMember}" method="post" enctype="multipart/form-data">
 		<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">

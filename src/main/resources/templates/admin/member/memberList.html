@@ -39,6 +39,9 @@ $(document).ready(function() {
 </script>
 </head>
 <body th:align="center">
+<div th:replace="fragments/headerAdmin :: headerFragmentAdmin"></div>
+
+<div th:replace="fragments/asideAdmin :: asideFragmentAdmin"></div>
 <!-- 검색 시작 -->
 <form th:action="@{/admin/selectMemberList}">
 <table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0" th:width="700">
