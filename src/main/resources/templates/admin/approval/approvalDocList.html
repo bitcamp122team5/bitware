@@ -5,7 +5,14 @@
 <meta charset="UTF-8">
 <title>전자결재 문서양식 리스트(관리자)</title>
 <th:block th:replace="fragments/config :: configFragment"></th:block>
-
+<style>
+.approvalForm ul{padding:20px;box-sizing:border-box;}
+.approvalForm ul::after{content:'';display:block;clear:both;}
+.approvalForm ul li{float:left; width:23.7%;margin-bottom:20px;margin-right:20px;height:150px;border:1px solid #3e5165;box-sizing:border-box;border-radius:10px;}
+.approvalForm ul li a{display:block;width:100%;height:50px;}
+.approvalForm ul li a .approvalImg{width:100%;height:100%;}
+.approvalForm ul li:nth-child(4n){margin-right:0;}
+</style>
 </head>
 <body>
 <div th:replace="fragments/headerAdmin :: headerFragmentAdmin"></div>
@@ -15,18 +22,18 @@
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section" th:align="center">
 <h2>문서양식 목록</h2>
-	<table border="1" >
-		<tr>
-			<td>문서명</td>
-			<td>문서내용</td>
-		</tr>
-		<tr th:each="approval:${approvalDocList}">
-			<td> <a th:href="@{/admin/insertApprovalDocView(apdocNo=${approval.apdocNo})}" th:text="${approval.apdocName}"></a></td>
-			<td th:utext="${approval.apdocForm}"></td>
-		</tr>
-	</table>
+	<div class="approvalForm">
+		<ul>
+			<li th:each="approval:${approvalDocList}">
+				<a th:href="@{/admin/insertApprovalDocView(apdocNo=${approval.apdocNo})}" >
+				<div><span th:text="${approval.apdocName}"></span></div>
+				<div class="approvalImg"><img th:src="@{/images/if_survey_49353.png}" style="margin: 30px 25px;"/></div>
+<!-- 					<div class="approvalImg"><img th:src="@{/images/approval_icon.png}" style="margin: 30px 25px;"/></div> -->
+				</a>
+			</li>
+		</ul>
+	</div>
 	<br>
-	<a th:href="@{/admin/insertApprovalDocView}">문서 등록</a>
 	</div>
 </body>
 </html>

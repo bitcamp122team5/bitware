@@ -170,6 +170,8 @@ public class ApprovalController {
 	
 	@RequestMapping("/updateApproval")
 	public String updateApproval(ApprovalDto approval,ApprovalFileDto approvalFileDto,MultipartHttpServletRequest request) {
+		System.out.println("update");
+		System.out.println(approval);
 		approvalService.updateApproval(approval);
 		// 파일 업로드
 		String apNo = apdao.selectMaxApNo();
