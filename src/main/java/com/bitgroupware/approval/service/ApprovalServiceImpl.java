@@ -182,6 +182,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 	
 	@Override
 	public void updateApproval(ApprovalDto approval) {
+		System.out.println("update svc");
 		apDao.updateApproval(approval);
 	}
 	
