@@ -58,9 +58,13 @@ public class ChatServiceImpl implements ChatService {
 	}
 
 	@Override
-	public List<ChatMessageDto> selectChatMessageList(ChatMessageDto chatMessageDto) {
-		// TODO Auto-generated method stub
-		return chatDao.selectChatMessageList();
+	public List<ChatMessageDto> selectChatMessageList(String roomId) {
+		return chatDao.selectChatMessageList(roomId);
+	}
+
+	@Override
+	public String selectChatMessageListByRoomId(String roomId) {
+		return chatDao.selectChatMessageListByRoomId(roomId);
 	}
 
 //	@Override

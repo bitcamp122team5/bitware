@@ -35,7 +35,6 @@ $(function(){
 			$(this).parent().parent(".chat_inner").css("transform","translateX(0px)");
 		}
 		
-		
 		$.ajax({
 			url: "/user/chatDepartmentListAjax",
 			data: {},
@@ -55,13 +54,16 @@ $(function(){
 							url: "/user/chatMemberListByDepartmentAjax",
 							data: {deptName:deptName},
 							datatype: "json",
-							success: function(memberList){
+							success: function(list){
 								var str = "";
-								for(var i in memberList){
-									if(memberList[i].teamName==null){
-										str += "<li class='memberByDept' value='"+memberList[i].memId+"'>"+"<p>"+memberList[i].ranks+"</p>"+memberList[i].memName+"</li>";
+								for(var i in list){
+									if(list[i].content==null){
+										list[i].content="";
+									}
+									if(list[i].member.teamName==null){
+										str += "<li class='memberByDept' value='"+list[i].member.memId+"'>"+"<p>"+list[i].member.ranks+"</p>"+list[i].member.memName+"<p>"+list[i].content+"</p></li>";
 									}else{
-										str += "<li class='memberByDept' value='"+memberList[i].memId+"'>"+"<p>"+memberList[i].teamName+" "+memberList[i].ranks+"</p>"+memberList[i].memName+"</li>";
+										str += "<li class='memberByDept' value='"+list[i].member.memId+"'>"+"<p>"+list[i].member.teamName+" "+list[i].member.ranks+"</p>"+list[i].member.memName+"<p>"+list[i].content+"</p></li>";
 									}
 								}
 								$("#memberByDepartment li").remove();
