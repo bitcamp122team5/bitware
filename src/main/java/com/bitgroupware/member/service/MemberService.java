@@ -19,8 +19,6 @@ public interface MemberService {
 	List<RanksVo> selectRanksList(RanksVo ranksVo);
 	
 	void insertMember(MemberVo memverVo);
-
-	String selectCurdate();
 	
 	String selectCountMember();
 

@@ -79,13 +79,6 @@ public class MemberServiceImpl implements MemberService {
 		memberRepository.save(memberVo);
 	}
 
-	
-	// DB 서버의 날짜, MemId 생성시 필요
-	@Override
-	public String selectCurdate() {
-		return memberRepository.selectCurdate();
-	}
-
 	// DB의 Member수 Count, MemId 생성시 필요
 	@Override
 	public String selectCountMember() {

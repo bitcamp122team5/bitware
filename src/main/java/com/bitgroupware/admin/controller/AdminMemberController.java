@@ -65,11 +65,9 @@ public class AdminMemberController {
 	public String insertMemberView(Model model, DepartmentVo departmentVo, RanksVo ranksVo) {
 		List<DepartmentVo> deptList = memberService.selectDeptList(departmentVo);
 		List<RanksVo> rankList = memberService.selectRanksList(ranksVo);
-		String curdate = memberService.selectCurdate();
 
 		model.addAttribute("deptList", deptList);
 		model.addAttribute("rankList", rankList);
-		model.addAttribute("curdate", curdate);
 		return "admin/member/memberInsert";
 	}
 
@@ -110,9 +108,8 @@ public class AdminMemberController {
 			memberVo.setMemSignUrl(localPath);
 		}
 
-		String curdate = memberService.selectCurdate();
 		String memCount = memberService.selectCountMember();
-		String memId = curdate.replace("-", "") + (String.format("%3s", memCount)).replace(" ", "0"); // 사원번호 부여
+		String memId = request.getParameter("memJoinDate").replace("-", "") + (String.format("%3s", memCount)).replace(" ", "0"); // 사원번호 부여
 
 		memberVo.setMemId(memId);
 		memberVo.setMemPw(encoder.encode(memId)); // 초기 비밀번호 = 사번
@@ -149,11 +146,9 @@ public class AdminMemberController {
 			e.printStackTrace();
 		}
 		List<RanksVo> rankList = memberService.selectRanksList(ranksVo);
-		String curdate = memberService.selectCurdate();
 
 		model.addAttribute("deptList", deptList);
 		model.addAttribute("rankList", rankList);
-		model.addAttribute("curdate", curdate);
 		model.addAttribute("member", member);
 
 		return "admin/member/memberUpdate";
