@@ -1,3 +1,25 @@
+// 화면 불러오며 사업비, 계약금에 3자리마다 콤마 찍어 출력
+$(function(){
+	for (i = 0 ; i<$(".commaN").length; i++){
+		$(".commaN").eq(i).text(commaNum($(".commaN").eq(i).html()));
+	}
+})
+// 3자리마다 콤마 찍기
+function commaNum(num){
+	var len, point, str;
+	num = num + "";
+	point = num.length % 3
+	len = num.length;
+	
+	str = num.substring(0, point);
+	while (point < len){
+		if(str != "") str += ",";
+		str += num.substring(point, point + 3);
+		point +=3;
+	}
+	return str;
+}
+
 var baseData = {} // ProjectInfoDto
 var subData = {} // List<ProjectWbsDto>
 
@@ -787,3 +809,9 @@ $(function(){
 	}
 })
 
+//
+//$(function(){
+//	if($('.prjMems').length > 0){
+//		$('#projectAttendMembersBtn').hide();
+//	}
+//})

@@ -58,37 +58,6 @@ input[type='date']{
 	text-align: center;
 }
 </style>
-<script>
-$(function(){
-	if($('.prjMems').length > 0){
-		$('#projectAttendMembersBtn').hide();
-	}
-})
-
-// 화면 불러오며 사업비, 계약금에 3자리마다 콤마 찍어 출력
-$(function(){
-	for (i = 0 ; i<$(".commaN").length; i++){
-		$(".commaN").eq(i).text(commaNum($(".commaN").eq(i).html()));
-	}
-})
-// 3자리마다 콤마 찍기
-function commaNum(num){
-	var len, point, str;
-	num = num + "";
-	point = num.length % 3
-	len = num.length;
-	
-	str = num.substring(0, point);
-	while (point < len){
-		if(str != "") str += ",";
-		str += num.substring(point, point + 3);
-		point +=3;
-	}
-	return str;
-}
-
-
-</script>
 </head>
 <body>
 <div th:replace="fragments/header :: headerFragment"></div>
@@ -123,9 +92,9 @@ function commaNum(num){
 				</tr>
 				<tr>
 					<th>계약금</th>
-					<td th:text="${prjInfo.prjDeposit}" class="commaN"></td>
+					<td th:text="${prjInfo.prjDeposit}" class="commaN">원</td>
 					<th>사업비</th>
-					<td th:text="${prjInfo.prjWorkingExpenses}" class="commaN"></td>
+					<td th:text="${prjInfo.prjWorkingExpenses}" class="commaN">원</td>
 				</tr>
 				<tr>
 					<th>시작일</th>
@@ -148,11 +117,14 @@ function commaNum(num){
 		</table>
 	</div>
 		<div class="btn_warp">
-			<a class="btn btn_point" id="updateProjectBtn" onclick="projectUpdateModal()">프로젝트 정보 수정</a>
+			<div class="box_right">
+				<a class="btn btn_point" id="updateProjectBtn" onclick="projectUpdateModal()">프로젝트 정보 수정</a>
+			</div>
 		</div>	
 	</div>
 	<br /><br /><br />
 	<form action="#" method="post" id="insertProjectWbsList">
+	<div class="table_wrap list">
 		<table border="1" class="table table-bordered">
 			<colgroup>
 				<col width="50px">
@@ -225,6 +197,7 @@ function commaNum(num){
 					data-tooltip="해당 작업의 실제 시작일과 오늘 날짜를 비교하여 진행률을 표시합니다.">실제 진행률</span></td>
 				</tr>
 			</thead>
+			</div>
 			<!-- 업무구분 등 WBS 구분열 끝-->
 			<!-- WBS 출력 -->
 			<tbody id='tbody'>
@@ -242,14 +215,16 @@ function commaNum(num){
 		</table>
 	</form>
 	<div class="btn_wrap">
-		<a class="btn btn_point" id="insertProjectWbsListBtn" onclick="insertProjectWbsList()">저장</a>
-		<a class="btn btn_point" onclick="location.href='/user/selectProjectList'">프로젝트 목록</a>
-		<a class="btn btn_point" id="checkListRemoveBtn" onclick="checkListRemove()">작업 삭제</a>
-		<a class="btn btn_point" id="viewGraphBtn" onclick="viewGraph()">달력</a>
-		<form id="completeProjectFrm" action="completeProject">
-			<input type="hidden" name="prjCode" id="prjCode" th:value="${prjInfo.prjCode}">
-			<a class="btn btn_point" id="completeProjectBtn" onclick="completeProject()">프로젝트 완료</a>
-		</form>
+		<div class="box_right">
+			<a class="btn btn_point" id="insertProjectWbsListBtn" onclick="insertProjectWbsList()">저장</a>
+			<a class="btn btn_point" onclick="location.href='/user/selectProjectList'">프로젝트 목록</a>
+			<a class="btn btn_point" id="checkListRemoveBtn" onclick="checkListRemove()">작업 삭제</a>
+			<a class="btn btn_point" id="viewGraphBtn" onclick="viewGraph()">달력</a>
+			<form id="completeProjectFrm" action="completeProject">
+				<input type="hidden" name="prjCode" id="prjCode" th:value="${prjInfo.prjCode}">
+				<a class="btn btn_point" id="completeProjectBtn" onclick="completeProject()">프로젝트 완료</a>
+			</form>
+		</div>
 	</div>
 	<!-- 프로젝트 정보 수정 모달 -->
 	<div class="modal fade" id="projectUpdateModal" role="dialog">
