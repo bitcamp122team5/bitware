@@ -307,8 +307,10 @@ public class ApprovalController {
 	public String selectApprovalView(Model model, String apNo, @AuthenticationPrincipal SecurityUser principal) {
 		ApprovalDto approval = approvalService.selectApproval(apNo);
 		List<ApprovalFileDto> approvalFileList = approvalService.selectApprovalFile(apNo);
+		List<ApprovalDocumentDto> approvalFile = approvalDocService.selectApprovalDocList();
 		model.addAttribute("approval", approval);
 		model.addAttribute("approvalFileList",approvalFileList);
+		model.addAttribute("approvalFile",approvalFile);
 		String memId = principal.getMember().getMemId();
 		int ranksNo = approvalService.selectRanksNo(memId);
 		model.addAttribute("ranksNo",ranksNo);
