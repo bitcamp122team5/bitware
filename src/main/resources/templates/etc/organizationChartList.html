@@ -42,7 +42,7 @@ $(function(){
 					}
 					str += "</table>";
 				}else{
-					str += "현재 진행 중인 프로젝트가 없습니다.";
+					str += "<p>현재 진행 중인 프로젝트가 없습니다.</p>";
 				}
 				$("#projectListByMemIdWithZero table").remove();
 				$("#projectListByMemIdWithZero").append(str);
@@ -67,9 +67,10 @@ $(function(){
 					}
 					str += "</table>";
 				}else{
-					str += "현재 완료된 프로젝트가 없습니다."
+					str += "<p>현재 완료된 프로젝트가 없습니다.</p>";
 				}
 				$("#projectListByMemIdWithOne table").remove();
+				$("#projectListByMemIdWithOne p").remove();
 				$("#projectListByMemIdWithOne").append(str);
 			}
 		});
