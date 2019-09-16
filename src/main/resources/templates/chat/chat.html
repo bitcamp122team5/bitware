@@ -49,22 +49,7 @@
     <div class="connecting">
       Connecting...
     </div>
-    <ul id="messageArea">
-    	<th:block th:each="chatList : ${chatList}" th:if="${chatList.sender == sessionName && chatList.receiver == memDto.memName}">
-			<li class="chat-message">
-				<i th:text="${chatList.receiver}"></i>
-				<span th:text="${chatList.sender}"></span>
-				<p th:text="${chatList.content}"></p>
-			</li>
-		</th:block>
-		<th:block th:each="chatList : ${chatList}" th:if="${chatList.sender == memDto.memName && chatList.receiver == sessionName}">
-			<li class="chat-message">
-				<i th:text="${chatList.receiver}"></i>
-				<span th:text="${chatList.sender}"></span>
-				<p th:text="${chatList.content}"></p>
-			</li>
-		</th:block>
-    </ul>
+    <ul id="messageArea"></ul>
     <form id="messageForm" name="messageForm" nameForm="messageForm">
       <div class="form-group">
         <div class="input-group clearfix">
@@ -84,5 +69,58 @@
 <script src="/webjars/stomp-websocket/stomp.min.js"></script>
 <script src="/webjars/js-cookie/js.cookie.js"></script>
 <script src="/js/chat/chat.js"></script>
+<script>
+$(function(){
+	var roomId = $("#room-id").val();
+	var messageArea = document.querySelector('#messageArea');
+	$.ajax({
+		url:"/user/selectChatListAjax",
+		data:{roomId:roomId},
+		success:function(chatList){
+
+			for(var i in chatList){
+			
+				var messageElement = document.createElement('li');
+	
+				messageElement.classList.add('chat-message');
+	
+				var avatarElement = document.createElement('i');
+				var avatarText = document.createTextNode(chatList[i].sender[0]);
+				avatarElement.appendChild(avatarText);
+				avatarElement.style['background-color'] = getAvatarColor(chatList[i].sender);
+				messageElement.appendChild(avatarElement);
+	
+				var usernameElement = document.createElement('span');
+				var usernameText = document.createTextNode(chatList[i].sender);
+				usernameElement.appendChild(usernameText);
+				messageElement.appendChild(usernameElement);
+				
+				var textElement = document.createElement('p');
+				var messageText = document.createTextNode(chatList[i].content);
+				textElement.appendChild(messageText);
+	
+				messageElement.appendChild(textElement);
+	
+				messageArea.appendChild(messageElement);
+			}
+		}
+	});
+	var colors = [
+	    '#2196F3', '#32c787', '#00BCD4', '#ff5652',
+	    '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
+	];
+	function getAvatarColor(messageSender) {
+		var hash = 0;
+		for (var i = 0; i < messageSender.length; i++) {
+			hash = 31 * hash + messageSender.charCodeAt(i);
+		}
+		var index = Math.abs(hash % colors.length);
+		return colors[index];
+	}
+	
+	$("#test1").trigger("click");
+});
+</script>
+
 </body>
 </html>

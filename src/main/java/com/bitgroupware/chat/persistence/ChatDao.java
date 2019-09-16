@@ -40,6 +40,9 @@ public interface ChatDao {
 	@Select("SELECT M.*, R.RANKS_NO FROM MEMBER AS M JOIN RANKS AS R ON M.RANKS = R.RANKS WHERE DEPT_NAME = #{deptName} ORDER BY R.RANKS_NO DESC")
 	List<MemberDto> selectMemberListByDepartment(String deptName);
 	
-	@Select("SELECT * FROM CHAT_MESSAGE")
-	List<ChatMessageDto> selectChatMessageList();
+	@Select("select * from chat_message where room_id = #{roomId}")
+	List<ChatMessageDto> selectChatMessageList(String roomId);
+	
+	@Select("select content from chat_message where room_id = #{roomId} order by message_id desc limit 1")
+	String selectChatMessageListByRoomId(String roomId);
 }

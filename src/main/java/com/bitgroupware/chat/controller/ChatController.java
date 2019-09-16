@@ -2,6 +2,7 @@ package com.bitgroupware.chat.controller;
 
 import static java.lang.String.format;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -28,6 +29,7 @@ import com.bitgroupware.chat.Beans.ChatMessageDto.MessageType;
 import com.bitgroupware.chat.Beans.DepartmentDto;
 import com.bitgroupware.chat.Beans.MemberDto;
 import com.bitgroupware.chat.service.ChatService;
+import com.bitgroupware.chat.utils.TemporaryList;
 import com.bitgroupware.security.config.SecurityUser;
 
 @Controller
@@ -58,21 +60,23 @@ public class ChatController {
 	/* chat 메인 페이지로 이동 */
 	@RequestMapping("/chat")
 	public String chatView(String memId, @AuthenticationPrincipal SecurityUser principal, Model model, HttpSession session, ChatMessageDto chatMessageDto) {
-		if(memId!=null) {
-			session.setAttribute("memId", memId);
-		}else {
-			memId=(String)session.getAttribute("memId");
-		}
+//		if(memId!=null) {
+//			session.setAttribute("memId", memId);
+//		}else {
+//			memId=(String)session.getAttribute("memId");
+//		}
 		
 		String sessionId = principal.getMember().getMemId();
 		String sessionName = principal.getMember().getMemName();
 
+		session.setAttribute("memId", memId);
 		MemberDto memDto = chatservice.selectMemeberInfo(memId);
+		
+		model.addAttribute("memId", memId);
 		model.addAttribute("memDto", memDto);
 		
 		model.addAttribute("sessionId", sessionId);
 		model.addAttribute("sessionName", sessionName);
-		model.addAttribute("memId", memId);
 		
 		System.out.println("세션아이디~~~~~="+sessionId);
 		System.out.println("멤아이디~~~~~="+memId);
@@ -85,9 +89,6 @@ public class ChatController {
 //		System.out.println(sessionName);
 //		System.out.println("roomId =" + roomId);
 		model.addAttribute("roomId", roomId);
-		
-		List<ChatMessageDto> chatList = chatservice.selectChatMessageList(chatMessageDto);
-		model.addAttribute("chatList" , chatList);
 		
 		return "chat/chat";
 	}
@@ -141,9 +142,31 @@ public class ChatController {
 
 	@RequestMapping("/chatMemberListByDepartmentAjax")
 	@ResponseBody
-	public List<MemberDto> chatMemberListByDepartmentAjax(String deptName) {
-//		System.out.println(deptName);
+	public List<TemporaryList> chatMemberListByDepartmentAjax(String deptName, @AuthenticationPrincipal SecurityUser principal) {
 		List<MemberDto> memberList = chatservice.selectMemberListByDepartmentAjax(deptName);
-		return memberList;
+		String sessionId = principal.getMember().getMemId();
+		List<TemporaryList> lists = new ArrayList<TemporaryList>();
+		for(MemberDto member : memberList) {
+			String memId = member.getMemId();
+			String[] roomArray = {sessionId, memId};
+			Arrays.sort(roomArray, Collections.reverseOrder());
+			String roomId = Arrays.stream(roomArray).collect(Collectors.joining());
+			String content = chatservice.selectChatMessageListByRoomId(roomId);
+			System.out.println(content);
+			if(content!=null&&content.length()>10) {
+				content = content.substring(0, 8)+"...";
+			}
+			TemporaryList list = new TemporaryList();
+			list.setMember(member);
+			list.setContent(content);
+			lists.add(list);
+		}
+		return lists;
+	}
+
+	@RequestMapping("/selectChatListAjax")
+	@ResponseBody
+	public List<ChatMessageDto> selectChatListAjax(String roomId) {
+		return chatservice.selectChatMessageList(roomId);
 	}
 }
