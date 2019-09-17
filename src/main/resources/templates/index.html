@@ -121,8 +121,8 @@ div.vacationChart {
 		</div>
 		<!-- //article end -->
 		
-		<div class="article">
-			<div class="table_wrap list">
+		<div class="article" >
+			<div th:if="${!approvalList.isEmpty()}" class="table_wrap list">
 			<a th:href="@{/user/selectApprovalListTo}">결재 할 문서 +</a>
 				<table>
 					<colgroup>
@@ -142,6 +142,40 @@ div.vacationChart {
 							<td><a th:href="@{/user/selectApprovalView(apNo=${approval.apNo})}" th:text="${approval.apTitle}"></a></td>
 							<td th:text="${approval.memName}"></td>
 							<td th:text="${#dates.format(approval.apInsertdate,'yyyy-MM-dd')}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div th:if="${approvalList.isEmpty()}" align="center">
+				<h1>결재 할 문서가 없습니다.</h1>
+			</div>
+			<!-- //table_wrap end -->
+		</div>
+		<!-- //article end -->
+		
+		<div th:each="project:${projectList}" class="article">
+			<div class="table_wrap list">
+				<table>
+					<colgroup>
+						<col width="*">
+						<col width="200px">
+						<col width="200px">
+						<col width="200px">
+					</colgroup>
+					<thead>
+						<tr>
+							<th>프로젝트명</th>
+							<th>PM</th>
+							<th>시작일</th>
+							<th>종료일</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><a th:href="@{/user/projectDetail(prjCode=${project.prjCode})}" th:text="${project.prjName}"></a></td>
+							<td th:text="${project.prjPm}"></td>
+							<td th:text="${project.prjStart}"></td>
+							<td th:text="${project.prjEnd}"></td>
 						</tr>
 					</tbody>
 				</table>

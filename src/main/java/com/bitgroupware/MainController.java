@@ -18,6 +18,8 @@ import com.bitgroupware.commute.persistence.CommuteRepository;
 import com.bitgroupware.commute.service.CommuteService;
 import com.bitgroupware.commute.vo.CommuteVo;
 import com.bitgroupware.member.utils.Role;
+import com.bitgroupware.project.beans.ProjectInfoDto;
+import com.bitgroupware.project.persistence.ProjectDao;
 import com.bitgroupware.security.config.SecurityUser;
 
 @Controller
@@ -31,10 +33,14 @@ public class MainController {
 	ApprovalDao approvalDao;
 	
 	@Autowired
+	ProjectDao projectDao;
+	
+	@Autowired
 	CommuteService commuteService;
 	
 	@Autowired
 	CommuteRepository commuteRepository;
+	
 
 	@RequestMapping("/")
 	public String index(Model model, @AuthenticationPrincipal SecurityUser principal) {
@@ -53,6 +59,9 @@ public class MainController {
 			// 결재 할 문서
 			List<ApprovalDto> approvalList = approvalDao.selectMainApprovalListTo(principal.getMember().getMemId());
 			
+			// 참여중인 프로젝트
+			List<ProjectInfoDto> projectList = projectDao.selectMainAttendProjectList(principal.getMember().getMemId());
+			
 			// 근태
 			String startDate = "1990-01-01";
 			String endDate = "2099-12-31";
@@ -66,6 +75,8 @@ public class MainController {
 			model.addAttribute("today", today);
 			
 			model.addAttribute("approvalList", approvalList);
+			
+			model.addAttribute("projectList", projectList);
 			
 			model.addAttribute("commuteTotalCount", commuteTotalCount);
 			model.addAttribute("commuteStatusCount", commuteStatusCount);
