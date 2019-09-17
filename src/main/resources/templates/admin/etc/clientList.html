@@ -282,6 +282,7 @@ $(function(){
 	<div id="myModal" class="modal">
 		<div class="modal-content">
 			<span class="close">&times;</span> 
+			<h2>고객사 등록</h2>
 			<form th:action="@{/admin/insertClient}" method="post">
 				<div class="article">
 					<div class="table_wrap view">
@@ -331,6 +332,7 @@ $(function(){
 	<div id="myModalUpdate" class="modalUpdate">
 		<div class="modal-contentUpdate">
 			<span class="closeUpdate">&times;</span>
+			<h2>고객사 수정</h2>
 			<form th:action="@{/admin/updateClient}" method="post">
 				<input type="hidden" name="clientNo" id="clientNo">
 				<div class="article">
