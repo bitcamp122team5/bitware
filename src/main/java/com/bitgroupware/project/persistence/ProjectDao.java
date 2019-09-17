@@ -37,9 +37,13 @@ public interface ProjectDao {
 	@Select("select r1.* from (SELECT * FROM PROJECT_INFO WHERE PRJ_COMPLETION = 0 AND PRJ_NAME LIKE #{searchKeyword} AND PRJ_CODE = ANY(SELECT PRJ_CODE FROM PROJECT_MEMBERS WHERE MEM_ID = #{memId}) ORDER BY PRJ_CODE DESC) r1 limit 10 offset #{begin}")
 	public List<ProjectInfoDto> selectAttendProjectListToPrjName(int begin, String searchKeyword, String memId);
 	
-	//참여중인 프로젝트 조회(페이징, 검색) PRJ_NAME
+	//참여중인 프로젝트 조회(페이징, 검색) PRJ_MOTHERCOMPANY
 	@Select("select r1.* from (SELECT * FROM PROJECT_INFO WHERE PRJ_COMPLETION = 0 AND PRJ_MOTHERCOMPANY LIKE #{searchKeyword} AND PRJ_CODE = ANY(SELECT PRJ_CODE FROM PROJECT_MEMBERS WHERE MEM_ID = #{memId}) ORDER BY PRJ_CODE DESC) r1 limit 10 offset #{begin}")
 	public List<ProjectInfoDto> selectAttendProjectListToPrjMothercompany(int begin, String searchKeyword, String memId);
+	
+	//참여중인 프로젝트 조회 메인페이지 사용
+	@Select("select r1.* from (SELECT * FROM PROJECT_INFO WHERE PRJ_COMPLETION = 0 AND PRJ_CODE = ANY(SELECT PRJ_CODE FROM PROJECT_MEMBERS WHERE MEM_ID = #{memId}) ORDER BY PRJ_CODE DESC) r1 limit 10")
+	public List<ProjectInfoDto> selectMainAttendProjectList(String memId);
 	
 	//프로젝트 상세페이지 조회
 	@Select("SELECT * FROM PROJECT_INFO WHERE PRJ_CODE = #{prjCode}")
