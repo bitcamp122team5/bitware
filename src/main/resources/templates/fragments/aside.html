@@ -13,8 +13,8 @@
 		</li>
 		<li class="dep1 have"><a href="#">전자결재</a>
 			<ul class="dep2ul">
-				<li><a href="#" id="wrtBnt">기안하기</a></li>
-	<!-- 		<li><a th:href="@{/user/selectApprovalDocList}">기안하기</a></li> -->
+<!-- 				<li><a href="#" id="wrtBnt">기안하기</a></li> -->
+				<li><a th:href="@{/user/selectApprovalDocList}">기안하기</a></li>
 				<li><a th:href="@{/user/selectApprovalListTo}">결재 할(한) 문서</a></li>
 				<li><a th:href="@{/user/selectApprovalListToBe}">결재 받을(은) 문서</a></li>
 			</ul>
@@ -39,6 +39,20 @@
 			</ul>
 		</li>
 	</ul>
+	<script type="text/javascript">
+// 	$(init);
+// 		function init(){
+// 			var menuSeq = parseInt('${param.menuSeq}');
+// 			if(!menuSeq){
+// 				menuSeq = 1;
+// 			}
+// 			$('.dep2ul a').eq(menuSeq-1).addClass('active');
+// 		}
+	$(function(){
+		var menuSeq = $.getUrlVar('menuSeq');
+		alert(tenuSeq);
+	});
+	</script>
 </div><!-- //aside end -->
 
 <!-- Community -->
