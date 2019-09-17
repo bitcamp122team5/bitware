@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.bitgroupware.approval.beans.ApprovalDto;
+import com.bitgroupware.approval.persistence.ApprovalDao;
 import com.bitgroupware.community.service.NoticeService;
 import com.bitgroupware.community.vo.NoticeVo;
 import com.bitgroupware.commute.persistence.CommuteRepository;
@@ -24,6 +26,9 @@ public class MainController {
 
 	@Autowired
 	NoticeService noticeService;
+	
+	@Autowired
+	ApprovalDao approvalDao;
 	
 	@Autowired
 	CommuteService commuteService;
@@ -45,6 +50,9 @@ public class MainController {
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			String today = format.format(date);
 			
+			// 결재 할 문서
+			List<ApprovalDto> approvalList = approvalDao.selectMainApprovalListTo(principal.getMember().getMemId());
+			
 			// 근태
 			String startDate = "1990-01-01";
 			String endDate = "2099-12-31";
@@ -53,8 +61,12 @@ public class MainController {
 			int totalVacation = principal.getMember().getMemVacation();
 			long usedVacation = commuteRepository.countByMemberVoAndCommuteStatus(principal.getMember(), "휴가");
 			
+
 			model.addAttribute("noticeList", noticeList);
 			model.addAttribute("today", today);
+			
+			model.addAttribute("approvalList", approvalList);
+			
 			model.addAttribute("commuteTotalCount", commuteTotalCount);
 			model.addAttribute("commuteStatusCount", commuteStatusCount);
 			model.addAttribute("totalVacation", totalVacation);

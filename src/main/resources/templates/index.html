@@ -89,6 +89,7 @@ div.vacationChart {
 	<div layout:fragment="content" class="section">
 		<div class="article">
 			<div class="table_wrap list">
+			<a th:href="@{/user/selectNoticeList}">공지사항 +</a>
 				<table>
 					<colgroup>
 						<col width="200px">
@@ -105,8 +106,7 @@ div.vacationChart {
 					<tbody>
 						<tr th:each="notice:${noticeList}">
 							<td th:text="${notice.ntCate}"></td>
-							<td><a th:href="@{/user/selectNotice(ntNo=${notice.ntNo})}"
-								th:text="${notice.ntTitle}"></a></td>
+							<td><a th:href="@{/user/selectNotice(ntNo=${notice.ntNo})}" th:text="${notice.ntTitle}"></a></td>
 							<div th:if="${today==#dates.format(notice.ntDate,'yyyy-MM-dd')}">
 								<td th:text="${#dates.format(notice.ntDate,'HH:mm')}"></td>
 							</div>
@@ -119,6 +119,36 @@ div.vacationChart {
 			</div>
 			<!-- //table_wrap end -->
 		</div>
+		<!-- //article end -->
+		
+		<div class="article">
+			<div class="table_wrap list">
+			<a th:href="@{/user/selectApprovalListTo}">결재 할 문서 +</a>
+				<table>
+					<colgroup>
+						<col width="*">
+						<col width="200px">
+						<col width="200px">
+					</colgroup>
+					<thead>
+						<tr>
+							<th>제목</th>
+							<th>기안자</th>
+							<th>등록일</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="approval:${approvalList}">
+							<td><a th:href="@{/user/selectApprovalView(apNo=${approval.apNo})}" th:text="${approval.apTitle}"></a></td>
+							<td th:text="${approval.memName}"></td>
+							<td th:text="${#dates.format(approval.apInsertdate,'yyyy-MM-dd')}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- //table_wrap end -->
+		</div>
+		<!-- //article end -->
 
 		<div class="article">
 			<div class="table_wrap list">

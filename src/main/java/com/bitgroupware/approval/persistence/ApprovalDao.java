@@ -49,6 +49,9 @@ public interface ApprovalDao {
 	// 결재 할 문서 리스트
 	@Select("select * from approval where ap_signpath = #{memId} and ap_docstatus in (1,2) and ap_deleteflag = 'N'")
 	List<ApprovalDto> selectApprovalListTo(String memId,int begin,String searchKeyword);
+	
+	@Select("select * from approval where ap_signpath = #{memId} and ap_docstatus in (1,2) and ap_deleteflag = 'N' limit 5")
+	List<ApprovalDto> selectMainApprovalListTo(String memId);
 
 	@Select("select * from approval where ap_no = #{apNo} and ap_deleteflag = 'N'")
 	ApprovalDto selectApproval(String apNo);
