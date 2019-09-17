@@ -1,6 +1,7 @@
 package com.bitgroupware.project.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,14 +13,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bitgroupware.project.beans.MemberDto;
 import com.bitgroupware.project.beans.ProjectInfoDto;
-import com.bitgroupware.project.beans.ProjectMembersDto;
 import com.bitgroupware.project.beans.ProjectWbsDto;
 import com.bitgroupware.project.service.ProjectService;
-import com.bitgroupware.project.util.Analysis;
 import com.bitgroupware.security.config.SecurityUser;
 import com.bitgroupware.utils.Pager;
 import com.bitgroupware.utils.Search;
@@ -231,7 +229,6 @@ public class ProjectController {
 		return "redirect:/user/projectDetail?prjCode="+code;
 	}
 	
-	
 	/*프로젝트 완료 처리 */
 	@RequestMapping("completeProject")
 	public String completeProject(int prjCode) {
@@ -239,4 +236,5 @@ public class ProjectController {
 		
 		return "redirect:/user/selectEndProjectList";
 	}
+	
 }
