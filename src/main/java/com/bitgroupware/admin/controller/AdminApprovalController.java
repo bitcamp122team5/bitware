@@ -21,6 +21,7 @@ public class AdminApprovalController {
 	@RequestMapping("/selectApprovalDocList")
 	public String selectApprovalDocList(Model model) {
 		List<ApprovalDocumentDto> approvalDocList = approvalService.selectApprovalDocList();
+		System.out.println(approvalDocList);
 		model.addAttribute("approvalDocList", approvalDocList);
 		return "admin/approval/approvalDocList";
 	}

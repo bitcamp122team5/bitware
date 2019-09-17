@@ -23,17 +23,24 @@
 <div layout:fragment="content" class="section" th:align="center">
 <h2>문서양식 목록</h2>
 	<div class="approvalForm">
-		<ul>
-			<li th:each="approval:${approvalDocList}">
-				<a th:href="@{/admin/insertApprovalDocView(apdocNo=${approval.apdocNo})}" >
-				<div><span th:text="${approval.apdocName}"></span></div>
-				<div class="approvalImg"><img th:src="@{/images/filecc.png}" style="margin: 30px 25px;"/></div>
-<!-- 					<div class="approvalImg"><img th:src="@{/images/test.png}" style="margin: 30px 25px;"/></div> -->
-				</a>
-			</li>
-		</ul>
+		<div th:if="${!approvalDocList.isEmpty()}">
+			<ul>
+				<li th:each="approval:${approvalDocList}">
+					<a th:href="@{/admin/insertApprovalDocView(apdocNo=${approval.apdocNo})}" >
+					<div><span th:text="${approval.apdocName}"></span></div>
+					<div class="approvalImg"><img th:src="@{/images/filecc.png}" style="margin: 30px 25px;"/></div>
+<!-- 				<div class="approvalImg"><img th:src="@{/images/test.png}" style="margin: 30px 25px;"/></div> -->
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div th:if="${approvalDocList.isEmpty()}">
+		<br><br>
+			문서 양식이 없습니다. <br>
+			문서 양식을 등록해주세요. <br><br>
+			<a class="btn btn_point" th:href="@{/admin/insertApprovalDocView}">문서양식 등록</a>
+		</div>
 	</div>
-	<br>
-	</div>
+</div>
 </body>
 </html>

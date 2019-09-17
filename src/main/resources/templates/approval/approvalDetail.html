@@ -153,9 +153,9 @@ $(function(){
 	</tr>
 	
 	<tr th:align="center">
-		<td  width="75" height="75">
+		<td>
 			<th:block th:if="${approval.apSignUrl1!=null}">
-				<img th:src="${approval.apSignUrl1}">
+				<img th:src="${approval.apSignUrl1}" width="75" height="75">
 			</th:block>
 			<th:block th:unless="${approval.apSignUrl1!=null}">
 				<th:block th:if="${ranksNo<=1&&approval.finalSign>=1}">
@@ -172,9 +172,9 @@ $(function(){
 			</th:block>
 		</td>
 		
-		<td  width="75" height="75">
+		<td>
 			<th:block th:if="${approval.apSignUrl2!=null}">
-				<img th:src="${approval.apSignUrl2}">
+				<img th:src="${approval.apSignUrl2}" width="75" height="75">
 			</th:block>
 			<th:block th:unless="${approval.apSignUrl2!=null}">
 				<th:block th:if="${ranksNo<=2 && approval.finalSign>=2}">
@@ -191,9 +191,9 @@ $(function(){
 			</th:block>
 		</td>
 		
-		<td  width="75" height="75">
+		<td>
 			<th:block th:if="${approval.apSignUrl3!=null}">
-				<img th:src="${approval.apSignUrl3}">
+				<img th:src="${approval.apSignUrl3}" width="75" height="75">
 			</th:block>
 			<th:block th:unless="${approval.apSignUrl3!=null}">
 				<th:block th:if="${ranksNo<=3&&approval.finalSign>=3}">
@@ -210,9 +210,9 @@ $(function(){
 			</th:block>
 		</td>
 		
-		<td  width="75" height="75">
+		<td>
 			<th:block th:if="${approval.apSignUrl4!=null}">
-				<img th:src="${approval.apSignUrl4}">
+				<img th:src="${approval.apSignUrl4}" width="75" height="75">
 			</th:block>
 			<th:block th:unless="${approval.apSignUrl4!=null}">
 				<th:block th:if="${ranksNo<=4&&approval.finalSign>=4}">
@@ -229,9 +229,9 @@ $(function(){
 			</th:block>
 		</td>
 		
-		<td  width="75" height="75">
+		<td>
 			<th:block th:if="${approval.apSignUrl5!=null}">
-				<img th:src="${approval.apSignUrl5}">
+				<img th:src="${approval.apSignUrl5}" width="75" height="75">
 			</th:block>
 			<th:block th:unless="${approval.apSignUrl5!=null}">
 				<th:block th:if="${ranksNo<=5&&approval.finalSign>=5}">
