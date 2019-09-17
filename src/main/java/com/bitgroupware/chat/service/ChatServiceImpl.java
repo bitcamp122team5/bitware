@@ -18,26 +18,22 @@ public class ChatServiceImpl implements ChatService {
 
 	@Override
 	public List<MemberDto> selectMemberList(MemberDto memberDto) {
-		// TODO Auto-generated method stub
 		return chatDao.selectMemberList();
 	}
 
 	@Override
 	public List<DepartmentDto> selectDeptList(DepartmentDto depDto) {
-		// TODO Auto-generated method stub
 		return chatDao.selectDepList();
 	}
 
 	@Override
 	public void insertChat(ChatMessageDto chatDto) {
-		// TODO Auto-generated method stub
 		chatDao.insertChat(chatDto);
 	}
 
 	
 	@Override 
 	public MemberDto selectMemeberInfo(String memId) { 
-		// TODO Auto-generated method stub
 		return chatDao.selectMemeberInfo(memId); 
 	}
 
@@ -53,7 +49,6 @@ public class ChatServiceImpl implements ChatService {
 
 	@Override
 	public List<ChatMessageDto> selectLastContentList(String sender) {
-		// TODO Auto-generated method stub
 		return chatDao.selectLastContentList(sender);
 	}
 

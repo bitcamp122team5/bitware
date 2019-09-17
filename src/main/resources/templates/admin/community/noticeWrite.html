@@ -84,66 +84,63 @@ function checkImageType(fileUrl){
 </script>
 </head>
 <body>
-<div th:replace="fragments/headerAdmin :: headerFragmentAdmin"></div>
 
+<div th:replace="fragments/headerAdmin :: headerFragmentAdmin"></div>
 <div th:replace="fragments/asideAdmin :: asideFragmentAdmin"></div>
 
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
-
-<form th:action="@{/admin/insertNotice}" method="post">
-
-<h2>공지사항</h2>
-
-<div class="article">
-	<div class="table_wrap view">
-		<table>
-			<colgroup class="pc">
-				<col width="120px">
-				<col width="*">
-			</colgroup>
-			<tbody>
-				<tr>
-					<th th:text="분류"></th>
-					<td>
-						<select name="ntCate">
-				        	<option value="일반">일반</option>
-				        	<option value="개발">개발</option>
-				        	<option value="영업">영업</option>
-				        </select>
-				    </td>
-				</tr>
-				<tr>
-					<th th:text="제목" ></th>
-					<td><input name="ntTitle" type="text" class="w100p"></td>
-				</tr>
-				<tr>
-					<th th:text="작성자"></th>
-					<td><span sec:authentication="principal.member.memName"></span></td>
-				</tr>
-				<tr>
-					<th th:text="내용"></th>
-					<td><textarea name="ntContent" id="ntContent"></textarea></td>
-				</tr>
-				<tr>
-					<th th:text="첨부파일"></th>
-					<td th:align="left" class="fileDrop" height="200px">
-						<div> 첨부파일을 드래그앤 드롭 하여 등록하세요
-							<div class="uploadList"></div>
-						</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<div class="btn_wrap">
-			<div class="box_right">
-				<input type="submit" class="btn btn_point" value="등록">
-				<a th:href="@{/admin/selectNoticeList}" class="btn btn_point">목록보기</a>
+	<form th:action="@{/admin/insertNotice}" method="post">
+		<h2>공지사항</h2>
+		<div class="article">
+			<div class="table_wrap view">
+				<table>
+					<colgroup class="pc">
+						<col width="120px">
+						<col width="*">
+					</colgroup>
+					<tbody>
+						<tr>
+							<th th:text="분류"></th>
+							<td>
+								<select name="ntCate">
+						        	<option value="일반">일반</option>
+						        	<option value="개발">개발</option>
+						        	<option value="영업">영업</option>
+						        </select>
+						    </td>
+						</tr>
+						<tr>
+							<th th:text="제목" ></th>
+							<td><input name="ntTitle" type="text" class="w100p"></td>
+						</tr>
+						<tr>
+							<th th:text="작성자"></th>
+							<td><span sec:authentication="principal.member.memName"></span></td>
+						</tr>
+						<tr>
+							<th th:text="내용"></th>
+							<td><textarea name="ntContent" id="ntContent"></textarea></td>
+						</tr>
+						<tr>
+							<th th:text="첨부파일"></th>
+							<td th:align="left" class="fileDrop" height="200px">
+								<div> 첨부파일을 드래그앤 드롭 하여 등록하세요
+									<div class="uploadList"></div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="btn_wrap">
+					<div class="box_right">
+						<a th:href="@{/admin/selectNoticeList}" class="btn btn_point">목록보기</a>
+						<input type="submit" class="btn btn_point" value="등록">
+					</div>
+				</div>
 			</div>
 		</div>
-	</div>
-</div>
-</form>
+	</form>
 </div>
 </body>
 </html>

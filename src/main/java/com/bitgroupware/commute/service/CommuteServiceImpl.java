@@ -21,6 +21,11 @@ public class CommuteServiceImpl implements CommuteService {
 	public List<CommuteVo> selectCommuteList(MemberVo memberVo, String startDate, String endDate) {
 		return commuteRepository.findByMemberVoAndCommuteDateBetweenOrderByCommuteDateDesc(memberVo, startDate,endDate);
 	}
+	// 근태 목록
+	@Override
+	public List<CommuteVo> selectCommuteListByPaging(MemberVo memberVo, int begin, String startDate, String endDate) {
+		return commuteRepository.selectCommuteListForPaging(memberVo.getMemId(), begin, startDate,endDate);
+	}
 
 	// 근태 구분 count
 	@Override
@@ -61,6 +66,11 @@ public class CommuteServiceImpl implements CommuteService {
 	@Override
 	public CommuteVo selectTodayCommute(MemberVo memberVo, String curdate) {
 		return commuteRepository.findByMemberVoAndCommuteDate(memberVo, curdate);
+	}
+
+	@Override
+	public int countCommute(String startDate, String endDate) {
+		return commuteRepository.countCommute(startDate, endDate);
 	}
 
 }

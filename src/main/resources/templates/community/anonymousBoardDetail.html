@@ -61,6 +61,7 @@ window.onload=function(){
 </script>
 </head>
 <body>
+
 <div sec:authorize="hasRole('ROLE_ADMIN')" th:replace="fragments/headerAdmin :: headerFragmentAdmin"></div>
 <div sec:authorize="hasRole('ROLE_ADMIN')" th:replace="fragments/asideAdmin :: asideFragmentAdmin"></div>
 <div sec:authorize="hasAnyRole('ROLE_USER','ROLE_PL','ROLE_PM')" th:replace="fragments/header :: headerFragment"></div>
@@ -68,57 +69,55 @@ window.onload=function(){
 
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
-<form id="form">
-<input type="hidden" name="bno" id="bno" th:value="${anonymousBoard.bno}">
-<input type="hidden" name="btitle" th:value="${anonymousBoard.btitle}">
-<input type="hidden" name="bcontent" th:value="${anonymousBoard.bcontent}">
-<input type="hidden" name="bgroup" th:value="${anonymousBoard.bgroup}">
-<input type="hidden" name="bstep" th:value="${anonymousBoard.bstep}">
-<input type="hidden" name="bindent" th:value="${anonymousBoard.bindent}">
-<input type="hidden" name="bcnt" th:value="${anonymousBoard.bcnt}">
-
-<h2>익명게시판</h2>
-
-<div class="article">
-	<div class="table_wrap view">
-		<table>
-			<colgroup>
-				<col width="120px">
-				<col width="*">
-			</colgroup>
-			<tbody>
-				<tr>
-					<th>번호</th>
-					<td th:text="${anonymousBoard.bno}"></td>
-				</tr>
-				<tr>
-					<th>제목</th>
-					<td th:text="${anonymousBoard.btitle}"></td>
-				</tr>
-				<tr>
-					<th>내용</th>
-					<td th:text="${anonymousBoard.bcontent}"></td>
-				</tr>
-				<tr>
-					<th>비밀번호</th>
-					<td><input type="password" name="bpw" id="bpw" class="w100p"></td>
-				</tr>
-			</tbody>
-		</table>
-		<div class="btn_wrap">
-			<div class="box_right">
-				<a th:href="@{/user/selectAnonymousBoardList}" class="btn btn_point">목록보기</a>
-				<th:block sec:authorize="hasAnyRole('ROLE_USER','ROLE_PL','ROLE_PM')">
-					<input type="button" id="updateBtn" class="btn btn_point" value="수정">
-					<input type="button" id="deleteBtn" class="btn btn_point" value="삭제">
-					<input type="button" id="replyBtn" class="btn btn_point" value="답변">
-				</th:block>
-				<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/user/deleteAnonymousBoard(bno=${anonymousBoard.bno})}" class="btn btn_point">삭제(관리자)</a>
+	<form id="form">
+		<input type="hidden" name="bno" id="bno" th:value="${anonymousBoard.bno}">
+		<input type="hidden" name="btitle" th:value="${anonymousBoard.btitle}">
+		<input type="hidden" name="bcontent" th:value="${anonymousBoard.bcontent}">
+		<input type="hidden" name="bgroup" th:value="${anonymousBoard.bgroup}">
+		<input type="hidden" name="bstep" th:value="${anonymousBoard.bstep}">
+		<input type="hidden" name="bindent" th:value="${anonymousBoard.bindent}">
+		<input type="hidden" name="bcnt" th:value="${anonymousBoard.bcnt}">
+		<h2>익명게시판</h2>
+		<div class="article">
+			<div class="table_wrap view">
+				<table>
+					<colgroup>
+						<col width="120px">
+						<col width="*">
+					</colgroup>
+					<tbody>
+						<tr>
+							<th>번호</th>
+							<td th:text="${anonymousBoard.bno}"></td>
+						</tr>
+						<tr>
+							<th>제목</th>
+							<td th:text="${anonymousBoard.btitle}"></td>
+						</tr>
+						<tr>
+							<th>내용</th>
+							<td th:text="${anonymousBoard.bcontent}"></td>
+						</tr>
+						<tr>
+							<th>비밀번호</th>
+							<td><input type="password" name="bpw" id="bpw" class="w100p"></td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="btn_wrap">
+					<div class="box_right">
+						<a th:href="@{/user/selectAnonymousBoardList}" class="btn btn_point">목록보기</a>
+						<th:block sec:authorize="hasAnyRole('ROLE_USER','ROLE_PL','ROLE_PM')">
+							<input type="button" id="updateBtn" class="btn btn_point" value="수정">
+							<input type="button" id="deleteBtn" class="btn btn_point" value="삭제">
+							<input type="button" id="replyBtn" class="btn btn_point" value="답변">
+						</th:block>
+						<a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/user/deleteAnonymousBoard(bno=${anonymousBoard.bno})}" class="btn btn_point">삭제(관리자)</a>
+					</div>
+				</div>
 			</div>
 		</div>
-	</div>
-</div>
-</form>
+	</form>
 </div><!-- //section end -->
 </body>
 </html>

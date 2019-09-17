@@ -1,5 +1,6 @@
 package com.bitgroupware.commute.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,12 +10,14 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bitgroupware.commute.service.CommuteService;
 import com.bitgroupware.commute.vo.CommuteVo;
 import com.bitgroupware.member.vo.MemberVo;
 import com.bitgroupware.security.config.SecurityUser;
+import com.bitgroupware.utils.Pager;
 
 @Controller
 @RequestMapping("/user")
@@ -25,17 +28,34 @@ public class CommuteController {
 
 	// 근태 목록
 	@RequestMapping("/selectCommuteList")
-	public String selectCommuteList(Model model, @AuthenticationPrincipal SecurityUser principal, HttpServletRequest httpServletRequest) {
+	public String selectCommuteList(Model model, @AuthenticationPrincipal SecurityUser principal, @RequestParam(defaultValue = "1") int curPage, HttpServletRequest httpServletRequest) {
 
 		// 검색에서 선택한 날짜를 받아옴
 		String startDate = httpServletRequest.getParameter("startDate");
 		String endDate = httpServletRequest.getParameter("endDate");
 
+		int count = 0;
+		Pager page = null;
+		List<Integer> block = new ArrayList<Integer>();
+		
 		// 처음 페이지 로딩 시
 		if ((startDate == null) && (endDate == null)) {
 			startDate = "1990-01-01";
 			endDate = "2099-12-31";
-			List<CommuteVo> commuteList = commuteService.selectCommuteList(principal.getMember(), startDate, endDate);
+			
+			count = commuteService.countCommute(startDate, endDate);
+			
+			page = new Pager(count, curPage);
+			int blockBegin = page.getBlockBegin();
+			int blockEnd = page.getBlockEnd();
+			
+			for (int i = blockBegin; i <= blockEnd; i++) {
+				block.add(i);
+			}
+			
+			int begin = page.getPageBegin()-1;
+			
+			List<CommuteVo> commuteList = commuteService.selectCommuteListByPaging(principal.getMember(), begin, startDate, endDate);
 			model.addAttribute("commuteList", commuteList);
 		} 
 		// 날짜 입력 후 검색한 경우
@@ -43,9 +63,26 @@ public class CommuteController {
 			// startDate 혹은 endDate가 입력 안된경우 default 값 주입
 			if(startDate == "") startDate = "1990-01-01";
 			if(endDate == "") endDate = "2099-12-31";
-			List<CommuteVo> commuteList = commuteService.selectCommuteList(principal.getMember(), startDate, endDate);
+			
+			count = commuteService.countCommute(startDate, endDate);
+			
+			page = new Pager(count, curPage);
+			int blockBegin = page.getBlockBegin();
+			int blockEnd = page.getBlockEnd();
+			
+			for (int i = blockBegin; i <= blockEnd; i++) {
+				block.add(i);
+			}
+			
+			int begin = page.getPageBegin()-1;
+			
+			List<CommuteVo> commuteList = commuteService.selectCommuteListByPaging(principal.getMember(), begin, startDate, endDate);
 			model.addAttribute("commuteList", commuteList);
 		}
+		model.addAttribute("page", page);
+		model.addAttribute("block", block);
+		model.addAttribute("startDate", startDate);
+		model.addAttribute("endDate", endDate);
 
 		return "mypage/attendance";
 	}
