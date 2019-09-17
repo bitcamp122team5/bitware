@@ -120,6 +120,7 @@ $(function(){
 </style>
 </head>
 <body>
+
 <div sec:authorize="hasRole('ROLE_ADMIN')" th:replace="fragments/headerAdmin :: headerFragmentAdmin"></div>
 <div sec:authorize="hasRole('ROLE_ADMIN')" th:replace="fragments/asideAdmin :: asideFragmentAdminOrganizationChart"></div>
 <div sec:authorize="hasAnyRole('ROLE_USER','ROLE_PL','ROLE_PM')" th:replace="fragments/header :: headerFragment"></div>
@@ -127,105 +128,108 @@ $(function(){
 
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
-<input type="hidden" id="toggleCheck" value="toggleOn">
-
-<h2 sec:authorize="hasRole('ROLE_ADMIN')">조직도 (관리자)</h2>
-<h2 sec:authorize="hasAnyRole('ROLE_USER','ROLE_PL','ROLE_PM')">조직도</h2>
-
-<br>
-<div th:text="'&nbsp&nbsp&nbsp&nbsp>&nbsp'+${deptName}"></div>
-<div class="table_wrap list">
-	<table>
-		<colgroup>
-			<col width="50px">
-			<col width="80px">
-			<col width="80px">
-			<col width="50px">
-			<col width="50px">
-		</colgroup>
-		<thead>
-			<tr>
-				<th>이름</th>
-				<th>전화번호</th>
-				<th>내선번호</th>
-				<th>부서명</th>
-				<th>직책</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td th:text="${header.memName}" class="showProjectByMember"></td>
-				<input type="hidden" th:value="${header.memId}">
-				<td th:text="${header.memTel}"></td>
-				<td th:text="${header.memOfficeTel}"></td>
-				<td th:text="${header.department.deptName}"></td>
-				<td th:text="${header.ranks.ranks}"></td>
-			</tr>
-		</tbody>
-	</table>
-</div>
-
-<th:block th:each="repetition:${repetitions}">
-<br>
-<div th:text="'&nbsp&nbsp&nbsp&nbsp>&nbsp'+${deptName}+'&nbsp'+${repetition.team.teamName}"></div>
-<div class="table_wrap list">
-	<table>
-		<colgroup>
-			<col width="50px">
-			<col width="80px">
-			<col width="80px">
-			<col width="50px">
-			<col width="50px">
-		</colgroup>
-		<thead>
-			<tr>
-				<th>이름</th>
-				<th>전화번호</th>
-				<th>내선번호</th>
-				<th>부서명</th>
-				<th>직책</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td th:text="${repetition.leader.memName}" class="showProjectByMember"></td>
-				<input type="hidden" th:value="${repetition.leader.memId}">
-				<td th:text="${repetition.leader.memTel}"></td>
-				<td th:text="${repetition.leader.memOfficeTel}"></td>
-				<td th:text="${repetition.leader.department.deptName}+'&nbsp'+${repetition.leader.team.teamName}"></td>
-				<td th:text="${repetition.leader.ranks.ranks}"></td>
-			</tr>
-			<tr th:each="teamMember:${repetition.teamMemberList}">
-				<td th:text="${teamMember.memName}" class="showProjectByMember"></td>
-				<input type="hidden" th:value="${teamMember.memId}">
-				<td th:text="${teamMember.memTel}"></td>
-				<td th:text="${teamMember.memOfficeTel}"></td>
-				<td th:text="${teamMember.department.deptName}+'&nbsp'+${teamMember.team.teamName}"></td>
-				<td th:text="${teamMember.ranks.ranks}"></td>
-			</tr>
-		</tbody>
-	</table>
-</div>
-</th:block>
-
-<div id="myModal" class="modal">
-	<div class="modal-content">
-		<span class="close">&times;</span>
-		<p>진행중인 프로젝트</p>
-		<div class="article">
-			<div class="table_wrap list">
-				<div id="projectListByMemIdWithZero"></div>
-			</div>
+	<input type="hidden" id="toggleCheck" value="toggleOn">
+	<h2 sec:authorize="hasRole('ROLE_ADMIN')">조직도 (관리자)</h2>
+	<h2 sec:authorize="hasAnyRole('ROLE_USER','ROLE_PL','ROLE_PM')">조직도</h2>
+	<div class="article">
+		&nbsp;&nbsp;&nbsp;<a th:href="@{/user/selectOrganizationChartList?deptName=임원진}" class="btn btn_point">임원진</a>
+		<a th:href="@{/user/selectOrganizationChartList?deptName=지원부}" class="btn btn_point">지원부</a>
+		<a th:href="@{/user/selectOrganizationChartList?deptName=영업부}" class="btn btn_point">영업부</a>
+		<a th:href="@{/user/selectOrganizationChartList?deptName=개발부}" class="btn btn_point">개발부</a>
+		<br><br>
+		<div th:text="'&nbsp&nbsp&nbsp&nbsp>&nbsp'+${deptName}"></div>
+		<div class="table_wrap list">
+			<table>
+				<colgroup>
+					<col width="50px">
+					<col width="80px">
+					<col width="80px">
+					<col width="50px">
+					<col width="50px">
+				</colgroup>
+				<thead>
+					<tr>
+						<th>이름</th>
+						<th>전화번호</th>
+						<th>내선번호</th>
+						<th>부서명</th>
+						<th>직책</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td th:text="${header.memName}" class="showProjectByMember"></td>
+						<input type="hidden" th:value="${header.memId}">
+						<td th:text="${header.memTel}"></td>
+						<td th:text="${header.memOfficeTel}"></td>
+						<td th:text="${header.department.deptName}"></td>
+						<td th:text="${header.ranks.ranks}"></td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
-		<br>
-		<p>완료된 프로젝트</p>
-		<div class="article">
+		<th:block th:each="repetition:${repetitions}">
+			<br>
+			<div th:text="'&nbsp&nbsp&nbsp&nbsp>&nbsp'+${deptName}+'&nbsp'+${repetition.team.teamName}"></div>
 			<div class="table_wrap list">
-				<div id="projectListByMemIdWithOne"></div>
+				<table>
+					<colgroup>
+						<col width="50px">
+						<col width="80px">
+						<col width="80px">
+						<col width="50px">
+						<col width="50px">
+					</colgroup>
+					<thead>
+						<tr>
+							<th>이름</th>
+							<th>전화번호</th>
+							<th>내선번호</th>
+							<th>부서명</th>
+							<th>직책</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td th:text="${repetition.leader.memName}" class="showProjectByMember"></td>
+							<input type="hidden" th:value="${repetition.leader.memId}">
+							<td th:text="${repetition.leader.memTel}"></td>
+							<td th:text="${repetition.leader.memOfficeTel}"></td>
+							<td th:text="${repetition.leader.department.deptName}+'&nbsp'+${repetition.leader.team.teamName}"></td>
+							<td th:text="${repetition.leader.ranks.ranks}"></td>
+						</tr>
+						<tr th:each="teamMember:${repetition.teamMemberList}">
+							<td th:text="${teamMember.memName}" class="showProjectByMember"></td>
+							<input type="hidden" th:value="${teamMember.memId}">
+							<td th:text="${teamMember.memTel}"></td>
+							<td th:text="${teamMember.memOfficeTel}"></td>
+							<td th:text="${teamMember.department.deptName}+'&nbsp'+${teamMember.team.teamName}"></td>
+							<td th:text="${teamMember.ranks.ranks}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</th:block>
+		
+		<div id="myModal" class="modal">
+			<div class="modal-content">
+				<span class="close">&times;</span>
+				<p>진행중인 프로젝트</p>
+				<div class="article">
+					<div class="table_wrap list">
+						<div id="projectListByMemIdWithZero"></div>
+					</div>
+				</div>
+				<br>
+				<p>완료된 프로젝트</p>
+				<div class="article">
+					<div class="table_wrap list">
+						<div id="projectListByMemIdWithOne"></div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 </div><!-- //section end -->
 </body>
 </html>

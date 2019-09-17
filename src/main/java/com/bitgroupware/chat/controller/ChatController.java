@@ -78,8 +78,8 @@ public class ChatController {
 		model.addAttribute("sessionId", sessionId);
 		model.addAttribute("sessionName", sessionName);
 		
-		System.out.println("세션아이디~~~~~="+sessionId);
-		System.out.println("멤아이디~~~~~="+memId);
+//		System.out.println("세션아이디~~~~~="+sessionId);
+//		System.out.println("멤아이디~~~~~="+memId);
 		
 		String[] roomArray = {sessionId, memId};
 		Arrays.sort(roomArray, Collections.reverseOrder());
@@ -129,8 +129,6 @@ public class ChatController {
 		chatDto.setReceiver(receiver);
 		chatDto.setRoomId(roomId);
 		chatservice.insertChat(chatDto);
-
-
 	}
 	
 	@RequestMapping("/chatDepartmentListAjax")
@@ -152,7 +150,6 @@ public class ChatController {
 			Arrays.sort(roomArray, Collections.reverseOrder());
 			String roomId = Arrays.stream(roomArray).collect(Collectors.joining());
 			String content = chatservice.selectChatMessageListByRoomId(roomId);
-			System.out.println(content);
 			if(content!=null&&content.length()>10) {
 				content = content.substring(0, 8)+"...";
 			}

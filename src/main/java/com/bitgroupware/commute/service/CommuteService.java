@@ -13,6 +13,8 @@ public interface CommuteService {
 	
 	List<CommuteVo> selectCommuteList(MemberVo memberVo, String startDate, String endDate);
 	
+	List<CommuteVo> selectCommuteListByPaging(MemberVo memberVo, int begin, String startDate, String endDate);
+
 	List<String> selectStatusCount(MemberVo memberVo);
 	
 	String selectCurdate();
@@ -20,5 +22,7 @@ public interface CommuteService {
 	String selectCurtime();
 
 	CommuteVo selectTodayCommute(MemberVo memberVo, String curdate);
+
+	int countCommute(String startDate, String endDate);
 
 }

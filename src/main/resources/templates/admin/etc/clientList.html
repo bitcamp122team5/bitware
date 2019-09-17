@@ -184,77 +184,75 @@ $(function(){
 </script>
 </head>
 <body>
-<div th:replace="fragments/headerAdmin :: headerFragmentAdmin"></div>
 
+<div th:replace="fragments/headerAdmin :: headerFragmentAdmin"></div>
 <div th:replace="fragments/asideAdmin :: asideFragmentAdmin"></div>
 
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
-<input type="hidden" id="toggleCheck" value="toggleOn">
-
-<h2>고객사 (관리자)</h2>
-
-<!-- 검색 시작 -->
-<form th:action="@{/admin/selectClientList}">
-<div class="board_search">
-	<div class="board_search_inner">
-		<div class="select_wrap">
-	        <select name="searchCondition" id="category">
-	        	<option value="clientName">이름</option>
-	        	<option value="clientCompany">회사명</option>
-	        </select>
-	    </div>
-	    <div class="search">
-	        <input name="searchKeyword" id="keyword" type="text">
-	        <input type="submit" value="검색">
-	    </div>
-	</div>
-</div>
-</form>
-<input type="hidden" id="searchCondition" th:value="${search.searchCondition}">
-<input type="hidden" id="searchKeyword" th:value="${search.searchKeyword}">
-<!-- 검색 종료 -->
-
-<div class="article">
-	<div class="table_wrap list">
-		<table>
-			<colgroup>
-				<col width="50px">
-				<col width="80px">
-				<col width="*">
-				<col width="100px">
-				<col width="80px">
-				<col width="80px">
-				<col width="80px">
-			</colgroup>
-			<thead>
-				<tr>
-					<th><input type="checkbox" name="allCheckBox" id="allCheckBox"></th>
-					<th>이름</th>
-					<th>전화번호</th>
-					<th>회사명</th>
-					<th>부서명</th>
-					<th>직책</th>
-					<th>비고</th>
-				</tr>
-			</thead>
-			</tbody>
-				<tr th:each="client:${clientList}">
-					<td><input type="checkbox" name="checkBox" class="checkBox" th:value="${client.clientNo}"></td>
-					<td th:text="${client.clientName}" class="btn"></td>
-					<input type="hidden" th:value="${client.clientNo}">
-					<td th:text="${client.clientTel}"></td>
-					<td th:text="${client.clientCompany}"></td>
-					<td th:text="${client.clientDeptName}"></td>
-					<td th:text="${client.clientRanks}"></td>
-					<td th:text="${client.clientNote}"></td>
-				</tr>
-			</tbody>
-		</table>
-		<div class="btn_wrap">
-			<div class="box_right">
-				<button type="button" class="btn btn_point" id="deleteBtn">삭제</button>
-				<input type="button" class="btn btn_point" id="myBtn" value="등록">
+	<input type="hidden" id="toggleCheck" value="toggleOn">
+	<h2>고객사 (관리자)</h2>
+	<div class="article">
+		<!-- 검색 시작 -->
+		<form th:action="@{/admin/selectClientList}">
+			<div class="board_search">
+				<div class="board_search_inner">
+					<div class="select_wrap">
+				        <select name="searchCondition" id="category">
+				        	<option value="clientName">이름</option>
+				        	<option value="clientCompany">회사명</option>
+				        </select>
+				    </div>
+				    <div class="search">
+				        <input name="searchKeyword" id="keyword" type="text">
+				        <input type="submit" value="검색">
+				    </div>
+				</div>
+			</div>
+		</form>
+		<input type="hidden" id="searchCondition" th:value="${search.searchCondition}">
+		<input type="hidden" id="searchKeyword" th:value="${search.searchKeyword}">
+		<!-- 검색 종료 -->
+		<div class="table_wrap list">
+			<table>
+				<colgroup>
+					<col width="50px">
+					<col width="80px">
+					<col width="*">
+					<col width="100px">
+					<col width="80px">
+					<col width="80px">
+					<col width="80px">
+				</colgroup>
+				<thead>
+					<tr>
+						<th><input type="checkbox" name="allCheckBox" id="allCheckBox"></th>
+						<th>이름</th>
+						<th>전화번호</th>
+						<th>회사명</th>
+						<th>부서명</th>
+						<th>직책</th>
+						<th>비고</th>
+					</tr>
+				</thead>
+				</tbody>
+					<tr th:each="client:${clientList}">
+						<td><input type="checkbox" name="checkBox" class="checkBox" th:value="${client.clientNo}"></td>
+						<td th:text="${client.clientName}" class="btn"></td>
+						<input type="hidden" th:value="${client.clientNo}">
+						<td th:text="${client.clientTel}"></td>
+						<td th:text="${client.clientCompany}"></td>
+						<td th:text="${client.clientDeptName}"></td>
+						<td th:text="${client.clientRanks}"></td>
+						<td th:text="${client.clientNote}"></td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="btn_wrap">
+				<div class="box_right">
+					<button type="button" class="btn btn_point" id="deleteBtn">삭제</button>
+					<input type="button" class="btn btn_point" id="myBtn" value="등록">
+				</div>
 			</div>
 		</div>
 		<div class="paging">
@@ -280,106 +278,105 @@ $(function(){
 			</span>
 		</div><!-- //paging -->
 	</div>
-</div>
-
-<div id="myModal" class="modal">
-	<div class="modal-content">
-		<span class="close">&times;</span> 
-		<form th:action="@{/admin/insertClient}" method="post">
-			<div class="article">
-				<div class="table_wrap view">
-					<table>
-						<colgroup>
-							<col width="120px">
-							<col width="*">
-						</colgroup>
-						<tbody>
-							<tr>
-								<th th:text="이름"></th>
-								<td><input name="clientName" type="text" class="w100p"></td>
-							</tr>
-							<tr>
-								<th th:text="전화번호"></th>
-								<td><input name="clientTel" type="tel" class="w100p"></td>
-							</tr>
-							<tr>
-								<th th:text="회사명"></th>
-								<td><input name="clientCompany" type="text" class="w100p"></td>
-							</tr>
-							<tr>
-								<th th:text="부서명"></th>
-								<td><input name="clientDeptName" type="text" class="w100p"></td>
-							</tr>
-							<tr>
-								<th th:text="직급"></th>
-								<td><input name="clientRanks" type="text" class="w100p"></td>
-							</tr>
-							<tr>
-								<th th:text="비고"></th>
-								<td><input name="clientNote" type="text" class="w100p"></td>
-							</tr>
-						</tbody>
-					</table>
-					<div class="btn_wrap">
-						<div class="box_right">
-							<input type="submit" class="btn btn_point" value="등록">
+	
+	<div id="myModal" class="modal">
+		<div class="modal-content">
+			<span class="close">&times;</span> 
+			<form th:action="@{/admin/insertClient}" method="post">
+				<div class="article">
+					<div class="table_wrap view">
+						<table>
+							<colgroup>
+								<col width="120px">
+								<col width="*">
+							</colgroup>
+							<tbody>
+								<tr>
+									<th th:text="이름"></th>
+									<td><input name="clientName" type="text" class="w100p"></td>
+								</tr>
+								<tr>
+									<th th:text="전화번호"></th>
+									<td><input name="clientTel" type="tel" class="w100p"></td>
+								</tr>
+								<tr>
+									<th th:text="회사명"></th>
+									<td><input name="clientCompany" type="text" class="w100p"></td>
+								</tr>
+								<tr>
+									<th th:text="부서명"></th>
+									<td><input name="clientDeptName" type="text" class="w100p"></td>
+								</tr>
+								<tr>
+									<th th:text="직급"></th>
+									<td><input name="clientRanks" type="text" class="w100p"></td>
+								</tr>
+								<tr>
+									<th th:text="비고"></th>
+									<td><input name="clientNote" type="text" class="w100p"></td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="btn_wrap">
+							<div class="box_right">
+								<input type="submit" class="btn btn_point" value="등록">
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		</form>
+			</form>
+		</div>
 	</div>
-</div>
 
-<div id="myModalUpdate" class="modalUpdate">
-	<div class="modal-contentUpdate">
-		<span class="closeUpdate">&times;</span>
-		<form th:action="@{/admin/updateClient}" method="post">
-			<input type="hidden" name="clientNo" id="clientNo">
-			<div class="article">
-				<div class="table_wrap view">
-					<table>
-						<colgroup>
-							<col width="120px">
-							<col width="*">
-						</colgroup>
-						<tbody>
-							<tr>
-								<th th:text="이름"></th>
-								<td><input name="clientName" id="clientName" type="text" class="w100p"></td>
-							</tr>
-							<tr>
-								<th th:text="전화번호"></th>
-								<td><input name="clientTel" id="clientTel" type="tel" class="w100p"></td>
-							</tr>
-							<tr>
-								<th th:text="회사명"></th>
-								<td><input name="clientCompany" id="clientCompany" type="text" class="w100p"></td>
-							</tr>
-							<tr>
-								<th th:text="부서명"></th>
-								<td><input name="clientDeptName" id="clientDeptName" type="text" class="w100p"></td>
-							</tr>
-							<tr>
-								<th th:text="직급"></th>
-								<td><input name="clientRanks" id="clientRanks" type="text" class="w100p"></td>
-							</tr>
-							<tr>
-								<th th:text="비고"></th>
-								<td><input name="clientNote" id="clientNote" type="text" class="w100p"></td>
-							</tr>
-						</tbody>
-					</table>
-					<div class="btn_wrap">
-						<div class="box_right">
-							<input type="submit" class="btn btn_point" value="수정">
+	<div id="myModalUpdate" class="modalUpdate">
+		<div class="modal-contentUpdate">
+			<span class="closeUpdate">&times;</span>
+			<form th:action="@{/admin/updateClient}" method="post">
+				<input type="hidden" name="clientNo" id="clientNo">
+				<div class="article">
+					<div class="table_wrap view">
+						<table>
+							<colgroup>
+								<col width="120px">
+								<col width="*">
+							</colgroup>
+							<tbody>
+								<tr>
+									<th th:text="이름"></th>
+									<td><input name="clientName" id="clientName" type="text" class="w100p"></td>
+								</tr>
+								<tr>
+									<th th:text="전화번호"></th>
+									<td><input name="clientTel" id="clientTel" type="tel" class="w100p"></td>
+								</tr>
+								<tr>
+									<th th:text="회사명"></th>
+									<td><input name="clientCompany" id="clientCompany" type="text" class="w100p"></td>
+								</tr>
+								<tr>
+									<th th:text="부서명"></th>
+									<td><input name="clientDeptName" id="clientDeptName" type="text" class="w100p"></td>
+								</tr>
+								<tr>
+									<th th:text="직급"></th>
+									<td><input name="clientRanks" id="clientRanks" type="text" class="w100p"></td>
+								</tr>
+								<tr>
+									<th th:text="비고"></th>
+									<td><input name="clientNote" id="clientNote" type="text" class="w100p"></td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="btn_wrap">
+							<div class="box_right">
+								<input type="submit" class="btn btn_point" value="수정">
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		</form>
+			</form>
+		</div>
 	</div>
-</div>
 </div>
 </body>
 </html>

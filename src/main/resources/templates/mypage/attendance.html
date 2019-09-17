@@ -26,6 +26,15 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 			selectCommute.submit();
 		}
 	</script>
+<script>
+$(function(){
+	var startDate = $("#startDateTemp").val();
+	$("#startDate").val(startDate);
+	
+	var endDate = $("#endDateTemp").val();
+	$("#endDate").val(endDate);
+});
+</script>
 </head>
 <body>
 <div th:replace="fragments/header :: headerFragment"></div>
@@ -34,6 +43,8 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
+<input type="hidden" id="startDateTemp" th:value="${startDate}">
+<input type="hidden" id="endDateTemp" th:value="${endDate}">
 <h2>근태 및 휴가</h2>
 	<form name="searchCommuteForm">
 		<div class="board_search">
@@ -80,6 +91,28 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 			</table>
 		</div><!-- //table_wrap end -->	
 	</form>
+	<div class="paging">
+			<span th:if="${page.curBlock > 1 }">
+				<a th:href="@{/user/selectCommuteList(curPage=1,startDate=${startDate},endDate=${endDate})}" class="page prev_02">1</a>
+			</span>
+			<span th:if="${page.curBlock > 1 }">
+				<a th:href="@{/user/selectCommuteList(curPage=${page.prevPage},startDate=${startDate},endDate=${endDate})}" class="page prev_01">[이전]</a>
+			</span>
+			<span th:each="num:${block}">
+				<span th:if="${num==page.curPage }">
+					<a th:href="@{/user/selectCommuteList(curPage=${num},startDate=${startDate},endDate=${endDate})}" th:text="${num}" class="paging_click"></a>
+				</span>
+				<span th:unless="${num==page.curPage }">
+					<a th:href="@{/user/selectCommuteList(curPage=${num},startDate=${startDate},endDate=${endDate})}" th:text="${num}"></a>
+				</span>
+			</span>
+			<span th:if="${page.curBlock < page.totBlock }">
+				<a th:href="@{/user/selectCommuteList(curPage=${page.nextPage},startDate=${startDate},endDate=${endDate})}" class="page next_01">[다음]</a>
+			</span>
+			<span th:if="${page.curBlock < page.totBlock }">
+				<a th:href="@{/user/selectCommuteList(curPage=${page.totPage},startDate=${startDate},endDate=${endDate})}" th:text="${page.totPage}" class="page next_02"></a>
+			</span>
+		</div><!-- //paging -->
 	</div>
 </div><!-- //section end -->
 </body>

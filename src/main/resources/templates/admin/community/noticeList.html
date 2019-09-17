@@ -82,98 +82,96 @@ $(document).ready(function() {
 </script>
 </head>
 <body>
-<div th:replace="fragments/headerAdmin :: headerFragmentAdmin"></div>
 
+<div th:replace="fragments/headerAdmin :: headerFragmentAdmin"></div>
 <div th:replace="fragments/asideAdmin :: asideFragmentAdmin"></div>
 
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
-
-<h2>공지사항 (관리자)</h2>
-
-<!-- 검색 시작 -->
-<form th:action="@{/admin/selectNoticeList}">
-<div class="board_search">
-	<div class="board_search_inner">
-		<div class="select_wrap">
-	        <select name="searchCondition" id="category">
-	        	<option value="ntCate">분류</option>
-	        	<option value="ntTitle">제목</option>
-	        	<option value="ntContent">내용</option>
-	        </select>
-	    </div>
-	    <div class="search">
-	        <input name="searchKeyword" id="keyword" type="text">
-	        <input type="submit" value="검색">
-	    </div>
-	</div>
-</div>
-</form>
-<input type="hidden" id="searchCondition" th:value="${search.searchCondition}">
-<input type="hidden" id="searchKeyword" th:value="${search.searchKeyword}">
-<!-- 검색 종료 -->
-
-<div class="article">
-	<div class="table_wrap list">
-		<table>
-			<colgroup>
-				<col width="50px">
-				<col width="50px">
-				<col width="50px">
-				<col width="*">
-				<col width="100px">
-				<col width="80px">
-				<col width="70px">
-			</colgroup>
-			<thead>
-				<tr>
-					<th><input type="checkbox" name="allCheckBox" id="allCheckBox"></th>
-					<th>번호</th>
-					<th>분류</th>
-					<th>제목</th>
-					<th>등록일</th>
-					<th>첨부파일</th>
-					<th>조회수</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="paging:${pagingList}">
-					<td><input type="checkbox" name="checkBox" class="checkBox" th:value="${paging.notice.ntNo}"></td>
-					<td th:text="${paging.count}"></td>
-					<td th:text="${paging.notice.ntCate}"></td>
-		        	<td class="tit">
-		        		<a th:href="@{/admin/updateNoticeView(ntNo=${paging.notice.ntNo})}" class="ellipsis" th:text="${paging.notice.ntTitle}"></a>
-		        		<span th:each="noticeFile:${paging.notice.noticeFileList}">
-			        		<span th:if="${noticeFile.ntFileType=='image'}">
-			        			<img th:src="@{/images/fileImage.png}" style="width: 5px; height: 5px">
-			        			<span th:text="${noticeFile.ntFileName}" class="thumbnail" th:value="${noticeFile.ntFileUrl}" style="font-size: 5px"></span>
-		    	    		</span>
-		        			<span th:if="${noticeFile.ntFileType=='document'}">
-		        				<img th:src="@{/images/fileImage.png}" style="width: 5px; height: 5px">
-		        				<span th:text="${noticeFile.ntFileName}" style="font-size: 5px"></span>
-		        			</span>
-		        		</span>
-		 	       	</td>
-			    	<th:block th:if="${today==#dates.format(paging.notice.ntDate,'yyyy-MM-dd')}">
-						<td th:text="${#dates.format(paging.notice.ntDate,'HH:mm')}"></td>
-					</th:block>
-					<th:block th:unless="${today==#dates.format(paging.notice.ntDate,'yyyy-MM-dd')}">
-						<td th:text="${#dates.format(paging.notice.ntDate,'yyyy-MM-dd')}"></td>
-					</th:block>
-			    	<th:block th:if="${paging.notice.ntFileCheck=='Y'}">
-						<td class="file"><img th:src="@{/images/file.png}"></td>
-					</th:block>
-					<th:block th:unless="${paging.notice.ntFileCheck=='Y'}">
-						<td class="file"></td>
-					</th:block>
-					<td class="cnt" th:text="${paging.notice.ntCnt}"></td>
-				</tr>
-			</tbody>
-		</table>
-		<div class="btn_wrap">
-			<div class="box_right">
-				<button type="button" id="deleteBtn" class="btn btn_point">삭제</button>
-				<a th:href="@{/admin/insertNoticeView}" class="btn btn_point">등록</a>
+	<h2>공지사항 (관리자)</h2>
+	<div class="article">
+		<!-- 검색 시작 -->
+		<form th:action="@{/admin/selectNoticeList}">
+			<div class="board_search">
+				<div class="board_search_inner">
+					<div class="select_wrap">
+				        <select name="searchCondition" id="category">
+				        	<option value="ntCate">분류</option>
+				        	<option value="ntTitle">제목</option>
+				        	<option value="ntContent">내용</option>
+				        </select>
+				    </div>
+				    <div class="search">
+				        <input name="searchKeyword" id="keyword" type="text">
+				        <input type="submit" value="검색">
+				    </div>
+				</div>
+			</div>
+		</form>
+		<input type="hidden" id="searchCondition" th:value="${search.searchCondition}">
+		<input type="hidden" id="searchKeyword" th:value="${search.searchKeyword}">
+		<!-- 검색 종료 -->
+		<div class="table_wrap list">
+			<table>
+				<colgroup>
+					<col width="50px">
+					<col width="50px">
+					<col width="50px">
+					<col width="*">
+					<col width="100px">
+					<col width="80px">
+					<col width="70px">
+				</colgroup>
+				<thead>
+					<tr>
+						<th><input type="checkbox" name="allCheckBox" id="allCheckBox"></th>
+						<th>번호</th>
+						<th>분류</th>
+						<th>제목</th>
+						<th>등록일</th>
+						<th>첨부파일</th>
+						<th>조회수</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="paging:${pagingList}">
+						<td><input type="checkbox" name="checkBox" class="checkBox" th:value="${paging.notice.ntNo}"></td>
+						<td th:text="${paging.count}"></td>
+						<td th:text="${paging.notice.ntCate}"></td>
+			        	<td class="tit">
+			        		<a th:href="@{/admin/updateNoticeView(ntNo=${paging.notice.ntNo})}" class="ellipsis" th:text="${paging.notice.ntTitle}"></a>
+			        		<span th:each="noticeFile:${paging.notice.noticeFileList}">
+				        		<span th:if="${noticeFile.ntFileType=='image'}">
+				        			<img th:src="@{/images/fileImage.png}" style="width: 5px; height: 5px">
+				        			<span th:text="${noticeFile.ntFileName}" class="thumbnail" th:value="${noticeFile.ntFileUrl}" style="font-size: 5px"></span>
+			    	    		</span>
+			        			<span th:if="${noticeFile.ntFileType=='document'}">
+			        				<img th:src="@{/images/fileImage.png}" style="width: 5px; height: 5px">
+			        				<span th:text="${noticeFile.ntFileName}" style="font-size: 5px"></span>
+			        			</span>
+			        		</span>
+			 	       	</td>
+				    	<th:block th:if="${today==#dates.format(paging.notice.ntDate,'yyyy-MM-dd')}">
+							<td th:text="${#dates.format(paging.notice.ntDate,'HH:mm')}"></td>
+						</th:block>
+						<th:block th:unless="${today==#dates.format(paging.notice.ntDate,'yyyy-MM-dd')}">
+							<td th:text="${#dates.format(paging.notice.ntDate,'yyyy-MM-dd')}"></td>
+						</th:block>
+				    	<th:block th:if="${paging.notice.ntFileCheck=='Y'}">
+							<td class="file"><img th:src="@{/images/file.png}"></td>
+						</th:block>
+						<th:block th:unless="${paging.notice.ntFileCheck=='Y'}">
+							<td class="file"></td>
+						</th:block>
+						<td class="cnt" th:text="${paging.notice.ntCnt}"></td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="btn_wrap">
+				<div class="box_right">
+					<button type="button" id="deleteBtn" class="btn btn_point">삭제</button>
+					<a th:href="@{/admin/insertNoticeView}" class="btn btn_point">등록</a>
+				</div>
 			</div>
 		</div>
 		<div class="paging">
@@ -199,7 +197,6 @@ $(document).ready(function() {
 			</span>
 		</div><!-- //paging -->
 	</div>
-</div>
 </div>
 </body>
 </html>

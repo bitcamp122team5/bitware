@@ -21,5 +21,11 @@ public interface CommuteRepository extends JpaRepository<CommuteVo, Integer>{
 	String selectCurtime();
 
 	CommuteVo findByMemberVoAndCommuteDate(MemberVo memberVo, String curdate);
+
+	@Query(value="select count(*) from commute where commute_date >= ?1 and commute_date <= ?2", nativeQuery = true)
+	int countCommute(String startDate, String endDate);
+
+	@Query(value="select r1.* from (select * from commute where mem_id = ?1 and commute_date >= ?3 and commute_date <= ?4 order by commute_date desc) r1 limit 10 offset ?2", nativeQuery=true)
+	List<CommuteVo> selectCommuteListForPaging(String memId, int begin, String startDate, String endDate);
 	
 }
