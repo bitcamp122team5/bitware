@@ -78,7 +78,10 @@ public interface ProjectService {
 	/*달력에 wbs List 뿌리기*/
 	public List<ProjectWbsDto> selectProjectWbsOnCalendar(int prjCode);
 	
-	//memId로 Ranks(직급명) 가져오기
+	/*memId로 Ranks(직급명) 가져오기*/
 	public MemberDto selectMemberRanksByMemId(String memId);
 	
+	/*프로젝트 일수 구하기*/
+	public int schedule(ProjectInfoDto prjInfo);
+
 }

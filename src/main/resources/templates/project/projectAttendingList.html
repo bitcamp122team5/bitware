@@ -21,39 +21,34 @@
 </head>
 <body>
 <div th:replace="fragments/header :: headerFragment"></div>
-
 <div th:replace="fragments/aside :: asideFragment"></div>
 
-<!-- //무조건 section 안에서 내용 작성 -->
-<div layout:fragment="content" class="section">
-
-<h2>프로젝트</h2>
-
-<!-- 검색 시작 -->
-<form th:action="@{/user/selectProjectList}">
-<div class="board_search">
-	<div class="board_search_inner">
-		<div class="select_wrap">
-			<select name="searchCondition" id="category">
-				<option value="prjName">프로젝트명</option>
-				<option value="prjMothercompany">마더업체</option>
-			</select>
-		</div>
-		<div class="search">
-			<input type="text" name="searchKeyword" id="keyword">
-			<input type="submit" value="검색">
-		</div>
-	</div>
-</div>
-</form>
-<input type="hidden" id="searchCondition" th:value="${search.searchCondition}">
-<input type="hidden" id="searchKeyword" th:value="${search.searchKeyword}">
-<!-- 검색 종료 -->
-
-	<input type="hidden" id="sessionRanks" th:value="${sessionRanks}">
-	<input type="hidden" id="sessionDeptName" th:value="${sessionDeptName}">
-		
+	<!-- //무조건 section 안에서 내용 작성 -->
+	<div layout:fragment="content" class="section">
+		<h2>프로젝트</h2>
 		<div class="article">
+		<!-- 검색 시작 -->
+		<form th:action="@{/user/selectAttendingProjectList}">
+		<div class="board_search">
+			<div class="board_search_inner">
+				<div class="select_wrap">
+					<select name="searchCondition" id="category">
+						<option value="prjName">프로젝트명</option>
+						<option value="prjMothercompany">마더업체</option>
+					</select>
+				</div>
+				<div class="search">
+					<input type="text" name="searchKeyword" id="keyword">
+					<input type="submit" value="검색">
+				</div>
+			</div>
+		</div>
+		</form>
+		<input type="hidden" id="searchCondition" th:value="${search.searchCondition}">
+		<input type="hidden" id="searchKeyword" th:value="${search.searchKeyword}">
+		<!-- 검색 종료 -->
+		<input type="hidden" id="sessionRanks" th:value="${sessionRanks}">
+		<input type="hidden" id="sessionDeptName" th:value="${sessionDeptName}">
 			<div class="table_wrap list">
 				<table>
 					<colgroup>

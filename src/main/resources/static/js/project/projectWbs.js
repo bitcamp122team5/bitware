@@ -502,6 +502,7 @@ var insertProjectWbsListAjax = function(){
 }
 
 
+
 /*통계 */
 
 //진행률 통계 구하기
