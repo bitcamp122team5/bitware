@@ -46,12 +46,13 @@ $(document).ready(function() {
     display:none;
     color:#fff;
 }
+.tit div{display:inline-block;}
 </style>
 </head>
 <body>
 <div th:replace="fragments/header :: headerFragment"></div>
 
-<div th:replace="fragments/aside :: asideFragmentCommunity"></div>
+<div th:replace="fragments/aside :: asideFragment"></div>
 
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
@@ -105,9 +106,9 @@ $(document).ready(function() {
 				<tr th:each="paging:${pagingList}">
 					<td th:text="${paging.count}"></td>
 					<td th:text="${paging.notice.ntCate}"></td>
-			        <td class="tit">
+			        <td class="tit ellipsis">
 			        	<a th:href="@{/user/selectNotice(ntNo=${paging.notice.ntNo})}" th:text="${paging.notice.ntTitle}"></a>
-			        	<span th:each="noticeFile:${paging.notice.noticeFileList}">
+			        	<div th:each="noticeFile:${paging.notice.noticeFileList}">
 			        		<span th:if="${noticeFile.ntFileType=='image'}">
 			        			<img th:src="@{/images/fileImage.png}" style="width: 5px; height: 5px">
 			        			<span th:text="${noticeFile.ntFileName}" class="thumbnail" th:value="${noticeFile.ntFileUrl}" style="font-size: 5px"></span>
@@ -116,7 +117,7 @@ $(document).ready(function() {
 			        			<img th:src="@{/images/fileImage.png}" style="width: 5px; height: 5px">
 			        			<span th:text="${noticeFile.ntFileName}" style="font-size: 5px"></span>
 			        		</span>
-			        	</span>
+			        	</div>
 			        </td>
 			    	<th:block th:if="${today==#dates.format(paging.notice.ntDate,'yyyy-MM-dd')}">
 						<td th:text="${#dates.format(paging.notice.ntDate,'HH:mm')}"></td>

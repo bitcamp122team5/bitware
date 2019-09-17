@@ -7,9 +7,38 @@ window.onload=function(){
 };
 $(function(){
 	$(".aside_con .dep1.have").click(function(){
+		$(this).removeClass("on");
 		$(this).toggleClass("on");
 	});
 });
+
+$(function(){
+	$(".aside_con .dep1 a").click(function(e){
+	$(this).parent().toggleClass('on');
+	$(this).parent().siblings('li').removeClass('on');
+	if($(this).parent().hasClass('have')){
+		e.preventDefault();
+		$(this).addClass('on');
+		$('.dep2ul').addClass('on');
+	}
+	});
+});
+
+$(window).load(function(){
+  var url_pathname = window.location.pathname;
+    var url_search = window.location.search;
+    var url = url_pathname +  url_search;
+     $(".aside_con .dep2ul li a").each(function(){
+//      $(this).parent().parent().removeClass("active");
+      $(this).removeClass('active');
+      if ($(this).attr("href") == url ){
+      $(this).addClass("active");
+      $(this).parent().parent().addClass("active");
+      }
+  });   
+});
+
+
 
 /* 전체페이지 autocomplete off */
 $(document).ready(function(){

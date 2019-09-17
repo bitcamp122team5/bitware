@@ -31,8 +31,6 @@ button{outline:none;}
 .table_wrap tbody th{padding:8px 10px;box-sizing:border-box;background:#e7e9ef;}
 .table_wrap tbody td{padding:8px 10px;box-sizing:border-box;text-align:center;}
 .table_wrap.list .tit{text-align:left;}
-.table_wrap.list .tit::after{content:'';display:block;clear:both;}
-.table_wrap.list .tit a{float:left;width:100%;}
 .table_wrap.list .file img{width:20px;height:20px;}
 
 .table_wrap.view td{text-align:left;}
