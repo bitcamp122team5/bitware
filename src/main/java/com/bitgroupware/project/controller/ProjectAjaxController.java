@@ -31,7 +31,6 @@ public class ProjectAjaxController {
 	@Autowired
 	private ProjectService projectService;
 	
-	
 	/*프로젝트 참여인원 추가 */
 	@RequestMapping(value="/insertProjectAttendMembersAjax", method=RequestMethod.POST)
 	@ResponseBody

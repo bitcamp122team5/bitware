@@ -108,6 +108,8 @@ input[type='date']{
 							value="참여인원 리스트" onclick="projectAttendMemberModal()"></td>
 				</tr>
 				<input type="hidden" id="prjCompletion" th:value="${prjInfo.prjCompletion}">
+				
+				
 				</thead>
 		<!-- 상단의 프로젝트 정보 끝-->
 		</table>
@@ -191,7 +193,7 @@ input[type='date']{
 			</form>
 			<a class="btn btn_point" id="viewGraphBtn" onclick="viewGraph()">달력</a>
 			<a class="btn btn_point" id="checkListRemoveBtn" onclick="checkListRemove()">작업 삭제</a>
-			<a class="btn btn_point" id="insertProjectWbsListBtn" onclick="insertProjectWbsListAjax()">저장</a>
+			<a class="btn btn_point" id="insertProjectWbsListBtn" onclick="insertProjectWbsList()">저장</a>
 		</div>
 	</div>
 	<!-- 프로젝트 정보 수정 모달 -->

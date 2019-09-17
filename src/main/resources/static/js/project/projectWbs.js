@@ -455,7 +455,7 @@ function insertProjectWbsList(){
 	for(var i= 0; i<prjRealStarts.length; i++){
 		if(nvl(prjRealStarts[i], "")){
 			if(prjStart.getTime() > parseDate(prjRealStarts[i]).getTime()){
-				alert('계획 작업 시작일은 프로젝트 시작일과 같거나 이후로 입력해주세요. 참고 : '+(i+1)+"번째 계획 작업 시작일");
+				alert('실제 작업 시작일은 프로젝트 시작일과 같거나 이후로 입력해주세요. 참고 : '+(i+1)+"번째 실제 작업 시작일");
 				chk = false;
 				break;
 			}
@@ -465,7 +465,7 @@ function insertProjectWbsList(){
 	for(var i= 0; i<prjRealEnds.length; i++){
 		if(nvl(prjRealEnds[i], "")){
 			if(parseDate(prjRealEnds[i]).getTime() > prjEnd.getTime()){
-				alert('계획 작업 종료일은 프로젝트 종료일과 같거나 이전으로 입력해주세요. 참고 : '+(i+1)+"번째 계획 작업 종료일");
+				alert('실제 작업 종료일은 프로젝트 종료일과 같거나 이전으로 입력해주세요. 참고 : '+(i+1)+"번째 실제 작업 종료일");
 				chk = false;
 				break;
 			}
@@ -585,7 +585,7 @@ function WBSProgress(){
 			realPercentArray[i] = 0;
 		}
 	}
-	//개별 진행률 담기
+	//개별 진행률을 총 진행률에 담기
 	for(var i=0; i<subData.cnt; i++){
 		if(0 < planTempNumTotal[i] && planTempNumTotal[i] <= 100){
 			planTotalProgress += planTempNumTotal[i];

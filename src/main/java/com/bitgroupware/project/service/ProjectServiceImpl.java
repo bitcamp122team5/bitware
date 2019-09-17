@@ -253,19 +253,5 @@ public class ProjectServiceImpl implements ProjectService {
 		return dao.selectMemberRanksByMemId(memId);
 	}
 	
-	/*프로젝트 일수 구하기*/
-	@Override
-	public int schedule(ProjectInfoDto prjInfo) {
-		
-		
-		String[] prjStart = prjInfo.getPrjStart().split("-");
-		String[] prjEnd = prjInfo.getPrjEnd().split("-");
-		
-		Date Start = new Date(Integer.parseInt(prjStart[0]), Integer.parseInt(prjStart[1])-1, Integer.parseInt(prjStart[2]));
-		Date End = new Date(Integer.parseInt(prjEnd[0]), Integer.parseInt(prjEnd[1])-1, Integer.parseInt(prjEnd[2]));
-		
-		return (int) (((End.getTime() - Start.getTime()) / (1000*60*60*24)) + 1);
-	}
 
-	
 }
