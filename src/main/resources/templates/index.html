@@ -75,9 +75,6 @@ div.vacationChart {
 		var vacationChart = new google.visualization.PieChart(document.getElementById('vacationChart'));
 		vacationChart.draw(vacationStatus, vacationStatusOptions);
 	}
-	
-	
-	
 </script>
 <!-- 차트 끝 -->
 <title>메인페이지</title>
@@ -95,9 +92,9 @@ div.vacationChart {
 			<a th:href="@{/user/selectNoticeList}">공지사항 +</a>
 				<table>
 					<colgroup>
-						<col width="200px">
+						<col width="150px">
 						<col width="*">
-						<col width="200px">
+						<col width="150px">
 					</colgroup>
 					<thead>
 						<tr>
@@ -124,14 +121,14 @@ div.vacationChart {
 		</div>
 		<!-- //article end -->
 		
-		<div class="article half" >
+		<div class="article half" style="height: 277px">
 			<div th:if="${!approvalList.isEmpty()}" class="table_wrap list">
-			<a th:href="@{/user/selectApprovalListTo}">결재 할 문서 +</a>
+				<a th:href="@{/user/selectApprovalListTo}">결재 할 문서 +</a>
 				<table>
 					<colgroup>
 						<col width="*">
-						<col width="200px">
-						<col width="200px">
+						<col width="150px">
+						<col width="150px">
 					</colgroup>
 					<thead>
 						<tr>
@@ -149,13 +146,33 @@ div.vacationChart {
 					</tbody>
 				</table>
 			</div>
-			<div th:if="${approvalList.isEmpty()}" align="center">
-				<h1>결재 할 문서가 없습니다.</h1>
+			<div th:if="${approvalList.isEmpty()}" class="table_wrap list">
+				<a th:href="@{/user/selectApprovalListTo}">결재 할 문서 +</a>
+				<table>
+					<colgroup>
+						<col width="*">
+						<col width="150px">
+						<col width="150px">
+					</colgroup>
+					<thead>
+						<tr>
+							<th>제목</th>
+							<th>기안자</th>
+							<th>등록일</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td colspan="3">결재 할 문서가 없습니다.</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 			<!-- //table_wrap end -->
 		</div>
 		<!-- //article end -->
-		<div class="article cl">
+		<div th:if="${!projectList.isEmpty()}" class="article cl">
+			<a th:href="@{/user/selectAttendingProjectList}">참여중인 프로젝트 +</a>
 			<div class="project_wrap">
 				<div th:each="project:${projectList}" class="table_wrap list">
 					<table>
@@ -188,7 +205,8 @@ div.vacationChart {
 		</div>
 		<!-- //article end -->
 
-		<div class="article">
+		<div class="article cl">
+			<a th:href="@{/user/selectCommuteList}">근태 및 휴가 +</a>
 			<div class="table_wrap list">
 				<!-- 그래프 적용 시작 -->
 				<div class="commuteChart" id="commuteChart" align="center"></div>
