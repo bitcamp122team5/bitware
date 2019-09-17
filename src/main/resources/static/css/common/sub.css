@@ -24,7 +24,7 @@ button{outline:none;}
 .btn_calendar{display:inline-block;width:30px;height:30px;background:url(/images/btn_calendar.png) center center no-repeat;cursor:pointer;}
 
 /* table */
-.table_wrap{width:98%;margin:0 auto;}
+.table_wrap{}
 .table_wrap table{width:100%;}
 .table_wrap tr{border-bottom:1px solid #ddd;}
 .table_wrap thead th{padding:8px 10px;box-sizing:border-box;background:#e7e9ef;text-align:center;}

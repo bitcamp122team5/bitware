@@ -75,6 +75,9 @@ div.vacationChart {
 		var vacationChart = new google.visualization.PieChart(document.getElementById('vacationChart'));
 		vacationChart.draw(vacationStatus, vacationStatusOptions);
 	}
+	
+	
+	
 </script>
 <!-- 차트 끝 -->
 <title>메인페이지</title>
@@ -87,7 +90,7 @@ div.vacationChart {
 
 	<!-- //무조건 section 안에서 내용 작성 -->
 	<div layout:fragment="content" class="section">
-		<div class="article">
+		<div class="article half">
 			<div class="table_wrap list">
 			<a th:href="@{/user/selectNoticeList}">공지사항 +</a>
 				<table>
@@ -121,7 +124,7 @@ div.vacationChart {
 		</div>
 		<!-- //article end -->
 		
-		<div class="article" >
+		<div class="article half" >
 			<div th:if="${!approvalList.isEmpty()}" class="table_wrap list">
 			<a th:href="@{/user/selectApprovalListTo}">결재 할 문서 +</a>
 				<table>
@@ -152,35 +155,36 @@ div.vacationChart {
 			<!-- //table_wrap end -->
 		</div>
 		<!-- //article end -->
-		
-		<div th:each="project:${projectList}" class="article">
-			<div class="table_wrap list">
-				<table>
-					<colgroup>
-						<col width="*">
-						<col width="200px">
-						<col width="200px">
-						<col width="200px">
-					</colgroup>
-					<thead>
-						<tr>
-							<th>프로젝트명</th>
-							<th>PM</th>
-							<th>시작일</th>
-							<th>종료일</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><a th:href="@{/user/projectDetail(prjCode=${project.prjCode})}" th:text="${project.prjName}"></a></td>
-							<td th:text="${project.prjPm}"></td>
-							<td th:text="${project.prjStart}"></td>
-							<td th:text="${project.prjEnd}"></td>
-						</tr>
-					</tbody>
-				</table>
+		<div class="article cl">
+			<div class="project_wrap">
+				<div th:each="project:${projectList}" class="table_wrap list">
+					<table>
+						<colgroup>
+							<col width="*">
+							<col width="200px">
+							<col width="200px">
+							<col width="200px">
+						</colgroup>
+						<thead>
+							<tr>
+								<th>프로젝트명</th>
+								<th>PM</th>
+								<th>시작일</th>
+								<th>종료일</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><a th:href="@{/user/projectDetail(prjCode=${project.prjCode})}" th:text="${project.prjName}"></a></td>
+								<td th:text="${project.prjPm}"></td>
+								<td th:text="${project.prjStart}"></td>
+								<td th:text="${project.prjEnd}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-- //table_wrap end -->
 			</div>
-			<!-- //table_wrap end -->
 		</div>
 		<!-- //article end -->
 
@@ -221,5 +225,19 @@ div.vacationChart {
 		</div>
 	</div>
 	<!-- //section end -->
+<script>
+/* bxslider */
+$(document).ready(function(){
+    $('.project_wrap').bxSlider({
+    	auto: false,
+    	speed: 500,
+    	pause: 4000,
+    	mode:'horizontal',
+    	autoControls: true,
+    	controls:true,
+    	pager:false
+    });
+});
+</script>
 </body>
 </html>
