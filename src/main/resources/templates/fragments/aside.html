@@ -14,7 +14,7 @@
 		<li class="dep1 have"><a href="#">전자결재</a>
 			<ul class="dep2ul">
 <!-- 				<li><a href="#" id="wrtBnt">기안하기</a></li> -->
-				<li><a th:href="@{/user/selectApprovalDocList}">기안하기</a></li>
+				<li><a id="wrtBnt">기안하기</a></li>
 				<li><a th:href="@{/user/selectApprovalListTo}">결재 할(한) 문서</a></li>
 				<li><a th:href="@{/user/selectApprovalListToBe}">결재 받을(은) 문서</a></li>
 			</ul>
@@ -39,6 +39,9 @@
 			</ul>
 		</li>
 	</ul>
+	<div>
+		<th:block th:replace="approval/approvalList :: approvalFragment"></th:block>
+	</div>
 </div><!-- //aside end -->
 
 <!-- Community -->
@@ -107,5 +110,8 @@
 		</li>
 		<li class="dep1"><a th:href="@{/user/selectClientList}">고객사</a></li>
 	</ul>
+	
+
+	
 </div><!-- //aside end -->
 

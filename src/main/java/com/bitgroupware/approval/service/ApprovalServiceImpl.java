@@ -143,6 +143,11 @@ public class ApprovalServiceImpl implements ApprovalService {
 	public int selectRanksNo(String memId) {
 		return apDao.selectRanksNo(memId);
 	}
+	
+	public int selectFirstRanksNo(String apNo) {
+		return apDao.seletFirstRanksNo(apNo);
+	}
+
 
 	public void updateApprovalPath(ApprovalDto approval, MemberVo member) {
 		
@@ -260,10 +265,5 @@ public class ApprovalServiceImpl implements ApprovalService {
 		}
 		return count;
 	}
-
-	
-
-	
-
 
 }

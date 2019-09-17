@@ -6,98 +6,14 @@
 <meta charset="UTF-8">
 <title>결재 받은 문서</title>
 <th:block th:replace="fragments/config :: configFragment"></th:block>
-
-<style>
-/* The Modal (background) */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 2; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-/* Modal Content/Box */
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 50%; /* Could be more or less, depending on screen size */                          
-}
-/* The Close Button */
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.approvalForm ul{padding:20px;box-sizing:border-box;}
-.approvalForm ul::after{content:'';display:block;clear:both;}
-.approvalForm ul li{float:left; width:22.7%;margin-bottom:20px;margin-right:20px;height:140px;border:1px solid #A4A4A4;box-sizing:border-box;border-radius:10px;}
-.approvalForm ul li a{display:block;width:100%;height:50px;align:center;}
-.approvalForm ul li a .approvalImg{width:100%;height:100%;align-content:center;}
-.approvalForm ul li:nth-child(4n){margin-right:0;}
-
-</style>
-
 </head>
 <body>
 <div th:replace="fragments/header :: headerFragment"></div>
 
 <div th:replace="fragments/aside :: asideFragment"></div>
 
-<script>
-window.onload=function(){
-	var modal = document.getElementById('myModal');
-	document.getElementById("wrtBnt").onclick = function() {
-    	modal.style.display = "block";
-	}
-	document.getElementsByClassName("close")[0].onclick = function() {
-    	modal.style.display = "none";
-	}
-	window.onclick = function(event) {
-    	if (event.target == modal) {
-        	modal.style.display = "none";
-    	}
-	}
-}
-</script>
-
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
-
-		<!-- modal -->
-
-		<div id="myModal" class="modal" th:align="center">
-			<div class="modal-content">
-				<span class="close">&times;</span>
-				<h2>기안하기 - 문서양식 고르는 폼</h2>
-				<div class="approvalForm">
-				<ul>
-					<li th:each="approval:${approval}">
-						<a th:href="@{/user/insertApprovalView(apdocNo=${approval.apdocNo})}" >
-							<div><span th:text="${approval.apdocName}"></span></div>
-<!-- 						<div class="approvalImg"><img th:src="@{/images/test.png}" style="margin: 30px 25px;"/></div> -->
-							<div class="approvalImg"><img th:src="@{/images/filecc.png}" style="margin: 30px 25px;"/></div>
-						</a>
-					</li>
-				</ul>
-				</div>
-			</div>
-		</div>
 
 <script>
 $(function(){

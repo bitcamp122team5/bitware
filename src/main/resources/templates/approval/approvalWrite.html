@@ -84,7 +84,7 @@ window.onload=function(){
 <div layout:fragment="content" class="section" th:align="center">
 <!-- //여기서 부터 긁어가세요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 <!-- //클래스명 하나도 빼지 말고 다 넣어주세요  -->
-<h2>기안하기</h2>
+<h2 th:text="${approvalDocument.apdocName} + '&nbsp;기안하기'"></h2>
 <div class="article">
 	<div class="table_wrap write">
 	<form method="post" th:action="@{/user/insertApproval}" enctype="multipart/form-data" name="multiform" id="multiform">
@@ -98,7 +98,7 @@ window.onload=function(){
 			<tbody>
 				<tr>
 					<th>제목</th>
-					<td><input type="text" name="apTitle" class="w100p" id="apTitle"></td>
+					<td><input type="text" name="apTitle" class="w100p" id="apTitle" th:value="${approvalDocument.apdocName}+'_'"></td>
 				</tr>
 				<tr>
 					<th>내용</th>

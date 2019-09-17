@@ -24,6 +24,7 @@ body { background: #fff; }
   background: #ffffff;
 }
 
+
 /* The Modal (background) */
 .modal {
     display: none; /* Hidden by default */
@@ -60,13 +61,6 @@ body { background: #fff; }
     cursor: pointer;
 }
 
-.approvalForm ul{padding:20px;box-sizing:border-box;}
-.approvalForm ul::after{content:'';display:block;clear:both;}
-.approvalForm ul li{float:left; width:23.7%;margin-bottom:20px;margin-right:20px;height:150px;border:1px solid #3e5165;box-sizing:border-box;border-radius:10px;}
-.approvalForm ul li a{display:block;width:100%;height:50px;}
-.approvalForm ul li a .approvalImg{width:100%;height:100%;}
-.approvalForm ul li:nth-child(4n){margin-right:0;}
-
 </style>
 
 <script>
@@ -88,21 +82,22 @@ $(function(){
 			location.href="/user/updateApprovalCancel?apNo="+apNo+"&apComment="+apComment;
 		}
 	});
-	
-	window.onload=function(){
-		var modal = document.getElementById('myModal');
-		document.getElementById("wrtBnt").onclick = function() {
-	    	modal.style.display = "block";
-		}
-		document.getElementsByClassName("close")[0].onclick = function() {
-	    	modal.style.display = "none";
-		}
-		window.onclick = function(event) {
-	    	if (event.target == modal) {
-	        	modal.style.display = "none";
-	    	}
-		}
+});
+
+window.onload=function(){
+	var modal = document.getElementById('approvalModal');
+	document.getElementById("wrtBnt").onclick = function() {
+    	modal.style.display = "block";
 	}
+	document.getElementsByClassName("closes")[0].onclick = function() {
+    	modal.style.display = "none";
+	}
+	window.onclick = function(event) {
+    	if (event.target == modal) {
+        	modal.style.display = "none";
+    	}
+	}
+}
 
 </script>
 </head>
@@ -115,26 +110,6 @@ $(function(){
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
 
-		<!-- modal -->
-
-		<div id="myModal" class="modal" th:align="center">
-			<div class="modal-content">
-				<span class="close">&times;</span>
-				<h2>기안하기 - 문서양식 고르는 폼</h2>
-				<div class="approvalForm">
-				<ul>
-					<li th:each="approval:${approvalFile}">
-						<a th:href="@{/user/insertApprovalView(apdocNo=${approval.apdocNo})}" >
-							<div><span th:text="${approval.apdocName}"></span></div>
-<!-- 						<div class="approvalImg"><img th:src="@{/images/test.png}" style="margin: 30px 25px;"/></div> -->
-							<div class="approvalImg"><img th:src="@{/images/filecc.png}" style="margin: 30px 25px;"/></div>
-						</a>
-					</li>
-				</ul>
-				</div>
-			</div>
-		</div>
-
 
 <input type="hidden" id="apNo" th:value="${approval.apNo}">
 <input type="hidden" id="finalSign" th:value="${approval.finalSign}">
@@ -145,15 +120,15 @@ $(function(){
 <div th:align="right" class="signtb">
 	<table border="1">
 	<tr>
-		<th>사원</th>
-		<th>팀장</th>
-		<th>부장</th>
-		<th>이사</th>
-		<th>사장</th>
+		<th th:if="${firstRanksNo<=1&&approval.finalSign>=1}">사원</th>
+		<th th:if="${firstRanksNo<=2&&approval.finalSign>=2}">팀장</th>
+		<th th:if="${firstRanksNo<=3&&approval.finalSign>=3}">부장</th>
+		<th th:if="${firstRanksNo<=4&&approval.finalSign>=4}">이사</th>
+		<th th:if="${firstRanksNo<=5&&approval.finalSign>=5}">사장</th>
 	</tr>
 	
 	<tr th:align="center">
-		<td>
+		<td width="75" height="75" th:if="${firstRanksNo<=1&&approval.finalSign>=1}">
 			<th:block th:if="${approval.apSignUrl1!=null}">
 				<img th:src="${approval.apSignUrl1}" width="75" height="75">
 			</th:block>
@@ -172,7 +147,7 @@ $(function(){
 			</th:block>
 		</td>
 		
-		<td>
+		<td width="75" height="75" th:if="${firstRanksNo<=2&&approval.finalSign>=2}">
 			<th:block th:if="${approval.apSignUrl2!=null}">
 				<img th:src="${approval.apSignUrl2}" width="75" height="75">
 			</th:block>
@@ -191,7 +166,7 @@ $(function(){
 			</th:block>
 		</td>
 		
-		<td>
+		<td width="75" height="75" th:if="${firstRanksNo<=3&&approval.finalSign>=3}">
 			<th:block th:if="${approval.apSignUrl3!=null}">
 				<img th:src="${approval.apSignUrl3}" width="75" height="75">
 			</th:block>
@@ -210,7 +185,7 @@ $(function(){
 			</th:block>
 		</td>
 		
-		<td>
+		<td width="75" height="75" th:if="${firstRanksNo<=4&&approval.finalSign>=4}">
 			<th:block th:if="${approval.apSignUrl4!=null}">
 				<img th:src="${approval.apSignUrl4}" width="75" height="75">
 			</th:block>
@@ -229,7 +204,7 @@ $(function(){
 			</th:block>
 		</td>
 		
-		<td>
+		<td width="75" height="75" th:if="${firstRanksNo<=5&&approval.finalSign>=5}">
 			<th:block th:if="${approval.apSignUrl5!=null}">
 				<img th:src="${approval.apSignUrl5}" width="75" height="75">
 			</th:block>
@@ -250,13 +225,14 @@ $(function(){
 		
 	</tr>
 	
-	<tr align="center">
-		<td th:text="${approval.apSignName1}"></td>
-		<td th:text="${approval.apSignName2}"></td>
-		<td th:text="${approval.apSignName3}"></td>
-		<td th:text="${approval.apSignName4}"></td>
-		<td th:text="${approval.apSignName5}"></td>
+	<tr align="center" width="78px" height="25px">
+		<td th:if="${firstRanksNo<=1&&approval.finalSign>=1}" th:text="${approval.apSignName1}"></td>
+		<td th:if="${firstRanksNo<=2&&approval.finalSign>=2}" th:text="${approval.apSignName2}"></td>
+		<td th:if="${firstRanksNo<=3&&approval.finalSign>=3}" th:text="${approval.apSignName3}"></td>
+		<td th:if="${firstRanksNo<=4&&approval.finalSign>=4}" th:text="${approval.apSignName4}"></td>
+		<td th:if="${firstRanksNo<=5&&approval.finalSign>=5}" th:text="${approval.apSignName5}"></td>
 	</tr>
+	
 	</table>
 	</div>
 
@@ -318,7 +294,8 @@ $(function(){
 		
 		<div class="btn_wrap">
 		<div class="box_right">
-			<a  class="btn btn_point" th:href="@{/user/selectApprovalListToBe}">목록</a>
+<!-- 			<a  class="btn btn_point" th:href="@{/user/selectApprovalListToBe}">목록</a> -->
+			<a  class="btn btn_point" href="javascript:history.back();">목록</a>
 			<a  class="btn btn_point" th:if="${approval.apDocstatus=='1'}" th:href="@{/user/deleteApproval(apNo=${approval.apNo})}">삭제</a>
 			<a  class="btn btn_point" th:if="${approval.apDocstatus=='1'}" th:href="@{/user/updateApprovalView(apNo=${approval.apNo})}">수정</a>
 		</div>
