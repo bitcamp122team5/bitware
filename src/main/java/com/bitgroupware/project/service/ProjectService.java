@@ -81,7 +81,4 @@ public interface ProjectService {
 	/*memId로 Ranks(직급명) 가져오기*/
 	public MemberDto selectMemberRanksByMemId(String memId);
 	
-	/*프로젝트 일수 구하기*/
-	public int schedule(ProjectInfoDto prjInfo);
-
 }

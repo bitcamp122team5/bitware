@@ -1,10 +1,11 @@
 /* 사이드메뉴 */
 window.onload=function(){
-	var toggleCheck = document.getElementById("toggleCheck").value;
-	if(toggleCheck=="toggleOn"){
-		$("#toggleOpenCheck").click();
-	}
+   var toggleCheck = document.getElementById("toggleCheck").value;
+   if(toggleCheck=="toggleOn"){
+      $("#toggleOpenCheck").click();
+   }
 };
+
 $(function(){
 	$(".aside_con .dep1.have").click(function(){
 		$(this).removeClass("on");
