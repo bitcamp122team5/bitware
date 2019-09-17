@@ -8,12 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -39,7 +34,6 @@ import com.bitgroupware.member.vo.MemberVo;
 import com.bitgroupware.security.config.SecurityUser;
 import com.bitgroupware.utils.Pager;
 import com.bitgroupware.utils.Search;
-import com.mysema.commons.lang.URLEncoder;
 
 @Controller
 @RequestMapping("/user")
@@ -53,19 +47,12 @@ public class ApprovalController {
 	
 	@Autowired
 	private ApprovalDao apdao;
-	
-	// 임시 MAIN
-	@RequestMapping("/main")
-	public String main() {
-		return "approval/main";
-	}
-	
-	// 문서 폼
-	@RequestMapping("/selectApprovalDocList")
-	public String selectApprovalDocList(Model model) {
+
+	@RequestMapping("/approvalDocList")
+	@ResponseBody
+	public List<ApprovalDocumentDto> selectApprovalDocList() {
 		List<ApprovalDocumentDto> approvalDocList = approvalDocService.selectApprovalDocList();
-		model.addAttribute("approvalDocList",approvalDocList);
-		return "approval/approvalDocTypeList";
+		return approvalDocList;
 	}
 	
 	@RequestMapping("/insertApprovalView")
@@ -210,7 +197,6 @@ public class ApprovalController {
 	@RequestMapping("/selectApprovalListToBe")
 	public String selectApprovalListToBe(Model model, @AuthenticationPrincipal SecurityUser principal, String status, 
 			@RequestParam(defaultValue = "1") int curPage, Search search,String apNo) {
-		List<ApprovalDocumentDto> approval = approvalDocService.selectApprovalDocList();
 		Date date = new Date();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		String today = format.format(date);
@@ -237,7 +223,6 @@ public class ApprovalController {
 			approvalListToBe = approvalService.selectApprovalListToBe(memId, status,begin, search);
 		}
 		model.addAttribute("approvalListToBe",approvalListToBe);
-		model.addAttribute("approval",approval);
 		model.addAttribute("today",today);
 		model.addAttribute("page",page);
 		model.addAttribute("block",block);
@@ -251,7 +236,6 @@ public class ApprovalController {
 	@RequestMapping("/selectApprovalListTo")
 	public String selectApprovalListTo(Model model, @AuthenticationPrincipal SecurityUser principal, 
 			@RequestParam(defaultValue = "1") int curPage, Search search) {
-		List<ApprovalDocumentDto> approval = approvalDocService.selectApprovalDocList();
 		String memId = principal.getMember().getMemId();
 		int count = approvalService.countApproval(memId,search);
 
@@ -267,7 +251,6 @@ public class ApprovalController {
 		int begin = page.getPageBegin() - 1;
 		
 		List<ApprovalDto> approvalList = approvalService.selectApprovalListTo(memId,begin,search);
-		model.addAttribute("approval",approval);
 		model.addAttribute("approvalList",approvalList);
 		model.addAttribute("page",page);
 		model.addAttribute("block",block);
@@ -312,7 +295,9 @@ public class ApprovalController {
 		model.addAttribute("approvalFileList",approvalFileList);
 		model.addAttribute("approvalFile",approvalFile);
 		String memId = principal.getMember().getMemId();
+		int firstRanksNo = approvalService.selectFirstRanksNo(apNo);
 		int ranksNo = approvalService.selectRanksNo(memId);
+		model.addAttribute("firstRanksNo",firstRanksNo);
 		model.addAttribute("ranksNo",ranksNo);
 		System.out.println(approval);
 		System.out.println(approvalFileList);

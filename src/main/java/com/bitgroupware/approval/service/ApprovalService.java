@@ -45,6 +45,8 @@ public interface ApprovalService {
 	
 	int countApprovalStatus(String memId, String status, Search search);
 	
+	int selectFirstRanksNo(String apNo);
+	
 	
 
 

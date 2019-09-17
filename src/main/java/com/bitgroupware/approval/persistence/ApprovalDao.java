@@ -87,6 +87,9 @@ public interface ApprovalDao {
 
 	@Select ("select ranks.ranks_no from member join ranks on member.ranks = ranks.ranks where member.mem_id = #{memId}")
 	int selectRanksNo(String memId);
+	
+	@Select("select ranks.ranks_no from member join ranks on member.ranks = ranks.ranks where member.mem_id = (select mem_id from approval where ap_no=#{apNo});")
+	int seletFirstRanksNo(String apNo);
 
 	@Update("update approval set ap_docstatus = #{apDocstatus}, ap_signpath = #{apSignpath}, ap_sign_url1 = #{apSignUrl1}, ap_sign_url2 = #{apSignUrl2}, ap_sign_url3 = #{apSignUrl3}, ap_sign_url4 = #{apSignUrl4}, ap_sign_url5 = #{apSignUrl5}, ap_sign_name1 = #{apSignName1}, ap_sign_name2 = #{apSignName2}, ap_sign_name3 = #{apSignName3}, ap_sign_name4 = #{apSignName4}, ap_sign_name5 = #{apSignName5} where ap_no = #{apNo}")
 	void updateApprovalPath(ApprovalDto approval);
@@ -124,8 +127,4 @@ public interface ApprovalDao {
 	@Select("select count( DISTINCT  ap_no,ap_title,ap_docstatus,approval.mem_id,ap_insertdate) from approval join member on (approval.ap_sign_name2 = member.mem_name or approval.ap_sign_name3 = member.mem_name or approval.ap_sign_name4 = member.mem_name or approval.ap_sign_name5 = member.mem_name) where not approval.mem_id in (#{memId}) and ap_docstatus in (2,3,4) and ap_deleteflag = 'N' and ap_content like #{searchKeyword}")
 	int countByToApContent(String memId, String searchKeyword);
 
-	
-	
-	
-	
 }
