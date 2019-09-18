@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<title>Project List</title>
+<th:block th:replace="fragments/config :: configFragment"></th:block>
+
+<!-- 사용자 css 추가 -->
+<th:block layout:fragment="css">
+<link rel="stylesheet" type="text/css" th:href="@{/css/project/bootstrap-theme.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/project/bootstrap.min.css}">
+</th:block>
+
+<!-- 사용자 script 추가 -->
+<th:block layout:fragment="script">
+<script type="text/javascript" th:src="@{/js/project/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/project/projectList.js}"></script>
+</th:block>
+</head>
+<body>
+<div th:replace="fragments/header :: headerFragment"></div>
+<div th:replace="fragments/aside :: asideFragment"></div>
+
+	<!-- //무조건 section 안에서 내용 작성 -->
+	<div layout:fragment="content" class="section">
+		<h2>프로젝트 위험관리대장</h2>
+		<div class="article">
+		<input type="hidden" id="sessionId" th:value="${sessionId}">
+		<input type="hidden" id="sessionRanks" th:value="${sessionRanks}">
+		<input type="hidden" id="sessionDeptName" th:value="${sessionDeptName}">
+			<div class="table_wrap view">
+				<table>
+					<colgroup class="pc">
+						<col width="120px">
+						<col width="*">
+					</colgroup>
+					<tbody>
+						<!-- 해결자부터 처리결과까지는 글 작성할 땐 지워둘까 -->
+						<tr>
+							<th th:text="제목" ></th>
+							<td><input name="rskTitle" type="text"></td>
+						</tr>
+						<tr>
+							<th th:text="내용"></th>
+							<td><input name="rskContent" type="text"></td>
+						</tr>
+						<tr>
+							<th th:text="해결자" ></th>
+							<td><input name="rskSolver" type="text"></td>
+						</tr>
+						<tr>
+							<th th:text="해결방안"></th>
+							<td><input name="rskSolution" type="text"></td>
+						</tr>
+						<tr>
+							<th th:text="종료일" ></th>
+							<td><input name="rskEnd" type="date"></td>
+						</tr>
+						<tr>
+							<th th:text="처리결과"></th>
+							<td><input name="rskResult" type="text"></td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="btn_wrap">
+					<div class="box_right">
+						<a class="btn btn_point" th:href="">등록</a> <!-- 제목과 내용만 적어도 insert -->
+						<a class="btn btn_point" th:href="">위험관리대장 목록</a>	
+					</div>
+				</div>
+			</div><!-- table_wrap end -->
+		</div><!-- article end -->
+</div><!-- //section end -->
+</body>
+</html>

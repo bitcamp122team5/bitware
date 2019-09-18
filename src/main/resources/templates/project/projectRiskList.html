@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<title>Project List</title>
+<th:block th:replace="fragments/config :: configFragment"></th:block>
+
+<!-- 사용자 css 추가 -->
+<th:block layout:fragment="css">
+<link rel="stylesheet" type="text/css" th:href="@{/css/project/bootstrap-theme.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/project/bootstrap.min.css}">
+</th:block>
+
+<!-- 사용자 script 추가 -->
+<th:block layout:fragment="script">
+<script type="text/javascript" th:src="@{/js/project/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/project/projectList.js}"></script>
+</th:block>
+
+
+</head>
+<body>
+<div th:replace="fragments/header :: headerFragment"></div>
+<div th:replace="fragments/aside :: asideFragment"></div>
+
+	<!-- //무조건 section 안에서 내용 작성 -->
+	<div layout:fragment="content" class="section">
+		<h2>프로젝트 위험관리대장</h2>
+		<div class="article">
+
+		<input type="hidden" id="sessionRanks" th:value="${sessionRanks}">
+		<input type="hidden" id="sessionDeptName" th:value="${sessionDeptName}">
+		<tr>
+			<th th:text="프로젝트 선택"></th>
+			<td>
+				<select name="prjCode"><!-- each로 프로젝트 뿌려줘야 함. -->
+		        	<option value="프로젝트코드">프로젝트명</option>
+		        	<option value="프로젝트코드">프로젝트명</option>
+		        	<option value="프로젝트코드">프로젝트명</option>
+		        </select>
+		    </td>
+		</tr>
+		
+			<div class="table_wrap list">
+				<table>
+					<colgroup>
+						<col width="50px">
+						<col width="*">
+						<col width="80px">
+						<col width="100px">
+						<col width="100px">
+						<col width="100px">
+					</colgroup>
+					<thead>
+						<tr>
+							<th><input type="checkbox" name="allCheckBox" id="projectAllCheckBox" onclick="projectCheckAll(this.checked)"></th>
+							<th>위험관리대장명</th>
+							<th>작성자</th>
+							<th>등록일</th>
+							<th>종료일</th>
+							<th>상태</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="Infos : ${prjInfos}">
+							<input type="hidden" id="pmPrjCode" th:value="${Infos.prjCode}">
+							<td><input type="checkbox" name="projectAllCheckBox" id="prjCode" class="projectCheckBox" th:value="${Infos.prjCode}"></td>
+							<td><a th:href="@{/user/projectDetail(prjCode=${Infos.prjCode})}" th:text="${Infos.prjName}"></a></td>
+							<td th:text="${Infos.prjPm}"></td>
+							<td th:text="${Infos.prjStart}"></td>
+							<td th:text="${Infos.prjEnd}"></td>
+							<td th:text="${Infos.prjMothercompany}"></td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="btn_wrap">
+					<div class="box_right">
+						<a class="btn btn_point" th:href="">위험관리대장 작성</a>
+						<a class="btn btn_point" id="deleteProjectBtn" onclick="deleteProjectAjax()">삭제</a>	
+					</div>
+				</div>
+			</div><!-- table_wrap end -->
+		</div><!-- article end -->
+	
+
+	<!-- 페이징 -->
+	<div th:align="center">
+		<div class="paging">
+				<span th:if="${page.curBlock > 1}">
+					<a th:href="@{/user/selectProjectList(curPage=${page.prevPage}, searchCondition=${search.searchCondition}, searchKeyword=${search.searchKeyword})}" class="page prev_02">[이전]</a>
+				</span>
+				<span th:if="${page.curBlock > 1 }">
+					<a th:href="@{/user/selectProjectList(curPage=1,searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" class="page prev_01">1</a>
+				</span>
+				<span th:each="num:${block}">
+					<span th:if="${num==page.curPage }">
+						<a th:href="@{/user/selectProjectList(curPage=${num},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${num}" class="paging_click"></a>
+					</span>
+					<span th:unless="${num==page.curPage }">
+						<a th:href="@{/user/selectProjectList(curPage=${num},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${num}"></a>
+					</span>
+				</span>
+				<span th:if="${page.curBlock < page.totBlock }">
+					<a th:href="@{/user/selectProjectList(curPage=${page.totPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${page.totPage}"></a>
+				</span>
+				<span th:if="${page.curBlock < page.totBlock }">
+					<a th:href="@{/user/selectProjectList(curPage=${page.nextPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" class="page next_01">[다음]</a>
+				</span>
+		</div>
+	</div>
+<!-- 페이징 끝 -->
+</div><!-- //section end -->
+</body>
+</html>
