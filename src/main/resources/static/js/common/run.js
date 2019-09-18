@@ -110,6 +110,8 @@ $(function(){
 									
 									var options = "width=500, height=700, scrollbars, resizable, toolbar=2, left="+popupX+", top="+popupY;
 									window.open(url, name, options);
+									
+									$(this).parent().parent().parent().siblings(".btn_chat").removeClass("on");
 								})
 							}
 						});
