@@ -16,10 +16,18 @@
 <script th:src="@{/editor/summernote/summernote.js}"></script>
 <script>
 $(function(){
-	$("#apdocForm").summernote();
+	$("#apdocForm").summernote({
+		height: 500
+	});
 });
 
 window.onload=function(){
+	var apdocName = document.getElementById("apdocName").value;
+	if(apdocName != 0){
+ 	var f = document.getElementById("f").value;
+ 	$(".finalSign[value="+f+"]").attr("checked",true);
+	}
+
 	document.getElementById("writeBtn").onclick=function(){
 		var apdocName = document.getElementById("apdocName").value;
 		var apdocForm = document.getElementById("apdocForm").value;
@@ -66,7 +74,7 @@ window.onload=function(){
 		<h2>문서양식 등록</h2>
 		<form th:action="@{/admin/insertApprovalDoc}" method="post" name="form1" id="form1">
 		<th:block th:if="${apdocDto?.apdocNo}">
-		<input type="hidden" name="apdocNo" th:value="${apdocDto?.apdocNo}">
+		<input type="hidden" name="apdocNo" id="apdocNo" th:value="${apdocDto?.apdocNo}">
 		<input type="hidden" name="f" id="f" th:value="${apdocDto?.finalSign}">
 		</th:block>
 		<table>
