@@ -9,6 +9,42 @@
 <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>  -->
 
 <style type="text/css">
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 2; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%; /* Could be more or less, depending on screen size */                          
+}
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
 /* SignPath talbe */
 body { background: #fff; }
 .signtb {
@@ -36,26 +72,39 @@ body { background: #fff; }
 </style>
 
 <script>
-$(function(){
-	$(".okBtn").click(function(){
-		var apNo = $("#apNo").val();
-		var finalSign = $("#finalSign").val();
-		var ranksNo = $("#ranksNo").val();
-		var check = confirm("승인하시겠습니까?");
-		if(check){
-			location.href="/user/updateApprovalPath?apNo="+apNo+"&finalSign="+finalSign+"&ranksNo="+ranksNo;
-		}
-	});
-	$(".cancelBtn").click(function(){
-		var apNo = $("#apNo").val();
-		var apComment = prompt("반려이유를 적어주세요","");
-		if(apComment){
-			location.href="/user/updateApprovalCancel?apNo="+apNo+"&apComment="+apComment;
-		}
-	});
-});
-
 $(document).ready(function() {
+	// 모달
+	window.onload=function(){
+		// 승인
+		var modal = document.getElementById('okModal');
+		document.getElementById("okBtn").onclick = function() {
+	    	modal.style.display = "block";
+		}
+		document.getElementsByClassName("close")[0].onclick = function() {
+	    	modal.style.display = "none";
+		}
+		window.onclick = function(event) { //안먹음
+	    	if (event.target == modal || event.target == modals) {
+	        	modal.style.display = "none";
+	        	modals.style.display = "none";
+	    	}
+		}
+		// 반려
+		var modals = document.getElementById('cancelModal');
+		document.getElementById("cancelBtn").onclick = function() {
+	    	modals.style.display = "block";
+		}
+		document.getElementsByClassName("close")[1].onclick = function() {
+	    	modals.style.display = "none";
+		}
+// 		window.onclick = function(event) {
+// 	    	if (event.target == modals) {
+// 	        	modals.style.display = "none";
+// 	    	}
+// 		}
+	}
+	
+	// 이미지 미리보기
 	var xOffset = 10;
     var yOffset = 30;
     $(document).on("mouseover",".thumbnail",function(e){
@@ -75,6 +124,8 @@ $(document).ready(function() {
     });
 });
 
+
+
 </script>
 </head>
 <body>
@@ -86,6 +137,32 @@ $(document).ready(function() {
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
 
+<!-- 승인 Modal -->
+    <div id="okModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>                                                               
+        <p>승인하시겠습니까?</p>
+        <span>
+        	<a th:href="@{/user/updateApprovalPath(apNo=${approval.apNo},finalSign=${approval.finalSign},ranksNo=${ranksNo})}">승인</a>
+        	<a href="javascript:history.back();">취소</a>
+        </span>
+      </div>
+    </div>
+    
+<!-- 반려 Modal -->
+    <div id="cancelModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>                                                               
+        <p>반려사유를 적어주세요</p>
+        <form th:action="@{/user/updateApprovalCancel(apNo=${approval.apNo})}" method="post">
+		<input type="text" name="apComment" id="apComment">
+        <input type="submit" value="반려">
+        <a href="javascript:history.back();">취소</a>
+        </form>
+        
+      </div>
+    </div>
 
 <input type="hidden" id="apNo" th:value="${approval.apNo}">
 <input type="hidden" id="finalSign" th:value="${approval.finalSign}">
@@ -111,8 +188,8 @@ $(document).ready(function() {
 			<th:block th:unless="${approval.apSignUrl1!=null}">
 				<th:block th:if="${ranksNo<=1&&approval.finalSign>=1}">
 					<th:block th:if="${ranksNo==1}">
-						<input type="button" class="okBtn" value="승인"><br>
-						<input type="button" class="cancelBtn" value="반려">
+						<input type="button" class="okBtn" id="okBtn" value="승인"><br>
+						<input type="button" class="cancelBtn" id="cancelBtn" value="반려">
 					</th:block>
 					<th:block th:unless="${ranksNo==1}">
 					</th:block>
@@ -130,8 +207,9 @@ $(document).ready(function() {
 			<th:block th:unless="${approval.apSignUrl2!=null}">
 				<th:block th:if="${ranksNo<=2 && approval.finalSign>=2}">
 					<th:block th:if="${ranksNo==2}">
-						<input type="button" class="okBtn" value="승인"><br>
-						<input type="button" class="cancelBtn" value="반려">
+<!-- 						<input type="button" class="okBtn" id="okBtn" value="승인"><br> -->
+						<button id="okBtn">Open Modal</button>
+						<input type="button" class="cancelBtn" id="cancelBtn" value="반려">
 					</th:block>
 					<th:block th:unless="${ranksNo==2}">
 					</th:block>
@@ -149,8 +227,8 @@ $(document).ready(function() {
 			<th:block th:unless="${approval.apSignUrl3!=null}">
 				<th:block th:if="${ranksNo<=3&&approval.finalSign>=3}">
 					<th:block th:if="${ranksNo==3}">
-						<input type="button" class="okBtn" value="승인"><br>
-						<input type="button" class="cancelBtn" value="반려">
+						<input type="button" class="okBtn" id="okBtn" value="승인"><br>
+						<input type="button" class="cancelBtn" id="cancelBtn" value="반려">
 					</th:block>
 					<th:block th:unless="${ranksNo==3}">
 					</th:block>
@@ -168,8 +246,8 @@ $(document).ready(function() {
 			<th:block th:unless="${approval.apSignUrl4!=null}">
 				<th:block th:if="${ranksNo<=4&&approval.finalSign>=4}">
 					<th:block th:if="${ranksNo==4}">
-						<input type="button" class="okBtn" value="승인"><br>
-						<input type="button" class="cancelBtn" value="반려">
+						<input type="button" class="okBtn" id="okBtn" value="승인"><br>
+						<input type="button" class="cancelBtn" id="cancelBtn" value="반려">
 					</th:block>
 					<th:block th:unless="${ranksNo==4}">
 					</th:block>
@@ -187,8 +265,8 @@ $(document).ready(function() {
 			<th:block th:unless="${approval.apSignUrl5!=null}">
 				<th:block th:if="${ranksNo<=5&&approval.finalSign>=5}">
 					<th:block th:if="${ranksNo==5}">
-						<input type="button" class="okBtn" value="승인"><br>
-						<input type="button" class="cancelBtn" value="반려">
+						<input type="button" class="okBtn" id="okBtn" value="승인"><br>
+						<input type="button" class="cancelBtn" id="cancelBtn" value="반려">
 					</th:block>
 					<th:block th:unless="${ranksNo==5}">
 					</th:block>
