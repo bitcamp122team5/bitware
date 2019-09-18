@@ -51,10 +51,11 @@ $(document).ready(function() {
 <body>
 
 <div th:replace="fragments/header :: headerFragment"></div>
-<div th:replace="fragments/aside :: asideFragment"></div>
 
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
+<div th:replace="fragments/aside :: asideFragment"></div>
+<div class="section_inner">
 	<h2>자료실</h2>
 	<div class="article">
 		<!-- 검색 시작 -->
@@ -155,6 +156,7 @@ $(document).ready(function() {
 			</span>
 		</div><!-- //paging -->	
 	</div>
+</div><!-- //section_inner end -->
 </div><!-- //section end -->
 </body>
 </html>
