@@ -178,9 +178,11 @@ div.vacationChart {
 					<table>
 						<colgroup>
 							<col width="*">
-							<col width="200px">
-							<col width="200px">
-							<col width="200px">
+							<col width="150px">
+							<col width="150px">
+							<col width="150px">
+							<col width="150px">
+							<col width="150px">
 						</colgroup>
 						<thead>
 							<tr>
@@ -188,14 +190,18 @@ div.vacationChart {
 								<th>PM</th>
 								<th>시작일</th>
 								<th>종료일</th>
+								<th>계획 완료</th>
+								<th>계획 미완료</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
-								<td><a th:href="@{/user/projectDetail(prjCode=${project.prjCode})}" th:text="${project.prjName}"></a></td>
-								<td th:text="${project.prjPm}"></td>
-								<td th:text="${project.prjStart}"></td>
-								<td th:text="${project.prjEnd}"></td>
+								<td><a th:href="@{/user/projectDetail(prjCode=${project.projectInfo.prjCode})}" th:text="${project.projectInfo.prjName}"></a></td>
+								<td th:text="${project.projectInfo.prjPm}"></td>
+								<td th:text="${project.projectInfo.prjStart}"></td>
+								<td th:text="${project.projectInfo.prjEnd}"></td>
+								<td th:text="${project.planComplete}"></td>
+								<td th:text="${project.planIncomplete}"></td>
 							</tr>
 						</tbody>
 					</table>
@@ -252,8 +258,9 @@ $(document).ready(function(){
     	pause: 4000,
     	mode:'horizontal',
     	autoControls: true,
-    	controls:true,
-    	pager:false
+    	controls: true,
+    	pager: false,
+    	touchEnabled: false
     });
 });
 </script>

@@ -1,6 +1,7 @@
 package com.bitgroupware;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,8 +20,10 @@ import com.bitgroupware.commute.service.CommuteService;
 import com.bitgroupware.commute.vo.CommuteVo;
 import com.bitgroupware.member.utils.Role;
 import com.bitgroupware.project.beans.ProjectInfoDto;
+import com.bitgroupware.project.beans.ProjectWbsDto;
 import com.bitgroupware.project.persistence.ProjectDao;
 import com.bitgroupware.security.config.SecurityUser;
+import com.bitgroupware.utils.MainViewProjectList;
 
 @Controller
 @RequestMapping("/user")
@@ -51,7 +54,6 @@ public class MainController {
 			
 			// 공지사항
 			List<NoticeVo> noticeList = noticeService.selectMainNoticeList();
-			
 			Date date = new Date();
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			String today = format.format(date);
@@ -60,7 +62,22 @@ public class MainController {
 			List<ApprovalDto> approvalList = approvalDao.selectMainApprovalListTo(principal.getMember().getMemId());
 			
 			// 참여중인 프로젝트
-			List<ProjectInfoDto> projectList = projectDao.selectMainAttendProjectList(principal.getMember().getMemId());
+			List<ProjectInfoDto> projectInfoList = projectDao.selectMainAttendProjectList(principal.getMember().getMemId());
+			List<MainViewProjectList> projectList = new ArrayList<MainViewProjectList>();
+			int curdate = Integer.parseInt(commuteRepository.selectCurdate().replace("-", ""));
+			for (ProjectInfoDto projectInfo : projectInfoList) {
+				int planComplete = 0;
+				int planIncomplete = 0;
+				MainViewProjectList mainViewProject = new MainViewProjectList();
+				for(ProjectWbsDto projectWbs : projectDao.selectProjectWbsList(projectInfo.getPrjCode())) {
+					if (Integer.parseInt(projectWbs.getPrjPlanEnd().replace("-", "")) >= curdate) planComplete++;
+					else planIncomplete++;
+				}
+				mainViewProject.setProjectInfo(projectInfo);
+				mainViewProject.setPlanComplete(planComplete);
+				mainViewProject.setPlanIncomplete(planIncomplete);
+				projectList.add(mainViewProject);
+			}
 			
 			// 근태
 			String startDate = "1990-01-01";
