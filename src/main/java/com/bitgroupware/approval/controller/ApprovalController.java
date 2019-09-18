@@ -226,7 +226,6 @@ public class ApprovalController {
 		model.addAttribute("block",block);
 		model.addAttribute("search",search);
 		model.addAttribute("status",status);
-		System.out.println("결재 받을 문서 리스트"+approvalListToBe);
 		return "approval/approvalListToBe";
 	}
 	
@@ -297,8 +296,6 @@ public class ApprovalController {
 		int ranksNo = approvalService.selectRanksNo(memId);
 		model.addAttribute("firstRanksNo",firstRanksNo);
 		model.addAttribute("ranksNo",ranksNo);
-		System.out.println(approval);
-		System.out.println(approvalFileList);
 		return "approval/approvalDetail";
 	}
 	
