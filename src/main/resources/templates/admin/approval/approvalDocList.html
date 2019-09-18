@@ -28,7 +28,7 @@
 				<li th:each="approval:${approvalDocList}">
 					<a th:href="@{/admin/insertApprovalDocView(apdocNo=${approval.apdocNo})}" >
 					<div><span th:text="${approval.apdocName}"></span></div>
-					<div class="approvalImg"><img th:src="@{/images/filecc.png}" style="margin: 30px 25px;"/></div>
+					<div class="approvalImg"><img th:src="@{/images/approvalDocImage.png}" style="margin: 30px 25px;"/></div>
 <!-- 				<div class="approvalImg"><img th:src="@{/images/test.png}" style="margin: 30px 25px;"/></div> -->
 					</a>
 				</li>

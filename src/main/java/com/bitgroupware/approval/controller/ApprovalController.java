@@ -96,21 +96,20 @@ public class ApprovalController {
 		// 파일 업로드
 		String apNo = apdao.selectMaxApNo();
 		List<MultipartFile> fileList = request.getFiles("file");
-		
+		fileList.remove((fileList.size()-1));
+		System.out.println("filelistsize="+fileList.size());
 		if(!approvalFileDto.getFile().isEmpty()) {
 		String path = request.getSession().getServletContext().getRealPath("/");
 		System.out.println(path);
 			for (MultipartFile mf : fileList) {
 				String originFileName = mf.getOriginalFilename(); // 원본 파일 명
-				long fileSize = mf.getSize(); // 파일 사이즈
-
-				String safeFile = path + System.currentTimeMillis() + originFileName;
-//				String safeFile = path + originFileName;
+				String saveFile = path + System.currentTimeMillis() + originFileName;
+				String fileUrl = File.separator + System.currentTimeMillis() + originFileName;
 				approvalFileDto.setApFilename(originFileName);
-				approvalFileDto.setApFileurl(safeFile);
+				approvalFileDto.setApFileurl(fileUrl);
 				approvalFileDto.setApNo(apNo);
 				try {
-					mf.transferTo(new File(safeFile));
+					mf.transferTo(new File(saveFile));
 					approvalService.insertApprovalFile(approvalFileDto);
 					apdao.updateApprovalFileCheck(apNo);
 				} catch (IllegalStateException e) {
@@ -170,14 +169,13 @@ public class ApprovalController {
 				for (MultipartFile mf : fileList) {
 					System.out.println("3");
 					String originFileName = mf.getOriginalFilename(); // 원본 파일 명
-					long fileSize = mf.getSize(); // 파일 사이즈
-
-					String safeFile = path + System.currentTimeMillis() + originFileName;
+					String saveFile = path + System.currentTimeMillis() + originFileName;
+					String fileUrl = File.separator + System.currentTimeMillis() + originFileName;
 					approvalFileDto.setApFilename(originFileName);
-					approvalFileDto.setApFileurl(safeFile);
+					approvalFileDto.setApFileurl(fileUrl);
 					approvalFileDto.setApNo(apNo);
 					try {
-						mf.transferTo(new File(safeFile));
+						mf.transferTo(new File(saveFile));
 						approvalService.updateApprovalFile(approvalFileDto);
 						System.out.println("4");
 						apdao.updateApprovalFileCheck(apNo);

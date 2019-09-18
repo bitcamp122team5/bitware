@@ -114,7 +114,6 @@ public class ApprovalServiceImpl implements ApprovalService {
 	// 기안
 	@Override
 	public void insertApproval(ApprovalDto approval, MemberVo member) {
-
 		int ranks = member.getRanks().getRanksNo();
 
 		switch (ranks) {
