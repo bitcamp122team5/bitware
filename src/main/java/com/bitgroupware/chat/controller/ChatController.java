@@ -157,6 +157,7 @@ public class ChatController {
 		if(chatMessageList.size()>TemporaryInteger.counting) {
 			TemporaryInteger.counting=chatMessageList.size();
 			ChatMessageDto chatMessage = chatMessageList.get(chatMessageList.size()-1);
+			System.out.println(chatMessage.getSender());
 			return chatMessage;
 		}else {
 			ChatMessageDto chatMessage = new ChatMessageDto();

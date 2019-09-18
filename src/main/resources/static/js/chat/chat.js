@@ -121,8 +121,8 @@ function onMessageReceived(payload) {
 
   messageElement.appendChild(textElement);
 // 아래 지우지 마세요.
-//  messageArea.appendChild(messageElement);
-//  messageArea.scrollTop = messageArea.scrollHeight;
+  messageArea.appendChild(messageElement);
+  messageArea.scrollTop = messageArea.scrollHeight;
 }
 
 function getAvatarColor(messageSender) {

@@ -125,45 +125,46 @@ $(function(){
 	
 	$("#test1").trigger("click");
 	
-	setInterval(function(){
-		$.ajax({
-			url:"/user/selectChatListAjax2",
-			data:{roomId:roomId},
-			success:function(chatMessage){
-				var messageElement = document.createElement('li');
+// 	setInterval(function(){
+// 		$.ajax({
+// 			url:"/user/selectChatListAjax2",
+// 			data:{roomId:roomId},
+// 			success:function(chatMessage){
+// 				var messageElement = document.createElement('li');
 	
-				messageElement.classList.add('chat-message');
+// 				messageElement[0].classList.add('chat-message');
+// 				messageElement[1].classList.add('chat-message');
 	
-				var avatarElement = document.createElement('i');
-				var avatarText = document.createTextNode(chatMessage.sender[0]);
-				avatarElement.appendChild(avatarText);
-				avatarElement.style['background-color'] = getAvatarColor(chatMessage.sender);
-				messageElement.appendChild(avatarElement);
+// 				var avatarElement = document.createElement('i');
+// 				var avatarText = document.createTextNode(chatMessage.sender[0]);
+// 				avatarElement.appendChild(avatarText);
+// 				avatarElement.style['background-color'] = getAvatarColor(chatMessage.sender);
+// 				messageElement.appendChild(avatarElement);
 	
-				var usernameElement = document.createElement('span');
-				var usernameText = document.createTextNode(chatMessage.sender);
-				usernameElement.appendChild(usernameText);
-				messageElement.appendChild(usernameElement);
+// 				var usernameElement = document.createElement('span');
+// 				var usernameText = document.createTextNode(chatMessage.sender);
+// 				usernameElement.appendChild(usernameText);
+// 				messageElement.appendChild(usernameElement);
 				
-				var textElement = document.createElement('p');
-				var messageText = document.createTextNode(chatMessage.content);
-				textElement.appendChild(messageText);
+// 				var textElement = document.createElement('p');
+// 				var messageText = document.createTextNode(chatMessage.content);
+// 				textElement.appendChild(messageText);
 	
-				messageElement.appendChild(textElement);
+// 				messageElement.appendChild(textElement);
 	
-				messageArea.appendChild(messageElement);
+// 				messageArea.appendChild(messageElement);
 				
-				if(messageArea.scrollTop>messageArea.scrollHeight-1000){
-					messageArea.scrollTop = messageArea.scrollHeight;
-				}
+// 				if(messageArea.scrollTop>messageArea.scrollHeight-1000){
+// 					messageArea.scrollTop = messageArea.scrollHeight;
+// 				}
 				
-				var name = document.getElementById("name").value;
-				if(chatMessage.sender==name){
-					messageArea.scrollTop = messageArea.scrollHeight;
-				}
-			}
-		});
-	}, 100);
+// 				var name = document.getElementById("name").value;
+// 				if(chatMessage.sender==name){
+// 					messageArea.scrollTop = messageArea.scrollHeight;
+// 				}
+// 			}
+// 		});
+// 	}, 100);
 });
 </script>
 </body>
