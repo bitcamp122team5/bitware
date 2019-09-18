@@ -23,10 +23,10 @@
 </head>
 <body>
 <div th:replace="fragments/header :: headerFragment"></div>
-<div th:replace="fragments/aside :: asideFragment"></div>
-
 	<!-- //무조건 section 안에서 내용 작성 -->
 	<div layout:fragment="content" class="section">
+	<div th:replace="fragments/aside :: asideFragment"></div>
+	<div class="section_inner">
 		<h2>프로젝트</h2>
 		<div class="article">
 		<!-- 검색 시작 -->
@@ -75,7 +75,7 @@
 						<tr th:each="Infos : ${prjInfos}">
 							<input type="hidden" id="pmPrjCode" th:value="${Infos.prjCode}">
 							<td><input type="checkbox" name="projectAllCheckBox" id="prjCode" class="projectCheckBox" th:value="${Infos.prjCode}"></td>
-							<td><a th:href="@{/user/projectDetail(prjCode=${Infos.prjCode})}" th:text="${Infos.prjName}"></a></td>
+							<td class="tit"><a th:href="@{/user/projectDetail(prjCode=${Infos.prjCode})}" th:text="${Infos.prjName}"></a></td>
 							<td th:text="${Infos.prjPm}"></td>
 							<td th:text="${Infos.prjStart}"></td>
 							<td th:text="${Infos.prjEnd}"></td>
@@ -91,6 +91,8 @@
 				</div>
 			</div><!-- //table_wrap end -->
 		</div>
+		</div>
+	</div><!-- //section end -->
 	
 	<!-- 프로젝트 생성 modal -->
 	<div class="modal" id="insertProjectModal" role="dialog">
@@ -185,6 +187,6 @@
 		</div>
 	</div>
 <!-- 페이징 끝 -->
-</div><!-- //section end -->
+
 </body>
 </html>

@@ -105,7 +105,7 @@ function screenWriteTbodyEdit(num, group, step, depth, workName, manager, output
 		output = substitute;
 	}
 	tag.append("<tr id='"+num+"'>");
-	tag.append("<td align='center'><input type='checkbox' name='chkVal' value='"+num+"'/></td>")
+	tag.append("<td><input type='checkbox' name='chkVal' value='"+num+"'/></td>")
 	tag.append("<td>");
 	tag.append('<div class="dropdown">');
 	tag.append('<button class="btn btn_point" id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">');
@@ -151,7 +151,7 @@ function screenWriteTbodyText(num, group, step, depth, workName, manager, output
 		output = substitute;
 	}
 	tag.append("<tr id='"+num+"'>");
-	tag.append("<td align='center'><input type='checkbox' name='chkVal' value='"+num+"'/></td>")
+	tag.append("<td><input type='checkbox' name='chkVal' value='"+num+"'/></td>")
 	tag.append("<td>");
 	tag.append('<div class="dropdown">');
 	tag.append('<button class="btn btn_point" id="dLabel" type="button" aria-haspopup="true" aria-expanded="false">');

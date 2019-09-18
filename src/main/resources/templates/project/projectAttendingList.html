@@ -73,7 +73,7 @@
 						<tr th:each="Infos : ${prjInfos}">
 							<input type="hidden" id="pmPrjCode" th:value="${Infos.prjCode}">
 							<td><input type="checkbox" name="prjChk" id="prjCode" class="checkBox" th:value="${Infos.prjCode}"></td>
-							<td><a th:href="@{/user/projectDetail(prjCode=${Infos.prjCode})}" th:text="${Infos.prjName}"></a></td>
+							<td class="tit"><a th:href="@{/user/projectDetail(prjCode=${Infos.prjCode})}" th:text="${Infos.prjName}"></a></td>
 							<td th:text="${Infos.prjPm}"></td>
 							<td th:text="${Infos.prjStart}"></td>
 							<td th:text="${Infos.prjEnd}"></td>

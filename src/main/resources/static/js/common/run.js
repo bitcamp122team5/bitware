@@ -1,27 +1,13 @@
 /* 사이드메뉴 */
 
-//window.onload=function(){
-//	var toggleCheck = document.getElementById("toggleCheck").value;
-//	if(toggleCheck=="toggleOn"){
-//		$("#toggleOpenCheck").click();
-//	}
-//};
-
-$(function(){
-	$(".aside_con .dep1.have").click(function(){
-		$(this).removeClass("on");
-		$(this).toggleClass("on");
-	});
-});
-
 $(function(){
 	$(".aside_con .dep1 a").click(function(e){
-	$(this).parent().toggleClass('on');
-	$(this).parent().siblings('li').removeClass('on');
+
+	$('.dep2ul').removeClass('active');
 	if($(this).parent().hasClass('have')){
 		e.preventDefault();
-		$(this).addClass('on');
-		$('.dep2ul').addClass('on');
+		$(this).siblings('.dep2ul').removeClass('active');
+		$(this).siblings('.dep2ul').addClass('active');
 	}
 	});
 });

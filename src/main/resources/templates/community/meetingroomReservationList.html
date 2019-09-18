@@ -147,12 +147,13 @@ $(function(){
 <body>
 
 <div sec:authorize="hasRole('ROLE_ADMIN')" th:replace="fragments/headerAdmin :: headerFragmentAdmin"></div>
-<div sec:authorize="hasRole('ROLE_ADMIN')" th:replace="fragments/asideAdmin :: asideFragmentAdmin"></div>
 <div sec:authorize="hasAnyRole('ROLE_USER','ROLE_PL','ROLE_PM')" th:replace="fragments/header :: headerFragment"></div>
-<div sec:authorize="hasAnyRole('ROLE_USER','ROLE_PL','ROLE_PM')" th:replace="fragments/aside :: asideFragment"></div>
 
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
+<div sec:authorize="hasRole('ROLE_ADMIN')" th:replace="fragments/asideAdmin :: asideFragmentAdmin"></div>
+<div sec:authorize="hasAnyRole('ROLE_USER','ROLE_PL','ROLE_PM')" th:replace="fragments/aside :: asideFragment"></div>
+<div class="section_inner">
 	<h2 sec:authorize="hasRole('ROLE_ADMIN')">회의실 예약 (관리자)</h2>
 	<h2 sec:authorize="hasAnyRole('ROLE_USER','ROLE_PL','ROLE_PM')">회의실 예약</h2>
 	<input type="hidden" th:value="${msg}" id="msg">
@@ -232,6 +233,7 @@ $(function(){
 		</div>
 	</div>
 	<div id='calendar'></div>
+</div><!-- //section_inner -->
 </div><!-- //section end -->
 </body>
 </html>
