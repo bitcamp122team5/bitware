@@ -212,6 +212,7 @@ $(document).ready(function() {
 	</table>
 	</div>
 
+	<br>
 
 <!-- //여기서 부터 긁어가세요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 <!-- //클래스명 하나도 빼지 말고 다 넣어주세요  -->
@@ -227,11 +228,6 @@ $(document).ready(function() {
 					<th>문서명</th>
 					<td th:text="${approval.apTitle}"></td>
 				</tr>
-				<tr>
-					<th>문서내용</th>
-					<td th:utext="${approval.apContent}"></td>
-<!-- 					<td><span name="apContent" cols="50" rows="50" id="apContent" th:utext="${approval.apContent}"></span></td> -->
-				</tr>
 				
 				<tr>
 					<th>등록일</th>
@@ -242,6 +238,18 @@ $(document).ready(function() {
 						<td class="date" th:text="${#dates.format(approval.apInsertdate,'yyyy-MM-dd')}"></td>
 					</th:block>
 				</tr>
+				<tr>
+					<th>작성자</th>
+					<td th:text=${approval.memName}></td>
+				</tr>
+				
+				<tr>
+					<th>문서내용</th>
+					<td th:utext="${approval.apContent}"></td>
+<!-- 					<td><span name="apContent" cols="50" rows="50" id="apContent" th:utext="${approval.apContent}"></span></td> -->
+				</tr>
+				
+				
 				
 				<tr>
 					<th>첨부파일</th>
