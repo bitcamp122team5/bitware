@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Update;
 import com.bitgroupware.project.beans.MemberDto;
 import com.bitgroupware.project.beans.ProjectInfoDto;
 import com.bitgroupware.project.beans.ProjectMembersDto;
+import com.bitgroupware.project.beans.ProjectRiskDto;
 import com.bitgroupware.project.beans.ProjectWbsDto;
 import com.bitgroupware.utils.Search;
 
@@ -54,7 +55,7 @@ public interface ProjectDao {
 	public boolean insertProject(ProjectInfoDto prjDto);
 	
 	/*프로젝트 삭제 on delete cascade로 참여인원 테이블에서 참여인원도 같이 삭제 됨.*/
-	@Delete("DELETE FROM PROJECT_INFO WHERE PRJ_CODE = #{prj_code}")
+	@Delete("DELETE FROM PROJECT_INFO WHERE PRJ_CODE = #{prjCode}")
 	public void deleteProject(int prjCode);
 	
 	/*프로젝트 참여인원 기본 리스트 출력*/
@@ -132,4 +133,46 @@ public interface ProjectDao {
 	@Select("select r1.* from (SELECT * FROM PROJECT_INFO WHERE PRJ_COMPLETION = 0 AND PRJ_CODE = ANY(SELECT PRJ_CODE FROM PROJECT_MEMBERS WHERE MEM_ID = #{memId}) ORDER BY PRJ_CODE DESC) r1 limit 10")
 	public List<ProjectInfoDto> selectMainAttendProjectList(String memId);
 	
+	/*위험관리대장*/
+	
+	/*위험관리대장 제목 기준 조회*/
+	@Select("select r1.* from (SELECT * FROM PROJECT_RISK WHERE PRJ_CODE = #{prjCode} AND RSK_TITLE LIKE #{searchKeyword} ORDER BY RSK_CODE DESC) r1 limit 10 offset #{begin}")
+	public List<ProjectRiskDto> selectProjectRiskListToRskTitle(int begin, String searchKeyword, int prjCode);
+
+	/*위험관리대장 내용 기준 조회*/
+	@Select("select r1.* from (SELECT * FROM PROJECT_RISK WHERE PRJ_CODE = #{prjCode} AND RSK_CONTENT LIKE #{searchKeyword} ORDER BY RSK_CODE DESC) r1 limit 10 offset #{begin}")
+	public List<ProjectRiskDto> selectProjectRiskListToRskContent(int begin, String searchKeyword, int prjCode);
+	
+	/*위험관리대장 상세페이지 데이터 추출 (수정 페이지 이동에도 사용)*/
+	@Select("SELECT * FROM PROJECT_RISK WHERE RSK_CODE = #{rskCode}")
+	public ProjectRiskDto selectProjectRiskDetail(int rskCode);
+	
+	/*위험관리대장 작성*/
+	@Insert("INSERT INTO PROJECT_RISK (RSK_TITLE, RSK_CONTENT, RSK_WRITER, RSK_SOLUTION, RSK_RESULT, PRJ_CODE, RSK_REG) "
+			+ " VALUES (#{rskTitle}, #{rskContent}, #{rskWriter}, #{rskSolution}, #{rskResult}, #{prjCode}, now())")
+	public void insertProjectRisk(ProjectRiskDto rskDto);
+
+	/*위험관리대장 수정*/
+	@Update("UPDATE PROJECT_RISK SET RSK_TITLE=#{rskTitle}, RSK_CONTENT=#{rskContent}, RSK_SOLUTION=#{rskSolution}, RSK_RESULT=#{rskResult} WHERE RSK_CODE = #{rskCode}")
+	public void updateProjectRisk(ProjectRiskDto rskDto);
+	
+	/*위험관리대장 삭제*/
+	@Delete("DELETE FROM PROJECT_RISK WHERE RSK_CODE = #{rskCode}")
+	public void deleteProjectRisk(int rskCode);
+	
+	//위험관리대장 제목 기준 데이터 카운트
+	@Select("SELECT COUNT(*) FROM PROJECT_RISK WHERE PRJ_CODE = #{prjCode} AND RSK_TITLE LIKE #{searchKeyword}")
+	public int countByRskTitle(int prjCode, String searchKeyword);
+	
+	//위험관리대장 내용 기준 데이터 카운트
+	@Select("SELECT COUNT(*) FROM PROJECT_RISK WHERE PRJ_CODE = #{prjCode} AND RSK_TITLE LIKE #{searchKeyword}")
+	public int countByRskContent(int prjCode, String searchKeyword);
+	
+	//최근 프로젝트 코드 1개 추출
+	@Select("SELECT PRJ_CODE FROM PROJECT_INFO ORDER BY PRJ_CODE DESC LIMIT 1")
+	public int selectRecentPrjCode();
+	
+	/*위험관리대장 프로젝트 리스트 추출*/
+	@Select("select r1.* from (SELECT * FROM PROJECT_INFO WHERE PRJ_COMPLETION = 0 ORDER BY PRJ_CODE DESC) r1")
+	public List<ProjectInfoDto> selectProjectNameList();
 }

@@ -13,8 +13,8 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <link rel="stylesheet" type="text/css" th:href="@{/css/project/simptip.min.css}">
 <link th:href='@{/fullcalendar/packages/core/main.css}' rel='stylesheet' />
 <link th:href='@{/fullcalendar/packages/daygrid/main.css}' rel='stylesheet' />
-<link th:href='@{/fullcalendar/packages/timegrid/main.css}' rel='stylesheet' />
-<link th:href='@{/fullcalendar/packages/list/main.css}' rel='stylesheet' />
+<link th:href='@{/fullcalendar/packages/timegrid/main.min.css}' rel='stylesheet' />
+<link th:href='@{/fullcalendar/packages/list/main.min.css}' rel='stylesheet' />
 </th:block>
 
 <!-- 사용자 script 추가 -->
@@ -26,10 +26,10 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <script type="text/javascript" th:src="@{/js/project/stringBuffer.js}"></script>
 <script type="text/javascript" th:src="@{/js/project/makeRound.js}"></script>
 <script th:src='@{/fullcalendar/packages/core/main.js}'></script>
-<script th:src='@{/fullcalendar/packages/interaction/main.js}'></script>
-<script th:src='@{/fullcalendar/packages/daygrid/main.js}'></script>
-<script th:src='@{/fullcalendar/packages/timegrid/main.js}'></script>
-<script th:src='@{/fullcalendar/packages/list/main.js}'></script>
+<script th:src='@{/fullcalendar/packages/interaction/main.min.js}'></script>
+<script th:src='@{/fullcalendar/packages/daygrid/main.min.js}'></script>
+<script th:src='@{/fullcalendar/packages/timegrid/main.min.js}'></script>
+<script th:src='@{/fullcalendar/packages/list/main.min.js}'></script>
 </th:block>
 <style>
   #calendar {
@@ -198,7 +198,6 @@ input[type='date']{
 		</div><!-- //article end -->
 	</div><!-- //section_inner end -->
 </div><!-- //section end -->
-
 	<!-- 프로젝트 정보 수정 모달 -->
 	<div class="modal" id="projectUpdateModal" role="dialog">
 		<div class="modal-dialog">
@@ -370,12 +369,17 @@ input[type='date']{
 					</div>
 				</div>				
 			</div>
+			</div>
 		</div>
+<<<<<<< HEAD
 	</div>
 	
 	
+=======
+	</div>	
+>>>>>>> feature/project
 	<!-- WBS리스트 달력 모달 -->
-	<div class="modal fade" id="viewGraphModal" role="dialog" style="z-index: 9999;">
+	<div class="modal" id="viewCalendarModal" role="dialog" style="z-index: 9999;">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -389,6 +393,21 @@ input[type='date']{
 		</div>
 	</div>
 	<!-- WBS리스트 달력 모달 끝-->
+<<<<<<< HEAD
 
+=======
+	
+	<!-- WBS리스트 달력 모달 -->
+	<div class="modal" id="viewCalendarModals" role="dialog" style="z-index: 9999;">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+			<h4 id="prjAttend">Project Calendar</h4>
+			<div id='calendar'></div>
+		</div>
+	</div>
+	<!-- WBS리스트 달력 모달 끝-->
+</div><!-- //section end -->
+>>>>>>> feature/project
 </body>
 </html>

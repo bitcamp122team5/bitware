@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.bitgroupware.project.beans.MemberDto;
 import com.bitgroupware.project.beans.ProjectInfoDto;
 import com.bitgroupware.project.beans.ProjectMembersDto;
+import com.bitgroupware.project.beans.ProjectRiskDto;
 import com.bitgroupware.project.beans.ProjectWbsDto;
 import com.bitgroupware.project.persistence.ProjectDao;
 import com.bitgroupware.utils.Search;
@@ -253,5 +254,93 @@ public class ProjectServiceImpl implements ProjectService {
 		return dao.selectMemberRanksByMemId(memId);
 	}
 	
+	/*위험관리대장*/
+	
+	/*위험관리대장 조회*/
+	@Override
+	public List<ProjectRiskDto> selectProjectRiskList(int begin, Search search, int prjCode) {
+		if (search.getSearchCondition() == null)
+			search.setSearchCondition("rskTitle");
+		if (search.getSearchKeyword() == null)
+			search.setSearchKeyword("");
+		String searchCondition = search.getSearchCondition();
+		String searchKeyword = "%" + search.getSearchKeyword().trim() + "%";
+		
+		System.out.println("impl에서 condition : " + searchCondition);
+		System.out.println("impl에서 keyword : " + searchKeyword);
+		
+		List<ProjectRiskDto> rskDto = null;
+		switch(searchCondition) {
+		case "rskTitle":
+			System.out.println("searchKeyword :  !"+search.getSearchKeyword());
+			System.out.println("searchCondition :  !"+search.getSearchCondition());
+			rskDto = dao.selectProjectRiskListToRskTitle(begin, searchKeyword, prjCode);
+			break;
+		case "rskContent":
+			rskDto = dao.selectProjectRiskListToRskContent(begin, searchKeyword, prjCode);
+			break;
+		}
+		return rskDto;
+	}
+	
+	/*위험관리대장 작성*/
+	@Override
+	public void insertProjectRisk(ProjectRiskDto rskDto) {
+		dao.insertProjectRisk(rskDto);
+	}
+	
+	/*위험관리대장 수정*/
+	@Override
+	public void updateProjectRisk(ProjectRiskDto rskDto) {
+		dao.updateProjectRisk(rskDto);
+	}
+	
+	/*위험관리대장 삭제*/
+	@Override
+	public void deleteProjectRisk(int rskCode) {
+		dao.deleteProjectRisk(rskCode);
+	}
+	
+	//위험관리대장 카운트 (페이징을 위한 값)
+	@Override
+	public int countProjectRisk(Search search, int prjCode) {
+		if(search.getSearchCondition() == null)
+			search.setSearchCondition("rskTitle");
+		if(search.getSearchKeyword() == null)
+			search.setSearchKeyword("");
+		String searchCondition = search.getSearchCondition();
+		String searchKeyword = "%" + search.getSearchKeyword().trim() + "%";
+		int count = 0;
+		System.out.println("카운트에서 condition : " + searchCondition);
+		System.out.println("카운트에서 keyword : " + searchKeyword);
+		switch(searchCondition) {
+		case "rskTitle":
+			count = dao.countByRskTitle(prjCode, searchKeyword); //
+			break;
+		case "rskContent":
+			count = dao.countByRskContent(prjCode, searchKeyword);
+			break;
+		}
+		return count;
+	}
+		
+	//최근 프로젝트 코드 1개 추출
+	@Override
+	public int selectRecentPrjCode() {
+		return dao.selectRecentPrjCode();
+	}
 
+	/*위험관리대장 상세페이지 데이터 추출*/
+	@Override
+	public ProjectRiskDto selectProjectRiskDetail(int rskCode) {
+		
+		return dao.selectProjectRiskDetail(rskCode);
+	}
+
+	/*위험관리대장 프로젝트 리스트 추출*/
+	@Override
+	public List<ProjectInfoDto> selectProjectNameList() {
+		return dao.selectProjectNameList();
+	}
+	
 }
