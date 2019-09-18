@@ -10,8 +10,6 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -24,28 +22,28 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bitgroupware.chat.Beans.ChatAlertDto;
 import com.bitgroupware.chat.Beans.ChatMessageDto;
 import com.bitgroupware.chat.Beans.ChatMessageDto.MessageType;
 import com.bitgroupware.chat.Beans.DepartmentDto;
 import com.bitgroupware.chat.Beans.MemberDto;
 import com.bitgroupware.chat.service.ChatService;
+import com.bitgroupware.chat.utils.TemporaryInteger;
 import com.bitgroupware.chat.utils.TemporaryList;
 import com.bitgroupware.security.config.SecurityUser;
 
 @Controller
 @RequestMapping("/user")
 public class ChatController {
-	private static final Logger logger = LoggerFactory.getLogger(WebSocketEventListener.class);
 
 	@Autowired
 	private SimpMessageSendingOperations messagingTemplate;
 
 	@Autowired
-	ChatService chatservice;
+	private ChatService chatservice;
 
 	@MessageMapping("/chat/{roomId}/sendMessage")
-	public void addUser(@DestinationVariable String roomId, @Payload ChatMessageDto chatMessage,
-			SimpMessageHeaderAccessor headerAccessor) {
+	public void addUser(@DestinationVariable String roomId, @Payload ChatMessageDto chatMessage, SimpMessageHeaderAccessor headerAccessor) {
 		String currentRoomId = (String) headerAccessor.getSessionAttributes().put("room_id", roomId);
 		if (currentRoomId == null) {
 			ChatMessageDto leaveMessage = new ChatMessageDto();
@@ -60,12 +58,7 @@ public class ChatController {
 	/* chat 메인 페이지로 이동 */
 	@RequestMapping("/chat")
 	public String chatView(String memId, @AuthenticationPrincipal SecurityUser principal, Model model, HttpSession session, ChatMessageDto chatMessageDto) {
-//		if(memId!=null) {
-//			session.setAttribute("memId", memId);
-//		}else {
-//			memId=(String)session.getAttribute("memId");
-//		}
-		
+
 		String sessionId = principal.getMember().getMemId();
 		String sessionName = principal.getMember().getMemName();
 
@@ -78,50 +71,38 @@ public class ChatController {
 		model.addAttribute("sessionId", sessionId);
 		model.addAttribute("sessionName", sessionName);
 		
-//		System.out.println("세션아이디~~~~~="+sessionId);
-//		System.out.println("멤아이디~~~~~="+memId);
-		
 		String[] roomArray = {sessionId, memId};
 		Arrays.sort(roomArray, Collections.reverseOrder());
 		
 		String roomId = Arrays.stream(roomArray).collect(Collectors.joining());
-//		System.out.println("////////////////////////////");
-//		System.out.println(sessionName);
-//		System.out.println("roomId =" + roomId);
+		
 		model.addAttribute("roomId", roomId);
 		
+		chatservice.insertChatAlert(sessionId, memId, roomId);
+		System.out.println("여기여기");
 		return "chat/chat";
 	}
 
 	@RequestMapping("/chatList")
 	@ResponseBody
 	public String chatList(Model model, MemberDto memberDto, DepartmentDto depDto, ChatMessageDto chatDto, String sender, @AuthenticationPrincipal SecurityUser principal) {
-//		System.out.println("컨트롤러 진입");
+		
 		List<MemberDto> memberList = chatservice.selectMemberList(memberDto);
 		List<DepartmentDto> depList = chatservice.selectDeptList(depDto);
 
 		String sessionName = principal.getMember().getMemName();
-		//chatDto = chatservice.selectLastContentList(receiver);
-//		for(ChatMessageDto dto : lastContentList) {
-//			System.out.println(dto);
-//		}
-		//model.addAttribute("sessionId", sessionId);
-		model.addAttribute("sessionName", sessionName);
 		
+		model.addAttribute("sessionName", sessionName);
 		model.addAttribute("memberList", memberList);
 		model.addAttribute("depList", depList);
 		model.addAttribute("chatDto", chatDto);
-//		model.addAttribute("lastContentList", lastContentList);
+		
 		return "chat/chatList :: chatFragment";
 	}
 
 	@RequestMapping("/insertChat")
 	@ResponseBody
 	public void insertChat(String content, String sender, String receiver, String roomId) {
-//		System.out.println("content is "+content);
-//		System.out.println("sender is "+sender);
-//		System.out.println("reciver is "+receiver);
-//		System.out.println("roomId is "+roomId);
 		
 		ChatMessageDto chatDto = new ChatMessageDto();
 		chatDto.setContent(content);
@@ -129,6 +110,7 @@ public class ChatController {
 		chatDto.setReceiver(receiver);
 		chatDto.setRoomId(roomId);
 		chatservice.insertChat(chatDto);
+		
 	}
 	
 	@RequestMapping("/chatDepartmentListAjax")
@@ -164,6 +146,38 @@ public class ChatController {
 	@RequestMapping("/selectChatListAjax")
 	@ResponseBody
 	public List<ChatMessageDto> selectChatListAjax(String roomId) {
-		return chatservice.selectChatMessageList(roomId);
+		List<ChatMessageDto> chatMessageList = chatservice.selectChatMessageList(roomId);
+		TemporaryInteger.counting=chatMessageList.size();
+		return chatMessageList;
+	}
+	@RequestMapping("/selectChatListAjax2")
+	@ResponseBody
+	public ChatMessageDto selectChatListAjax2(String roomId) {
+		List<ChatMessageDto> chatMessageList = chatservice.selectChatMessageList(roomId);
+		if(chatMessageList.size()>TemporaryInteger.counting) {
+			TemporaryInteger.counting=chatMessageList.size();
+			ChatMessageDto chatMessage = chatMessageList.get(chatMessageList.size()-1);
+			return chatMessage;
+		}else {
+			ChatMessageDto chatMessage = new ChatMessageDto();
+			return chatMessage;
+		}
+	}
+	
+	@RequestMapping("/checkChatAlert")
+	@ResponseBody
+	public String checkChatAlert(@AuthenticationPrincipal SecurityUser principal) {
+		String receiver = principal.getMember().getMemId();
+		List<ChatAlertDto> chatAlertList = chatservice.checkChatAlert(receiver);
+		String str = "";
+		if(chatAlertList.size()!=0) {
+			for(ChatAlertDto chatAlert : chatAlertList) {
+				chatservice.deleteChatAlert(chatAlert.getAlertNo());
+				str += chatAlert.getSender()+" ";
+			}
+			return str+"님이 채팅방에 입장하였습니다.";
+		}else {
+			return "";
+		}
 	}
 }

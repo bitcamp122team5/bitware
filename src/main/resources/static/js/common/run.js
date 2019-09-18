@@ -38,8 +38,6 @@ $(window).load(function(){
   });   
 });
 
-
-
 /* 전체페이지 autocomplete off */
 $(document).ready(function(){
     $( document ).on( 'focus', ':input', function(){
@@ -117,7 +115,6 @@ $(function(){
 		})
 		
 	});
-	
 	$( ".btn_chat" ).draggable({
 		containment:".chat_inner",
 		axis:"y",
@@ -130,9 +127,7 @@ $(function(){
 			}, 1);
 		}
     });
-
 });
-
 
 //tab 
 $(function(){   
@@ -144,3 +139,17 @@ $(function(){
         $(this).parent().parent().parent().find(".info").eq(now_tab).removeClass("hidden");
     });
 });
+
+//$(function(){ 
+//	setInterval(function(){
+//		$.ajax({
+//			url:"/user/checkChatAlert",
+//			data:{},
+//			success:function(msg){
+//				if(msg!=""){
+//					alert(msg);
+//				}
+//			}
+//		});
+//	}, 1000);
+//});
