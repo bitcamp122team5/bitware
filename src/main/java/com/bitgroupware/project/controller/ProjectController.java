@@ -1,5 +1,6 @@
 package com.bitgroupware.project.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bitgroupware.project.beans.MemberDto;
 import com.bitgroupware.project.beans.ProjectInfoDto;
+import com.bitgroupware.project.beans.ProjectRiskDto;
 import com.bitgroupware.project.beans.ProjectWbsDto;
 import com.bitgroupware.project.service.ProjectService;
 import com.bitgroupware.security.config.SecurityUser;
@@ -184,8 +186,7 @@ public class ProjectController {
 	
 	/*프로젝트 수정 */
 	@RequestMapping("/updateProject")
-	public String updateProject(Model model, ProjectInfoDto prjDto) {
-//		int code = Integer.parseInt(prjCode.trim());
+	public String updateProject(ProjectInfoDto prjDto) {
 		
 		System.out.println("code 값 : " + prjDto);
 		System.out.println(prjDto.getPrjStart()+"이건 start  "+prjDto.getPrjEnd()+"이건 end");
@@ -237,4 +238,149 @@ public class ProjectController {
 		return "redirect:/user/selectEndProjectList";
 	}
 	
+	/*위험관리대장 조회(+페이징, 검색) */
+	@RequestMapping("/selectProjectRiskList")
+	public String selectProjectRisk(Model model, @AuthenticationPrincipal SecurityUser principal, 
+									@RequestParam(defaultValue = "1") int curPage, Search search) {
+		System.out.println("search 컨트롤러에서 : "+search);
+		String sessionRanks = principal.getMember().getRanks().getRanks();
+		String seesionDeptName = "";
+		if(sessionRanks.equals("대표") || sessionRanks.equals("이사")) {
+			seesionDeptName = "경영진";
+		}else {
+			seesionDeptName = principal.getMember().getDepartment().getDeptName();
+		}
+		
+		int	prjCode=projectService.selectRecentPrjCode();
+		int count;
+		count = projectService.countProjectRisk(search, prjCode);
+		Pager page = new Pager(count, curPage);
+		int blockBegin = page.getBlockBegin();
+		int blockEnd = page.getBlockEnd();
+		List<Integer> block = new ArrayList<Integer>();
+		for(int i = blockBegin; i <= blockEnd ; i++) {
+			block.add(i);
+		}
+		int begin = page.getPageBegin() -1;
+		
+		List<ProjectRiskDto > rskDto = projectService.selectProjectRiskList(begin, search, prjCode);
+		for(ProjectRiskDto rsk : rskDto) {
+			System.out.println(rsk);
+		}
+		
+		Date date = new Date();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		String today = format.format(date);
+		System.out.println(" today value = "+today);
+		model.addAttribute("search", search);
+		model.addAttribute("block", block);
+		model.addAttribute("page", page);
+		model.addAttribute("rskDtos", rskDto);
+		model.addAttribute("today",today);
+		model.addAttribute("sessionRanks", sessionRanks);
+		model.addAttribute("sessionDeptName", seesionDeptName);
+		
+		return "project/projectRiskList"; 
+	}
+	
+	/*위험관리대장 상세페이지 이동*/
+	@RequestMapping("/selectProjectRiskDetail")
+	public String selectProjectRiskView(Model model, int rskCode,  @AuthenticationPrincipal SecurityUser principal) {
+		
+		String sessionRanks = principal.getMember().getRanks().getRanks();
+		String sessionDeptName = "";
+		System.out.println("상세페이지 이동 Ranks : " +  sessionRanks);
+		if(sessionRanks.equals("대표") || sessionRanks.equals("이사")) {
+			sessionDeptName = "경영진";
+		}else {
+			sessionDeptName = principal.getMember().getDepartment().getDeptName();
+		}
+		System.out.println("상세페이지 진입할 때 부서명"+sessionDeptName);
+		System.out.println("상세페이지 진입할 때 직급"+sessionRanks);
+		model.addAttribute("sessionRanks", sessionRanks);
+		model.addAttribute("sessionDeptName", sessionDeptName);
+		
+		ProjectRiskDto rskDto = projectService.selectProjectRiskDetail(rskCode);
+		
+		model.addAttribute("rskDto", rskDto);
+		
+		return "project/projectRiskDetail";
+	}
+	
+	/*위험관리대장 삭제*/
+	@RequestMapping("/deleteProjectRisk")
+	public String deleteProjectRisk(int rskCode) {
+		
+		projectService.deleteProjectRisk(rskCode);
+		
+		return "redirect:/user/selectProjectRiskList";
+	}
+	
+	/*위험관리대장 수정페이지 이동*/
+	@RequestMapping("/updateProjectRiskView")
+	public String updateProjectRiskView(Model model, int rskCode,  @AuthenticationPrincipal SecurityUser principal) {
+		
+		String sessionRanks = principal.getMember().getRanks().getRanks();
+		String sessionDeptName = "";
+		System.out.println("상세페이지 이동 Ranks : " +  sessionRanks);
+		if(sessionRanks.equals("대표") || sessionRanks.equals("이사")) {
+			sessionDeptName = "경영진";
+		}else {
+			sessionDeptName = principal.getMember().getDepartment().getDeptName();
+		}
+		System.out.println("상세페이지 진입할 때 부서명"+sessionDeptName);
+		System.out.println("상세페이지 진입할 때 직급"+sessionRanks);
+		model.addAttribute("sessionRanks", sessionRanks);
+		model.addAttribute("sessionDeptName", sessionDeptName);
+		
+		ProjectRiskDto rskDto = projectService.selectProjectRiskDetail(rskCode);
+		
+		model.addAttribute("rskDto", rskDto);
+		
+		return "project/projectRiskUpdate";
+	}
+	
+	/*위험관리대장 수정*/
+	@RequestMapping("/updateProjectRisk")
+	public String updateProjectRisk(ProjectRiskDto rskDto) {
+		projectService.updateProjectRisk(rskDto);
+		
+		return "redirect:/user/selectProjectRiskList";
+	}
+	
+	
+	/*위험관리대장 작성페이지 이동*/
+	@RequestMapping("/insertProjectRiskView")
+	public String insertProjectRiskView(Model model, @AuthenticationPrincipal SecurityUser principal) {
+		
+		String sessionRanks = principal.getMember().getRanks().getRanks();
+		String sessionDeptName = "";
+		String sessionId = principal.getMember().getMemId();
+		System.out.println("상세페이지 이동 Ranks : " +  sessionRanks);
+		if(sessionRanks.equals("대표") || sessionRanks.equals("이사")) {
+			sessionDeptName = "경영진";
+		}else {
+			sessionDeptName = principal.getMember().getDepartment().getDeptName();
+		}
+		System.out.println("상세페이지 진입할 때 부서명"+sessionDeptName);
+		System.out.println("상세페이지 진입할 때 직급"+sessionRanks);
+		model.addAttribute("sessionRanks", sessionRanks);
+		model.addAttribute("sessionDeptName", sessionDeptName);
+		model.addAttribute("sessionId", sessionId);
+		
+		List<ProjectInfoDto> prjInfo = projectService.selectProjectNameList();
+		model.addAttribute("prjInfo", prjInfo);
+		
+		
+		return "project/projectRiskWrite";
+	}
+	
+	/*위험관리대장 작성*/
+	@RequestMapping("/insertProjectRisk")
+	public String insertProjectRisk(ProjectRiskDto rskDto) {
+		
+		projectService.insertProjectRisk(rskDto);
+		
+		return "redirect:/user/selectProjectRiskList";
+	}
 }

@@ -17,6 +17,7 @@
 <th:block layout:fragment="script">
 <script type="text/javascript" th:src="@{/js/project/bootstrap.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/project/projectList.js}"></script>
+<script type="text/javascript" th:src="@{/js/project/projectRisk.js}"></script>
 </th:block>
 
 
@@ -27,12 +28,13 @@
 
 	<!-- //무조건 section 안에서 내용 작성 -->
 	<div layout:fragment="content" class="section">
-		<h2>프로젝트 위험관리대장</h2>
+		<h2>프로젝트 위험관리대장 상세페이지</h2>
 		<div class="article">
-
+		<input type="hidden" id="rskCode" th:value="${rskDto.rskCode}">
 		<input type="hidden" id="sessionRanks" th:value="${sessionRanks}">
 		<input type="hidden" id="sessionDeptName" th:value="${sessionDeptName}">
 			<div class="table_wrap view">
+				<form action="">
 				<table>
 					<colgroup class="pc">
 						<col width="120px">
@@ -40,44 +42,41 @@
 					</colgroup>
 					<tbody>
 						<tr>
-							<th th:text="상태"></th><!-- 값에 따라 처리중, 해결로 표시 -->
-							<td><input name="rskStatus" type="text"></td>
+							<th>제목</th>	
+							<td th:text="${rskDto.rskTitle}"></td>
 						</tr>
 						<tr>
-							<th th:text="제목" ></th>
-							<td><input name="rskTitle" type="text"></td>
+							<th>내용</th>	
+							<td th:text="${rskDto.rskContent}"></td>
 						</tr>
 						<tr>
-							<th th:text="내용"></th>
-							<td><input name="rskContent" type="text"></td>
+							<th>해결방안</th>	
+							<td th:text="${rskDto.rskSolution}"></td>
 						</tr>
 						<tr>
-							<th th:text="등록일"></th>
-							<td><input name="rskReg" type="text"></td>
+							<th>처리결과</th>	
+							<td th:text="${rskDto.rskResult}"></td>
 						</tr>
 						<tr>
-							<th th:text="해결자" ></th>
-							<td><input name="rskSolver" type="text"></td>
+							<th>등록일</th>
+							<th:block th:if="${today==#dates.format(rskDto.rskReg,'yyyy-MM-dd')}">
+								<td th:text="${#dates.format(rskDto.rskReg,'HH:mm')}"></td>
+							</th:block>
+							<th:block th:unless="${today==#dates.format(rskDto.rskReg,'yyyy-MM-dd')}">
+								<td th:text="${#dates.format(rskDto.rskReg,'yyyy-MM-dd')}"></td>
+							</th:block>
 						</tr>
 						<tr>
-							<th th:text="해결방안"></th>
-							<td><input name="rskSolution" type="text"></td>
-						</tr>
-						<tr>
-							<th th:text="종료일" ></th>
-							<td><input name="rskEnd" type="date"></td>
-						</tr>
-						<tr>
-							<th th:text="처리결과"></th>
-							<td><input name="rskResult" type="text"></td>
+							<th>작성자</th>	
+							<td th:text="${rskDto.rskWriter}"></td>
 						</tr>
 					</tbody>
 				</table>
 				<div class="btn_wrap">
 					<div class="box_right">
-						<a class="btn btn_point" th:href="">위험관리대장 목록</a>
-						<a class="btn btn_point" th:href="">삭제</a>	
-						<a class="btn btn_point" th:href="">위험관리 해결완료</a> <!-- 모든 항목이 해결 됐는지 체크 후 update-->
+						<a class="btn btn_point" onclick="deleteProjectRisk()">삭제</a>
+						<a class="btn btn_point" th:href="@{/user/updateProjectRiskView(rskCode=${rskDto.rskCode})}">수정</a>	
+						<a class="btn btn_point" th:href="@{/user/selectProjectRiskList}">위험관리대장 목록</a>
 					</div>
 				</div>
 			</div><!-- table_wrap end -->

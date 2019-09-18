@@ -121,9 +121,9 @@ public class ProjectAjaxController {
 	}
 	
 	/*달력에 뿌릴 WBS 데이터 불러오기*/
-	@RequestMapping("/selectProjectWbsOnCalendar")
+	@RequestMapping("/selectProjectWbsOnCalendarAjax")
 	@ResponseBody
-	public List<ProjectWbsDto> selectProjectWbsOnCalendar(int prjCode) {
+	public List<ProjectWbsDto> selectProjectWbsOnCalendarAjax(int prjCode) {
 		return projectService.selectProjectWbsOnCalendar(prjCode);
 	}
 	

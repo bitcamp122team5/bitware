@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Select;
 import com.bitgroupware.project.beans.MemberDto;
 import com.bitgroupware.project.beans.ProjectInfoDto;
 import com.bitgroupware.project.beans.ProjectMembersDto;
+import com.bitgroupware.project.beans.ProjectRiskDto;
 import com.bitgroupware.project.beans.ProjectWbsDto;
 import com.bitgroupware.utils.Search;
 
@@ -81,4 +82,29 @@ public interface ProjectService {
 	/*memId로 Ranks(직급명) 가져오기*/
 	public MemberDto selectMemberRanksByMemId(String memId);
 	
+	/*위험관리대장*/
+	
+	/*위험관리대장 조회*/
+	public List<ProjectRiskDto> selectProjectRiskList(int begin, Search search, int prjCode);
+
+	/*위험관리대장 상세페이지 데이터 추출*/
+	public ProjectRiskDto selectProjectRiskDetail(int rskCode);
+	
+	/*위험관리대장 작성*/
+	public void insertProjectRisk(ProjectRiskDto rskDto);
+
+	/*위험관리대장 수정*/
+	public void updateProjectRisk(ProjectRiskDto rskDto);
+	
+	/*위험관리대장 삭제*/
+	public void deleteProjectRisk(int rskCode);
+	
+	//위험관리대장 카운트 (페이징을 위한 값)
+	public int countProjectRisk(Search search, int prjCode);
+	
+	//최근 프로젝트 코드 1개 추출
+	public int selectRecentPrjCode();
+	
+	/*위험관리대장 프로젝트 리스트 추출*/
+	public List<ProjectInfoDto> selectProjectNameList();
 }
