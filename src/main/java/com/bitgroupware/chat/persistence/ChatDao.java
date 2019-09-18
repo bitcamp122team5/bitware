@@ -2,14 +2,15 @@ package com.bitgroupware.chat.persistence;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import com.bitgroupware.chat.Beans.ChatAlertDto;
 import com.bitgroupware.chat.Beans.ChatMessageDto;
 import com.bitgroupware.chat.Beans.DepartmentDto;
 import com.bitgroupware.chat.Beans.MemberDto;
-
 
 @Mapper
 public interface ChatDao {
@@ -45,4 +46,13 @@ public interface ChatDao {
 	
 	@Select("select content from chat_message where room_id = #{roomId} order by message_id desc limit 1")
 	String selectChatMessageListByRoomId(String roomId);
+
+	@Insert("insert into chat_alert (sender, receiver, room_id) values(#{sessionId},#{memId},#{roomId})")
+	void insertChatAlert(String sessionId, String memId, String roomId);
+
+	@Select("select * from chat_alert where receiver = #{receiver}")
+	List<ChatAlertDto> checkChatAlert(String receiver);
+
+	@Delete("delete from chat_alert where alert_no = #{alertNo}")
+	void deleteChatAlert(int alertNo);
 }

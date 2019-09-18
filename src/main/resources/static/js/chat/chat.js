@@ -3,8 +3,6 @@
 var nameInput = $('#name').val();
 var roomInput = $('#room-id').val();
 
-console.log("룸아이디 ="+roomInput);
-
 var usernamePage = document.querySelector('#username-page');
 var chatPage = document.querySelector('#chat-page');
 var usernameForm = document.querySelector('#usernameForm');
@@ -27,7 +25,6 @@ var colors = [
 
 function connect(event) {
 	var nameValue = document.getElementById("name").value;
-  //username = nameInput.trim();
   username = nameValue;
 	Cookies.set('name', username);
   if (username) {
@@ -123,9 +120,9 @@ function onMessageReceived(payload) {
   textElement.appendChild(messageText);
 
   messageElement.appendChild(textElement);
-
-  messageArea.appendChild(messageElement);
-  messageArea.scrollTop = messageArea.scrollHeight;
+// 아래 지우지 마세요.
+//  messageArea.appendChild(messageElement);
+//  messageArea.scrollTop = messageArea.scrollHeight;
 }
 
 function getAvatarColor(messageSender) {

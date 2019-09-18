@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bitgroupware.chat.Beans.ChatAlertDto;
 import com.bitgroupware.chat.Beans.ChatMessageDto;
 import com.bitgroupware.chat.Beans.DepartmentDto;
 import com.bitgroupware.chat.Beans.MemberDto;
@@ -62,15 +63,19 @@ public class ChatServiceImpl implements ChatService {
 		return chatDao.selectChatMessageListByRoomId(roomId);
 	}
 
-//	@Override
-//	public ChatMessageDto selectLastContentList(String receiver) {
-//		// TODO Auto-generated method stub
-//		return chatDao.selectLastContentList(receiver);
-//	}
+	@Override
+	public void insertChatAlert(String sessionId, String memId, String roomId) {
+		chatDao.insertChatAlert(sessionId, memId, roomId);
+	}
 
+	@Override
+	public List<ChatAlertDto> checkChatAlert(String receiver) {
+		return chatDao.checkChatAlert(receiver);
+	}
 
-	
-	 
-	
-	
+	@Override
+	public void deleteChatAlert(int alertNo) {
+		chatDao.deleteChatAlert(alertNo);
+	}
+
 }

@@ -2,6 +2,7 @@ package com.bitgroupware.chat.service;
 
 import java.util.List;
 
+import com.bitgroupware.chat.Beans.ChatAlertDto;
 import com.bitgroupware.chat.Beans.ChatMessageDto;
 import com.bitgroupware.chat.Beans.DepartmentDto;
 import com.bitgroupware.chat.Beans.MemberDto;
@@ -26,5 +27,11 @@ public interface ChatService {
 	List<ChatMessageDto> selectChatMessageList(String roomId);
 
 	String selectChatMessageListByRoomId(String roomId);
+
+	void insertChatAlert(String sessionId, String memId, String roomId);
+
+	List<ChatAlertDto> checkChatAlert(String receiver);
+
+	void deleteChatAlert(int alertNo);
 
 }
