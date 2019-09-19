@@ -35,7 +35,6 @@ public class ProjectController {
 	@RequestMapping("/selectProjectList")
 	public String selectProjectList(Model model, @AuthenticationPrincipal SecurityUser principal, 
 									@RequestParam(defaultValue = "1") int curPage, Search search) {
-		System.out.println("search 컨트롤러에서 : "+search);
 		String sessionRanks = principal.getMember().getRanks().getRanks();
 		String seesionDeptName = "";
 		if(sessionRanks.equals("대표") || sessionRanks.equals("이사")) {
@@ -44,8 +43,6 @@ public class ProjectController {
 			seesionDeptName = principal.getMember().getDepartment().getDeptName();
 		}
 		 
-		System.out.println("컨트롤러에서 condition : " + search.getSearchCondition());
-		System.out.println("컨트롤러에서 keyword : " + search.getSearchKeyword());
 		int count;
 		count = projectService.countProject(search);
 		
@@ -164,20 +161,16 @@ public class ProjectController {
 		List<ProjectWbsDto> prjWbs = projectService.selectProjectWbsList(prjCode);
 		String sessionRanks = principal.getMember().getRanks().getRanks();
 		String sessionDeptName = "";
-		System.out.println("상세페이지 이동 Ranks : " +  sessionRanks);
 		if(sessionRanks.equals("대표") || sessionRanks.equals("이사")) {
 			sessionDeptName = "경영진";
 		}else {
 			sessionDeptName = principal.getMember().getDepartment().getDeptName();
 		}
-		System.out.println("상세페이지 진입할 때 부서명"+sessionDeptName);
-		System.out.println("상세페이지 진입할 때 직급"+sessionRanks);
 		model.addAttribute("sessionRanks", sessionRanks);
 		model.addAttribute("sessionDeptName", sessionDeptName);
 		//참여인원 추가 모달을 위함.
 		List<MemberDto> memOfficeInfo = projectService.selectProjectMemberList();
 		model.addAttribute("members", memOfficeInfo);
-		System.out.println("prjInfo내용 : "+prjInfo);
 		model.addAttribute("prjInfo", prjInfo);
 		model.addAttribute("memInfos", memInfos);
 		model.addAttribute("prjWbs", prjWbs);
@@ -187,9 +180,6 @@ public class ProjectController {
 	/*프로젝트 수정 */
 	@RequestMapping("/updateProject")
 	public String updateProject(ProjectInfoDto prjDto) {
-		
-		System.out.println("code 값 : " + prjDto);
-		System.out.println(prjDto.getPrjStart()+"이건 start  "+prjDto.getPrjEnd()+"이건 end");
 		projectService.updateProject(prjDto);
 		return "redirect:/user/selectProjectList";
 	}
@@ -212,9 +202,7 @@ public class ProjectController {
 				pmName = memDto.getMemName();
 			}
 		}
-		System.out.println("pmName 출력 : "+ pmName);
 		prjDto.setPrjPm(pmName);
-		System.out.println("prjDto.getPrjPm() 결과 : "+prjDto.getPrjPm());
 		String code = "";
 		if(projectService.insertProject(prjDto)) {
 			
@@ -241,8 +229,8 @@ public class ProjectController {
 	/*위험관리대장 조회(+페이징, 검색) */
 	@RequestMapping("/selectProjectRiskList")
 	public String selectProjectRisk(Model model, @AuthenticationPrincipal SecurityUser principal, 
-									@RequestParam(defaultValue = "1") int curPage, Search search) {
-		System.out.println("search 컨트롤러에서 : "+search);
+									@RequestParam(defaultValue = "1") int curPage, Search search,
+									@RequestParam(defaultValue = "-1") int prjCode) {
 		String sessionRanks = principal.getMember().getRanks().getRanks();
 		String seesionDeptName = "";
 		if(sessionRanks.equals("대표") || sessionRanks.equals("이사")) {
@@ -250,8 +238,11 @@ public class ProjectController {
 		}else {
 			seesionDeptName = principal.getMember().getDepartment().getDeptName();
 		}
+		System.out.println("prjCode = ===="+prjCode);
+		if(prjCode== -1) {
+			prjCode=projectService.selectRecentPrjCode();
+		}
 		
-		int	prjCode=projectService.selectRecentPrjCode();
 		int count;
 		count = projectService.countProjectRisk(search, prjCode);
 		Pager page = new Pager(count, curPage);
@@ -264,14 +255,17 @@ public class ProjectController {
 		int begin = page.getPageBegin() -1;
 		
 		List<ProjectRiskDto > rskDto = projectService.selectProjectRiskList(begin, search, prjCode);
-		for(ProjectRiskDto rsk : rskDto) {
-			System.out.println(rsk);
-		}
+		
+		List<ProjectInfoDto> prjInfo = projectService.selectProjectNameList();
+		model.addAttribute("prjInfo", prjInfo);
 		
 		Date date = new Date();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		String today = format.format(date);
-		System.out.println(" today value = "+today);
+		
+		ProjectInfoDto prjName = projectService.selectProject(prjCode);
+		model.addAttribute("prjName", prjName);
+		
 		model.addAttribute("search", search);
 		model.addAttribute("block", block);
 		model.addAttribute("page", page);
@@ -283,22 +277,75 @@ public class ProjectController {
 		return "project/projectRiskList"; 
 	}
 	
+	
+	/*위험관리대장 조회(+페이징, 검색) */
+	@RequestMapping("/selectProjectRiskListByPrjName")
+	public String selectProjectRisks(Model model, @AuthenticationPrincipal SecurityUser principal, 
+									@RequestParam(defaultValue = "1") int curPage, Search search, int prjCode) {
+		String sessionRanks = principal.getMember().getRanks().getRanks();
+		String seesionDeptName = "";
+		if(sessionRanks.equals("대표") || sessionRanks.equals("이사")) {
+			seesionDeptName = "경영진";
+		}else {
+			seesionDeptName = principal.getMember().getDepartment().getDeptName();
+		}
+		
+		int count;
+		System.out.println("prjCode value" + prjCode);
+		
+		count = projectService.countProjectRisk(search, prjCode);
+		System.out.println("count value " + count);
+		
+		ProjectInfoDto prjName = projectService.selectProject(prjCode);
+		model.addAttribute("prjName", prjName);
+		
+		Pager page = new Pager(count, curPage);
+		int blockBegin = page.getBlockBegin();
+		int blockEnd = page.getBlockEnd();
+		List<Integer> block = new ArrayList<Integer>();
+		for(int i = blockBegin; i <= blockEnd ; i++) {
+			block.add(i);
+		}
+		int begin = page.getPageBegin() -1;
+		
+		List<ProjectRiskDto > rskDto = projectService.selectProjectRiskList(begin, search, prjCode);
+		
+		List<ProjectInfoDto> prjInfo = projectService.selectProjectNameList();
+		model.addAttribute("prjInfo", prjInfo);
+		
+		Date date = new Date();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		String today = format.format(date);
+		model.addAttribute("search", search);
+		model.addAttribute("block", block);
+		model.addAttribute("page", page);
+		model.addAttribute("rskDtos", rskDto);
+		model.addAttribute("today",today);
+		model.addAttribute("sessionRanks", sessionRanks);
+		model.addAttribute("sessionDeptName", seesionDeptName);
+		
+		
+		return "project/projectRiskList"; 
+	}
+	
+	
+	
+	
 	/*위험관리대장 상세페이지 이동*/
 	@RequestMapping("/selectProjectRiskDetail")
 	public String selectProjectRiskView(Model model, int rskCode,  @AuthenticationPrincipal SecurityUser principal) {
 		
 		String sessionRanks = principal.getMember().getRanks().getRanks();
+		String sessionId = principal.getMember().getMemId();
 		String sessionDeptName = "";
-		System.out.println("상세페이지 이동 Ranks : " +  sessionRanks);
 		if(sessionRanks.equals("대표") || sessionRanks.equals("이사")) {
 			sessionDeptName = "경영진";
 		}else {
 			sessionDeptName = principal.getMember().getDepartment().getDeptName();
 		}
-		System.out.println("상세페이지 진입할 때 부서명"+sessionDeptName);
-		System.out.println("상세페이지 진입할 때 직급"+sessionRanks);
 		model.addAttribute("sessionRanks", sessionRanks);
 		model.addAttribute("sessionDeptName", sessionDeptName);
+		model.addAttribute("sessionId", sessionId);
 		
 		ProjectRiskDto rskDto = projectService.selectProjectRiskDetail(rskCode);
 		
@@ -322,14 +369,11 @@ public class ProjectController {
 		
 		String sessionRanks = principal.getMember().getRanks().getRanks();
 		String sessionDeptName = "";
-		System.out.println("상세페이지 이동 Ranks : " +  sessionRanks);
 		if(sessionRanks.equals("대표") || sessionRanks.equals("이사")) {
 			sessionDeptName = "경영진";
 		}else {
 			sessionDeptName = principal.getMember().getDepartment().getDeptName();
 		}
-		System.out.println("상세페이지 진입할 때 부서명"+sessionDeptName);
-		System.out.println("상세페이지 진입할 때 직급"+sessionRanks);
 		model.addAttribute("sessionRanks", sessionRanks);
 		model.addAttribute("sessionDeptName", sessionDeptName);
 		
@@ -345,7 +389,7 @@ public class ProjectController {
 	public String updateProjectRisk(ProjectRiskDto rskDto) {
 		projectService.updateProjectRisk(rskDto);
 		
-		return "redirect:/user/selectProjectRiskList";
+		return "redirect:/user/selectProjectRiskList?prjCode="+rskDto.getPrjCode();
 	}
 	
 	
@@ -356,17 +400,16 @@ public class ProjectController {
 		String sessionRanks = principal.getMember().getRanks().getRanks();
 		String sessionDeptName = "";
 		String sessionId = principal.getMember().getMemId();
-		System.out.println("상세페이지 이동 Ranks : " +  sessionRanks);
+		String sessionName = principal.getMember().getMemName();
 		if(sessionRanks.equals("대표") || sessionRanks.equals("이사")) {
 			sessionDeptName = "경영진";
 		}else {
 			sessionDeptName = principal.getMember().getDepartment().getDeptName();
 		}
-		System.out.println("상세페이지 진입할 때 부서명"+sessionDeptName);
-		System.out.println("상세페이지 진입할 때 직급"+sessionRanks);
 		model.addAttribute("sessionRanks", sessionRanks);
 		model.addAttribute("sessionDeptName", sessionDeptName);
 		model.addAttribute("sessionId", sessionId);
+		model.addAttribute("sessionName", sessionName);
 		
 		List<ProjectInfoDto> prjInfo = projectService.selectProjectNameList();
 		model.addAttribute("prjInfo", prjInfo);
@@ -381,6 +424,6 @@ public class ProjectController {
 		
 		projectService.insertProjectRisk(rskDto);
 		
-		return "redirect:/user/selectProjectRiskList";
+		return "redirect:/user/selectProjectRiskList?prjCode="+rskDto.getPrjCode();
 	}
 }

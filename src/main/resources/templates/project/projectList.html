@@ -74,7 +74,7 @@
 					<tbody>
 						<tr th:each="Infos : ${prjInfos}">
 							<input type="hidden" id="pmPrjCode" th:value="${Infos.prjCode}">
-							<td><input type="checkbox" name="projectAllCheckBox" id="prjCode" class="projectCheckBox" th:value="${Infos.prjCode}"></td>
+							<td><input type="checkbox" name="projectAllCheckBox" id="projectCheckBox" class="projectCheckBox" th:value="${Infos.prjCode}"></td>
 							<td class="tit"><a th:href="@{/user/projectDetail(prjCode=${Infos.prjCode})}" th:text="${Infos.prjName}"></a></td>
 							<td th:text="${Infos.prjPm}"></td>
 							<td th:text="${Infos.prjStart}"></td>
@@ -90,8 +90,8 @@
 					</div>
 				</div>
 			</div><!-- //table_wrap end -->
-		</div>
-		</div>
+		</div><!-- article end -->
+		</div><!-- section_inner end -->
 	</div><!-- //section end -->
 	
 	<!-- 프로젝트 생성 modal -->

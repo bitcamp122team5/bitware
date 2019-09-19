@@ -13,6 +13,7 @@ public class ProjectRiskDto {
 	private String rskContent;
 	private Date rskReg;
 	private String rskWriter;
+	private String memName;
 	private String rskSolution;
 	private String rskResult;
 	private int prjCode;

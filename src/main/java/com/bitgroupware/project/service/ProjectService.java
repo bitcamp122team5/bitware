@@ -86,7 +86,7 @@ public interface ProjectService {
 	
 	/*위험관리대장 조회*/
 	public List<ProjectRiskDto> selectProjectRiskList(int begin, Search search, int prjCode);
-
+	
 	/*위험관리대장 상세페이지 데이터 추출*/
 	public ProjectRiskDto selectProjectRiskDetail(int rskCode);
 	
