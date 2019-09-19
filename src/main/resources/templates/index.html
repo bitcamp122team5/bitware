@@ -88,65 +88,81 @@ div.realWorkChart {
 </script>
 <!-- 차트 끝 -->
 <!-- 테스트 시작 -->
-<script type="text/javascript">
-	// Load google charts
-	google.charts.load('current', {
-		'packages' : [ 'corechart' ]
-	});
-	google.charts.setOnLoadCallback(planWorkChart);
-	google.charts.setOnLoadCallback(realWorkChart);
+<script th:inline="javascript">
+	/*<![CDATA[*/
+	var size = /*[[${projectListSize}]]*/;
+	/*]]>*/
+	alert(size);
+	if (size >= 0) {
+		alert("size >= 0");
+		// Load google charts
+		google.charts.load('current', {
+			'packages' : [ 'corechart' ]
+		});
+		google.charts.setOnLoadCallback(planWorkChart);
+		google.charts.setOnLoadCallback(realWorkChart);
 
-	// Draw the chart and set the chart values
-	function planWorkChart() {
-		var planWorkStatus = google.visualization.arrayToDataTable([
-				[ '계획', '계획 작업 현황' ], 
-				[ '완료', [[${projectList[1].planComplete}]] ], 
-				[ '진행중', [[${projectList[1].planIng}]] ], 
-				[ '미시작', [[${projectList[1].planUnset}]] ]
-		]);
+		// Draw the chart and set the chart values
+		function planWorkChart() {
+			var planWorkStatus = google.visualization.arrayToDataTable([
+					/*<![CDATA[*/
+					[ '계획', '계획 작업 현황' ],
+					[ '완료', /*[[${projectList[1].planComplete}]]*/ ], 
+					[ '진행중', /*[[${projectList[1].planIng}]]*/ ], 
+					[ '미시작', /*[[${projectList[1].planUnset}]]*/ ]
+					/*]]>*/
+			]);
 
-		// Optional; add a title and set the width and height of the chart
-		var planWorkStatusOptions = {
-			'title':'계힉 작업 현황', // 타이틀
-			'pieHole' : 0.4,
-			// 'pieSliceTextStyle': {
-			//	color: 'black',
-			// }, // 글자 색
-			'legend' : 'none', // 범례옵션
-			'width' : 400,
-			'height' : 400
-		};
+			// Optional; add a title and set the width and height of the chart
+			var planWorkStatusOptions = {
+				'title':'계힉 작업 현황', // 타이틀
+				'pieHole' : 0.4,
+				// 'pieSliceTextStyle': {
+				//	color: 'black',
+				// }, // 글자 색
+				'legend' : 'none', // 범례옵션
+				'width' : 400,
+				'height' : 400
+			};
 
-		// Display the chart inside the <div> element with id="piechart"
-		var planWorkChart = new google.visualization.PieChart(document.getElementById('planWorkChart'));
-		planWorkChart.draw(planWorkStatus, planWorkStatusOptions);
+			// Display the chart inside the <div> element with id="piechart"
+			var planWorkChart = new google.visualization.PieChart(document.getElementById('planWorkChart'));
+			planWorkChart.draw(planWorkStatus, planWorkStatusOptions);
+		}
+		
+		function realWorkChart() {
+			var realWorkStatus = google.visualization.arrayToDataTable([
+					/*<![CDATA[*/
+					[ '실제', '실제 작업 현황' ], 
+					[ '완료', /*[[${projectList[1].realComplete}]]*/ ], 
+					[ '진행중', /*[[${projectList[1].realIng}]]*/ ], 
+					[ '미시작', /*[[${projectList[1].realUnset}]]*/ ]
+					/*]]>*/
+			]);
+
+			// Optional; add a title and set the width and height of the chart
+			var realWorkStatusOptions = {
+				'title':'실제 작업 현황', // 타이틀
+				'pieHole' : 0.4,
+				// 'pieSliceTextStyle': {
+				//	color: 'black',
+				// }, // 글자 색
+				'legend' : 'none', // 범례옵션
+				'width' : 400,
+				'height' : 400
+			};
+
+			// Display the chart inside the <div> element with id="piechart"
+			var realWorkChart = new google.visualization.PieChart(document.getElementById('realWorkChart'));
+			realWorkChart.draw(realWorkStatus, realWorkStatusOptions);
+		}
+	}
+	if (size < 0) {
+		alert("size < 0");
 	}
 	
-	function realWorkChart() {
-		var realWorkStatus = google.visualization.arrayToDataTable([
-				[ '실제', '실제 작업 현황' ], 
-				[ '완료', [[${projectList[1].realComplete}]] ], 
-				[ '진행중', [[${projectList[1].realIng}]] ], 
-				[ '미시작', [[${projectList[1].realUnset}]] ]
-		]);
-
-		// Optional; add a title and set the width and height of the chart
-		var realWorkStatusOptions = {
-			'title':'실제 작업 현황', // 타이틀
-			'pieHole' : 0.4,
-			// 'pieSliceTextStyle': {
-			//	color: 'black',
-			// }, // 글자 색
-			'legend' : 'none', // 범례옵션
-			'width' : 400,
-			'height' : 400
-		};
-
-		// Display the chart inside the <div> element with id="piechart"
-		var realWorkChart = new google.visualization.PieChart(document.getElementById('realWorkChart'));
-		realWorkChart.draw(realWorkStatus, realWorkStatusOptions);
-	}
-
+	
+	
 </script>
 <!-- 테스트 끝 -->
 <title>메인페이지</title>

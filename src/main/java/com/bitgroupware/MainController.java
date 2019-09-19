@@ -129,6 +129,7 @@ public class MainController {
 			model.addAttribute("approvalList", approvalList);
 			
 			model.addAttribute("projectList", projectList);
+			model.addAttribute("projectListSize", projectList.size()-1);
 			
 			model.addAttribute("commuteTotalCount", commuteTotalCount);
 			model.addAttribute("commuteStatusCount", commuteStatusCount);
