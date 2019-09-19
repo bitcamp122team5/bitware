@@ -12,7 +12,15 @@ div.commuteChart {
 	float: left;
 }
 div.vacationChart {
-	width:50%;
+	width: 50%;
+	float: right;
+}
+div.planWorkChart {
+	width: 50%;
+	float: left;
+}
+div.realWorkChart {
+	width: 50%;
 	float: right;
 }
 </style>
@@ -79,6 +87,68 @@ div.vacationChart {
 	}
 </script>
 <!-- 차트 끝 -->
+<!-- 테스트 시작 -->
+<script type="text/javascript">
+	// Load google charts
+	google.charts.load('current', {
+		'packages' : [ 'corechart' ]
+	});
+	google.charts.setOnLoadCallback(planWorkChart);
+	google.charts.setOnLoadCallback(realWorkChart);
+
+	// Draw the chart and set the chart values
+	function planWorkChart() {
+		var planWorkStatus = google.visualization.arrayToDataTable([
+				[ '계획', '계획 작업 현황' ], 
+				[ '완료', [[${projectList[1].planComplete}]] ], 
+				[ '진행중', [[${projectList[1].planIng}]] ], 
+				[ '미시작', [[${projectList[1].planUnset}]] ]
+		]);
+
+		// Optional; add a title and set the width and height of the chart
+		var planWorkStatusOptions = {
+			'title':'계힉 작업 현황', // 타이틀
+			'pieHole' : 0.4,
+			// 'pieSliceTextStyle': {
+			//	color: 'black',
+			// }, // 글자 색
+			'legend' : 'none', // 범례옵션
+			'width' : 400,
+			'height' : 400
+		};
+
+		// Display the chart inside the <div> element with id="piechart"
+		var planWorkChart = new google.visualization.PieChart(document.getElementById('planWorkChart'));
+		planWorkChart.draw(planWorkStatus, planWorkStatusOptions);
+	}
+	
+	function realWorkChart() {
+		var realWorkStatus = google.visualization.arrayToDataTable([
+				[ '실제', '실제 작업 현황' ], 
+				[ '완료', [[${projectList[1].realComplete}]] ], 
+				[ '진행중', [[${projectList[1].realIng}]] ], 
+				[ '미시작', [[${projectList[1].realUnset}]] ]
+		]);
+
+		// Optional; add a title and set the width and height of the chart
+		var realWorkStatusOptions = {
+			'title':'실제 작업 현황', // 타이틀
+			'pieHole' : 0.4,
+			// 'pieSliceTextStyle': {
+			//	color: 'black',
+			// }, // 글자 색
+			'legend' : 'none', // 범례옵션
+			'width' : 400,
+			'height' : 400
+		};
+
+		// Display the chart inside the <div> element with id="piechart"
+		var realWorkChart = new google.visualization.PieChart(document.getElementById('realWorkChart'));
+		realWorkChart.draw(realWorkStatus, realWorkStatusOptions);
+	}
+
+</script>
+<!-- 테스트 끝 -->
 <title>메인페이지</title>
 <th:block th:replace="fragments/config :: configFragment"></th:block>
 
@@ -174,15 +244,25 @@ div.vacationChart {
 		</div>
 		<!-- //article end -->
 		<div th:if="${!projectList.isEmpty()}" class="article cl">
-			<a th:href="@{/user/selectAttendingProjectList}">참여중인 프로젝트 +</a>
+			<a th:href="@{/user/selectAttendingProjectList}">참여중인 프로젝트 +</a><br>
+			<!-- 그래프 적용 시작 -->
+			<div class="planWorkChart" id="planWorkChart" align="center"></div>
+			<div class="realWorkChart" id="realWorkChart" align="center"></div>
+			<!-- 그래프 적용 끝 -->
 			<div class="project_wrap">
 				<div th:each="project:${projectList}" class="table_wrap list">
 					<table>
 						<colgroup>
 							<col width="*">
-							<col width="200px">
-							<col width="200px">
-							<col width="200px">
+							<col width="*">
+							<col width="*">
+							<col width="*">
+							<col width="*">
+							<col width="*">
+							<col width="*">
+							<col width="*">
+							<col width="*">
+							<col width="*">
 						</colgroup>
 						<thead>
 							<tr>
@@ -190,14 +270,26 @@ div.vacationChart {
 								<th>PM</th>
 								<th>시작일</th>
 								<th>종료일</th>
+								<th>계획 작업 완료</th>
+								<th>계획 작업 진행중</th>
+								<th>계획 작업 미시작</th>
+								<th>실제 작업 완료</th>
+								<th>실제 작업 진행중</th>
+								<th>실제 작업 미시작</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
-								<td><a th:href="@{/user/projectDetail(prjCode=${project.prjCode})}" th:text="${project.prjName}"></a></td>
-								<td th:text="${project.prjPm}"></td>
-								<td th:text="${project.prjStart}"></td>
-								<td th:text="${project.prjEnd}"></td>
+								<td><a th:href="@{/user/projectDetail(prjCode=${project.projectInfo.prjCode})}" th:text="${project.projectInfo.prjName}"></a></td>
+								<td th:text="${project.projectInfo.prjPm}"></td>
+								<td th:text="${project.projectInfo.prjStart}"></td>
+								<td th:text="${project.projectInfo.prjEnd}"></td>
+								<td th:text="${project.planComplete}"></td>
+								<td th:text="${project.planIng}"></td>
+								<td th:text="${project.planUnset}"></td>
+								<td th:text="${project.realComplete}"></td>
+								<td th:text="${project.realIng}"></td>
+								<td th:text="${project.realUnset}"></td>
 							</tr>
 						</tbody>
 					</table>
@@ -254,8 +346,9 @@ $(document).ready(function(){
     	pause: 4000,
     	mode:'horizontal',
     	autoControls: true,
-    	controls:true,
-    	pager:false
+    	controls: true,
+    	pager: false,
+    	touchEnabled: false
     });
 });
 </script>
