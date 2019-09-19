@@ -10,11 +10,10 @@
 <body>
 <div th:replace="fragments/header :: headerFragment"></div>
 
-<div th:replace="fragments/aside :: asideFragment"></div>
-
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
-
+<div th:replace="fragments/aside :: asideFragment"></div>
+<div class="section_inner">
 <script>
 $(function(){
 	var cate = $("#searchCondition").val();
@@ -124,6 +123,7 @@ $(function(){
 					</span>
 				</div><!-- //paging -->
 			</div>
+</div><!-- //section_inner end -->
 <!-- //여기까지!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 
 </div><!-- //section end -->

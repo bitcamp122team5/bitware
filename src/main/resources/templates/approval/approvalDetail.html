@@ -132,10 +132,12 @@ $(document).ready(function() {
 
 <div th:replace="fragments/header :: headerFragment"></div>
 
-<div th:replace="fragments/aside :: asideFragment"></div>
 
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
+
+<div th:replace="fragments/aside :: asideFragment"></div>
+<div class="section_inner">
 
 <!-- 승인 Modal -->
     <div id="okModal" class="modal">
@@ -355,13 +357,13 @@ $(document).ready(function() {
 		</table>
 		
 		<div class="btn_wrap">
-		<div class="box_right">
-<!-- 			<a  class="btn btn_point" th:href="@{/user/selectApprovalListToBe}">목록</a> -->
-			<a  class="btn btn_point" href="javascript:history.back();">목록</a>
-			<a  class="btn btn_point" th:if="${approval.apDocstatus=='1'}" th:href="@{/user/deleteApproval(apNo=${approval.apNo})}">삭제</a>
-			<a  class="btn btn_point" th:if="${approval.apDocstatus=='1'}" th:href="@{/user/updateApprovalView(apNo=${approval.apNo})}">수정</a>
+			<div class="box_right">
+	<!-- 			<a  class="btn btn_point" th:href="@{/user/selectApprovalListToBe}">목록</a> -->
+				<a  class="btn btn_point" href="javascript:history.back();">목록</a>
+				<a  class="btn btn_point" th:if="${approval.apDocstatus=='1'}" th:href="@{/user/deleteApproval(apNo=${approval.apNo})}">삭제</a>
+				<a  class="btn btn_point" th:if="${approval.apDocstatus=='1'}" th:href="@{/user/updateApprovalView(apNo=${approval.apNo})}">수정</a>
+			</div>
 		</div>
-	</div>
 		
 		
 <!-- 		<a  class="btn btn_point" th:href="@{/user/selectApprovalListToBe}">목록</a><br> -->
@@ -369,6 +371,8 @@ $(document).ready(function() {
 <!-- 		<a  class="btn btn_point" th:if="${approval.apDocstatus=='1'}" th:href="@{/user/updateApprovalView(apNo=${approval.apNo})}">수정</a> -->
 	</div><!-- //table_wrap -->
 </div>
+</div>
+<!-- //section_inner end -->
 <!-- //여기까지!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 	</div> <!-- //section end -->
 </body>

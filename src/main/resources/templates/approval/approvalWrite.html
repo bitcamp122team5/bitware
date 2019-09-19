@@ -76,10 +76,12 @@ $(function(){ // wait for page to load
 <body>
 <div th:replace="fragments/header :: headerFragment"></div>
 
-<div th:replace="fragments/aside :: asideFragment"></div>
 
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section" th:align="center">
+<div th:replace="fragments/aside :: asideFragment"></div>
+
+<div class="section_inner">
 <!-- //여기서 부터 긁어가세요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 <!-- //클래스명 하나도 빼지 말고 다 넣어주세요  -->
 <h2 th:text="${approvalDocument.apdocName} + '&nbsp;기안하기'"></h2>
@@ -136,6 +138,8 @@ $(function(){ // wait for page to load
 		</div>
 	</div>
 </div>
+
+</div><!-- //section_inner end -->
 <!-- //여기까지!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 </div><!-- //section end -->
 
