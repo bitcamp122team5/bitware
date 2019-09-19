@@ -397,5 +397,10 @@ public class ApprovalController {
 		return "redirect:/user/selectApprovalListToBe";
 	}
 	
+	// 휴가 신청
+	@RequestMapping("/insertApprovalVacationView")
+	public String insertApprovalVacationView() {
+		return "approval/approvalVacation";
+	}
 	
 }
