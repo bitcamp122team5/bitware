@@ -67,15 +67,50 @@ public class MainController {
 			int curdate = Integer.parseInt(commuteRepository.selectCurdate().replace("-", ""));
 			for (ProjectInfoDto projectInfo : projectInfoList) {
 				int planComplete = 0;
-				int planIncomplete = 0;
+				int planIng = 0;
+				int planUnset = 0;
+				int realComplete = 0;
+				int realIng = 0;
+				int realUnset = 0;
 				MainViewProjectList mainViewProject = new MainViewProjectList();
 				for(ProjectWbsDto projectWbs : projectDao.selectProjectWbsList(projectInfo.getPrjCode())) {
-					if (Integer.parseInt(projectWbs.getPrjPlanEnd().replace("-", "")) >= curdate) planComplete++;
-					else planIncomplete++;
+					/*
+					 계획 작업 종료일 < 오늘 -> 작업 완료
+					 계획 작업 시작일 <= 오늘 -> 작업 진행
+					 계획 작업 시작일 > 오늘 -> 작업 미시작
+					 */
+					if (Integer.parseInt(projectWbs.getPrjPlanEnd().replace("-", "")) < curdate) planComplete++;
+					else if (Integer.parseInt(projectWbs.getPrjPlanStart().replace("-", "")) <= curdate) planIng++;
+					else planUnset++;
+					/*
+					실제 작업 시작일 입력 / 실제 작업 종료일(오늘보다 전) 입력 -> 작업 완료
+					실제 작업 시작일 입력 / 실제 작업 종료일(오늘보다 후or오늘) 입력 -> 작업 진행
+					
+					실제 작업 시작일(오늘보다 전or오늘) 입력 / 실제 작업 종료일 미입력 - > 작업 진행
+					실제 작업 시작일(오늘보다 후) 입력 / 실제 작업 종료일 미입력 -> 작업 미시작
+					실제 작업 시작일 미입력 / 실제 작업 종료일 미입력 -> 작업 미시작
+					 */
+					try {
+						if (Integer.parseInt(projectWbs.getPrjRealEnd().replace("-", "")) < curdate) realComplete++;
+						else realIng++;
+					} catch (NullPointerException realEndIsNull) {
+						System.out.println("RealEnd가 입력되지 않음");
+						try {
+							if (Integer.parseInt(projectWbs.getPrjRealStart().replace("-", "")) <= curdate) realIng++;
+							else realUnset++;
+						} catch (NullPointerException realStartIsNull) {
+							System.out.println("RealStart가 입력되지않음");
+							realUnset++;
+						}
+					}
 				}
 				mainViewProject.setProjectInfo(projectInfo);
 				mainViewProject.setPlanComplete(planComplete);
-				mainViewProject.setPlanIncomplete(planIncomplete);
+				mainViewProject.setPlanIng(planIng);
+				mainViewProject.setPlanUnset(planUnset);
+				mainViewProject.setRealComplete(realComplete);
+				mainViewProject.setRealIng(realIng);
+				mainViewProject.setRealUnset(realUnset);
 				projectList.add(mainViewProject);
 			}
 			

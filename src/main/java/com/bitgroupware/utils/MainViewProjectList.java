@@ -11,6 +11,12 @@ import lombok.ToString;
 @ToString
 public class MainViewProjectList {
 	public ProjectInfoDto projectInfo;
+	
 	public int planComplete;
-	public int planIncomplete;
+	public int planIng;
+	public int planUnset;
+	
+	public int realComplete;
+	public int realIng;
+	public int realUnset;
 }
