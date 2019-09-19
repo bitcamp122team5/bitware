@@ -2,6 +2,8 @@
 button{outline:none;}
 input:read-only{outline:none;}
 
+.scrollX{overflow-x:auto;}
+
 /* calendar */
 ::-webkit-inner-spin-button { 
   display:none;
