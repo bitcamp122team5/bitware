@@ -31,8 +31,6 @@ public class ProjectServiceImpl implements ProjectService {
 		String searchCondition = search.getSearchCondition();
 		String searchKeyword = "%" + search.getSearchKeyword().trim() + "%";
 		int count = 0;
-		System.out.println("카운트에서 condition : " + searchCondition);
-		System.out.println("카운트에서 keyword : " + searchKeyword);
 		switch(searchCondition) {
 		case "prjName":
 			count = dao.countByPrjName(searchKeyword); //
@@ -81,9 +79,6 @@ public class ProjectServiceImpl implements ProjectService {
 		String searchCondition = search.getSearchCondition();
 		String searchKeyword = "%" + search.getSearchKeyword().trim() + "%";
 		
-		System.out.println("impl에서 condition : " + searchCondition);
-		System.out.println("impl에서 keyword : " + searchKeyword);
-		
 		List<ProjectInfoDto> prjInfoDto = null;
 		switch(searchCondition) {
 		case "prjName":
@@ -106,9 +101,6 @@ public class ProjectServiceImpl implements ProjectService {
 		String searchCondition = search.getSearchCondition();
 		String searchKeyword = "%" + search.getSearchKeyword().trim() + "%";
 		
-		System.out.println("impl에서 condition : " + searchCondition);
-		System.out.println("impl에서 keyword : " + searchKeyword);
-		
 		List<ProjectInfoDto> prjInfoDto = null;
 		switch(searchCondition) {
 		case "prjName":
@@ -130,9 +122,6 @@ public class ProjectServiceImpl implements ProjectService {
 			search.setSearchKeyword("");
 		String searchCondition = search.getSearchCondition();
 		String searchKeyword = "%" + search.getSearchKeyword().trim() + "%";
-		
-		System.out.println("impl에서 condition : " + searchCondition);
-		System.out.println("impl에서 keyword : " + searchKeyword);
 		
 		List<ProjectInfoDto> prjInfoDto = null;
 		switch(searchCondition) {
@@ -266,14 +255,9 @@ public class ProjectServiceImpl implements ProjectService {
 		String searchCondition = search.getSearchCondition();
 		String searchKeyword = "%" + search.getSearchKeyword().trim() + "%";
 		
-		System.out.println("impl에서 condition : " + searchCondition);
-		System.out.println("impl에서 keyword : " + searchKeyword);
-		
 		List<ProjectRiskDto> rskDto = null;
 		switch(searchCondition) {
 		case "rskTitle":
-			System.out.println("searchKeyword :  !"+search.getSearchKeyword());
-			System.out.println("searchCondition :  !"+search.getSearchCondition());
 			rskDto = dao.selectProjectRiskListToRskTitle(begin, searchKeyword, prjCode);
 			break;
 		case "rskContent":
@@ -311,8 +295,6 @@ public class ProjectServiceImpl implements ProjectService {
 		String searchCondition = search.getSearchCondition();
 		String searchKeyword = "%" + search.getSearchKeyword().trim() + "%";
 		int count = 0;
-		System.out.println("카운트에서 condition : " + searchCondition);
-		System.out.println("카운트에서 keyword : " + searchKeyword);
 		switch(searchCondition) {
 		case "rskTitle":
 			count = dao.countByRskTitle(prjCode, searchKeyword); //

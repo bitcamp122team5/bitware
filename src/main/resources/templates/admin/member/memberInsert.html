@@ -95,11 +95,11 @@ $(document).ready(function(){
 <body>
 <div th:replace="fragments/headerAdmin :: headerFragmentAdmin"></div>
 
-<div th:replace="fragments/asideAdmin :: asideFragmentAdmin"></div>
 
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
-
+<div th:replace="fragments/asideAdmin :: asideFragmentAdmin"></div>
+<div class="section_inner">
 <h2>사원 등록</h2>
 
 <div class="article">
@@ -190,6 +190,7 @@ $(document).ready(function(){
 	</div><!-- //table_wrap -->	
 </form>
 </div>
+</div><!-- section_inner end -->
 </div><!-- //section end -->
 </body>
 </html>

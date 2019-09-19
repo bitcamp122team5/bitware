@@ -186,10 +186,11 @@ $(function(){
 <body>
 
 <div th:replace="fragments/headerAdmin :: headerFragmentAdmin"></div>
-<div th:replace="fragments/asideAdmin :: asideFragmentAdmin"></div>
 
 <!-- //무조건 section 안에서 내용 작성 -->
 <div layout:fragment="content" class="section">
+<div th:replace="fragments/asideAdmin :: asideFragmentAdmin"></div>
+<div class="section_inner">
 	<input type="hidden" id="toggleCheck" value="toggleOn">
 	<h2>고객사 (관리자)</h2>
 	<div class="article">
@@ -379,6 +380,7 @@ $(function(){
 			</form>
 		</div>
 	</div>
+</div><!-- section_inner end -->
 </div>
 </body>
 </html>
