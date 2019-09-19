@@ -6,16 +6,10 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <meta charset="UTF-8">
 <title>자료실 (관리자)</title>
 <th:block th:replace="fragments/config :: configFragment"></th:block>
-<!-- include libraries(jQuery, bootstrap) -->
-<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
-<!-- include summernote css/js -->
-<link th:href="@{/editor/summernote/summernote.css}" rel="stylesheet">
-<script th:src="@{/editor/summernote/summernote.js}"></script>
+<script th:src="@{/editor/ckeditor/ckeditor.js}"></script>
 <script>
 $(function(){
-	<!--summernote-->
-	$("#docContent").summernote();
+	CKEDITOR.replace("docContent");
 });
 </script>
 <script>
