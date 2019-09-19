@@ -1,7 +1,7 @@
-html, body{height:100%;}
+html, body{display:table;width:100%;height:100%;}
 
 /* header */
-.header{width:100%;height:60px;background:#fff;}
+.header{display:table-row;width:100%;height:60px;background:#fff;}
 .header::after{content:'';display:block;clear:both;}
 .header .logo{float:left;width:240px;height:60px;line-height:60px;text-align:center;}
 .header .logo a{font-size:25px;font-weight:600;}
@@ -18,7 +18,7 @@ html, body{height:100%;}
 .header .userInfo .commute a{background:#27b6af;color:#fff;border-radius:5px;}
 
 /* aside */
-.aside{position:absolute;top:60px;left:0;width:240px;height:100%;background:#3e5165;}
+.aside{float:left;width:240px;height:100%;background:#3e5165;}
 .aside_con{width:100%;}
 .aside_con .dep1{}
 .aside_con .dep1 > a{position:relative;display:block;padding:16px 20px;background:#3e5165;color:#fff;font-size:13px;}
@@ -31,9 +31,9 @@ html, body{height:100%;}
 
 .aside_con .dep2ul.active {display:block;}
 
-.section{width:100%;height:100%;}
+.section{display:table-row;position:relative;width:100%;height:100%;}
 .section::after{content:'';display:block;clear:both;}
-.section_inner{position:absolute;top:60px;left:240px;width:calc(100% - 240px);height:100%;padding:10px;box-sizing:border-box;background:#F0F3F3;}
+.section_inner{float:left;width:calc(100% - 240px);height:100%;padding:10px;box-sizing:border-box;background:#F0F3F3;}
 .section.no_aside{width:100%;height:calc(100% - 60px);margin-left:0;background:#F0F3F3;}
 .section h2{padding:15px 12px;box-sizing:border-box;background:#f7f7f7;border-bottom:1px solid #dce0e6;font-size:18px;}
 
