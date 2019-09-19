@@ -6,35 +6,25 @@
 <meta charset="UTF-8">
 <title>기안</title>
 <th:block th:replace="fragments/config :: configFragment"></th:block>
-
+<script th:src="@{/editor/ckeditor/ckeditor.js}"></script>	
 <!-- 사용자 css 추가 -->
-<th:block layout:fragment="css">
-
-<!-- include libraries(jQuery, bootstrap) -->
-<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
-
-<!-- include summernote css/js -->
-<link th:href="@{/editor/summernote/summernote.css}" rel="stylesheet">
-
-</th:block>
+<th:block layout:fragment="css"></th:block>
 
 <!-- 사용자 script 추가 -->
 <th:block layout:fragment="script">
 <script src="http://malsup.github.com/jquery.form.js"></script> 
 <script src="https://cdn.jsdelivr.net/npm/jquery-multifile@2.2.2/jquery.MultiFile.min.js"></script>
-
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
-
-<script th:src="@{/editor/summernote/summernote.js}"></script>
-
 </th:block>
 
 
 <script>
 $(function(){
-	$("#apContent").summernote({
-		height:300
-	});
+// 	CKEDITOR.replace("apContent",{
+// 		//width : '620px',  // 입력창의 넓이, 넓이는 config.js 에서 % 로 제어
+// 	      height : '400px',  // 입력창의 높이
+// 	      startupFocus : false
+		
+// 	});
 	
 // 	document.getElementById("writeBtn").onclick=function(){
 // 		var apTitle = document.getElementById("apTitle").value;
@@ -55,7 +45,7 @@ $(function(){
 
 $(function(){ // wait for page to load
 	$('#multiform input[name=file]').MultiFile({
-        max: 10, //업로드 최대 파일 갯수 (지정하지 않으면 무한대)
+        max: 5, //업로드 최대 파일 갯수 (지정하지 않으면 무한대)
         accept: 'jpg|png|txt|xls|hwp|doc', //허용할 확장자(지정하지 않으면 모든 확장자 허용)
         maxfile: 1024, //각 파일 최대 업로드 크기
         maxsize: 3024,  //전체 파일 최대 업로드 크기
@@ -70,6 +60,24 @@ $(function(){ // wait for page to load
         },
         list:"#afile3-list" //파일목록을 출력할 요소 지정가능
     });
+});
+
+$(function(){
+	document.getElementById("b").onclick=function(){
+	  	var date = document.getElementById("date").value;
+		  var d = "<p>"+date+"<input type='button' id='d' name='d' value='삭제'></p>";
+	   
+	 	  $("#list").append(d);
+	    }
+	   
+	 	  $(document).on("click","#d", function(e){ 
+				e.preventDefault();
+	      fn_delete($(this));
+	  	 });
+	   
+	   function fn_delete(obj){
+	 		  obj.parent().remove();
+	   }
 });
 </script>
 </head>
@@ -106,6 +114,16 @@ $(function(){ // wait for page to load
 				</tr>
 				<tr>
 					<th>휴가 기간</th>
+					<td>
+					<input type="date" id="date" name="date">
+					<input type="button" id="b" name="b" value="추가">
+					<br><br>
+					
+					<form>
+						<div id="list" style="border:1px solid #c9c9c9;min-height:50px">
+						</div>
+					</form>
+					</td>
 <!-- 					<td><input type="text" name="apTitle" class="w100p" id="apTitle" th:value="${approvalDocument.apdocName}+'_'"></td> -->
 				</tr>
 				<tr>
