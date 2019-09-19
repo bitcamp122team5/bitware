@@ -147,19 +147,3 @@ $(function(){
         $(this).parent().parent().parent().find(".info").eq(now_tab).removeClass("hidden");
     });
 });
-
-//$(function(){ 
-//	setInterval(function(){
-//		$.ajax({
-//			url:"/user/checkChatAlert",
-//			data:{},
-//			success:function(msg){
-////				alert("222");
-//				if(msg=="new messages"){
-////					alert("111");
-////					document.getElementById("smile_color_change").style.color="red";
-//				}
-//			}
-//		});
-//	}, 3000);
-//});
