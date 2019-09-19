@@ -155,108 +155,160 @@ div.realWorkChart {
 </head>
 <body>
 	<div th:replace="fragments/header :: headerFragment"></div>
-	<div th:replace="fragments/aside :: asideFragment"></div>
 
 	<!-- //무조건 section 안에서 내용 작성 -->
 	<div layout:fragment="content" class="section">
-		<div class="article half">
-			<div class="table_wrap list">
-			<a th:href="@{/user/selectNoticeList}">공지사항 +</a>
-				<table>
-					<colgroup>
-						<col width="150px">
-						<col width="*">
-						<col width="150px">
-					</colgroup>
-					<thead>
-						<tr>
-							<th>분류</th>
-							<th>제목</th>
-							<th>등록시간</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="notice:${noticeList}">
-							<td th:text="${notice.ntCate}"></td>
-							<td><a th:href="@{/user/selectNotice(ntNo=${notice.ntNo})}" th:text="${notice.ntTitle}"></a></td>
-							<div th:if="${today==#dates.format(notice.ntDate,'yyyy-MM-dd')}">
-								<td th:text="${#dates.format(notice.ntDate,'HH:mm')}"></td>
-							</div>
-							<div th:unless="${today==#dates.format(notice.ntDate,'yyyy-MM-dd')}">
-								<td th:text="${#dates.format(notice.ntDate,'yyyy-MM-dd')}"></td>
-							</div>
-						</tr>
-					</tbody>
-				</table>
+	<div th:replace="fragments/aside :: asideFragment"></div>
+		<div class="section_inner">
+			<div class="article half">
+				<div class="table_wrap list">
+				<a th:href="@{/user/selectNoticeList}">공지사항 +</a>
+					<table>
+						<colgroup>
+							<col width="150px">
+							<col width="*">
+							<col width="150px">
+						</colgroup>
+						<thead>
+							<tr>
+								<th>분류</th>
+								<th>제목</th>
+								<th>등록시간</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="notice:${noticeList}">
+								<td th:text="${notice.ntCate}"></td>
+								<td><a th:href="@{/user/selectNotice(ntNo=${notice.ntNo})}" th:text="${notice.ntTitle}"></a></td>
+								<div th:if="${today==#dates.format(notice.ntDate,'yyyy-MM-dd')}">
+									<td th:text="${#dates.format(notice.ntDate,'HH:mm')}"></td>
+								</div>
+								<div th:unless="${today==#dates.format(notice.ntDate,'yyyy-MM-dd')}">
+									<td th:text="${#dates.format(notice.ntDate,'yyyy-MM-dd')}"></td>
+								</div>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-- //table_wrap end -->
 			</div>
-			<!-- //table_wrap end -->
-		</div>
-		<!-- //article end -->
+			<!-- //article end -->
 		
-		<div class="article half" style="height: 277px">
-			<div th:if="${!approvalList.isEmpty()}" class="table_wrap list">
-				<a th:href="@{/user/selectApprovalListTo}">결재 할 문서 +</a>
-				<table>
-					<colgroup>
-						<col width="*">
-						<col width="150px">
-						<col width="150px">
-					</colgroup>
-					<thead>
-						<tr>
-							<th>제목</th>
-							<th>기안자</th>
-							<th>등록일</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="approval:${approvalList}">
-							<td><a th:href="@{/user/selectApprovalView(apNo=${approval.apNo})}" th:text="${approval.apTitle}"></a></td>
-							<td th:text="${approval.memName}"></td>
-							<td th:text="${#dates.format(approval.apInsertdate,'yyyy-MM-dd')}"></td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div th:if="${approvalList.isEmpty()}" class="table_wrap list">
-				<a th:href="@{/user/selectApprovalListTo}">결재 할 문서 +</a>
-				<table>
-					<colgroup>
-						<col width="*">
-						<col width="150px">
-						<col width="150px">
-					</colgroup>
-					<thead>
-						<tr>
-							<th>제목</th>
-							<th>기안자</th>
-							<th>등록일</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td colspan="3">결재 할 문서가 없습니다.</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<!-- //table_wrap end -->
-		</div>
-		<!-- //article end -->
-		<div th:if="${!projectList.isEmpty()}" class="article cl">
-			<a th:href="@{/user/selectAttendingProjectList}">참여중인 프로젝트 +</a><br>
-			<!-- 그래프 적용 시작 -->
-			<div class="planWorkChart" id="planWorkChart" align="center"></div>
-			<div class="realWorkChart" id="realWorkChart" align="center"></div>
-			<!-- 그래프 적용 끝 -->
-			<div class="project_wrap">
-				<div th:each="project:${projectList}" class="table_wrap list">
+			<div class="article half" style="height: 277px">
+				<div th:if="${!approvalList.isEmpty()}" class="table_wrap list">
+					<a th:href="@{/user/selectApprovalListTo}">결재 할 문서 +</a>
 					<table>
 						<colgroup>
 							<col width="*">
+							<col width="150px">
+							<col width="150px">
+						</colgroup>
+						<thead>
+							<tr>
+								<th>제목</th>
+								<th>기안자</th>
+								<th>등록일</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="approval:${approvalList}">
+								<td><a th:href="@{/user/selectApprovalView(apNo=${approval.apNo})}" th:text="${approval.apTitle}"></a></td>
+								<td th:text="${approval.memName}"></td>
+								<td th:text="${#dates.format(approval.apInsertdate,'yyyy-MM-dd')}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div th:if="${approvalList.isEmpty()}" class="table_wrap list">
+					<a th:href="@{/user/selectApprovalListTo}">결재 할 문서 +</a>
+					<table>
+						<colgroup>
 							<col width="*">
-							<col width="*">
-							<col width="*">
+							<col width="150px">
+							<col width="150px">
+						</colgroup>
+						<thead>
+							<tr>
+								<th>제목</th>
+								<th>기안자</th>
+								<th>등록일</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td colspan="3">결재 할 문서가 없습니다.</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-- //table_wrap end -->
+			</div>
+			<!-- //article end -->
+			<div th:if="${!projectList.isEmpty()}" class="article cl">
+				<a th:href="@{/user/selectAttendingProjectList}">참여중인 프로젝트 +</a><br>
+				<!-- 그래프 적용 시작 -->
+				<div class="planWorkChart" id="planWorkChart" align="center"></div>
+				<div class="realWorkChart" id="realWorkChart" align="center"></div>
+				<!-- 그래프 적용 끝 -->
+				<div class="project_wrap">
+					<div th:each="project:${projectList}" class="table_wrap list">
+						<table>
+							<colgroup>
+								<col width="*">
+								<col width="*">
+								<col width="*">
+								<col width="*">
+								<col width="*">
+								<col width="*">
+								<col width="*">
+								<col width="*">
+								<col width="*">
+								<col width="*">
+							</colgroup>
+							<thead>
+								<tr>
+									<th>프로젝트명</th>
+									<th>PM</th>
+									<th>시작일</th>
+									<th>종료일</th>
+									<th>계획 작업 완료</th>
+									<th>계획 작업 진행중</th>
+									<th>계획 작업 미시작</th>
+									<th>실제 작업 완료</th>
+									<th>실제 작업 진행중</th>
+									<th>실제 작업 미시작</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><a th:href="@{/user/projectDetail(prjCode=${project.projectInfo.prjCode})}" th:text="${project.projectInfo.prjName}"></a></td>
+									<td th:text="${project.projectInfo.prjPm}"></td>
+									<td th:text="${project.projectInfo.prjStart}"></td>
+									<td th:text="${project.projectInfo.prjEnd}"></td>
+									<td th:text="${project.planComplete}"></td>
+									<td th:text="${project.planIng}"></td>
+									<td th:text="${project.planUnset}"></td>
+									<td th:text="${project.realComplete}"></td>
+									<td th:text="${project.realIng}"></td>
+									<td th:text="${project.realUnset}"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<!-- //table_wrap end -->
+				</div>
+			</div>
+			<!-- //article end -->
+	
+			<div class="article cl">
+				<a th:href="@{/user/selectCommuteList}">근태 및 휴가 +</a>
+				<div class="table_wrap list">
+					<!-- 그래프 적용 시작 -->
+					<div class="commuteChart" id="commuteChart" align="center"></div>
+					<div class="vacationChart" id="vacationChart" align="center"></div>
+					<!-- 그래프 적용 끝 -->
+					<table>
+						<colgroup>
 							<col width="*">
 							<col width="*">
 							<col width="*">
@@ -266,75 +318,26 @@ div.realWorkChart {
 						</colgroup>
 						<thead>
 							<tr>
-								<th>프로젝트명</th>
-								<th>PM</th>
-								<th>시작일</th>
-								<th>종료일</th>
-								<th>계획 작업 완료</th>
-								<th>계획 작업 진행중</th>
-								<th>계획 작업 미시작</th>
-								<th>실제 작업 완료</th>
-								<th>실제 작업 진행중</th>
-								<th>실제 작업 미시작</th>
+								<th>정상</th>
+								<th>지각</th>
+								<th>조퇴</th>
+								<th>결근</th>
+								<th>휴가</th>
+								<th>합계</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
-								<td><a th:href="@{/user/projectDetail(prjCode=${project.projectInfo.prjCode})}" th:text="${project.projectInfo.prjName}"></a></td>
-								<td th:text="${project.projectInfo.prjPm}"></td>
-								<td th:text="${project.projectInfo.prjStart}"></td>
-								<td th:text="${project.projectInfo.prjEnd}"></td>
-								<td th:text="${project.planComplete}"></td>
-								<td th:text="${project.planIng}"></td>
-								<td th:text="${project.planUnset}"></td>
-								<td th:text="${project.realComplete}"></td>
-								<td th:text="${project.realIng}"></td>
-								<td th:text="${project.realUnset}"></td>
+								<td th:each="statusCount:${commuteStatusCount}"
+									th:text="${statusCount}"></td>
+								<td th:text="${#lists.size(commuteTotalCount)}"></td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
-				<!-- //table_wrap end -->
 			</div>
 		</div>
-		<!-- //article end -->
-
-		<div class="article cl">
-			<a th:href="@{/user/selectCommuteList}">근태 및 휴가 +</a>
-			<div class="table_wrap list">
-				<!-- 그래프 적용 시작 -->
-				<div class="commuteChart" id="commuteChart" align="center"></div>
-				<div class="vacationChart" id="vacationChart" align="center"></div>
-				<!-- 그래프 적용 끝 -->
-				<table>
-					<colgroup>
-						<col width="*">
-						<col width="*">
-						<col width="*">
-						<col width="*">
-						<col width="*">
-						<col width="*">
-					</colgroup>
-					<thead>
-						<tr>
-							<th>정상</th>
-							<th>지각</th>
-							<th>조퇴</th>
-							<th>결근</th>
-							<th>휴가</th>
-							<th>합계</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td th:each="statusCount:${commuteStatusCount}"
-								th:text="${statusCount}"></td>
-							<td th:text="${#lists.size(commuteTotalCount)}"></td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
+		<!-- //section_inner end -->
 	</div>
 	<!-- //section end -->
 <script>
