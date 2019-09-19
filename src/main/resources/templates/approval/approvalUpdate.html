@@ -6,33 +6,23 @@
 <meta charset="UTF-8">
 <title>기안</title>
 <th:block th:replace="fragments/config :: configFragment"></th:block>
-
+<script th:src="@{/editor/ckeditor/ckeditor.js}"></script>
 <!-- 사용자 css 추가 -->
-<th:block layout:fragment="css">
-
-<!-- include libraries(jQuery, bootstrap) -->
-<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
-
-<!-- include summernote css/js -->
-<link th:href="@{/editor/summernote/summernote.css}" rel="stylesheet">
-
-</th:block>
+<th:block layout:fragment="css"></th:block>
 
 <!-- 사용자 script 추가 -->
 <th:block layout:fragment="script">
 <script src="http://malsup.github.com/jquery.form.js"></script> 
 <script src="https://cdn.jsdelivr.net/npm/jquery-multifile@2.2.2/jquery.MultiFile.min.js"></script>
-
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
-
-<script th:src="@{/editor/summernote/summernote.js}"></script>
-
 </th:block>
 
 <script>
 $(function(){
-	$("#apContent").summernote({
-		height:300
+	CKEDITOR.replace("apContent",{
+		//width : '620px',  // 입력창의 넓이, 넓이는 config.js 에서 % 로 제어
+	      height : '400px',  // 입력창의 높이
+	      startupFocus : false
+		
 	});
 	
 	document.getElementById("writeBtn").onclick=function(){
@@ -54,7 +44,7 @@ $(function(){
 
 $(function(){ // wait for page to load
 	$('#multiform input[name=file]').MultiFile({
-        max: 10, //업로드 최대 파일 갯수 (지정하지 않으면 무한대)
+        max: 5, //업로드 최대 파일 갯수 (지정하지 않으면 무한대)
         accept: 'jpg|png|txt|xls|hwp|doc', //허용할 확장자(지정하지 않으면 모든 확장자 허용)
         maxfile: 1024, //각 파일 최대 업로드 크기
         maxsize: 3024,  //전체 파일 최대 업로드 크기
@@ -82,7 +72,7 @@ $(function(){ // wait for page to load
 <div class="section_inner">
 <!-- //여기서 부터 긁어가세요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 <!-- //클래스명 하나도 빼지 말고 다 넣어주세요  -->
-<h2>기안하기</h2>
+<h2 th:text="${approvalDocument.apdocName} + '&nbsp;기안하기'"></h2>
 <div class="article">
 	<div class="table_wrap write">
 	<form method="post" th:action="@{/user/updateApproval}" enctype="multipart/form-data" name="multiform" id="multiform">

@@ -23,7 +23,7 @@
 <div th:replace="fragments/asideAdmin :: asideFragmentAdmin"></div>
 <div class="section_inner">
 <h2>문서양식 목록</h2>
-	<div class="approvalForm">
+	<div class="approvalForm" align="center">
 		<div th:if="${!approvalDocList.isEmpty()}">
 			<ul>
 				<li th:each="approval:${approvalDocList}">

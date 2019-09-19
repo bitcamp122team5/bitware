@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -125,12 +127,13 @@ public class ApprovalController {
 	
 	@RequestMapping("/downloadFile")
 	@ResponseBody
-	public ResponseEntity<byte[]> displayFile(String apFileurl,String apFilename) throws Exception {
+	public ResponseEntity<byte[]> displayFile(String apFileurl,String apFilename,HttpServletRequest request) throws Exception {
 		InputStream in = null;
 		ResponseEntity<byte[]> entity = null;
+		String path = request.getSession().getServletContext().getRealPath("/");
 		try {
 			HttpHeaders headers = new HttpHeaders();
-			in = new FileInputStream(apFileurl);
+			in = new FileInputStream(path+apFileurl);
 			headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 			headers.add("Content-Disposition",
 					"attachment; filename=\"" + new String(apFilename.getBytes("utf-8"), "iso-8859-1") + "\"");
