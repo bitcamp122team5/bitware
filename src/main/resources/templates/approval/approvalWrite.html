@@ -6,12 +6,16 @@
 <meta charset="UTF-8">
 <title>기안</title>
 <th:block th:replace="fragments/config :: configFragment"></th:block>
+<script th:src="@{/editor/ckeditor/ckeditor.js}"></script>
 
 <!-- 사용자 css 추가 -->
-<th:block layout:fragment="css"></th:block>
+<th:block layout:fragment="css">
+
+</th:block>
 
 <!-- 사용자 script 추가 -->
 <th:block layout:fragment="script">
+
 <script src="http://malsup.github.com/jquery.form.js"></script> 
 <script src="https://cdn.jsdelivr.net/npm/jquery-multifile@2.2.2/jquery.MultiFile.min.js"></script>
 </th:block>
@@ -19,9 +23,13 @@
 
 <script>
 $(function(){
-	$("#apContent").summernote({
-		height:300
+	CKEDITOR.replace("apContent",{
+		//width : '620px',  // 입력창의 넓이, 넓이는 config.js 에서 % 로 제어
+	      height : '400px',  // 입력창의 높이
+	      startupFocus : false
+		
 	});
+	
 	
 	document.getElementById("writeBtn").onclick=function(){
 		var apTitle = document.getElementById("apTitle").value;
@@ -65,7 +73,7 @@ $(function(){ // wait for page to load
 
 
 <!-- //무조건 section 안에서 내용 작성 -->
-<div layout:fragment="content" class="section" th:align="center">
+<div layout:fragment="content" class="section" >
 <div th:replace="fragments/aside :: asideFragment"></div>
 
 <div class="section_inner">
@@ -102,7 +110,7 @@ $(function(){ // wait for page to load
 							<div class="file_attach">
 <!-- 								<input name="file" type="file" id="in_file_01"> -->
 <!-- 								<label for="in_file_01" class="btn btn_file" >파일첨부</label> -->
-								<input type="file" name="file" >
+								<input type="file" name="file">
 <!-- 								<a href="#" class="btn btn_file">파일삭제</a> -->
 							</div>  <!-- //file_attach -->
 								
