@@ -33,11 +33,11 @@ input:read-only{outline:none;}
 .table_wrap{}
 .table_wrap table{width:100%;border-top:2px solid #23313f;}
 .table_wrap tr{border-bottom:1px solid #ddd;}
-.table_wrap thead th{padding:8px 10px;box-sizing:border-box;background:#e7e9ef;text-align:center;line-height:35px;}
-.table_wrap tbody th{padding:8px 10px;box-sizing:border-box;background:#e7e9ef;line-height:35px;}
-.table_wrap tbody td{padding:8px 10px;box-sizing:border-box;text-align:center;line-height:35px;}
-.table_wrap tfoot th{padding:8px 10px;box-sizing:border-box;background:#e7e9ef;line-height:35px;}
-.table_wrap tfoot td{padding:8px 10px;box-sizing:border-box;text-align:center;line-height:35px;}
+.table_wrap thead th{padding:8px 10px;box-sizing:border-box;background:#e7e9ef;text-align:center;}
+.table_wrap tbody th{padding:8px 10px;box-sizing:border-box;background:#e7e9ef;}
+.table_wrap tbody td{padding:8px 10px;box-sizing:border-box;text-align:center;}
+.table_wrap tfoot th{padding:8px 10px;box-sizing:border-box;background:#e7e9ef;}
+.table_wrap tfoot td{padding:8px 10px;box-sizing:border-box;text-align:center;}
 .table_wrap.list .tit{text-align:left;}
 .table_wrap.list .file img{width:20px;height:20px;vertical-align:middle;}
 .table_wrap.list input[type="checkbox"]{margin:0;}
