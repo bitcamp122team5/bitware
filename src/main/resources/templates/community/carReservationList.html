@@ -75,11 +75,11 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementsByClassName("close")[0].onclick = function() {
     	modal.style.display = "none";
 	}
-	window.onclick = function(event) {
+	$(window).on("click",function(event){
     	if (event.target == modal) {
         	modal.style.display = "none";
     	}
-	}
+	});
 });
 </script>
 <style>
@@ -162,28 +162,32 @@ $(function(){
 		var endDateElem = $("#endDateElem").val();
 		var departure = $("#departure").val();
 		var arrival = $("#arrival").val();
-		$.ajax({
-			url:"/user/insertCarReservation",
-			data:{
-				carNo : carNo,
-				carResStart : startDateElem,
-				carResEnd : endDateElem,
-				carDeparture : departure,
-				carArrival : arrival
-			},
-			success:function(result){
-				if(result=="날짜를 잘못 입력하였습니다. 다시 입력하세요."){
-					alert("날짜를 잘못 입력하였습니다. 다시 입력하세요.");
-				}else if(result=="success"){
-					var carApproval = confirm("법인차량 사용신청서를 작성하시겠습니까?");
-					if(carApproval){
-						location.href="/user/insertApprovalView?apdocNo=10";
-					}else{
-						location.href="/user/selectCarReservationList";
+		if(!startDateElem || !endDateElem || !departure || !arrival){
+			alert("빈 칸 없이 입력해주세요.");
+		}else{
+			$.ajax({
+				url:"/user/insertCarReservation",
+				data:{
+					carNo : carNo,
+					carResStart : startDateElem,
+					carResEnd : endDateElem,
+					carDeparture : departure,
+					carArrival : arrival
+				},
+				success:function(result){
+					if(result=="날짜를 잘못 입력하였습니다. 다시 입력하세요."){
+						alert("날짜를 잘못 입력하였습니다. 다시 입력하세요.");
+					}else if(result=="success"){
+						var carApproval = confirm("법인차량 사용신청서를 작성하시겠습니까?");
+						if(carApproval){
+							location.href="/user/insertApprovalView?apdocNo=10";
+						}else{
+							location.href="/user/selectCarReservationList";
+						}
 					}
 				}
-			}
-		});
+			});
+		}
 	});
 });
 </script>
@@ -267,11 +271,11 @@ $(function(){
 						<thead>
 							<tr>
 								<th>차량명</th>
-								<th>출발시각</th>
-								<th>도착시각</th>
+								<th>사용 시작</th>
+								<th>사용 종료</th>
 								<th>출발지</th>
 								<th>도착지</th>
-								<th>예약날짜</th>
+								<th>예약한 날짜</th>
 								<th>취소</th>
 							</tr>
 						</thead>

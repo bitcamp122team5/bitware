@@ -239,7 +239,7 @@ $(function(){
 				</tbody>
 					<tr th:each="client:${clientList}">
 						<td><input type="checkbox" name="checkBox" class="checkBox" th:value="${client.clientNo}"></td>
-						<td th:text="${client.clientName}" class="btn"></td>
+						<td th:text="${client.clientName}" class="btn" required></td>
 						<input type="hidden" th:value="${client.clientNo}">
 						<td th:text="${client.clientTel}"></td>
 						<td th:text="${client.clientCompany}"></td>
@@ -295,7 +295,7 @@ $(function(){
 							<tbody>
 								<tr>
 									<th th:text="이름"></th>
-									<td><input name="clientName" type="text" class="w100p"></td>
+									<td><input name="clientName" type="text" class="w100p" required></td>
 								</tr>
 								<tr>
 									<th th:text="전화번호"></th>
