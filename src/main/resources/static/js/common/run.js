@@ -76,15 +76,15 @@ $(function(){
 									}
 									if(list[i].count!=0){
 										if(list[i].member.teamName==null){
-											str += "<li class='memberByDept' value='"+list[i].member.memId+"'>"+"<p>"+list[i].member.ranks+"</p>"+list[i].member.memName+"<p>"+list[i].content+"</p><span align='right'>"+list[i].count+"</span></li>";
+											str += "<li class='memberByDept' value='"+list[i].member.memId+"'>"+"<p>"+list[i].member.ranks+"</p><p>"+list[i].member.memName+"</p><span class='count'>"+list[i].count+"</span><p>"+list[i].content+"</p></li>";
 										}else{
-											str += "<li class='memberByDept' value='"+list[i].member.memId+"'>"+"<p>"+list[i].member.teamName+" "+list[i].member.ranks+"</p>"+list[i].member.memName+"<p>"+list[i].content+"</p><span align='right'>"+list[i].count+"</span></li>";
+											str += "<li class='memberByDept' value='"+list[i].member.memId+"'>"+"<p>"+list[i].member.teamName+" "+list[i].member.ranks+"</p><p>"+list[i].member.memName+"</p><span class='count'>"+list[i].count+"</span><p>"+list[i].content+"</p></li>";
 										}
 									}else{
 										if(list[i].member.teamName==null){
-											str += "<li class='memberByDept' value='"+list[i].member.memId+"'>"+"<p>"+list[i].member.ranks+"</p>"+list[i].member.memName+"<p>"+list[i].content+"</p></li>";
+											str += "<li class='memberByDept' value='"+list[i].member.memId+"'>"+"<p>"+list[i].member.ranks+"</p><p>"+list[i].member.memName+"</p><p>"+list[i].content+"</p></li>";
 										}else{
-											str += "<li class='memberByDept' value='"+list[i].member.memId+"'>"+"<p>"+list[i].member.teamName+" "+list[i].member.ranks+"</p>"+list[i].member.memName+"<p>"+list[i].content+"</p></li>";
+											str += "<li class='memberByDept' value='"+list[i].member.memId+"'>"+"<p>"+list[i].member.teamName+" "+list[i].member.ranks+"</p><p>"+list[i].member.memName+"</p><p>"+list[i].content+"</p></li>";
 										}
 									}
 								}
@@ -148,18 +148,21 @@ $(function(){
     });
 });
 
-//$(function(){ 
-//	setInterval(function(){
-//		$.ajax({
-//			url:"/user/checkChatAlert",
-//			data:{},
-//			success:function(msg){
-////				alert("222");
-//				if(msg=="new messages"){
-////					alert("111");
-////					document.getElementById("smile_color_change").style.color="red";
-//				}
-//			}
-//		});
-//	}, 3000);
-//});
+$(function(){ 
+	setInterval(function(){
+		$.ajax({
+			url:"/user/checkChatAlert",
+			data:{},
+			success:function(msg){
+				if(msg=="new messages"){
+					document.getElementById("smile_color_change").parentNode.style.background="#ff0000";
+					document.getElementById("smile_color_change").parentNode.style.border="1px solid #ff0000";
+				}
+				if(msg=="no new messages"){
+					document.getElementById("smile_color_change").parentNode.style.background="#003263";
+					document.getElementById("smile_color_change").parentNode.style.border="1px solid #003263";
+				}
+			}
+		});
+	}, 1000);
+});

@@ -80,11 +80,6 @@ document.addEventListener('DOMContentLoaded', function() {
         	modal.style.display = "none";
     	}
 	}
-	
-	var msg = document.getElementById('msg').value;
-	if(msg!=""){
-		alert(msg);
-	}
 });
 </script>
 <style>
@@ -159,6 +154,39 @@ $(function(){
 	});
 });
 </script>
+<script>
+$(function(){
+	$("#carReservationBtn").click(function(){
+		var carNo = $("#carNo").val();
+		var startDateElem = $("#startDateElem").val();
+		var endDateElem = $("#endDateElem").val();
+		var departure = $("#departure").val();
+		var arrival = $("#arrival").val();
+		$.ajax({
+			url:"/user/insertCarReservation",
+			data:{
+				carNo : carNo,
+				carResStart : startDateElem,
+				carResEnd : endDateElem,
+				carDeparture : departure,
+				carArrival : arrival
+			},
+			success:function(result){
+				if(result=="날짜를 잘못 입력하였습니다. 다시 입력하세요."){
+					alert("날짜를 잘못 입력하였습니다. 다시 입력하세요.");
+				}else if(result=="success"){
+					var carApproval = confirm("법인차량 사용신청서를 작성하시겠습니까?");
+					if(carApproval){
+						location.href="/user/insertApprovalView?apdocNo=10";
+					}else{
+						location.href="/user/selectCarReservationList";
+					}
+				}
+			}
+		});
+	});
+});
+</script>
 </head>
 <body>
 
@@ -172,7 +200,6 @@ $(function(){
 <div class="section_inner">
 	<h2 sec:authorize="hasRole('ROLE_ADMIN')">법인차량 예약 (관리자)</h2>
 	<h2 sec:authorize="hasAnyRole('ROLE_USER','ROLE_PL','ROLE_PM')">법인차량 예약</h2>
-	<input type="hidden" th:value="${msg}" id="msg">
 	<div id="myModal" class="modal">
 		<div class="modal-content">
 			<span class="close">&times;</span>                                                               
@@ -191,7 +218,7 @@ $(function(){
 					    		<tr>
 					    			<th>차량 선택</th>
 					    			<td colspan="3">
-					    				<select name="carNo">
+					    				<select name="carNo" id="carNo">
 											<th:block th:each="car:${carList}">
 												<option th:value="${car.carNo}" th:text="${car.carName}"></option>
 											</th:block>
@@ -218,7 +245,7 @@ $(function(){
 		    			</table>
 		    			<div class="btn_wrap">
 							<div class="box_right">
-								<input type="submit" class="btn btn_point" value="예약">
+								<input type="button" id="carReservationBtn" class="btn btn_point" value="예약">
 		    				</div>
 		    			</div>
 		    		</div>

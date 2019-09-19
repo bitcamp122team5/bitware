@@ -18,6 +18,7 @@ import com.bitgroupware.community.vo.CarVo;
 import com.bitgroupware.community.vo.MeetingroomVo;
 import com.bitgroupware.member.vo.MemberVo;
 import com.bitgroupware.security.config.SecurityUser;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Controller
 @RequestMapping("/user")
@@ -39,7 +40,12 @@ public class CarController {
 	}
 	
 	@RequestMapping("/insertCarReservation")
-	public String insertCarReservation(int carNo, CarReservationVo carReservation, @AuthenticationPrincipal SecurityUser principal) {
+	@ResponseBody
+	public String insertCarReservation(int carNo, String carResStart, String carResEnd, String carDeparture, String carArrival,CarReservationVo carReservation, @AuthenticationPrincipal SecurityUser principal) {
+		carReservation.setCarResStart(carResStart);
+		carReservation.setCarResEnd(carResEnd);
+		carReservation.setCarDeparture(carDeparture);
+		carReservation.setCarArrival(carArrival);
 		try {
 			String start = carReservation.getCarResStart()+":00";
 			String end = carReservation.getCarResEnd()+":00";
@@ -49,8 +55,8 @@ public class CarController {
 			Date date = new Date();
 			int check = carReservationService.checkDuplicates(carNo, start, end); 
 			if(date.compareTo(startDate)==1||startDate.compareTo(endDate)==1||check==1) {
-				String msg = "Invalid date entered. Please re-enter.";
-				return "redirect:/user/selectCarReservationList?msg="+msg;
+				String msg = "날짜를 잘못 입력하였습니다. 다시 입력하세요.";
+				return msg;
 			}
 		} catch (ParseException e) {
 			System.out.println("날짜 선택에서 오류 났어요.");
@@ -60,7 +66,7 @@ public class CarController {
 		carReservation.setCar(car);
 		carReservation.setMember(principal.getMember());
 		carReservationService.insertCarReservation(carReservation);
-		return "redirect:/user/selectCarReservationList";
+		return "success";
 	}
 
 	@RequestMapping("/selectCarReservationListAjax")

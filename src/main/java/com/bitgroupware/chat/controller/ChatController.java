@@ -164,7 +164,7 @@ public class ChatController {
 		String receiver = principal.getMember().getMemId();
 		List<ChatAlertDto> chatAlertList = chatservice.checkChatAlert(receiver);
 		if(chatAlertList.size()!=0) {
-			return "new message";
+			return "new messages";
 		}else {
 			return "no new messages";
 		}
