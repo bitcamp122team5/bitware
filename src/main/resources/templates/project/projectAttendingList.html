@@ -21,10 +21,10 @@
 </head>
 <body>
 <div th:replace="fragments/header :: headerFragment"></div>
-<div th:replace="fragments/aside :: asideFragment"></div>
-
 	<!-- //무조건 section 안에서 내용 작성 -->
 	<div layout:fragment="content" class="section">
+	<div th:replace="fragments/aside :: asideFragment"></div>
+	<div class="section_inner">
 		<h2>프로젝트</h2>
 		<div class="article">
 		<!-- 검색 시작 -->
@@ -61,7 +61,7 @@
 					</colgroup>
 					<thead>
 						<tr>
-							<th><input type="checkbox" name="allCheckBox" id="allCheckBox"></th>
+							<th><input type="checkbox" name="allCheckBox" id="projectAllCheckBox" onclick="projectCheckAll(this.checked)"></th>
 							<th>프로젝트명</th>
 							<th>PM</th>
 							<th>시작일</th>
@@ -72,7 +72,7 @@
 					<tbody>
 						<tr th:each="Infos : ${prjInfos}">
 							<input type="hidden" id="pmPrjCode" th:value="${Infos.prjCode}">
-							<td><input type="checkbox" name="prjChk" id="prjCode" class="checkBox" th:value="${Infos.prjCode}"></td>
+							<td><input type="checkbox" name="projectAllCheckBox" id="projectCheckBox" class="projectCheckBox" th:value="${Infos.prjCode}"></td>
 							<td class="tit"><a th:href="@{/user/projectDetail(prjCode=${Infos.prjCode})}" th:text="${Infos.prjName}"></a></td>
 							<td th:text="${Infos.prjPm}"></td>
 							<td th:text="${Infos.prjStart}"></td>
@@ -181,6 +181,7 @@
 		</div>
 	</div>
 <!-- 페이징 끝 -->
+</div>
 </div><!-- //section end -->
 </body>
 </html>

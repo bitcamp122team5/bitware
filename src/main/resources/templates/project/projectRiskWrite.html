@@ -16,7 +16,6 @@
 <!-- 사용자 script 추가 -->
 <th:block layout:fragment="script">
 <script type="text/javascript" th:src="@{/js/project/bootstrap.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/project/projectList.js}"></script>
 <script type="text/javascript" th:src="@{/js/project/projectRisk.js}"></script>
 </th:block>
 
@@ -24,10 +23,10 @@
 </head>
 <body>
 <div th:replace="fragments/header :: headerFragment"></div>
-<div th:replace="fragments/aside :: asideFragment"></div>
-
 	<!-- //무조건 section 안에서 내용 작성 -->
 	<div layout:fragment="content" class="section">
+	<div th:replace="fragments/aside :: asideFragment"></div>
+	<div class="section_inner">
 		<h2>프로젝트 위험관리대장 작성페이지</h2>
 		<div class="article">
 		<input type="hidden" id="sessionRanks" th:value="${sessionRanks}">
@@ -41,6 +40,7 @@
 			</div>
 				<table>
 					<input type="hidden" name="rskWriter" id="rskWriter" th:value="${sessionId}">
+					<input type="hidden" name="memName" id="memName" th:value="${sessionName}">
 					<colgroup class="pc">
 						<col width="120px">
 						<col width="*">
@@ -73,6 +73,7 @@
 				</div>
 			</div><!-- table_wrap end -->
 		</div><!-- article end -->
+		</div><!-- section_inner end -->
 </div><!-- //section end -->
 </body>
 </html>

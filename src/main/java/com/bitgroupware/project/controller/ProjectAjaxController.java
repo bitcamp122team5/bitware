@@ -1,6 +1,8 @@
 package com.bitgroupware.project.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bitgroupware.project.beans.MemberDto;
 import com.bitgroupware.project.beans.ProjectInfoDto;
 import com.bitgroupware.project.beans.ProjectMembersDto;
+import com.bitgroupware.project.beans.ProjectRiskDto;
 import com.bitgroupware.project.beans.ProjectWbsDto;
 import com.bitgroupware.project.service.ProjectService;
 import com.bitgroupware.project.util.Analysis;
@@ -35,11 +38,9 @@ public class ProjectAjaxController {
 	@RequestMapping(value="/insertProjectAttendMembersAjax", method=RequestMethod.POST)
 	@ResponseBody
 	public String insertProjectAttendMembersAjax(@RequestParam(value="checkBoxArr[]") List<String> checkBoxArr, int prjCode) {
-		System.out.println("프로젝트 참여인원 추가 컨트롤러 진입");
 		for(String checkBox : checkBoxArr) {
 			projectService.insertProjectAttendMembers(checkBox, prjCode);
 		}
-		System.out.println("프로젝트 참여인원 추가 컨트롤러 작업 완료");
 		return "project/projectList";
 	}
 	
@@ -47,9 +48,6 @@ public class ProjectAjaxController {
 	@RequestMapping(value="selectProjectWbsListAjax", method=RequestMethod.POST)
 	@ResponseBody
 	public List<ProjectWbsDto> selectProjectWbsListAjax(int prjCode){
-		
-		System.out.println("selectProjectWbsListAjax 실행 및 결과 값" + projectService.selectProjectWbsList(prjCode));
-		System.out.println("매개변수 prjCode : " + prjCode);
 		
 		return projectService.selectProjectWbsList(prjCode);
 	}
@@ -68,7 +66,6 @@ public class ProjectAjaxController {
 			String[] prjTotalDays = new Analysis(prjDto, prjTotalDaysSum).getTermsFormat();
 			List<ProjectWbsDto> lists = new ArrayList<ProjectWbsDto>();
 			for(int i = 0; i < prjTotalDays.length; i++) {
-				System.out.println("값을 list에 넣는 중 " + i + "번째");
 				ProjectWbsDto prjWbsDto = new ProjectWbsDto(prjDto.getPrjCode(),
 						Integer.parseInt(req.getParameterValues("inPrjGroup")[i]),
 						Integer.parseInt(req.getParameterValues("inPrjStep")[i]),
@@ -83,14 +80,11 @@ public class ProjectAjaxController {
 						req.getParameterValues("inPrjOutput")[i],
 						prjTotalDays[i]);
 				lists.add(prjWbsDto);
-				System.out.println("lists에 들어간 값 : "+lists);
 			}
-			System.out.println("prjDto에서 가져온 코드 값" + prjDto.getPrjCode());
 			isc = projectService.deleteProjectWbsList(prjDto.getPrjCode());
 			
 			isc = projectService.insertProjectWbsList(lists);
 			
-			System.out.println("출력 결과입니다."+lists);
 		}else {
 			
 			//isc = projectService.deleteProjectWbsList(prjDto.getPrjCode());
@@ -105,9 +99,6 @@ public class ProjectAjaxController {
 		
 		ProjectMembersDto prjMemDto;
 		prjMemDto = projectService.selectPrjMemNo(prjCode, memId);
-		System.out.println("prjCode : "+prjCode);
-		System.out.println("memId : "+memId);
-		System.out.println("prjMemNo  :  "+ prjMemDto.getPrjMemNo());
 		projectService.deleteProjectAttendMember(prjMemDto.getPrjMemNo());
 	}
 	
@@ -138,7 +129,6 @@ public class ProjectAjaxController {
 		for(String memId : checkBoxArr) {
 			
 			memDto = projectService.selectMemberRanksByMemId(memId);
-			System.out.println("컨트롤러에서 부장 체크 중 : "+memDto);
 			if(memDto.getRanks().equals("부장")) {
 				chk = true;
 			}
@@ -147,6 +137,17 @@ public class ProjectAjaxController {
 			return chk;
 		}else {
 			return false;
+		}
+	}
+	
+	/*위험관리대장 체크 삭제 처리*/
+	@RequestMapping(value="deleteProjectRiskAjax", method=RequestMethod.POST)
+	@ResponseBody
+	public void deleteProjectRiskAjax(@RequestParam(value="rskCodeArr[]") List<Integer> rskCodeArr) {
+		
+		System.out.println("rskCodeArr values : "+rskCodeArr);
+		for(int rskCode : rskCodeArr) {
+			projectService.deleteProjectRisk(rskCode);
 		}
 	}
 }

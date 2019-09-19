@@ -171,7 +171,7 @@ function deleteProjectAjax(){
 			},
 			success:function(){
 				alert("프로젝트가 삭제 되었습니다.");
-				location.href="redirect:/user/selectEndProjectList";
+				location.href="/user/selectEndProjectList";
 			}
 		});
 	}
@@ -247,14 +247,11 @@ function insertProjectAttendMembersAjax(){
 			},
 			success:function(){
 				alert("참여인원 추가가 완료되었습니다.");
-				location.href="redirect:/user/projectDetail?prjCode="+prjCode;
+				location.href="/user/projectDetail?prjCode="+prjCode;
 			}
 		});
 	}
 }
-
-
-
 
 /*부가 기능*/
 
@@ -329,12 +326,16 @@ $(function(){
 			$('#deleteProjectBtn').hide();
 			$('#updateProjectBtn').hide();
 			$('#projectAttendMembersBtn').hide();
+			$('#projectAllCheckBox').hide();
+			$('.projectCheckBox').hide();
 		}else{
 			$('#completeProjectBtn').show();
 			$('#insertProjectBtn').show();
 			$('#deleteProjectBtn').show();
 			$('#updateProjectBtn').show();
 			$('#projectAttendMembersBtn').show();
+			$('#projectAllCheckBox').show();
+			$('.projectCheckBox').show();
 		}
 	}else if($('#sessionRanks').val() == "대표" || $('#sessionRanks').val() == "이사" ){
 		if($('#prjCompletion').val() > 0){
@@ -343,12 +344,16 @@ $(function(){
 			$('#deleteProjectBtn').hide();
 			$('#updateProjectBtn').hide();
 			$('#projectAttendMembersBtn').hide();
+			$('#projectAllCheckBox').hide();
+			$('.projectCheckBox').hide();
 		}else{
 			$('#completeProjectBtn').show();
 			$('#insertProjectBtn').show();
 			$('#deleteProjectBtn').show();
 			$('#updateProjectBtn').show();
 			$('#projectAttendMembersBtn').show();
+			$('#projectAllCheckBox').show();
+			$('.projectCheckBox').show();
 		}
 	}else{
 		$('#completeProjectBtn').hide();
@@ -356,5 +361,7 @@ $(function(){
 		$('#deleteProjectBtn').hide();
 		$('#updateProjectBtn').hide();
 		$('#projectAttendMembersBtn').hide();
+		$('#projectAllCheckBox').hide();
+		$('.projectCheckBox').hide();
 	}
 })

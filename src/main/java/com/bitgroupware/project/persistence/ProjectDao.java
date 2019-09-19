@@ -148,8 +148,8 @@ public interface ProjectDao {
 	public ProjectRiskDto selectProjectRiskDetail(int rskCode);
 	
 	/*위험관리대장 작성*/
-	@Insert("INSERT INTO PROJECT_RISK (RSK_TITLE, RSK_CONTENT, RSK_WRITER, RSK_SOLUTION, RSK_RESULT, PRJ_CODE, RSK_REG) "
-			+ " VALUES (#{rskTitle}, #{rskContent}, #{rskWriter}, #{rskSolution}, #{rskResult}, #{prjCode}, now())")
+	@Insert("INSERT INTO PROJECT_RISK (RSK_TITLE, RSK_CONTENT, RSK_WRITER, MEM_NAME, RSK_SOLUTION, RSK_RESULT, PRJ_CODE, RSK_REG) "
+			+ " VALUES (#{rskTitle}, #{rskContent}, #{rskWriter}, #{memName}, #{rskSolution}, #{rskResult}, #{prjCode}, now())")
 	public void insertProjectRisk(ProjectRiskDto rskDto);
 
 	/*위험관리대장 수정*/
