@@ -25,7 +25,7 @@
   <div class="username-page-container">
     <!-- <h1 class="title">Enter a username and room ID</h1> -->
     <form id="usernameForm" name="usernameForm">
-    	<input type="hidden" th:value="${memDto.memId}"/>
+    	<input type="hidden" id="memId" th:value="${memDto.memId}"/>
       <div class="form-group">
         <input type="hidden" id="name" placeholder="Username" th:value="${sessionName}" autocomplete="off" class="form-control" />
       </div>
@@ -39,7 +39,6 @@
     </form>
   </div>
 </div>
-
 
 <div id="chat-page" class="hidden">
   <div class="chat-container">
@@ -87,7 +86,6 @@ $(function(){
 			for(var i in chatList){
 			
 				var messageElement = document.createElement('li');
-	
 				messageElement.classList.add('chat-message');
 	
 				var avatarElement = document.createElement('i');
@@ -104,9 +102,11 @@ $(function(){
 				var textElement = document.createElement('p');
 				var messageText = document.createTextNode(chatList[i].content);
 				textElement.appendChild(messageText);
-	
 				messageElement.appendChild(textElement);
+				
 				messageArea.appendChild(messageElement);
+				
+				messageArea.scrollTop = messageArea.scrollHeight;
 			}
 		}
 	});
@@ -124,47 +124,6 @@ $(function(){
 	}
 	
 	$("#test1").trigger("click");
-	
-// 	setInterval(function(){
-// 		$.ajax({
-// 			url:"/user/selectChatListAjax2",
-// 			data:{roomId:roomId},
-// 			success:function(chatMessage){
-// 				var messageElement = document.createElement('li');
-	
-// 				messageElement[0].classList.add('chat-message');
-// 				messageElement[1].classList.add('chat-message');
-	
-// 				var avatarElement = document.createElement('i');
-// 				var avatarText = document.createTextNode(chatMessage.sender[0]);
-// 				avatarElement.appendChild(avatarText);
-// 				avatarElement.style['background-color'] = getAvatarColor(chatMessage.sender);
-// 				messageElement.appendChild(avatarElement);
-	
-// 				var usernameElement = document.createElement('span');
-// 				var usernameText = document.createTextNode(chatMessage.sender);
-// 				usernameElement.appendChild(usernameText);
-// 				messageElement.appendChild(usernameElement);
-				
-// 				var textElement = document.createElement('p');
-// 				var messageText = document.createTextNode(chatMessage.content);
-// 				textElement.appendChild(messageText);
-	
-// 				messageElement.appendChild(textElement);
-	
-// 				messageArea.appendChild(messageElement);
-				
-// 				if(messageArea.scrollTop>messageArea.scrollHeight-1000){
-// 					messageArea.scrollTop = messageArea.scrollHeight;
-// 				}
-				
-// 				var name = document.getElementById("name").value;
-// 				if(chatMessage.sender==name){
-// 					messageArea.scrollTop = messageArea.scrollHeight;
-// 				}
-// 			}
-// 		});
-// 	}, 100);
 });
 </script>
 </body>

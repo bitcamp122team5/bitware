@@ -32,7 +32,6 @@ public class ChatServiceImpl implements ChatService {
 		chatDao.insertChat(chatDto);
 	}
 
-	
 	@Override 
 	public MemberDto selectMemeberInfo(String memId) { 
 		return chatDao.selectMemeberInfo(memId); 
@@ -74,8 +73,13 @@ public class ChatServiceImpl implements ChatService {
 	}
 
 	@Override
-	public void deleteChatAlert(int alertNo) {
-		chatDao.deleteChatAlert(alertNo);
+	public void deleteChatAlert(String sessionId, String roomId) {
+		chatDao.deleteChatAlert(sessionId, roomId);
+	}
+
+	@Override
+	public int countChatAlert(String memId, String roomId) {
+		return chatDao.countChatAlert(memId, roomId);
 	}
 
 }

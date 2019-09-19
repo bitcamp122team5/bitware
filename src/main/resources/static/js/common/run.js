@@ -1,5 +1,4 @@
 /* 사이드메뉴 */
-
 $(function(){
 	$(".aside_con .dep1 a").click(function(e){
 
@@ -75,36 +74,28 @@ $(function(){
 									if(list[i].content==null){
 										list[i].content="";
 									}
-									if(list[i].member.teamName==null){
-										str += "<li class='memberByDept' value='"+list[i].member.memId+"'>"+"<p>"+list[i].member.ranks+"</p>"+list[i].member.memName+"<p>"+list[i].content+"</p></li>";
+									if(list[i].count!=0){
+										if(list[i].member.teamName==null){
+											str += "<li class='memberByDept' value='"+list[i].member.memId+"'>"+"<p>"+list[i].member.ranks+"</p>"+list[i].member.memName+"<p>"+list[i].content+"</p><span align='right'>"+list[i].count+"</span></li>";
+										}else{
+											str += "<li class='memberByDept' value='"+list[i].member.memId+"'>"+"<p>"+list[i].member.teamName+" "+list[i].member.ranks+"</p>"+list[i].member.memName+"<p>"+list[i].content+"</p><span align='right'>"+list[i].count+"</span></li>";
+										}
 									}else{
-										str += "<li class='memberByDept' value='"+list[i].member.memId+"'>"+"<p>"+list[i].member.teamName+" "+list[i].member.ranks+"</p>"+list[i].member.memName+"<p>"+list[i].content+"</p></li>";
+										if(list[i].member.teamName==null){
+											str += "<li class='memberByDept' value='"+list[i].member.memId+"'>"+"<p>"+list[i].member.ranks+"</p>"+list[i].member.memName+"<p>"+list[i].content+"</p></li>";
+										}else{
+											str += "<li class='memberByDept' value='"+list[i].member.memId+"'>"+"<p>"+list[i].member.teamName+" "+list[i].member.ranks+"</p>"+list[i].member.memName+"<p>"+list[i].content+"</p></li>";
+										}
 									}
 								}
 								$("#memberByDepartment li").remove();
 								$("#memberByDepartment").append(str);
-								
-								$(".memberByDept").click(function(){
-									var memId = $(this).attr('value');
-									var url = "/user/chat?memId=" + memId;
-									var name = "chatPopup";
-									
-									var popupX=(document.body.offsetWidth/2) - (500/2);
-									var popupY=(document.body.offsetHeight/2) - (700/2);
-									
-									var options = "width=500, height=700, scrollbars, resizable, toolbar=2, left="+popupX+", top="+popupY;
-									window.open(url, name, options);
-									
-//									$(this).parent().parent().parent().siblings(".btn_chat").removeClass("on");
-									this.parentNode.parentNode.parentNode.previousSibling.className="btn_chat";
-								})
 							}
 						});
 					});
 				});
 			}
 		})
-		
 	});
 	$( ".btn_chat" ).draggable({
 		containment:".chat_inner",
@@ -118,6 +109,32 @@ $(function(){
 			}, 1);
 		}
     });
+	
+	$(document).on('click', '.memberByDept', function(){
+		var memId = $(this).attr('value');
+		var url = "/user/chat?memId=" + memId;
+		var name = "chatPopup";
+		
+		var popupX=(document.body.offsetWidth/2) - (500/2);
+		var popupY=(document.body.offsetHeight/2) - (700/2);
+		
+		var options = "width=500, height=700, scrollbars, resizable, toolbar=2, left="+popupX+", top="+popupY;
+		var win = window.open(url, name, options);
+		var interval = window.setInterval(function() {
+			if (win == null || win.closed) {
+				window.clearInterval(interval);
+//		        closeCallback(win);
+				$.ajax({
+					url:"/user/deleteMap",
+					data:{},
+					success:function(data){
+					}
+				});
+		    }
+		}, 1000);
+
+		$("#btn_chat_enter").click();
+	})
 });
 
 //tab 
@@ -137,10 +154,12 @@ $(function(){
 //			url:"/user/checkChatAlert",
 //			data:{},
 //			success:function(msg){
-//				if(msg!=""){
-//					alert(msg);
+////				alert("222");
+//				if(msg=="new messages"){
+////					alert("111");
+////					document.getElementById("smile_color_change").style.color="red";
 //				}
 //			}
 //		});
-//	}, 1000);
+//	}, 3000);
 //});

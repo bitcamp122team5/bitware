@@ -53,6 +53,9 @@ public interface ChatDao {
 	@Select("select * from chat_alert where receiver = #{receiver}")
 	List<ChatAlertDto> checkChatAlert(String receiver);
 
-	@Delete("delete from chat_alert where alert_no = #{alertNo}")
-	void deleteChatAlert(int alertNo);
+	@Delete("delete from chat_alert where receiver = #{sessionId} and room_id = #{roomId}")
+	void deleteChatAlert(String sessionId, String roomId);
+
+	@Select("select count(*) from chat_alert where sender = #{memId} and room_id = #{roomId}")
+	int countChatAlert(String memId, String roomId);
 }
