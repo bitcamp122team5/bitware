@@ -11,6 +11,7 @@
   padding: 10px;
   text-align: center;
   z-index:3;
+  width:153px;
 }
 .rd-container-attachment {
   position: absolute;
@@ -57,16 +58,16 @@
 .rd-time-selected,
 .rd-time-option:hover {
   cursor: pointer;
-  background-color: #333;
+  background-color: #003263;
   color: #fff;
 }
 .rd-day-prev-month,
 .rd-day-next-month {
-  color: #999;
+  color: #E6E6E6;
 }
 .rd-day-disabled {
   cursor: default;
-  color: #fcc;
+  color: #E6E6E6;
 }
 .rd-time {
   position: relative;
