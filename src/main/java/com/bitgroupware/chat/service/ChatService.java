@@ -32,6 +32,8 @@ public interface ChatService {
 
 	List<ChatAlertDto> checkChatAlert(String receiver);
 
-	void deleteChatAlert(int alertNo);
+	void deleteChatAlert(String sessionId, String roomId);
+
+	int countChatAlert(String memId, String roomId);
 
 }

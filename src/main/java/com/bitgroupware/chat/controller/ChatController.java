@@ -30,6 +30,7 @@ import com.bitgroupware.chat.Beans.MemberDto;
 import com.bitgroupware.chat.service.ChatService;
 import com.bitgroupware.chat.utils.TemporaryInteger;
 import com.bitgroupware.chat.utils.TemporaryList;
+import com.bitgroupware.chat.utils.TemporaryMap;
 import com.bitgroupware.security.config.SecurityUser;
 
 @Controller
@@ -78,8 +79,10 @@ public class ChatController {
 		
 		model.addAttribute("roomId", roomId);
 		
-		chatservice.insertChatAlert(sessionId, memId, roomId);
-		System.out.println("여기여기");
+		TemporaryMap.checkPersonMap.put(sessionId, sessionId);
+		
+		chatservice.deleteChatAlert(sessionId, roomId);
+		
 		return "chat/chat";
 	}
 
@@ -102,15 +105,17 @@ public class ChatController {
 
 	@RequestMapping("/insertChat")
 	@ResponseBody
-	public void insertChat(String content, String sender, String receiver, String roomId) {
-		
+	public void insertChat(String content, String sender, String receiver, String roomId, String memId, @AuthenticationPrincipal SecurityUser principal) {
 		ChatMessageDto chatDto = new ChatMessageDto();
 		chatDto.setContent(content);
 		chatDto.setSender(sender);
 		chatDto.setReceiver(receiver);
 		chatDto.setRoomId(roomId);
 		chatservice.insertChat(chatDto);
-		
+		String sessionId = principal.getMember().getMemId();
+		if(!TemporaryMap.checkPersonMap.containsKey(memId)) {
+			chatservice.insertChatAlert(sessionId, memId, roomId);
+		}
 	}
 	
 	@RequestMapping("/chatDepartmentListAjax")
@@ -131,6 +136,7 @@ public class ChatController {
 			String[] roomArray = {sessionId, memId};
 			Arrays.sort(roomArray, Collections.reverseOrder());
 			String roomId = Arrays.stream(roomArray).collect(Collectors.joining());
+			int count = chatservice.countChatAlert(memId, roomId);
 			String content = chatservice.selectChatMessageListByRoomId(roomId);
 			if(content!=null&&content.length()>10) {
 				content = content.substring(0, 8)+"...";
@@ -138,6 +144,7 @@ public class ChatController {
 			TemporaryList list = new TemporaryList();
 			list.setMember(member);
 			list.setContent(content);
+			list.setCount(count);
 			lists.add(list);
 		}
 		return lists;
@@ -150,35 +157,22 @@ public class ChatController {
 		TemporaryInteger.counting=chatMessageList.size();
 		return chatMessageList;
 	}
-	@RequestMapping("/selectChatListAjax2")
-	@ResponseBody
-	public ChatMessageDto selectChatListAjax2(String roomId) {
-		List<ChatMessageDto> chatMessageList = chatservice.selectChatMessageList(roomId);
-		if(chatMessageList.size()>TemporaryInteger.counting) {
-			TemporaryInteger.counting=chatMessageList.size();
-			ChatMessageDto chatMessage = chatMessageList.get(chatMessageList.size()-1);
-			System.out.println(chatMessage.getSender());
-			return chatMessage;
-		}else {
-			ChatMessageDto chatMessage = new ChatMessageDto();
-			return chatMessage;
-		}
-	}
 	
 	@RequestMapping("/checkChatAlert")
 	@ResponseBody
 	public String checkChatAlert(@AuthenticationPrincipal SecurityUser principal) {
 		String receiver = principal.getMember().getMemId();
 		List<ChatAlertDto> chatAlertList = chatservice.checkChatAlert(receiver);
-		String str = "";
 		if(chatAlertList.size()!=0) {
-			for(ChatAlertDto chatAlert : chatAlertList) {
-				chatservice.deleteChatAlert(chatAlert.getAlertNo());
-				str += chatAlert.getSender()+" ";
-			}
-			return str+"님이 채팅방에 입장하였습니다.";
+			return "new message";
 		}else {
-			return "";
+			return "no new messages";
 		}
+	}
+	
+	@RequestMapping("/deleteMap")
+	@ResponseBody
+	public void deleteMap(@AuthenticationPrincipal SecurityUser principal) {
+		TemporaryMap.checkPersonMap.remove(principal.getMember().getMemId());
 	}
 }

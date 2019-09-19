@@ -13,4 +13,6 @@ public class TemporaryList {
 
 	public MemberDto member;
 	public String content;
+	public int count;
+
 }

@@ -97,7 +97,7 @@ public class SampleController {
 		teamRepo.save(team6);
 		
 		RanksVo ranks5 = new RanksVo();
-		ranks5.setRanks("사장");
+		ranks5.setRanks("대표");
 		ranks5.setRanksNo(5);
 		ranksRepo.save(ranks5);
 		RanksVo ranks4 = new RanksVo();

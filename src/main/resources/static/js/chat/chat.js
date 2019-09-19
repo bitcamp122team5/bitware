@@ -90,7 +90,7 @@ function sendMessage(event) {
 
 function onMessageReceived(payload) {
   var message = JSON.parse(payload.body);
-
+  
   var messageElement = document.createElement('li');
 
   if (message.type == 'JOIN') {
@@ -106,7 +106,6 @@ function onMessageReceived(payload) {
     var avatarText = document.createTextNode(message.sender[0]);
     avatarElement.appendChild(avatarText);
     avatarElement.style['background-color'] = getAvatarColor(message.sender);
-
     messageElement.appendChild(avatarElement);
 
     var usernameElement = document.createElement('span');
@@ -118,11 +117,18 @@ function onMessageReceived(payload) {
   var textElement = document.createElement('p');
   var messageText = document.createTextNode(message.content);
   textElement.appendChild(messageText);
-
   messageElement.appendChild(textElement);
-// 아래 지우지 마세요.
+
   messageArea.appendChild(messageElement);
-  messageArea.scrollTop = messageArea.scrollHeight;
+  
+//  messageArea.scrollTop = messageArea.scrollHeight;
+  
+  if(messageArea.scrollTop>messageArea.scrollHeight-1000){
+	  messageArea.scrollTop = messageArea.scrollHeight;
+  }
+  if(message.sender==nameInput){
+	  messageArea.scrollTop = messageArea.scrollHeight;
+  }
 }
 
 function getAvatarColor(messageSender) {
@@ -154,13 +160,15 @@ $(document).ready(function() {
 	 var sender = document.getElementById("sender").value;
 	 var receiver = document.getElementById("receiver").value;
 	 var roomId = document.getElementById("roomId").value;
+	 var memId = document.getElementById("memId").value;
 	 $.ajax({
 		url:"/user/insertChat",
 		data:{
 			content : content,
 			sender : sender,
 			receiver : receiver,
-			roomId : roomId
+			roomId : roomId,
+			memId : memId
 		},
 		dataType:'json',
 		success:function(data){
