@@ -27,6 +27,7 @@ public class OrganizationChartController {
 		if (deptName.equals("임원진")) {
 			List<TemporaryRepetition> repetitions = organizationChartService.selectExecutiveStaffList();
 			model.addAttribute("repetitions", repetitions);
+			model.addAttribute("deptName", deptName);
 			return "etc/organizationChartExecutiveStaffList";
 		} else {
 			List<TemporaryRepetition> repetitions = new ArrayList<TemporaryRepetition>();
