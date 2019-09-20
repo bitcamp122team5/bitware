@@ -18,7 +18,9 @@
 /* width */
 .w50{width:50px;}
 .w100{width:100px;}
+.w50p{width:50%;}
 .w100p{width:100%;}
+
 
 /* float */
 .fl{float:left;}

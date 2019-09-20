@@ -2,6 +2,8 @@
 button{outline:none;}
 input:read-only{outline:none;}
 
+
+/* scroll */
 .scrollX{overflow-x:auto;}
 
 /* calendar */
@@ -9,13 +11,20 @@ input:read-only{outline:none;}
   display:none;
 }
 
+/* daumAddr */
+.daumAddr input[type="text"]{display:inline-block;margin-bottom:10px;}
+.daumAddr input[type="text"]:last-child{margin-bottom:0;}
+.daumAddr p input:nth-child(1){width:50%;}
+.daumAddr p input:nth-child(2){width:20%;}
+.daumAddr p input:nth-child(3){width:20%;}
+
 /* checkbox */
 .check_wrap input[type=checkbox] {display:none;}
 .check_wrap input[type=checkbox] + label {width:20px;height:20px;display:inline-block;cursor:pointer;line-height:22px;background:url('../image/check_off.png')left/22px no-repeat;}
 .check_wrap input[type=checkbox]:checked + label {background-image:url('../image/check_on.png');}
 
 /* board_search */
-.board_search{width:100%;padding:10px;box-sizing:border-box;margin-bottom:10px;background:#f4f4f4;border:1px solid #ccc;}
+.board_search{width:100%;padding:10px 0;box-sizing:border-box;margin-bottom:10px;}
 .board_search::after{content:'';display:block;clear:both;}
 .board_search .board_search_inner{float:right;}
 .board_search .board_search_inner::after{content:'';display:block;clear:both;}
@@ -26,7 +35,7 @@ input:read-only{outline:none;}
 .board_search .board_search_inner .calendar_wrap ul li.wave{margin:0 10px;line-height:33px;}
 .board_search .board_search_inner .calendar_wrap ul li input[type="text"]{width:100px;margin-right:0px;}
 .board_search .board_search_inner .search input[type="text"]{width:200px;margin-right:0px;}
-.board_search .board_search_inner .search input[type="submit"]{display:inline-block;padding:6px 10px 6px 35px;box-sizing:border-box;background:#003263 url(/images/btn_search.png) left 10px center no-repeat;background-size:20px;font-size:14px;color:#fff;}
+.board_search .board_search_inner .search input[type="submit"]{display:inline-block;padding:6px 10px 6px 35px;box-sizing:border-box;background:#003263 url(/images/btn_search.png) left 10px center no-repeat;background-size:20px;font-size:14px;color:#fff;margin-right:0;}
 
 /* btn_calendar */
 .btn_calendar{display:inline-block;width:30px;height:30px;background:url(/images/btn_calendar.png) center center no-repeat;cursor:pointer;}
