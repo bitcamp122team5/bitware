@@ -53,10 +53,28 @@ $(function(){
 			url: "/user/chatDepartmentListAjax",
 			data: {},
 			datatype: "json",
-			success: function(departmentList){
+			success: function(lists){
 				var str = "";
-				for(var i in departmentList){
-					str += "<li class='person' value='"+departmentList[i].deptName+"'><a href='#dep"+(Number(i)+1)+"'>"+departmentList[i].deptName+"</a></li>";
+				for(var i in lists){
+					if(lists[i].department.deptName=="지원부"){
+						if(lists[i].check){
+							str += "<li class='person' value='"+lists[i].department.deptName+"'><a href='#dep"+(Number(i)+1)+"'>"+lists[i].department.deptName+"<span>!</span></a></li>";
+						}else{
+							str += "<li class='person' value='"+lists[i].department.deptName+"'><a href='#dep"+(Number(i)+1)+"'>"+lists[i].department.deptName+"</a></li>";
+						}
+					}else if(lists[i].department.deptName=="영업부"){
+						if(lists[i].check){
+							str += "<li class='person' value='"+lists[i].department.deptName+"'><a href='#dep"+(Number(i)+1)+"'>"+lists[i].department.deptName+"<span>!</span></a></li>";
+						}else{
+							str += "<li class='person' value='"+lists[i].department.deptName+"'><a href='#dep"+(Number(i)+1)+"'>"+lists[i].department.deptName+"</a></li>";
+						}
+					}else if(lists[i].department.deptName=="개발부"){
+						if(lists[i].check){
+							str += "<li class='person' value='"+lists[i].department.deptName+"'><a href='#dep"+(Number(i)+1)+"'>"+lists[i].department.deptName+"<span>!</span></a></li>";
+						}else{
+							str += "<li class='person' value='"+lists[i].department.deptName+"'><a href='#dep"+(Number(i)+1)+"'>"+lists[i].department.deptName+"</a></li>";
+						}
+					}
 				}
 				$("#department li").remove();
 				$("#department").append(str);
@@ -123,7 +141,6 @@ $(function(){
 		var interval = window.setInterval(function() {
 			if (win == null || win.closed) {
 				window.clearInterval(interval);
-//		        closeCallback(win);
 				$.ajax({
 					url:"/user/deleteMap",
 					data:{},
