@@ -15,7 +15,7 @@ public interface ApprovalService {
 	
 	// 결재 할 문서 리스트
 	List<ApprovalDto> selectApprovalListTo(String memId,int begin,Search search);
-	List<ApprovalDto> selectApprovalListToFinish(String memId,int begin,Search search);
+	List<ApprovalDto> selectApprovalListToFinish(String memId,int begin,Search search,String memName);
 	
 	// 읽기
 	ApprovalDto selectApproval(String apNo);

@@ -253,6 +253,7 @@ public class ApprovalController {
 		
 		List<ApprovalDto> approvalList = approvalService.selectApprovalListTo(memId,begin,search);
 		model.addAttribute("approvalList",approvalList);
+		System.out.println(approvalList);
 		model.addAttribute("page",page);
 		model.addAttribute("block",block);
 		model.addAttribute("search",search);
@@ -264,6 +265,7 @@ public class ApprovalController {
 			@RequestParam(defaultValue = "1") int curPage, Search search) {
 		
 		String memId = principal.getMember().getMemId();
+		String memName = principal.getMember().getMemName();
 		int count = approvalService.countApprovalToFinish(memId,search);
 
 		Pager page = new Pager(count, curPage);
@@ -277,7 +279,7 @@ public class ApprovalController {
 
 		int begin = page.getPageBegin() - 1;
 		
-		List<ApprovalDto> approvalList = approvalService.selectApprovalListToFinish(memId,begin,search);
+		List<ApprovalDto> approvalList = approvalService.selectApprovalListToFinish(memId,begin,search,memName);
 		model.addAttribute("approvalList",approvalList);
 		model.addAttribute("page",page);
 		model.addAttribute("block",block);
@@ -361,7 +363,7 @@ public class ApprovalController {
 			}
 		}
 		approvalService.updateApprovalPath(approval, member);
-		return "redirect:/user/selectApprovalListToBe";
+		return "redirect:/user/selectApprovalListTo";
 	}
 	
 	// 반려
@@ -398,7 +400,7 @@ public class ApprovalController {
 			break;
 		}
 		approvalService.updateApprovalCancel(approval);
-		return "redirect:/user/selectApprovalListToBe";
+		return "redirect:/user/selectApprovalListTo";
 	}
 	
 	// 휴가 신청

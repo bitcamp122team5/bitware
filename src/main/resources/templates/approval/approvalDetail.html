@@ -144,9 +144,9 @@ $(document).ready(function() {
       <!-- Modal content -->
       <div class="modal-content">
         <span class="close">&times;</span>                                                               
-        <p>승인하시겠습니까?</p>
+        <p>승인하시겠습니까?</p><br>
         <span>
-        	<a th:href="@{/user/updateApprovalPath(apNo=${approval.apNo},finalSign=${approval.finalSign},ranksNo=${ranksNo})}" >승인</a>
+        	<a th:href="@{/user/updateApprovalPath(apNo=${approval.apNo},finalSign=${approval.finalSign},ranksNo=${ranksNo})}" class="btn btn_point">승인</a>
 <!--         	<a href="javascript:history.back();">취소</a> -->
         </span>
       </div>
@@ -158,7 +158,7 @@ $(document).ready(function() {
         <span class="close">&times;</span>                                                               
         <p>반려사유를 적어주세요</p><br>
         <form th:action="@{/user/updateApprovalCancel(apNo=${approval.apNo})}" method="post">
-		<input type="text" name="apComment" id="apComment">
+		<input type="text" name="apComment" id="apComment" style="width:600px; height:50px;"><br><br>
         <input type="submit" value="반려">
 <!--         <a href="javascript:history.back();">취소</a> -->
         </form>
