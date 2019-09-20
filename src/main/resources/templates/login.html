@@ -117,7 +117,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 .txtb{position: relative;width:50%;border-bottom: 2px solid #adadad;margin: 30px auto;}
 .txtb input{font-size: 15px;color: #333;border: none;width: 100%;outline: none;background: none;padding: 0 5px;height: 40px;}
 .txtb span::before{content: attr(data-placeholder);position: absolute;top: 50%;left: 5px;color: #adadad;transform: translateY(-50%);z-index: -1;transition: .5s;}
-.txtb span::after{ content: '';position: absolute;width: 0%;height: 2px;background: linear-gradient(120deg,#3498db,#8e44ad);transition: .5s;}
+.txtb span::after{ content: '';position: absolute;width: 0%;height: 2px;background:#3e5165;/* background: linear-gradient(120deg,#3498db,#8e44ad); */transition: .5s;}
 .focus + span::before{top: -5px;}
 .focus + span::after{width: 100%;}
 .txtb input{font-size: 15px;color: #333;border: none;width: 100%;outline: none;background: none;padding: 0 5px;height: 40px;}
