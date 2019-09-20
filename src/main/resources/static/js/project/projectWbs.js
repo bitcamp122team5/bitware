@@ -451,6 +451,14 @@ function insertProjectWbsList(){
 			break;
 		}
 	}
+	//계획 작업 시작일, 계획 작업 종료일 비교
+	for(var i= 0; i<prjPlanEnds.length; i++){
+		if(parseDate(prjPlanStarts[i]).getTime() > parseDate(prjPlanEnds[i]).getTime()){
+			alert('계획 작업 종료일은 계획 작업 시작일과 같거나 이후로 입력해주세요. 참고 : '+(i+1)+"번째 계획 작업 종료일");
+			chk = false;
+			break;
+		}
+	}
 	//실제 작업 시작일 프로젝트 시작일 범위 초과 확인
 	for(var i= 0; i<prjRealStarts.length; i++){
 		if(nvl(prjRealStarts[i], "")){
@@ -466,6 +474,16 @@ function insertProjectWbsList(){
 		if(nvl(prjRealEnds[i], "")){
 			if(parseDate(prjRealEnds[i]).getTime() > prjEnd.getTime()){
 				alert('실제 작업 종료일은 프로젝트 종료일과 같거나 이전으로 입력해주세요. 참고 : '+(i+1)+"번째 실제 작업 종료일");
+				chk = false;
+				break;
+			}
+		}
+	}
+	//실제 작업 시작일, 실제 작업 종료일 비교
+	for(var i= 0; i<prjRealEnds.length; i++){
+		if(nvl(prjRealStarts[i], "")&&nvl(prjRealEnds[i], "")){
+			if(parseDate(prjRealStarts[i]).getTime() > parseDate(prjRealEnds[i]).getTime()){
+				alert('실제 작업 종료일은 실제 작업 시작일과 같거나 이후로 입력해주세요. 참고 : '+(i+1)+"번째 실제 작업 종료일");
 				chk = false;
 				break;
 			}
