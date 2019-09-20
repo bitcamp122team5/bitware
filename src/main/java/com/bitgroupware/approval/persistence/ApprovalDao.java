@@ -62,11 +62,17 @@ public interface ApprovalDao {
 	@Select("select r1.* from (select * from approval where ap_signpath = #{memId} and ap_docstatus in (1,2) and ap_deleteflag = 'N' and ap_content like #{searchKeyword} order by ap_no desc) r1 limit 10 offset #{begin}")
 	List<ApprovalDto> selectApprovalListToApContent(String memId, int begin, String searchKeyword);
 	
-	@Select("select r1.* from (select DISTINCT ap_no,ap_title,ap_docstatus,approval.mem_id,ap_insertdate from approval join member on (approval.ap_sign_name2 = member.mem_name or approval.ap_sign_name3 = member.mem_name or approval.ap_sign_name4 = member.mem_name or approval.ap_sign_name5 = member.mem_name) where not approval.mem_id in (#{memId}) and ap_docstatus in (2,3,4) and ap_deleteflag = 'N' and ap_content like #{searchKeyword} order by ap_no desc) r1 limit 10 offset #{begin}")
-	List<ApprovalDto> selectApprovalListToFinishApTilte(String memId, int begin, String searchKeyword);
+//	@Select("select r1.* from (select DISTINCT ap_no,ap_title,ap_docstatus,approval.mem_id,ap_insertdate,approval.mem_name from approval join member on (approval.ap_sign_name2 = member.mem_name or approval.ap_sign_name3 = member.mem_name or approval.ap_sign_name4 = member.mem_name or approval.ap_sign_name5 = member.mem_name) where not approval.mem_id in (#{memId}) and ap_docstatus in (2,3,4) and ap_deleteflag = 'N' and ap_content like #{searchKeyword} order by ap_no desc) r1 limit 10 offset #{begin}")
+//	List<ApprovalDto> selectApprovalListToFinishApTilte(String memId, int begin, String searchKeyword);
+//
+//	@Select("select r1.* from (select DISTINCT ap_no,ap_title,ap_docstatus,approval.mem_id,ap_insertdate,approval.mem_name from approval join member on (approval.ap_sign_name2 = member.mem_name or approval.ap_sign_name3 = member.mem_name or approval.ap_sign_name4 = member.mem_name or approval.ap_sign_name5 = member.mem_name) where not approval.mem_id in (#{memId}) and ap_docstatus in (2,3,4) and ap_deleteflag = 'N' and ap_content like #{searchKeyword} order by ap_no desc) r1 limit 10 offset #{begin}")
+//	List<ApprovalDto> selectApprovalListToFinishApContent(String memId, int begin, String searchKeyword);
+	
+	@Select("select r1.* from (select DISTINCT ap_no,ap_title,ap_docstatus,approval.mem_id,ap_insertdate,mem_name from approval where( ap_sign_name1=#{memName} or ap_sign_name2=#{memName} or ap_sign_name3=#{memName} or ap_sign_name4=#{memName} or ap_sign_name5=#{memName} ) and not mem_id = #{memId} and ap_deleteflag = 'N' and ap_content like #{searchKeyword} order by ap_no desc) r1 limit 10 offset #{begin}")
+	List<ApprovalDto> selectApprovalListToFinishApTilte(String memId, String memName,int begin, String searchKeyword);
 
-	@Select("select r1.* from (select DISTINCT ap_no,ap_title,ap_docstatus,approval.mem_id,ap_insertdate from approval join member on (approval.ap_sign_name2 = member.mem_name or approval.ap_sign_name3 = member.mem_name or approval.ap_sign_name4 = member.mem_name or approval.ap_sign_name5 = member.mem_name) where not approval.mem_id in (#{memId}) and ap_docstatus in (2,3,4) and ap_deleteflag = 'N' and ap_content like #{searchKeyword} order by ap_no desc) r1 limit 10 offset #{begin}")
-	List<ApprovalDto> selectApprovalListToFinishApContent(String memId, int begin, String searchKeyword);
+	@Select("select r1.* from (select DISTINCT ap_no,ap_title,ap_docstatus,approval.mem_id,ap_insertdate,mem_name from approval where( ap_sign_name1=#{memName} or ap_sign_name2=#{memName} or ap_sign_name3=#{memName} or ap_sign_name4=#{memName} or ap_sign_name5=#{memName} ) and not mem_id = #{memId} and ap_deleteflag = 'N' and ap_content like #{searchKeyword} order by ap_no desc) r1 limit 10 offset #{begin}")
+	List<ApprovalDto> selectApprovalListToFinishApContent(String memId, String memName,int begin, String searchKeyword);
 	
 
 	// 기안

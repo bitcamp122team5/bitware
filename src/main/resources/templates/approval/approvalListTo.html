@@ -70,7 +70,15 @@
 						<tbody>
 							<tr th:each="approval,count :${approvalList}">
 								<td th:text="${count.count}"></td>
-								<td th:text="${approval.apDocstatus}"></td>
+<!-- 								<td th:text="${approval.apDocstatus}"></td> -->
+								
+								<th:block th:switch="${approval.apDocstatus}" >
+								<td th:case="1" th:text="대기"></td>
+								<td th:case="2" th:text="진행"></td>
+								<td th:case="3" th:text="반려"></td>
+								<td th:case="4" th:text="완료"></td>
+								</th:block>
+								
 								<td class="tit"><a th:href="@{/user/selectApprovalView(apNo=${approval.apNo})}" class="ellipsis" th:text="${approval.apTitle}"></a></td>
 								<td class="writer" th:text="${approval.memName}"></td>
 								

@@ -81,7 +81,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 		return approvalList;
 	}
 	
-	public List<ApprovalDto> selectApprovalListToFinish(String memId,int begin,Search search) {
+	public List<ApprovalDto> selectApprovalListToFinish(String memId,int begin,Search search,String memName) {
 		if (search.getSearchCondition() == null)
 			search.setSearchCondition("apTitle");
 		if (search.getSearchKeyword() == null)
@@ -91,10 +91,10 @@ public class ApprovalServiceImpl implements ApprovalService {
 		List<ApprovalDto> approvalList = null;
 		switch (searchCondition) {
 		case "apTitle":
-			approvalList = apDao.selectApprovalListToFinishApTilte(memId,begin, searchKeyword);
+			approvalList = apDao.selectApprovalListToFinishApTilte(memId,memName,begin, searchKeyword);
 			break;
 		case "apContent":
-			approvalList = apDao.selectApprovalListToFinishApContent(memId,begin, searchKeyword);
+			approvalList = apDao.selectApprovalListToFinishApContent(memId,memName,begin, searchKeyword);
 			break;
 		}
 		return approvalList;
