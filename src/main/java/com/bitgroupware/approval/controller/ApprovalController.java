@@ -257,6 +257,7 @@ public class ApprovalController {
 		model.addAttribute("page",page);
 		model.addAttribute("block",block);
 		model.addAttribute("search",search);
+		model.addAttribute("status",1);
 		return "approval/approvalListTo";
 	}
 	
@@ -284,6 +285,7 @@ public class ApprovalController {
 		model.addAttribute("page",page);
 		model.addAttribute("block",block);
 		model.addAttribute("search",search);
+		model.addAttribute("status",2);
 		return "approval/approvalListTo";
 	}
 	

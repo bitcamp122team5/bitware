@@ -23,6 +23,24 @@ $(function(){
 	$("#keyword").val(keyword);
 });
 </script>
+<script>
+$(function(){
+	var status = document.getElementById("status").value;
+	switch(status){
+	case "1" : document.getElementById("one").className="on";
+	break;
+	case "2" : document.getElementById("two").className="on";
+	break;
+	case "3" : document.getElementById("three").className="on";
+	break;
+	case "4" : document.getElementById("four").className="on";
+	break;
+	default : document.getElementById("all").className="on";
+	break;
+	};
+});
+</script>
+<input type="hidden" id="status" th:value="${status}">
 
 <!-- //여기서 부터 긁어가세요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 <!-- //클래스명 하나도 빼지 말고 다 넣어주세요  -->
@@ -50,11 +68,15 @@ $(function(){
 			<!-- 검색 종료 -->
 
 			<div class="table_wrap list">
-				<a th:href="@{/user/selectApprovalListToBe}">전체</a>&nbsp
-				<a th:href="@{/user/selectApprovalListToBe?status=1}">대기</a>&nbsp
-				<a th:href="@{/user/selectApprovalListToBe?status=2}">진행</a>&nbsp
-				<a th:href="@{/user/selectApprovalListToBe?status=4}">완료</a>&nbsp
-				<a th:href="@{/user/selectApprovalListToBe?status=3}">반려</a>&nbsp
+				<div class="tab">
+					<ul>
+						<li id="all"><a th:href="@{/user/selectApprovalListToBe}">전체</a></li>
+						<li id="one"><a th:href="@{/user/selectApprovalListToBe?status=1}">대기</a></li>
+						<li id="two"><a th:href="@{/user/selectApprovalListToBe?status=2}">진행</a></li>
+						<li id="four"><a th:href="@{/user/selectApprovalListToBe?status=4}">완료</a></li>
+						<li id="three"><a th:href="@{/user/selectApprovalListToBe?status=3}">반려</a></li>
+					</ul>
+				</div>
 					<table>
 						<colgroup>
 							<col width="50px">

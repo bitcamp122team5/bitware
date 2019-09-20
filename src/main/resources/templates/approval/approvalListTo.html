@@ -14,13 +14,32 @@
 
 <!-- //무조건 section 안에서 내용 작성 -->
 
-
 <!-- //여기서 부터 긁어가세요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 <!-- //클래스명 하나도 빼지 말고 다 넣어주세요  -->
 <div layout:fragment="content" class="section">
+<script type="text/javascript">
+$(function(){
+	var status = document.getElementById("status").value;
+// 	var status2 = document.getElementById("finish").value;
+// 	alert(status);
+// 	alert(status2);
+	if(status=="1"){
+		document.getElementById("ing").className="on";
+	}else if(status=="2"){
+		document.getElementById("finish").className="on";
+	}
+	
+// 	document.getElementById("ing").onclick=function(){
+// 		document.getElementById("ing").className="on";
+// 	}
+	
+});
+</script>
+
 <div th:replace="fragments/aside :: asideFragment"></div>
 
 <div class="section_inner">
+<input type="hidden" id="status" th:value="${status}">
 		<h2>결재 할(한) 문서</h2>
 	<div class="article">
 
@@ -48,8 +67,8 @@
 			<div class="table_wrap list">
 				<div class="tab2">
 					<ul>
-						<li><a th:href="@{/user/selectApprovalListTo}">진행</a></li>
-						<li><a th:href="@{/user/selectApprovalListFinish}">완료</a></li>
+						<li id="ing"><a th:href="@{/user/selectApprovalListTo}">진행</a></li>
+						<li id="finish"><a th:href="@{/user/selectApprovalListFinish}">완료</a></li>
 					</ul>
 				</div>
 					<table>
