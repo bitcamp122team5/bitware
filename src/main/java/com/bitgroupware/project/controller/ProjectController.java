@@ -442,7 +442,7 @@ public class ProjectController {
 	
 	/*위험관리대장 작성페이지 이동*/
 	@RequestMapping("/insertProjectRiskView")
-	public String insertProjectRiskView(Model model, @AuthenticationPrincipal SecurityUser principal) {
+	public String insertProjectRiskView(Model model, @AuthenticationPrincipal SecurityUser principal, int prjCode) {
 		
 		String sessionRanks = principal.getMember().getRanks().getRanks();
 		String sessionDeptName = "";
@@ -461,6 +461,8 @@ public class ProjectController {
 		List<ProjectInfoDto> prjInfo = projectService.selectProjectNameList();
 		model.addAttribute("prjInfo", prjInfo);
 		
+		ProjectInfoDto prjName = projectService.selectProject(prjCode);
+		model.addAttribute("prjName", prjName);
 		
 		return "project/projectRiskWrite";
 	}
