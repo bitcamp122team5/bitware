@@ -94,11 +94,11 @@
 			<!-- 페이징 -->
 			<div th:align="center">
 				<div class="paging">
-					<span th:if="${page.curBlock > 1}">
-						<a th:href="@{/user/selectProjectList(curPage=${page.prevPage}, searchCondition=${search.searchCondition}, searchKeyword=${search.searchKeyword})}" class="page prev_02">[이전]</a>
-					</span>
 					<span th:if="${page.curBlock > 1 }">
-						<a th:href="@{/user/selectProjectList(curPage=1,searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" class="page prev_01">1</a>
+						<a th:href="@{/user/selectProjectList(curPage=1,searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" class="page prev_02">1</a>
+					</span>
+					<span th:if="${page.curBlock > 1}">
+						<a th:href="@{/user/selectProjectList(curPage=${page.prevPage}, searchCondition=${search.searchCondition}, searchKeyword=${search.searchKeyword})}" class="page prev_01">[이전]</a>
 					</span>
 					<span th:each="num:${block}">
 						<span th:if="${num==page.curPage }">
@@ -109,10 +109,10 @@
 						</span>
 					</span>
 					<span th:if="${page.curBlock < page.totBlock }">
-						<a th:href="@{/user/selectProjectList(curPage=${page.totPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${page.totPage}"></a>
+						<a th:href="@{/user/selectProjectList(curPage=${page.nextPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" class="page next_01">[다음]</a>
 					</span>
 					<span th:if="${page.curBlock < page.totBlock }">
-						<a th:href="@{/user/selectProjectList(curPage=${page.nextPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" class="page next_01">[다음]</a>
+						<a th:href="@{/user/selectProjectList(curPage=${page.totPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${page.totPage}" class="page next_02"></a>
 					</span>
 				</div>
 			</div>
