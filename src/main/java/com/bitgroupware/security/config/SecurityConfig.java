@@ -19,9 +19,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 		security.userDetailsService(userDetailsService);
 		
-		security.authorizeRequests().antMatchers("/").permitAll();
+//		security.authorizeRequests().antMatchers("/").permitAll();
 //		security.authorizeRequests().antMatchers("/a/**").authenticated();
-		security.authorizeRequests().antMatchers("/user/**").hasAnyRole("USER","PM","PL","ADMIN");
+		security.authorizeRequests().antMatchers("/","/user/**").hasAnyRole("USER","PM","PL","ADMIN");
 		security.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN");
 		
 		security.csrf().disable();
