@@ -8,8 +8,7 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <th:block th:replace="fragments/config :: configFragment"></th:block>
  
 <script>
-window.onload=function(){
-	
+$(function(){
 	document.getElementById("updateBtn").onclick=function(){
 		var bno = document.getElementById("bno").value;
 		var bpw = document.getElementById("bpw").value;
@@ -57,7 +56,7 @@ window.onload=function(){
 		document.getElementById("form").action="/user/insertAnonymousBoardReplyView";
 		document.getElementById("form").submit();
 	}
-}
+});
 </script>
 </head>
 <body>
