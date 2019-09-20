@@ -120,9 +120,30 @@ public class ChatController {
 	
 	@RequestMapping("/chatDepartmentListAjax")
 	@ResponseBody
-	public List<DepartmentDto> chatAjaxList() {
-		 List<DepartmentDto> departmentList = chatservice.selectDepartureList();
-		return departmentList;
+	public List<TemporaryList> chatAjaxList(@AuthenticationPrincipal SecurityUser principal) {
+		String sessionId = principal.getMember().getMemId();
+		List<DepartmentDto> departmentList = chatservice.selectDepartureList();
+		List<TemporaryList> lists = new ArrayList<TemporaryList>();
+		for(DepartmentDto department : departmentList) {
+			TemporaryList list = new TemporaryList();
+			list.setDepartment(department);
+			String deptName = department.getDeptName();
+			List<MemberDto> memberList = chatservice.selectMemberListByDepartmentAjax(deptName);
+			boolean check = false;
+			for(MemberDto member : memberList) {
+				String memId = member.getMemId();
+				String[] roomArray = {sessionId, memId};
+				Arrays.sort(roomArray, Collections.reverseOrder());
+				String roomId = Arrays.stream(roomArray).collect(Collectors.joining());
+				int count = chatservice.countChatAlert(memId, roomId);
+				if(count>0) {
+					check = true;
+				}
+			}
+			list.setCheck(check);
+			lists.add(list);
+		}
+		return lists;
 	}
 
 	@RequestMapping("/chatMemberListByDepartmentAjax")
