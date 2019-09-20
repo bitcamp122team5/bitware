@@ -4,7 +4,7 @@
 		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 <meta charset="UTF-8">
-<title>Project List</title>
+<title>전체 프로젝트</title>
 <th:block th:replace="fragments/config :: configFragment"></th:block>
 
 <!-- 사용자 css 추가 -->
@@ -110,6 +110,10 @@
 							<input class="form-control" type="text" name="prjName" id="prjName" autocomplete="off" />
 						</div>
 						<div class="form-group">
+							<label>마더업체</label>
+							<input class="form-control" type="text" name="prjMothercompany" id="prjMothercompany" autocomplete="off" />
+						</div>
+						<div class="form-group">
 							<label>계약금</label>
 							<input class="form-control" type="number" name="prjDeposit" id="prjDeposit" autocomplete="off" />
 						</div>
@@ -124,10 +128,6 @@
 						<div class="form-group">
 							<label>종료일</label>
 							<input class="form-control" type="date" name="prjEnd" id="prjEnd" autocomplete="off" />
-						</div>
-						<div class="form-group">
-							<label>마더업체</label>
-							<input class="form-control" type="text" name="prjMothercompany" id="prjMothercompany" autocomplete="off" />
 						</div>
 				<div class="table_wrap list">
 				<table>
