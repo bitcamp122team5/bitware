@@ -156,15 +156,38 @@ $(function(){
 
 //tab 
 $(function(){   
-	$(".tab > ul li").first().addClass("on");
-	
     $(".tab > ul li").click(function(){
-    	$(".tab > ul li").removeClass("on");
+        var now_tab = $(this).index();
+        $(this).parent().find("li").removeClass("on");
+        $(this).parent().parent().parent().find(".info").addClass("hidden");
+        $(this).parent().find("li").eq(now_tab).addClass("on");
+        $(this).parent().parent().parent().find(".info").eq(now_tab).removeClass("hidden");
+    });
+});
+
+//tab2
+$(function(){   
+    $(".tab2 > ul li").click(function(){
         var now_tab = $(this).index();
         $(this).parent().find("li").removeClass("on");
         $(this).parent().find("li").eq(now_tab).addClass("on");
     });
 });
+
+$(window).load(function(){
+	  var url_pathname = window.location.pathname;
+	    var url_search = window.location.search;
+	    var url = url_pathname +  url_search;
+	     $(".tab2 > ul li a").each(function(){
+	      $(this).parent().removeClass('on');
+	      if ($(this).attr("href") == url ){
+	      $(this).parent().addClass("on");
+	      }
+	  });   
+	});
+
+
+
 
 $(function(){ 
 	setInterval(function(){
