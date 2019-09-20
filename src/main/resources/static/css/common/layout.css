@@ -69,7 +69,7 @@ html, body{display:table;width:100%;height:100%;}
 
 /* tab */
 .tab ul::after{content:'';display:block;clear:both;}
-.tab ul li{float:left;}
+.tab ul li{float:left;background:#ddd;}
 .tab ul li.on{background:#23313f;}
 .tab ul li.on a{color:#fff;}
-.tab ul li a{display:block;}
+.tab ul li a{display:block;padding:10px 20px;box-sizing:border-box;}

@@ -156,12 +156,13 @@ $(function(){
 
 //tab 
 $(function(){   
+	$(".tab > ul li").first().addClass("on");
+	
     $(".tab > ul li").click(function(){
+    	$(".tab > ul li").removeClass("on");
         var now_tab = $(this).index();
         $(this).parent().find("li").removeClass("on");
-        $(this).parent().parent().parent().find(".info").addClass("hidden");
         $(this).parent().find("li").eq(now_tab).addClass("on");
-        $(this).parent().parent().parent().find(".info").eq(now_tab).removeClass("hidden");
     });
 });
 

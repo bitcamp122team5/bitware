@@ -46,8 +46,12 @@
 			<!-- 검색 종료 -->
 
 			<div class="table_wrap list">
-				<a th:href="@{/user/selectApprovalListTo}">진행</a>&nbsp
-				<a th:href="@{/user/selectApprovalListFinish}">완료</a>
+				<div class="tab">
+					<ul>
+						<li><a th:href="@{/user/selectApprovalListTo}">진행</a></li>
+						<li><a th:href="@{/user/selectApprovalListFinish}">완료</a></li>
+					</ul>
+				</div>
 					<table>
 						<colgroup>
 							<col width="50px">
