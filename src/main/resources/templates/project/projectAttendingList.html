@@ -88,8 +88,36 @@
 					</div>
 				</div>
 			</div><!-- //table_wrap end -->
-		</div>
-	
+			<!-- 페이징 -->
+			<div th:align="center">
+				<div class="paging">
+					<span th:if="${page.curBlock > 1 }">
+						<a th:href="@{/user/selectAttendingProjectList(curPage=1,searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" class="page prev_02">1</a>
+					</span>
+					<span th:if="${page.curBlock > 1}">
+						<a th:href="@{/user/selectAttendingProjectList(curPage=${page.prevPage}, searchCondition=${search.searchCondition}, searchKeyword=${search.searchKeyword})}" class="page prev_01">[이전]</a>
+					</span>
+					<span th:each="num:${block}">
+						<span th:if="${num==page.curPage }">
+							<a th:href="@{/user/selectAttendingProjectList(curPage=${num},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${num}" class="paging_click"></a>
+						</span>
+						<span th:unless="${num==page.curPage }">
+							<a th:href="@{/user/selectAttendingProjectList(curPage=${num},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${num}"></a>
+						</span>
+					</span>
+					<span th:if="${page.curBlock < page.totBlock }">
+						<a th:href="@{/user/selectAttendingProjectList(curPage=${page.nextPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" class="page next_01">[다음]</a>
+					</span>
+					<span th:if="${page.curBlock < page.totBlock }">
+						<a th:href="@{/user/selectAttendingProjectList(curPage=${page.totPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${page.totPage}" class="page next_02"></a>
+					</span>
+				</div>
+			</div>
+			<!-- 페이징 끝 -->
+		</div><!-- article end -->
+	</div><!-- section inner end -->
+</div><!-- //section end -->
+
 	<!-- 프로젝트 생성 modal -->
 	<div class="modal" id="insertProjectModal" role="dialog">
 		<div class="modal-dialog">
@@ -155,33 +183,5 @@
 			</div>
 		</div>
 	</div>
-	<!-- 페이징 -->
-	<div th:align="center">
-		<div class="paging">
-			<span th:if="${page.curBlock > 1}">
-				<a th:href="@{/user/selectAttendingProjectList(curPage=${page.prevPage}, searchCondition=${search.searchCondition}, searchKeyword=${search.searchKeyword})}" class="page prev_02">[이전]</a>
-			</span>
-			<span th:if="${page.curBlock > 1 }">
-				<a th:href="@{/user/selectAttendingProjectList(curPage=1,searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" class="page prev_01">1</a>
-			</span>
-			<span th:each="num:${block}">
-				<span th:if="${num==page.curPage }">
-					<a th:href="@{/user/selectAttendingProjectList(curPage=${num},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${num}" class="paging_click"></a>
-				</span>
-				<span th:unless="${num==page.curPage }">
-					<a th:href="@{/user/selectAttendingProjectList(curPage=${num},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${num}"></a>
-				</span>
-			</span>
-			<span th:if="${page.curBlock < page.totBlock }">
-				<a th:href="@{/user/selectAttendingProjectList(curPage=${page.totPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" th:text="${page.totPage}"></a>
-			</span>
-			<span th:if="${page.curBlock < page.totBlock }">
-				<a th:href="@{/user/selectAttendingProjectList(curPage=${page.nextPage},searchCondition=${search.searchCondition},searchKeyword=${search.searchKeyword})}" class="page next_01">[다음]</a>
-			</span>
-		</div>
-	</div>
-<!-- 페이징 끝 -->
-</div>
-</div><!-- //section end -->
 </body>
 </html>

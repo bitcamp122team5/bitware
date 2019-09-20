@@ -210,4 +210,9 @@ public interface ProjectDao {
 			+ " (#{rskTitle}, #{rskContent}, #{rskReg}, #{rskWriter}, #{memName}, #{rskSolution}, #{rskResult}, #{fileCheck}, #{prjCode})")
 	public void insertProjectRiskSamples(ProjectRiskDto rsk);
 	
+	/*프로젝트 WBS 샘플데이터  생성*/
+	@Insert("INSERT INTO PROJECT_WBS (PRJ_CODE, PRJ_WORK_NAME, PRJ_GROUP, PRJ_STEP, PRJ_DEPTH, PRJ_MANAGER, PRJ_OUTPUT, PRJ_PLAN_START, PRJ_PLAN_END, PRJ_REAL_START, PRJ_REAL_END, PRJ_TOTAL_DAYS) VALUES "
+			+ " (#{prjCode}, #{prjWorkName}, #{prjGroup}, #{prjStep}, #{prjDepth}, #{prjManager}, #{prjOutput}, #{prjPlanStart}, #{prjPlanEnd}, #{prjRealStart}, #{prjRealEnd}, #{prjTotalDays})")
+	public void insertProjectWbs(ProjectWbsDto wbs);
+	
 }
