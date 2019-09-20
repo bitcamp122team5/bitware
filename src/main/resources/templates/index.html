@@ -24,7 +24,7 @@ div.realWorkChart {
 	float: right;
 }
 </style>
-<!-- 차트  -->
+<!-- 근태 차트  -->
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
 	// Load google charts
@@ -86,9 +86,109 @@ div.realWorkChart {
 		vacationChart.draw(vacationStatus, vacationStatusOptions);
 	}
 </script>
-<!-- 차트 끝 -->
+<!-- 근태 차트 끝 -->
 <title>메인페이지</title>
 <th:block th:replace="fragments/config :: configFragment"></th:block>
+<script th:if="${!projectList.isEmpty()}" th:inline="javascript">
+	var prjListNum = 0;
+	var prjLength = [[${projectListSize}]];
+	result();
+	
+	function prevbtn() {
+		if (prjListNum == 0) prjListNum = prjLength;
+		else prjListNum-=1;
+		result();
+	}
+	
+	function nextbtn() {
+		if (prjListNum == prjLength) prjListNum = 0;
+		else prjListNum+=1;
+		result();
+	}
+	
+	function result() {
+		$.ajax({
+			url:"/user/calcWorks",
+			data:{
+				prjListNum:prjListNum
+			},
+			success:function(mainViewProjectList){
+				if (prjLength >= 0) {
+					var planComplete = mainViewProjectList.planComplete;
+					var planIng = mainViewProjectList.planIng;
+					var planUnset = mainViewProjectList.planUnset;
+					var realComplete = mainViewProjectList.realComplete;
+					var realIng = mainViewProjectList.realIng;
+					var realUnset = mainViewProjectList.realUnset;
+
+					// Load google charts
+					google.charts.load('current', {
+						'packages' : [ 'corechart' ]
+					});
+
+					if (!(planComplete + planIng + planUnset) == 0) {
+						google.charts.setOnLoadCallback(planWorkChart);
+					}
+					
+					if (!(realComplete + realIng + realUnset) == 0) {
+						google.charts.setOnLoadCallback(realWorkChart);
+					}
+					
+					// Draw the chart and set the chart values
+					function planWorkChart() {
+						var planWorkStatus = google.visualization.arrayToDataTable([
+								[ '계획', '계획 작업 현황' ],
+								[ '완료', planComplete ], 
+								[ '진행중', planIng ], 
+								[ '미시작', planUnset ]
+						]);
+
+						// Optional; add a title and set the width and height of the chart
+						var planWorkStatusOptions = {
+							'title':'계힉 작업 현황', // 타이틀
+							'pieHole' : 0.4,
+							// 'pieSliceTextStyle': {
+							//	color: 'black',
+							// }, // 글자 색
+							'legend' : 'none', // 범례옵션
+							'width' : 400,
+							'height' : 400
+						};
+
+						// Display the chart inside the <div> element with id="piechart"
+						var planWorkChart = new google.visualization.PieChart(document.getElementById('planWorkChart'));
+						planWorkChart.draw(planWorkStatus, planWorkStatusOptions);
+					}
+					
+					function realWorkChart() {
+						var realWorkStatus = google.visualization.arrayToDataTable([
+								[ '실제', '실제 작업 현황' ], 
+								[ '완료', realComplete ], 
+								[ '진행중', realIng ], 
+								[ '미시작', realUnset ]
+						]);
+
+						// Optional; add a title and set the width and height of the chart
+						var realWorkStatusOptions = {
+							'title':'실제 작업 현황', // 타이틀
+							'pieHole' : 0.4,
+							// 'pieSliceTextStyle': {
+							//	color: 'black',
+							// }, // 글자 색
+							'legend' : 'none', // 범례옵션
+							'width' : 400,
+							'height' : 400
+						};
+
+						// Display the chart inside the <div> element with id="piechart"
+						var realWorkChart = new google.visualization.PieChart(document.getElementById('realWorkChart'));
+						realWorkChart.draw(realWorkStatus, realWorkStatusOptions);
+					}
+				}
+			}
+		});
+	}
+</script>
 </head>
 <body>
 	<div th:replace="fragments/header :: headerFragment"></div>
@@ -198,21 +298,17 @@ div.realWorkChart {
 				<!-- 그래프 적용 시작 -->
 				<div class="planWorkChart" id="planWorkChart" align="center"></div>
 				<div class="realWorkChart" id="realWorkChart" align="center"></div>
+				<input type="button" value="이전" onclick="javascript:prevbtn()">
+				<input type="button" value="다음" onclick="javascript:nextbtn()">
 				<!-- 그래프 적용 끝 -->
 				<div class="project_wrap">
 					<div th:each="project:${projectList}" class="table_wrap list scrollX">
 						<table>
 							<colgroup>
-								<col width="400px">
-								<col width="80px">
-								<col width="100px">
-								<col width="100px">
-								<col width="150px">
-								<col width="150px">
-								<col width="150px">
-								<col width="150px">
-								<col width="150px">
-								<col width="150px">
+								<col width="*">
+								<col width="180px">
+								<col width="210px">
+								<col width="210px">
 							</colgroup>
 							<thead>
 								<tr>
@@ -220,12 +316,6 @@ div.realWorkChart {
 									<th>PM</th>
 									<th>시작일</th>
 									<th>종료일</th>
-									<th>계획 작업 완료</th>
-									<th>계획 작업 진행중</th>
-									<th>계획 작업 미시작</th>
-									<th>실제 작업 완료</th>
-									<th>실제 작업 진행중</th>
-									<th>실제 작업 미시작</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -234,12 +324,6 @@ div.realWorkChart {
 									<td th:text="${project.projectInfo.prjPm}"></td>
 									<td th:text="${project.projectInfo.prjStart}"></td>
 									<td th:text="${project.projectInfo.prjEnd}"></td>
-									<td th:text="${project.planComplete}"></td>
-									<td th:text="${project.planIng}"></td>
-									<td th:text="${project.planUnset}"></td>
-									<td th:text="${project.realComplete}"></td>
-									<td th:text="${project.realIng}"></td>
-									<td th:text="${project.realUnset}"></td>
 								</tr>
 							</tbody>
 						</table>
