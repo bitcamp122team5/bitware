@@ -196,4 +196,18 @@ public interface ProjectDao {
 	/*위험관리대장 최근 코드 추출*/
 	@Select("SELECT MAX(RSK_CODE) FROM PROJECT_RISK")
 	public int selectMaxRskCode();
+	
+	/*프로젝트 샘플 데이터 생성 (300개)*/
+	@Insert("INSERT INTO PROJECT_INFO (PRJ_NAME, PRJ_MOTHERCOMPANY, PRJ_DEPOSIT, PRJ_WORKING_EXPENSES, PRJ_START, PRJ_END, PRJ_PM) VALUES (#{prjName}, #{prjMothercompany}, #{prjDeposit}, #{prjWorkingExpenses}, #{prjStart}, #{prjEnd}, #{prjPm})")
+	public void insertProjectSamples(ProjectInfoDto prj);
+	
+	/*프로젝트 참여인원 샘플 데이터 생성(프로젝트 300개에 2팀 나눠서)*/
+	@Insert("INSERT INTO PROJECT_MEMBERS (MEM_ID, PRJ_CODE) VALUES (#{memId}, #{prjCode})")
+	public void insertProjectMemberSamples(ProjectMembersDto mem);
+	
+	/*위험관리대장 샘플 데이터 생성 (300개)*/
+	@Insert("INSERT INTO PROJECT_RISK (RSK_TITLE, RSK_CONTENT, RSK_REG, RSK_WRITER, MEM_NAME, RSK_SOLUTION, RSK_RESULT, FILE_CHECK, PRJ_CODE) VALUES "
+			+ " (#{rskTitle}, #{rskContent}, #{rskReg}, #{rskWriter}, #{memName}, #{rskSolution}, #{rskResult}, #{fileCheck}, #{prjCode})")
+	public void insertProjectRiskSamples(ProjectRiskDto rsk);
+	
 }
