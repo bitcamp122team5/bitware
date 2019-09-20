@@ -21,15 +21,18 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	<h2 sec:authorize="hasRole('ROLE_ADMIN')">조직도 (관리자)</h2>
 	<h2 sec:authorize="hasAnyRole('ROLE_USER','ROLE_PL','ROLE_PM')">조직도</h2>
 	<div class="article">
-		&nbsp;&nbsp;&nbsp;<a th:href="@{/user/selectOrganizationChartList?deptName=임원진}" class="btn btn_point">임원진</a>
-		<a th:href="@{/user/selectOrganizationChartList?deptName=지원부}" class="btn btn_point">지원부</a>
-		<a th:href="@{/user/selectOrganizationChartList?deptName=영업부}" class="btn btn_point">영업부</a>
-		<a th:href="@{/user/selectOrganizationChartList?deptName=개발부}" class="btn btn_point">개발부</a>
-		<br>
+		<div class="table_wrap list">
+			<div class="tab">
+				<ul>
+					<li><a th:href="@{/user/selectOrganizationChartList?deptName=임원진}">임원진</a></li>
+					<li><a th:href="@{/user/selectOrganizationChartList?deptName=지원부}">지원부</a></li>
+					<li><a th:href="@{/user/selectOrganizationChartList?deptName=영업부}" class="btn btn_point">영업부</a></li>
+					<li><a th:href="@{/user/selectOrganizationChartList?deptName=개발부}" class="btn btn_point">개발부</a></li>
+				</ul>
+			</div>
 		<th:block th:each="repetition:${repetitions}">
 		<br>
 		<div th:text="'&nbsp&nbsp&nbsp&nbsp>&nbsp'+${repetition.ranks.ranks}"></div>
-		<div class="table_wrap list">
 			<table>
 				<colgroup>
 					<col width="50px">

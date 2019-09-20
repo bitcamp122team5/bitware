@@ -7,7 +7,7 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <title>익명게시판 글작성페이지</title>
 <th:block th:replace="fragments/config :: configFragment"></th:block>
 <script>
-window.onload=function(){
+$(function(){
 	document.getElementById("bpwCheck").onblur=function(){
 		var bpw = document.getElementById("bpw").value;
 		var bpwCheck = document.getElementById("bpwCheck").value;
@@ -75,7 +75,7 @@ window.onload=function(){
 			document.getElementById("form").submit();
 		}
 	};
-};
+});
 </script>
 </head>
 <body>

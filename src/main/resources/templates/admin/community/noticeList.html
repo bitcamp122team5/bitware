@@ -143,11 +143,11 @@ $(document).ready(function() {
 			        		<a th:href="@{/admin/updateNoticeView(ntNo=${paging.notice.ntNo})}" class="ellipsis" th:text="${paging.notice.ntTitle}"></a>
 			        		<span th:each="noticeFile:${paging.notice.noticeFileList}">
 				        		<span th:if="${noticeFile.ntFileType=='image'}">
-				        			<img th:src="@{/images/fileImage.png}" style="width: 5px; height: 5px">
+				        			<img th:src="@{/images/fileImage.png}" style="height: 13px; padding-top:6px">
 				        			<span th:text="${noticeFile.ntFileName}" class="thumbnail" th:value="${noticeFile.ntFileUrl}" style="font-size: 5px"></span>
 			    	    		</span>
 			        			<span th:if="${noticeFile.ntFileType=='document'}">
-			        				<img th:src="@{/images/fileImage.png}" style="width: 5px; height: 5px">
+			        				<img th:src="@{/images/fileImage.png}" style="height: 13px; padding-top:6px">
 			        				<span th:text="${noticeFile.ntFileName}" style="font-size: 5px"></span>
 			        			</span>
 			        		</span>
