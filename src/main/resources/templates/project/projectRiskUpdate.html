@@ -17,6 +17,9 @@
 <th:block layout:fragment="script">
 <script type="text/javascript" th:src="@{/js/project/bootstrap.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/project/projectRisk.js}"></script>
+
+<script src="http://malsup.github.com/jquery.form.js"></script> 
+<script src="https://cdn.jsdelivr.net/npm/jquery-multifile@2.2.2/jquery.MultiFile.min.js"></script>
 </th:block>
 
 
@@ -44,19 +47,19 @@
 					<tbody>
 						<tr>
 							<th>제목</th>	
-							<td><input type="text" name="rskTitle" th:value="${rskDto.rskTitle}" id="rskTitle"></td>
+							<td><input type="text" name="rskTitle" th:value="${rskDto.rskTitle}" id="rskTitle" class="w100p"></td>
 						</tr>
 						<tr>
 							<th>내용</th>	
-							<td><input type="text" name="rskContent" th:value="${rskDto.rskContent}" id="rskContent"></td>
+							<td><textarea name="rskContent" th:text="${rskDto.rskContent}" id="rskContent"></textarea></td>
 						</tr>
 						<tr>
 							<th>해결방안</th>	
-							<td><input type="text" name="rskSolution" th:value="${rskDto.rskSolution}" id="rskSolution"></td>
+							<td><textarea name="rskSolution" th:text="${rskDto.rskSolution}" id="rskSolution"></textarea></td>
 						</tr>
 						<tr>
 							<th>처리결과</th>	
-							<td><input type="text" name="rskResult" th:value="${rskDto.rskResult}" id="rskResult"></td>
+							<td><textarea name="rskResult" th:text="${rskDto.rskResult}" id="rskResult"></textarea></td>
 						</tr>
 						<tr>
 							<th>등록일</th>
@@ -70,6 +73,19 @@
 						<tr>
 							<th>작성자</th>	
 							<td th:text="${rskDto.memName}"></td>
+						</tr>
+						<tr>
+							<th>첨부파일</th>
+							<td>
+								<div class="file_wrap">
+									<div class="file_txt">
+										<p>파일은 <span class="txt_point_01">5개</span>까지 첨부가 가능하며, 용량은 <span class="txt_point_01">100MB</span>를 넘을 수 없습니다.</p>
+										<div id="afile3-list" style="border:1px solid #c9c9c9;min-height:50px"></div>
+									</div><!-- file_txt end -->
+									<div class="file_attach">
+										<input type="file" name="file">
+									</div>
+								</div>
 						</tr>
 					</tbody>
 				</table>

@@ -71,6 +71,20 @@
 							<th>작성자</th>	
 							<td th:text="${rskDto.memName}"></td>
 						</tr>
+						<tr>
+							<th>첨부파일</th>
+							<td>
+							<span th:if="${rskFileList == null}">
+								<span>첨부파일이 없습니다.</span>
+							</span>
+							<span th:unless="${rskFileList == null}">
+								<span th:each="rskFile : ${rskFileList}">
+								<input type="hidden" id="rskFileNo" th:value="${rskFile.rskFileNo}">
+								<a th:href="@{/user/downloadFiles(rskFileUrl=${rskFile.rskFileUrl}, rskFileName=${rskFile.rskFileName})}" th:name="file" th:text="${rskFile.rskFileName}" class="thumbnail" th:value="${rskFile.rskFileUrl}"></a><br>
+								</span>
+							</span>
+							</td>
+						</tr>
 					</tbody>
 				</table>
 				<div class="btn_wrap">

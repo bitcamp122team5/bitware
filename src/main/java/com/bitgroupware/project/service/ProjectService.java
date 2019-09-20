@@ -8,6 +8,7 @@ import com.bitgroupware.project.beans.MemberDto;
 import com.bitgroupware.project.beans.ProjectInfoDto;
 import com.bitgroupware.project.beans.ProjectMembersDto;
 import com.bitgroupware.project.beans.ProjectRiskDto;
+import com.bitgroupware.project.beans.ProjectRiskFileDto;
 import com.bitgroupware.project.beans.ProjectWbsDto;
 import com.bitgroupware.utils.Search;
 
@@ -107,4 +108,16 @@ public interface ProjectService {
 	
 	/*위험관리대장 프로젝트 리스트 추출*/
 	public List<ProjectInfoDto> selectProjectNameList();
+	
+	/*위험관리대장 파일첨부*/
+	public void insertProjectRiskFile(ProjectRiskFileDto rskFileDto);
+	
+	/*위험관리대장 파일 체크*/
+	public void updateProjectRiskFileCheck(int rskCode);
+	
+	/*위험관리대장 파일 불러오기*/
+	public List<ProjectRiskFileDto> selectProjectRiskFile(int rskCode);
+	
+	/*위험관리대장 파일 수정*/
+	public void updateProjectRiskFile(ProjectRiskFileDto rskFileDto);
 }

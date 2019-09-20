@@ -17,5 +17,6 @@ public class ProjectRiskDto {
 	private String rskSolution;
 	private String rskResult;
 	private int prjCode;
+	private String fileCheck;
 	
 }

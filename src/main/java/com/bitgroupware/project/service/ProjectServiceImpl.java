@@ -11,6 +11,7 @@ import com.bitgroupware.project.beans.MemberDto;
 import com.bitgroupware.project.beans.ProjectInfoDto;
 import com.bitgroupware.project.beans.ProjectMembersDto;
 import com.bitgroupware.project.beans.ProjectRiskDto;
+import com.bitgroupware.project.beans.ProjectRiskFileDto;
 import com.bitgroupware.project.beans.ProjectWbsDto;
 import com.bitgroupware.project.persistence.ProjectDao;
 import com.bitgroupware.utils.Search;
@@ -323,6 +324,31 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public List<ProjectInfoDto> selectProjectNameList() {
 		return dao.selectProjectNameList();
+	}
+
+	/*위험관리대장 파일첨부*/
+	@Override
+	public void insertProjectRiskFile(ProjectRiskFileDto rskFileDto) {
+		dao.insertProjectRiskFile(rskFileDto);
+		
+	}
+
+	/*위험관리대장 파일 체크*/
+	@Override
+	public void updateProjectRiskFileCheck(int rskCode) {
+		dao.updateProjectRiskFileCheck(rskCode);
+	}
+
+	/*위험관리대장 파일 불러오기*/
+	@Override
+	public List<ProjectRiskFileDto> selectProjectRiskFile(int rskCode) {
+		return dao.selectProjectRiskFile(rskCode);
+	}
+
+	/*위험관리대장 파일 수정*/
+	@Override
+	public void updateProjectRiskFile(ProjectRiskFileDto rskFileDto) {
+		dao.updateProjectRiskFile(rskFileDto);
 	}
 	
 }

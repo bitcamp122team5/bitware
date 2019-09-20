@@ -12,6 +12,7 @@ import com.bitgroupware.project.beans.MemberDto;
 import com.bitgroupware.project.beans.ProjectInfoDto;
 import com.bitgroupware.project.beans.ProjectMembersDto;
 import com.bitgroupware.project.beans.ProjectRiskDto;
+import com.bitgroupware.project.beans.ProjectRiskFileDto;
 import com.bitgroupware.project.beans.ProjectWbsDto;
 import com.bitgroupware.utils.Search;
 
@@ -175,4 +176,24 @@ public interface ProjectDao {
 	/*위험관리대장 프로젝트 리스트 추출*/
 	@Select("select r1.* from (SELECT * FROM PROJECT_INFO WHERE PRJ_COMPLETION = 0 ORDER BY PRJ_CODE DESC) r1")
 	public List<ProjectInfoDto> selectProjectNameList();
+	
+	/*위험관리대장 파일첨부*/
+	@Insert("INSERT INTO PROJECT_RISK_FILE (RSK_CODE, RSK_FILE_NAME, RSK_FILE_URL) VALUES (#{rskCode}, #{rskFileName}, #{rskFileUrl})")
+	public void insertProjectRiskFile(ProjectRiskFileDto rskFileDto);
+	
+	/*위험관리대장 파일 체크*/
+	@Update("UPDATE PROJECT_RISK SET FILE_CHECK ='Y' WHERE RSK_CODE=#{rskCode}")
+	public void updateProjectRiskFileCheck(int rskCode);
+	
+	/*위험관리대장 파일 불러오기*/
+	@Select("SELECT * FROM PROJECT_RISK_FILE WHERE RSK_CODE=#{rskCode}")
+	public List<ProjectRiskFileDto> selectProjectRiskFile(int rskCode);
+	
+	/*위험관리대장 파일 수정*/
+	@Update("UPDATE PROJECT_RISK_FILE SET RSK_FILE_NAME=#{rskFileName}, RSK_FILE_URL=#{rskFileUrl}, WHERE RSK_FILE_NO=#{rskFileNo}")
+	public void updateProjectRiskFile(ProjectRiskFileDto rskFileDto);
+	
+	/*위험관리대장 최근 코드 추출*/
+	@Select("SELECT MAX(RSK_CODE) FROM PROJECT_RISK")
+	public int selectMaxRskCode();
 }

@@ -102,6 +102,7 @@ $(function(){
 						<col width="*">
 						<col width="80px">
 						<col width="100px">
+						<col width="80px">
 					</colgroup>
 					<thead>
 						<tr>
@@ -109,6 +110,7 @@ $(function(){
 							<th>위험관리대장명</th>
 							<th>작성자</th>
 							<th>등록일</th>
+							<th>첨부파일</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -116,12 +118,20 @@ $(function(){
 							<td><input type="checkbox" name="riskAllCheckBox" id="rskCode" class="riskCheckBox" th:value="${rskDto.rskCode}"></td>
 							<td><a th:href="@{/user/selectProjectRiskDetail(rskCode=${rskDto.rskCode})}" th:text="${rskDto.rskTitle}"></a></td>
 							<td th:text="${rskDto.memName}"></td>
-						<th:block th:if="${today==#dates.format(rskDto.rskReg,'yyyy-MM-dd')}">
-							<td th:text="${#dates.format(rskDto.rskReg,'HH:mm')}"></td>
-						</th:block>
-						<th:block th:unless="${today==#dates.format(rskDto.rskReg,'yyyy-MM-dd')}">
-							<td th:text="${#dates.format(rskDto.rskReg,'yyyy-MM-dd')}"></td>
-						</th:block>
+						
+							<th:block th:if="${today==#dates.format(rskDto.rskReg,'yyyy-MM-dd')}">
+								<td th:text="${#dates.format(rskDto.rskReg,'HH:mm')}"></td>
+							</th:block>
+							<th:block th:unless="${today==#dates.format(rskDto.rskReg,'yyyy-MM-dd')}">
+								<td th:text="${#dates.format(rskDto.rskReg,'yyyy-MM-dd')}"></td>
+							</th:block>
+							
+							<th:block th:if=${rskDto.fileCheck==null}>
+								<td class="file"></td>
+							</th:block>
+							<th:block th:unless=${rskDto.fileCheck==null}>
+								<td class="file"><img th:src="@{/images/file.png}"></td>
+							</th:block>
 						</tr>
 					</tbody>
 				</table>
