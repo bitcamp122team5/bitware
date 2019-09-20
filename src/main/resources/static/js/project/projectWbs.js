@@ -750,71 +750,14 @@ $(function(){
 
 /*달력 기능 */
 
-////프로젝트 작업 목록 달력 모달
-//function viewCalendarModal(){
-//		$("#viewCalendarModal").modal();
-//	}
-//
-////프로젝트 작업 목록 달력에 값 붙이기
-//$(function(){
-//	var calendarEl = document.getElementById('calendar');
-//	  
-//	var calendar = new FullCalendar.Calendar(calendarEl, {
-//		plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
-//	  	header: {
-//    		left: 'prev,next today',
-//    		center: 'title',
-//   		right: 'dayGridMonth, listMonth'
-//    	},
-//    	defaultView: 'dayGridMonth',
-//   	defaultDate: new Date(),
-//    	locale: 'ko',
-//    	navLinks: true, // can click day/week names to navigate views
-//    	businessHours: true, // display business hours
-//    	editable: false,
-//  });
-//	
-//	var prjCode = $('#prjCode').val();
-//	
-//	$.ajax({
-//			type: "post",
-//			url: "/user/selectProjectWbsOnCalendar",
-//			data: {prjCode : prjCode},
-//			dataType: "json",
-//			success:function(projectWbsList){
-//				for(var i in projectWbsList){
-//					if(projectWbsList[i].prjDepth==0) var color = "#ff0000";
-//					if(projectWbsList[i].prjDepth==1) var color = "#ff6000";
-//					if(projectWbsList[i].prjDepth==2) var color = "#ff9600";
-//					if(projectWbsList[i].prjDepth==3) var color = "#ffd200";
-//					if(projectWbsList[i].prjDepth==4) var color = "#ffe400";
-//					if(projectWbsList[i].prjDepth==5) var color = "#c1ee0c";
-//					if(projectWbsList[i].prjDepth==6) var color = "#66ee0c";
-//					if(projectWbsList[i].prjDepth==7) var color = "#0cee76";
-//					if(projectWbsList[i].prjDepth==8) var color = "#0c91ee";
-//					if(projectWbsList[i].prjDepth==9) var color = "#0c6cee";
-//					calendar.addEvent({
-//		            	title: projectWbsList[i].prjWorkName,
-//		                start: projectWbsList[i].prjPlanStart,
-//		                end: projectWbsList[i].prjPlanEnd,
-//		                color: color
-//		            });
-//				}
-//			}
-//		});
-//	  calendar.render();
-//})
-
-
-
 //프로젝트 작업 목록 달력 모달
-function viewCalendarModals(){
-		$("#viewCalendarModals").modal();
+function viewCalendarModal(){
+		$("#viewCalendarModal").modal();
 	}
 
 //프로젝트 작업 목록 달력에 값 붙이기
 $(function(){
-	var calendarEl = document.getElementById('calendars');
+	var calendarEl = document.getElementById('calendar');
 	  
 	var calendar = new FullCalendar.Calendar(calendarEl, {
 		plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],

@@ -348,7 +348,7 @@ public class ProjectServiceImpl implements ProjectService {
 	/*위험관리대장 파일 수정*/
 	@Override
 	public void updateProjectRiskFile(ProjectRiskFileDto rskFileDto) {
-		dao.updateProjectRiskFile(rskFileDto);
+		dao.updateProjectRiskFile(rskFileDto); 
 	}
 	
 }
