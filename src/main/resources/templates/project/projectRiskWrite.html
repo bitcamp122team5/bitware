@@ -17,9 +17,58 @@
 <th:block layout:fragment="script">
 <script type="text/javascript" th:src="@{/js/project/bootstrap.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/project/projectRisk.js}"></script>
+<script type="text/javascript" th:src="@{/js/project/projectRiskFile.js}"></script>
+
+<script src="http://malsup.github.com/jquery.form.js"></script> 
+<script src="https://cdn.jsdelivr.net/npm/jquery-multifile@2.2.2/jquery.MultiFile.min.js"></script>
 </th:block>
+<script>
+/*위험관리대장 파일 업로드 관련*/
 
+$(function(){ // wait for page to load
+	$('#insertProjectRiskUpdateForm input[name=file]').MultiFile({
+        max: 10, //업로드 최대 파일 갯수 (지정하지 않으면 무한대)
+        accept: 'jpg|png|txt|xls|hwp|doc', //허용할 확장자(지정하지 않으면 모든 확장자 허용)
+        maxfile: 1024, //각 파일 최대 업로드 크기
+        maxsize: 3024,  //전체 파일 최대 업로드 크기
+        STRING: { //Multi-lingual support : 메시지 수정 가능
+            remove : "제거", //추가한 파일 제거 문구, 이미태그를 사용하면 이미지사용가능
+            duplicate : "$file 은 이미 선택된 파일입니다.", 
+            denied : "$ext 는(은) 업로드 할수 없는 파일확장자입니다.",
+            selected:'$file 을 선택했습니다.', 
+            toomuch: "업로드할 수 있는 최대크기를 초과하였습니다.($size)", 
+            toomany: "업로드할 수 있는 최대 갯수는 $max개 입니다.",
+            toobig: "$file 은 크기가 매우 큽니다. (max $size)"
+        },
+        list:"#afile3-list" //파일목록을 출력할 요소 지정가능
+    });
+});
 
+/*작성 정규식 체크 후 submit*/
+function insertProjectRisk(){
+	var rskTitle = $("#rskTitle").val();
+	var rskContent = $("#rskContent").val();
+	var rskSolution = $("#rskSolution").val();
+	var rskResult = $("#rskResult").val();
+	
+	if(rskTitle == ''){
+		alert("위험관리 제목을 입력해주세요");
+		return false;
+	}else if(rskContent == ''){
+		alert("위험관리 내용을 입력해주세요");
+		return false;
+	}else if(rskSolution == ''){
+		alert("위험관리 해결방안을 입력해주세요");
+		return false;
+	}else if(rskResult == ''){
+		alert("위험관리 처리결과를 입력해주세요");
+		return false;
+	}
+	
+	$("#insertProjectRiskUpdateForm").submit();
+}
+
+</script>
 </head>
 <body>
 <div th:replace="fragments/header :: headerFragment"></div>
@@ -32,7 +81,7 @@
 		<input type="hidden" id="sessionRanks" th:value="${sessionRanks}">
 		<input type="hidden" id="sessionDeptName" th:value="${sessionDeptName}">
 			<div class="table_wrap view">
-			<form action="/user/insertProjectRisk" id="insertProjectRiskUpdateForm">
+			<form method="post" action="/user/insertProjectRisk" id="insertProjectRiskUpdateForm" enctype="multipart/form-data">
 			<div>
 				<select name="prjCode" id="prjCode">
 					<option th:each=" prjInfo : ${prjInfo}" th:text="${prjInfo.prjName}" th:value="${prjInfo.prjCode}"></option>
@@ -48,23 +97,37 @@
 					<tbody>
 						<tr>
 							<th>제목</th>	
-							<td><input type="text" name="rskTitle" id="rskTitle"></td>
+							<td><input type="text" name="rskTitle" id="rskTitle" class="w100p"></td>
 						</tr>
 						<tr>
 							<th>내용</th>	
-							<td><input type="text" name="rskContent" id="rskContent"></td>
+							<td><textarea name="rskContent" id="rskContent"></textarea></td>
 						</tr>
 						<tr>
 							<th>해결방안</th>	
-							<td><input type="text" name="rskSolution" id="rskSolution"></td>
+							<td><textarea name="rskSolution" id="rskSolution"></textarea></td>
 						</tr>
 						<tr>
 							<th>처리결과</th>	
-							<td><input type="text" name="rskResult" id="rskResult"></td>
+							<td><textarea name="rskResult" id="rskResult"></textarea></td>
+						</tr>
+						<tr>
+							<th>첨부파일</th>
+							<td>
+								<div class="file_wrap">
+									<div class="file_txt">
+										<p>파일은<span class="txt_point_01">5개</span>까지 첨부가 가능하며, 용량은<span class="txt_point_01">100MB</span>를 넘을 수 없습니다.</p>
+										<div id="afile3-list" style="border: 1px solid #c9c9c9; min-height:50px"></div>
+									</div><!-- file_txt end -->
+									<div class="file_attach">
+										<input type="file" name="file">
+									</div><!-- file_attach -->
+								</div><!-- file_wrap end -->
+							</td>
 						</tr>
 					</tbody>
 				</table>
-			</form>
+			</form> 
 				<div class="btn_wrap">
 					<div class="box_right">
 						<a class="btn btn_point" onclick="insertProjectRisk()">등록</a>	

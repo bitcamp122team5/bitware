@@ -1,5 +1,9 @@
 package com.bitgroupware.project.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,18 +11,28 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.bitgroupware.project.beans.MemberDto;
 import com.bitgroupware.project.beans.ProjectInfoDto;
 import com.bitgroupware.project.beans.ProjectRiskDto;
+import com.bitgroupware.project.beans.ProjectRiskFileDto;
 import com.bitgroupware.project.beans.ProjectWbsDto;
+import com.bitgroupware.project.persistence.ProjectDao;
 import com.bitgroupware.project.service.ProjectService;
 import com.bitgroupware.security.config.SecurityUser;
 import com.bitgroupware.utils.Pager;
@@ -30,6 +44,9 @@ public class ProjectController {
 
 	@Autowired
 	private ProjectService projectService;
+	
+	@Autowired
+	private ProjectDao dao;
 	
 	/*전체 프로젝트 조회(+페이징, 검색) */
 	@RequestMapping("/selectProjectList")
@@ -348,8 +365,10 @@ public class ProjectController {
 		model.addAttribute("sessionId", sessionId);
 		
 		ProjectRiskDto rskDto = projectService.selectProjectRiskDetail(rskCode);
-		
 		model.addAttribute("rskDto", rskDto);
+		
+		List<ProjectRiskFileDto> rskFileList = projectService.selectProjectRiskFile(rskCode);
+		model.addAttribute("rskFileList", rskFileList);
 		
 		return "project/projectRiskDetail";
 	}
@@ -378,20 +397,48 @@ public class ProjectController {
 		model.addAttribute("sessionDeptName", sessionDeptName);
 		
 		ProjectRiskDto rskDto = projectService.selectProjectRiskDetail(rskCode);
-		
 		model.addAttribute("rskDto", rskDto);
+		
+		List<ProjectRiskFileDto> rskFileList = projectService.selectProjectRiskFile(rskCode);
+		model.addAttribute("rskFileList", rskFileList);
 		
 		return "project/projectRiskUpdate";
 	}
 	
 	/*위험관리대장 수정*/
 	@RequestMapping("/updateProjectRisk")
-	public String updateProjectRisk(ProjectRiskDto rskDto) {
+	public String updateProjectRisk(ProjectRiskDto rskDto, ProjectRiskFileDto rskFileDto, MultipartHttpServletRequest request) {
 		projectService.updateProjectRisk(rskDto);
 		
+		
+		int rskCode = dao.selectMaxRskCode();
+		List<MultipartFile> fileList = request.getFiles("file");
+		if(!rskFileDto.getFile().isEmpty()) {
+			System.out.println("2");
+			String path = request.getSession().getServletContext().getRealPath("/");
+				for (MultipartFile mf : fileList) {
+					System.out.println("3");
+					String originFileName = mf.getOriginalFilename(); // 원본 파일 명
+					String saveFile = path + System.currentTimeMillis() + originFileName;
+					String fileUrl = File.separator + System.currentTimeMillis() + originFileName;
+					rskFileDto.setRskFileName(originFileName);
+					rskFileDto.setRskFileUrl(fileUrl);
+					rskFileDto.setRskCode(rskCode);
+					try {
+						mf.transferTo(new File(saveFile));
+						projectService.updateProjectRiskFile(rskFileDto);
+						System.out.println("4");
+						dao.updateProjectRiskFileCheck(rskCode);
+						System.out.println(rskFileDto);
+					} catch (IllegalStateException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
 		return "redirect:/user/selectProjectRiskList?prjCode="+rskDto.getPrjCode();
 	}
-	
 	
 	/*위험관리대장 작성페이지 이동*/
 	@RequestMapping("/insertProjectRiskView")
@@ -420,10 +467,63 @@ public class ProjectController {
 	
 	/*위험관리대장 작성*/
 	@RequestMapping("/insertProjectRisk")
-	public String insertProjectRisk(ProjectRiskDto rskDto) {
+	public String insertProjectRisk(ProjectRiskDto rskDto, MultipartHttpServletRequest request, ProjectRiskFileDto rskFileDto) {
 		
 		projectService.insertProjectRisk(rskDto);
 		
+		// 파일 업로드
+		int rskCode = dao.selectMaxRskCode();
+		List<MultipartFile> fileList = request.getFiles("file");
+//		fileList.remove((fileList.size()-1));
+		System.out.println("filelistsize="+fileList.size());
+		if(!rskFileDto.getFile().isEmpty()) {
+		String path = request.getSession().getServletContext().getRealPath("/");
+		System.out.println(path);
+		System.out.println("============"+fileList);
+			for (MultipartFile mf : fileList) {
+				System.out.println("============"+mf);
+				String originFileName = mf.getOriginalFilename(); // 원본 파일 명
+				String saveFile = path + System.currentTimeMillis() + originFileName;
+				String fileUrl = File.separator + System.currentTimeMillis() + originFileName;
+				rskFileDto.setRskFileName(originFileName);
+				rskFileDto.setRskFileUrl(fileUrl);
+				rskFileDto.setRskCode(rskCode);
+				try {
+					mf.transferTo(new File(saveFile));
+					System.out.println("rskFileDto : "+rskFileDto);
+					projectService.insertProjectRiskFile(rskFileDto);
+					dao.updateProjectRiskFileCheck(rskCode);
+				} catch (IllegalStateException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
 		return "redirect:/user/selectProjectRiskList?prjCode="+rskDto.getPrjCode();
+	}
+	
+	@RequestMapping("/downloadFiles")
+	@ResponseBody
+	public ResponseEntity<byte[]> displayFile(String rskFileUrl, String rskFileName, HttpServletRequest request) throws Exception {
+		InputStream in = null;
+		String path = request.getSession().getServletContext().getRealPath("/");
+		ResponseEntity<byte[]> entity = null;
+		try {
+			HttpHeaders headers = new HttpHeaders();
+			in = new FileInputStream(path+rskFileUrl);
+			headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+			headers.add("Content-Disposition",
+					"attachment; filename=\"" + new String(rskFileName.getBytes("utf-8"), "iso-8859-1") + "\"");
+			entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
+		} finally {
+			if (in != null)
+				in.close();
+		}
+		return entity;
 	}
 }

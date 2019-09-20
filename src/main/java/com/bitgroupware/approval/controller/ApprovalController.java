@@ -103,6 +103,7 @@ public class ApprovalController {
 		if(!approvalFileDto.getFile().isEmpty()) {
 		String path = request.getSession().getServletContext().getRealPath("/");
 		System.out.println(path);
+		System.out.println("====================="+fileList);
 			for (MultipartFile mf : fileList) {
 				String originFileName = mf.getOriginalFilename(); // 원본 파일 명
 				String saveFile = path + System.currentTimeMillis() + originFileName;
