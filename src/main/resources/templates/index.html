@@ -90,6 +90,32 @@ div.realWorkChart {
 <title>메인페이지</title>
 <th:block th:replace="fragments/config :: configFragment"></th:block>
 <script th:if="${!projectList.isEmpty()}" th:inline="javascript">
+
+	/* bxslider */
+	$(document).ready(function(){
+	    var slider = $('.project_wrap').bxSlider({
+	    	auto: false,
+	    	speed: 500,
+	    	pause: 4000,
+	    	mode:'horizontal',
+	    	autoControls: true,
+	    	controls: false,
+	    	pager: false,
+	    	touchEnabled: false
+	    });
+	    $("#slider-next").click(function(){
+	    	slider.goToNextSlide();
+	    	return false;
+	    });
+	    $("#slider-prev").click(function(){
+	    	slider.goToPrevSlide();
+	    	return false;
+	    })
+	});
+
+
+
+
 	var prjListNum = 0;
 	var prjLength = [[${projectListSize}]];
 	result();
@@ -290,7 +316,7 @@ div.realWorkChart {
 				<!-- //table_wrap end -->
 			</div>
 			<!-- //article end -->
-			<div th:if="${!projectList.isEmpty()}" class="article cl">
+			<div th:if="${!projectList.isEmpty()}" class="article cl" style="position:relative;">
 				<div class="table_top">	
 					<span>참여중인 프로젝트</span>
 					<a th:href="@{/user/selectAttendingProjectList}">더보기<i class="fas fa-chevron-right"></i></a>
@@ -320,7 +346,7 @@ div.realWorkChart {
 							</thead>
 							<tbody>
 								<tr>
-									<td class="tit"><a th:href="@{/user/projectDetail(prjCode=${project.projectInfo.prjCode})}" th:text="${project.projectInfo.prjName}"></a></td>
+									<td><a th:href="@{/user/projectDetail(prjCode=${project.projectInfo.prjCode})}" th:text="${project.projectInfo.prjName}"></a></td>
 									<td th:text="${project.projectInfo.prjPm}"></td>
 									<td th:text="${project.projectInfo.prjStart}"></td>
 									<td th:text="${project.projectInfo.prjEnd}"></td>
@@ -330,6 +356,12 @@ div.realWorkChart {
 					</div>
 					<!-- //table_wrap end -->
 				</div><!-- //project_wrap end -->
+				
+				<div class="sliderBtn">
+					<a href="" id="slider-prev" class="sliderPrevBtn"></a>
+					<a href="" id="slider-next" class="sliderNextBtn"></a>
+				</div>
+				
 			</div>
 			<!-- //article end -->
 	
@@ -376,20 +408,5 @@ div.realWorkChart {
 		<!-- //section_inner end -->
 	</div>
 	<!-- //section end -->
-<script>
-/* bxslider */
-$(document).ready(function(){
-    $('.project_wrap').bxSlider({
-    	auto: false,
-    	speed: 500,
-    	pause: 4000,
-    	mode:'horizontal',
-    	autoControls: true,
-    	controls: true,
-    	pager: false,
-    	touchEnabled: false
-    });
-});
-</script>
 </body>
 </html>
