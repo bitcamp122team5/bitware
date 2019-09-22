@@ -196,12 +196,27 @@ $(function(){
 			data:{},
 			success:function(msg){
 				if(msg=="new messages"){
-					document.getElementById("smile_color_change").parentNode.style.background="#ff0000";
-					document.getElementById("smile_color_change").parentNode.style.border="1px solid #ff0000";
+					/*document.getElementById("smile_color_change").parentNode.style.background="#ff0000";
+					document.getElementById("smile_color_change").parentNode.style.border="1px solid #ff0000";*/
+					$(".smile").removeClass('fal');
+					$(".smile").removeClass('fa-comment-smile');
+					$(".smile").removeClass('fa-flip-horizontal');
+					
+					$(".smile").addClass('fas');
+					$(".smile").addClass('fa-exclamation');
+					$(".smile").addClass('blink');
 				}
 				if(msg=="no new messages"){
-					document.getElementById("smile_color_change").parentNode.style.background="#003263";
-					document.getElementById("smile_color_change").parentNode.style.border="1px solid #003263";
+//					document.getElementById("smile_color_change").parentNode.style.background="#003263";
+//					document.getElementById("smile_color_change").parentNode.style.border="1px solid #003263";
+					$(".smile").removeClass('fas');
+					$(".smile").removeClass('fa-exclamation');
+					$(".smile").removeClass('blink');
+					
+					$(".smile").addClass('fal');
+					$(".smile").addClass('fa-comment-smile');
+					$(".smile").addClass('fa-flip-horizontal');
+					
 				}
 			}
 		});

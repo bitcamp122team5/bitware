@@ -18,7 +18,10 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 	<div class="chat_wrap">
 		<div class="chat_inner">
-			<div class="btn_chat" id="btn_chat_enter"><i class="fal fa-smile" id="smile_color_change" style="color:white"></i></div>
+			<div class="btn_chat" id="btn_chat_enter">
+<!-- 				<i class="fal fa-smile" id="smile_color_change" style="color:white"></i> -->
+				<i class="fal fa-comment-smile fa-flip-horizontal smile" id="smile_color_change"></i>
+			</div>
 			<th:block th:replace="chat/chatList :: chatFragment"></th:block>
 		</div>
 	</div><!-- //chat_wrap end -->
