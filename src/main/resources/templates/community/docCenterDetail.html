@@ -52,7 +52,7 @@ $(function(){
 								</div>
 								<div th:if="${docCenterFile.docFileType=='document'}">
 									<div class="resizable ui-widget-content" style="border: 0px solid #c5c5c5;">
-									<img th:src="@{/images/fileImage.png}" style="height:100px"></div>
+									<img th:src="@{/images/fileDoc.png}" style="height:100px"></div>
 									<a th:href="@{/user/displayFile(fileUrl=${docCenterFile.docFileUrl})}" th:text="${docCenterFile.docFileName}"></a>
 								</div>
 							</div>

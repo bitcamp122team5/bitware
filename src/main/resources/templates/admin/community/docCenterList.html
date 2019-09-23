@@ -68,12 +68,12 @@ $(document).ready(function() {
 				checkBoxArr.push($(this).val());
 			})
 			$.ajax({
-				url:"/admin/deleteNoticeCheckBox",
+				url:"/admin/deleteDocCenterCheckBox",
 				type:"post",
 				data:{checkBoxArr:checkBoxArr},
 				success:function(result){
 					alert(result);
-					location.href="/admin/selectNoticeList";
+					location.href="/admin/selectDocCenterList";
 				}
 			});
 		}
@@ -115,13 +115,13 @@ $(document).ready(function() {
 		<div class="table_wrap list">
 			<table>
 				<colgroup>
-					<col width="50px">
-					<col width="50px">
-					<col width="50px">
-					<col width="*">
-					<col width="100px">
 					<col width="80px">
-					<col width="70px">
+					<col width="80px">
+					<col width="80px">
+					<col width="*">
+					<col width="130px">
+					<col width="110px">
+					<col width="100px">
 				</colgroup>
 				<thead>
 					<tr>
@@ -147,7 +147,7 @@ $(document).ready(function() {
 				        			<span th:text="${docCenterFile.docFileName}" class="thumbnail" th:value="${docCenterFile.docFileUrl}" style="font-size: 5px"></span>
 				        		</span>
 				        		<span th:if="${docCenterFile.docFileType=='document'}">
-				        			<img th:src="@{/images/fileImage.png}" style="height: 13px; padding-top:6px">
+				        			<img th:src="@{/images/fileDoc.png}" style="height: 13px; padding-top:6px">
 				        			<span th:text="${docCenterFile.docFileName}" style="font-size: 5px"></span>
 				        		</span>
 				        	</span>
