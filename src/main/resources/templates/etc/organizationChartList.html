@@ -117,6 +117,9 @@ $(function(){
     text-decoration: none;
     cursor: pointer;
 }
+
+.title{margin-bottom:15px;}
+.title p{font-weight:600;}
 </style>
 <script>
 $(function(){
@@ -147,18 +150,19 @@ $(function(){
 	<h2 sec:authorize="hasRole('ROLE_ADMIN')">조직도 (관리자)</h2>
 	<h2 sec:authorize="hasAnyRole('ROLE_USER','ROLE_PL','ROLE_PM')">조직도</h2>
 	<div class="article">
-		<div class="table_wrap list">
-			<div class="tab2">
-				<input type="hidden" id="tabCheck" th:value="${deptName}">
-				<ul>
-					<li id="executive"><a th:href="@{/user/selectOrganizationChartList?deptName=임원진}">임원진</a></li>
-					<li id="surpport"><a th:href="@{/user/selectOrganizationChartList?deptName=지원부}">지원부</a></li>
-					<li id="sales"><a th:href="@{/user/selectOrganizationChartList?deptName=영업부}">영업부</a></li>
-					<li id="dev"><a th:href="@{/user/selectOrganizationChartList?deptName=개발부}">개발부</a></li>
-				</ul>
-			</div>
-			<br>
-			<div th:text="'&nbsp&nbsp&nbsp&nbsp>&nbsp'+${deptName}"></div>
+		<div class="tab2">
+			<input type="hidden" id="tabCheck" th:value="${deptName}">
+			<ul>
+				<li id="executive"><a th:href="@{/user/selectOrganizationChartList?deptName=임원진}">임원진</a></li>
+				<li id="surpport"><a th:href="@{/user/selectOrganizationChartList?deptName=지원부}">지원부</a></li>
+				<li id="sales"><a th:href="@{/user/selectOrganizationChartList?deptName=영업부}">영업부</a></li>
+				<li id="dev"><a th:href="@{/user/selectOrganizationChartList?deptName=개발부}">개발부</a></li>
+			</ul>
+		</div>
+		<div class="title">
+			<p th:text="${deptName}"></p>
+		</div>
+		<div class="table_wrap list mb20">
 			<table>
 				<colgroup>
 					<col width="50px">
@@ -189,9 +193,10 @@ $(function(){
 			</table>
 		</div>
 		<th:block th:each="repetition:${repetitions}">
-			<br>
-			<div th:text="'&nbsp&nbsp&nbsp&nbsp>&nbsp'+${deptName}+'&nbsp'+${repetition.team.teamName}"></div>
-			<div class="table_wrap list">
+			<div class="title">
+				<p th:text="${deptName}+'&nbsp'+${repetition.team.teamName}"></p>
+			</div>
+			<div class="table_wrap list mb20">
 				<table>
 					<colgroup>
 						<col width="50px">

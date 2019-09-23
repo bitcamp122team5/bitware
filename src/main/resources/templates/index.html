@@ -26,6 +26,18 @@ div.realWorkChart {
 .noWorks{
 	height: 400px;
 }
+.noWorks p{
+	position:absolute;
+	top:50%;
+	left:45%;
+	margin-top:-135px;
+	padding-top:160px;
+	text-align:center;
+	background:url(/images/icon_mainChart.png) center center no-repeat;
+	background-size:113px;
+	font-weight:600;
+	
+}
 </style>
 <!-- 근태 차트  -->
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -336,7 +348,7 @@ div.realWorkChart {
 				<!-- 그래프 적용 시작 -->
 				<div class="planWorkChart" id="planWorkChart" align="center"></div>
 				<div class="realWorkChart" id="realWorkChart" align="center"></div>
-				<div class="noWorks" id="noWorks">WBS가 없습니다</div>
+				<div class="noWorks" id="noWorks"><p>WBS가 없습니다</p></div>
 				<!-- 그래프 적용 끝 -->
 				<div class="project_wrap">
 					<div th:each="project:${projectList}" class="table_wrap list scrollX">

@@ -58,19 +58,19 @@ $(function(){
 				for(var i in lists){
 					if(lists[i].department.deptName=="지원부"){
 						if(lists[i].check){
-							str += "<li class='person' value='"+lists[i].department.deptName+"'><a href='#dep"+(Number(i)+1)+"'>"+lists[i].department.deptName+"<span>!</span></a></li>";
+							str += "<li class='person' value='"+lists[i].department.deptName+"'><a href='#dep"+(Number(i)+1)+"'>"+lists[i].department.deptName+"<span><img src='/images/icon_new.png'></span></a></li>";
 						}else{
 							str += "<li class='person' value='"+lists[i].department.deptName+"'><a href='#dep"+(Number(i)+1)+"'>"+lists[i].department.deptName+"</a></li>";
 						}
 					}else if(lists[i].department.deptName=="영업부"){
 						if(lists[i].check){
-							str += "<li class='person' value='"+lists[i].department.deptName+"'><a href='#dep"+(Number(i)+1)+"'>"+lists[i].department.deptName+"<span>!</span></a></li>";
+							str += "<li class='person' value='"+lists[i].department.deptName+"'><a href='#dep"+(Number(i)+1)+"'>"+lists[i].department.deptName+"<span><img src='/images/icon_new.png'></span></a></li>";
 						}else{
 							str += "<li class='person' value='"+lists[i].department.deptName+"'><a href='#dep"+(Number(i)+1)+"'>"+lists[i].department.deptName+"</a></li>";
 						}
 					}else if(lists[i].department.deptName=="개발부"){
 						if(lists[i].check){
-							str += "<li class='person' value='"+lists[i].department.deptName+"'><a href='#dep"+(Number(i)+1)+"'>"+lists[i].department.deptName+"<span>!</span></a></li>";
+							str += "<li class='person' value='"+lists[i].department.deptName+"'><a href='#dep"+(Number(i)+1)+"'>"+lists[i].department.deptName+"<span><img src='/images/icon_new.png'></span></a></li>";
 						}else{
 							str += "<li class='person' value='"+lists[i].department.deptName+"'><a href='#dep"+(Number(i)+1)+"'>"+lists[i].department.deptName+"</a></li>";
 						}
@@ -165,21 +165,12 @@ $(function(){
     });
 });
 
-//tab2
-//$(function(){   
-//    $(".tab2 > ul li").click(function(){
-//        var now_tab = $(this).index();
-//        $(this).parent().find("li").removeClass("on");
-//        $(this).parent().find("li").eq(now_tab).addClass("on");
-//    });
-//});
 
 $(window).load(function(){
 	  var url_pathname = window.location.pathname;
 	    var url_search = window.location.search;
 	    var url = url_pathname +  url_search;
 	     $(".tab2 > ul li a").each(function(){
-//	      $(this).parent().removeClass('on');
 	      if ($(this).attr("href") == url ){
 	      $(this).parent().addClass("on");
 	     }
