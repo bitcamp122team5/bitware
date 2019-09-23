@@ -23,6 +23,9 @@ div.realWorkChart {
 	width: 50%;
 	float: right;
 }
+.noWorks{
+	height: 400px;
+}
 </style>
 <!-- 근태 차트  -->
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -104,17 +107,16 @@ div.realWorkChart {
 	    	touchEnabled: false
 	    });
 	    $("#slider-next").click(function(){
+	    	nextbtn()
 	    	slider.goToNextSlide();
 	    	return false;
 	    });
 	    $("#slider-prev").click(function(){
 	    	slider.goToPrevSlide();
+	    	prevbtn()
 	    	return false;
 	    })
 	});
-
-
-
 
 	var prjListNum = 0;
 	var prjLength = [[${projectListSize}]];
@@ -154,10 +156,20 @@ div.realWorkChart {
 
 					if (!(planComplete + planIng + planUnset) == 0) {
 						google.charts.setOnLoadCallback(planWorkChart);
+						document.getElementById("planWorkChart").style.display = "block";
+						document.getElementById("noWorks").style.display = "none";
+					} else {
+						document.getElementById("planWorkChart").style.display = "none";
+						document.getElementById("noWorks").style.display = "block";
 					}
 					
 					if (!(realComplete + realIng + realUnset) == 0) {
 						google.charts.setOnLoadCallback(realWorkChart);
+						document.getElementById("realWorkChart").style.display = "block";
+						document.getElementById("noWorks").style.display = "none";
+					} else {
+						document.getElementById("realWorkChart").style.display = "none";
+						document.getElementById("noWorks").style.display = "block";
 					}
 					
 					// Draw the chart and set the chart values
@@ -324,8 +336,7 @@ div.realWorkChart {
 				<!-- 그래프 적용 시작 -->
 				<div class="planWorkChart" id="planWorkChart" align="center"></div>
 				<div class="realWorkChart" id="realWorkChart" align="center"></div>
-				<input type="button" value="이전" onclick="javascript:prevbtn()">
-				<input type="button" value="다음" onclick="javascript:nextbtn()">
+				<div class="noWorks" id="noWorks">WBS가 없습니다</div>
 				<!-- 그래프 적용 끝 -->
 				<div class="project_wrap">
 					<div th:each="project:${projectList}" class="table_wrap list scrollX">
