@@ -133,10 +133,10 @@ $(function(){
 		var url = "/user/chat?memId=" + memId;
 		var name = "chatPopup";
 		
-		var popupX=(document.body.offsetWidth/2) - (500/2);
-		var popupY=(document.body.offsetHeight/2) - (700/2);
+		var popupX=(window.innerWidth/2) - (500/2);
+		var popupY=(window.innerHeight/2) - (600/2);
 		
-		var options = "width=500, height=700, scrollbars, resizable, toolbar=2, left="+popupX+", top="+popupY;
+		var options = "width=500, height=600, scrollbars, resizable, toolbar=no, left="+popupX+", top="+popupY;
 		var win = window.open(url, name, options);
 		var interval = window.setInterval(function() {
 			if (win == null || win.closed) {
