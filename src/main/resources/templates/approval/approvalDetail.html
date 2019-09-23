@@ -131,6 +131,26 @@ $(document).ready(function() {
     $(document).on("mouseout",".thumbnail",function(){
        	$("#preview").remove();
     });
+    
+    
+    var cnt = $(".change th").length;
+	switch (cnt) {
+	case (cnt = 3):
+		$(".change colgroup").append("<col width='*'>");
+		break;
+	case (cnt = 4):
+		$(".change colgroup").append("<col width='*'>");
+		$(".change colgroup").append("<col width='*'>");
+		$(".signtb").css("width","400px");
+		break;
+	case (cnt = 5):
+		$(".change colgroup").append("<col width='*'>");
+		$(".change colgroup").append("<col width='*'>");
+		$(".change colgroup").append("<col width='*'>");
+		$(".signtb").css("width","500px");
+	default:
+		break;
+	}
 });
 
 
@@ -186,9 +206,8 @@ $(document).ready(function() {
 <!-- //클래스명 하나도 빼지 말고 다 넣어주세요  -->
 <div class="article cl">
 	<div class="signtb table_wrap list">
-	<table>
+	<table class="change">
 	<colgroup>
-		<col width="*">
 		<col width="*">
 		<col width="*">
 	</colgroup>
