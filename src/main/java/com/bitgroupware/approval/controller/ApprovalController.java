@@ -368,7 +368,7 @@ public class ApprovalController {
 			}
 		}
 		approvalService.updateApprovalPath(approval, member);
-		return "redirect:/user/selectApprovalListTo";
+		return "redirect:/user/selectApprovalView?apNo="+apNo;
 	}
 	
 	// 반려
@@ -405,13 +405,6 @@ public class ApprovalController {
 			break;
 		}
 		approvalService.updateApprovalCancel(approval);
-		return "redirect:/user/selectApprovalListTo";
+		return "redirect:/user/selectApprovalView?apNo="+apNo;
 	}
-	
-	// 휴가 신청
-	@RequestMapping("/insertApprovalVacationView")
-	public String insertApprovalVacationView() {
-		return "approval/approvalVacation";
-	}
-	
 }
