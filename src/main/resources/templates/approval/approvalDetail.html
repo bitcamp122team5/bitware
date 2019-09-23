@@ -47,8 +47,13 @@
 }
 /* SignPath talbe */
 body { background: #fff; }
+
+.section_inner::after{content:'';display:block;clear:both;}
 .signtb {
+  float:right;
+  width:300px;
   border-collapse: collapse;
+  margin-bottom:20px;
 }  
 .signtb th {
   color: #333333;
@@ -69,6 +74,10 @@ body { background: #fff; }
     display:none;
     color:#fff;
 }
+
+.signtb input[type="button"]{margin-right:0 !important;margin-top:10px;}
+.signtb input[type="button"]:last-child{margin-bottom:10px;}
+.table_wrap tbody td{vertical-align:middle;}
 </style>
 
 <script>
@@ -159,7 +168,7 @@ $(document).ready(function() {
         <p>반려사유를 적어주세요</p><br>
         <form th:action="@{/user/updateApprovalCancel(apNo=${approval.apNo})}" method="post">
 		<input type="text" name="apComment" id="apComment" style="width:600px; height:50px;"><br><br>
-        <input type="submit" value="반려">
+        <input type="submit" class="btn btn_point" value="반려">
 <!--         <a href="javascript:history.back();">취소</a> -->
         </form>
         
@@ -172,26 +181,36 @@ $(document).ready(function() {
 <input type="hidden" id="ranksNo" th:value="${ranksNo}">
 <!-- <input type="hidden" id="apFileno" th:value="${approvalFileList.apFileno}"> -->
 <h2>상세페이지</h2>
-<br>
-<div th:align="right" class="signtb">
-	<table border="1">
+
+<!-- //여기서 부터 긁어가세요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+<!-- //클래스명 하나도 빼지 말고 다 넣어주세요  -->
+<div class="article cl">
+	<div class="signtb table_wrap list">
+	<table>
+	<colgroup>
+		<col width="*">
+		<col width="*">
+		<col width="*">
+	</colgroup>
+	<thead>
+		<tr>
+			<th th:if="${firstRanksNo<=1&&approval.finalSign>=1}">사원</th>
+			<th th:if="${firstRanksNo<=2&&approval.finalSign>=2}">팀장</th>
+			<th th:if="${firstRanksNo<=3&&approval.finalSign>=3}">부장</th>
+			<th th:if="${firstRanksNo<=4&&approval.finalSign>=4}">이사</th>
+			<th th:if="${firstRanksNo<=5&&approval.finalSign>=5}">사장</th>
+		</tr>
+	</thead>
+	<tbody>
 	<tr>
-		<th th:if="${firstRanksNo<=1&&approval.finalSign>=1}">사원</th>
-		<th th:if="${firstRanksNo<=2&&approval.finalSign>=2}">팀장</th>
-		<th th:if="${firstRanksNo<=3&&approval.finalSign>=3}">부장</th>
-		<th th:if="${firstRanksNo<=4&&approval.finalSign>=4}">이사</th>
-		<th th:if="${firstRanksNo<=5&&approval.finalSign>=5}">사장</th>
-	</tr>
-	
-	<tr th:align="center">
-		<td width="75" height="75" th:if="${firstRanksNo<=1&&approval.finalSign>=1}">
+		<td th:if="${firstRanksNo<=1&&approval.finalSign>=1}">
 			<th:block th:if="${approval.apSignUrl1!=null}">
 				<img th:src="${approval.apSignUrl1}" width="75" height="75">
 			</th:block>
 			<th:block th:unless="${approval.apSignUrl1!=null}">
 				<th:block th:if="${ranksNo<=1&&approval.finalSign>=1}">
 					<th:block th:if="${ranksNo==1}">
-						<input type="button" class="okBtn" id="okBtn" value="승인"><br>
+						<input type="button" class="btn_point" id="okBtn" value="승인"><br>
 						<input type="button" class="cancelBtn" id="cancelBtn" value="반려">
 					</th:block>
 					<th:block th:unless="${ranksNo==1}">
@@ -203,14 +222,14 @@ $(document).ready(function() {
 			</th:block>
 		</td>
 		
-		<td width="75" height="75" th:if="${firstRanksNo<=2&&approval.finalSign>=2}">
+		<td th:if="${firstRanksNo<=2&&approval.finalSign>=2}">
 			<th:block th:if="${approval.apSignUrl2!=null}">
 				<img th:src="${approval.apSignUrl2}" width="75" height="75">
 			</th:block>
 			<th:block th:unless="${approval.apSignUrl2!=null}">
 				<th:block th:if="${ranksNo<=2 && approval.finalSign>=2}">
 					<th:block th:if="${ranksNo==2}">
-						<input type="button" class="okBtn" id="okBtn" value="승인"><br>
+						<input type="button" class="btn_point" id="okBtn" value="승인"><br>
 <!-- 						<button id="okBtn">Open Modal</button> -->
 						<input type="button" class="cancelBtn" id="cancelBtn" value="반려">
 					</th:block>
@@ -223,14 +242,14 @@ $(document).ready(function() {
 			</th:block>
 		</td>
 		
-		<td width="75" height="75" th:if="${firstRanksNo<=3&&approval.finalSign>=3}">
+		<td th:if="${firstRanksNo<=3&&approval.finalSign>=3}">
 			<th:block th:if="${approval.apSignUrl3!=null}">
 				<img th:src="${approval.apSignUrl3}" width="75" height="75">
 			</th:block>
 			<th:block th:unless="${approval.apSignUrl3!=null}">
 				<th:block th:if="${ranksNo<=3&&approval.finalSign>=3}">
 					<th:block th:if="${ranksNo==3}">
-						<input type="button" class="okBtn" id="okBtn" value="승인"><br>
+						<input type="button" class="btn_point" id="okBtn" value="승인"><br>
 						<input type="button" class="cancelBtn" id="cancelBtn" value="반려">
 					</th:block>
 					<th:block th:unless="${ranksNo==3}">
@@ -242,14 +261,14 @@ $(document).ready(function() {
 			</th:block>
 		</td>
 		
-		<td width="75" height="75" th:if="${firstRanksNo<=4&&approval.finalSign>=4}">
+		<td th:if="${firstRanksNo<=4&&approval.finalSign>=4}">
 			<th:block th:if="${approval.apSignUrl4!=null}">
 				<img th:src="${approval.apSignUrl4}" width="75" height="75">
 			</th:block>
 			<th:block th:unless="${approval.apSignUrl4!=null}">
 				<th:block th:if="${ranksNo<=4&&approval.finalSign>=4}">
 					<th:block th:if="${ranksNo==4}">
-						<input type="button" class="okBtn" id="okBtn" value="승인"><br>
+						<input type="button" class="btn_point" id="okBtn" value="승인"><br>
 						<input type="button" class="cancelBtn" id="cancelBtn" value="반려">
 					</th:block>
 					<th:block th:unless="${ranksNo==4}">
@@ -261,14 +280,14 @@ $(document).ready(function() {
 			</th:block>
 		</td>
 		
-		<td width="75" height="75" th:if="${firstRanksNo<=5&&approval.finalSign>=5}">
+		<td th:if="${firstRanksNo<=5&&approval.finalSign>=5}">
 			<th:block th:if="${approval.apSignUrl5!=null}">
 				<img th:src="${approval.apSignUrl5}" width="75" height="75">
 			</th:block>
 			<th:block th:unless="${approval.apSignUrl5!=null}">
 				<th:block th:if="${ranksNo<=5&&approval.finalSign>=5}">
 					<th:block th:if="${ranksNo==5}">
-						<input type="button" class="okBtn" id="okBtn" value="승인"><br>
+						<input type="button" class="btn_point" id="okBtn" value="승인"><br>
 						<input type="button" class="cancelBtn" id="cancelBtn" value="반려">
 					</th:block>
 					<th:block th:unless="${ranksNo==5}">
@@ -279,25 +298,22 @@ $(document).ready(function() {
 				</th:block>
 			</th:block>
 		</td>
-		
 	</tr>
-	
-	<tr align="center" width="78px" height="25px">
-		<td th:if="${firstRanksNo<=1&&approval.finalSign>=1}" th:text="${approval.apSignName1}"></td>
-		<td th:if="${firstRanksNo<=2&&approval.finalSign>=2}" th:text="${approval.apSignName2}"></td>
-		<td th:if="${firstRanksNo<=3&&approval.finalSign>=3}" th:text="${approval.apSignName3}"></td>
-		<td th:if="${firstRanksNo<=4&&approval.finalSign>=4}" th:text="${approval.apSignName4}"></td>
-		<td th:if="${firstRanksNo<=5&&approval.finalSign>=5}" th:text="${approval.apSignName5}"></td>
-	</tr>
-	
+	</tbody>
+	<tfoot>
+		<tr>
+			<td th:if="${firstRanksNo<=1&&approval.finalSign>=1}" th:text="${approval.apSignName1}"></td>
+			<td th:if="${firstRanksNo<=2&&approval.finalSign>=2}" th:text="${approval.apSignName2}"></td>
+			<td th:if="${firstRanksNo<=3&&approval.finalSign>=3}" th:text="${approval.apSignName3}"></td>
+			<td th:if="${firstRanksNo<=4&&approval.finalSign>=4}" th:text="${approval.apSignName4}"></td>
+			<td th:if="${firstRanksNo<=5&&approval.finalSign>=5}" th:text="${approval.apSignName5}"></td>
+		</tr>
+	</tfoot>
 	</table>
 	</div>
-
-	<br>
-
-<!-- //여기서 부터 긁어가세요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-<!-- //클래스명 하나도 빼지 말고 다 넣어주세요  -->
-<div class="article">
+	
+	
+	
 	<div class="table_wrap view">
 		<table>
 			<colgroup>

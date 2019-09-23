@@ -64,6 +64,7 @@ html, body{display:table;width:100%;height:100%;}
 .chat_wrap .chat_inner .tab ul li a span img{border-radius:3px;vertical-align:middle;margin-top:-2px;}
 
 .chat_wrap .chat_inner .info{float:left;width:260px;height:calc(100vh - 60px);background:#fff;;transition:all 0.5s;}
+.chat_wrap .chat_inner .info #memberByDepartment{height:100%;overflow-y:auto;}
 .chat_wrap .chat_inner .info ul li{padding:20px;box-sizing:border-box;border-bottom:1px solid #e2e2e2;}
 .chat_wrap .chat_inner .info ul li::after{content:'';display:block;clear:both;}
 .chat_wrap .chat_inner .info ul li p:nth-child(1){font-size:13px;font-weight:600;}
