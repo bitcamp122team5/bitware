@@ -32,7 +32,7 @@ $(function(){
 			success:function(projectListWithZero){
 				var str="";
 				if(projectListWithZero.length!=0){
-					str += "<table><colgroup><col width='*'><col width='80px'><col width='80px'><col width='80px'><col width='100px'></colgroup><tr><thead><tr><th>프로젝트명</th><th>PM</th><th>시작일</th><th>종료일</th><th>마더업체</th></tr></thead>";
+					str += "<table><colgroup><col width='*'><col width='80px'><col width='110px'><col width='110px'><col width='100px'></colgroup><tr><thead><tr><th>프로젝트명</th><th>PM</th><th>시작일</th><th>종료일</th><th>마더업체</th></tr></thead>";
 					for (var i in projectListWithZero){
 						str += "<tbody><tr><td><a href='/user/projectDetail?prjCode="+projectListWithZero[i].prjCode+"'>"+projectListWithZero[i].prjName+"</a></td>";
 						str += "<td>"+projectListWithZero[i].prjPm+"</td>";
@@ -57,7 +57,7 @@ $(function(){
 			success:function(projectListWithOne){
 				var str="";
 				if(projectListWithOne.length!=0){
-					str += "<table><colgroup><col width='*'><col width='80px'><col width='80px'><col width='80px'><col width='100px'></colgroup><tr><thead><th>프로젝트명</th><th>PM</th><th>시작일</th><th>종료일</th><th>마더업체</th></tr></thead>";
+					str += "<table><colgroup><col width='*'><col width='80px'><col width='110px'><col width='110px'><col width='100px'></colgroup><tr><thead><th>프로젝트명</th><th>PM</th><th>시작일</th><th>종료일</th><th>마더업체</th></tr></thead>";
 					for (var i in projectListWithOne){
 						str += "<tbody><tr><td><a href='/user/projectDetail?prjCode="+projectListWithOne[i].prjCode+"'>"+projectListWithOne[i].prjName+"</a></td>";
 						str += "<td>"+projectListWithOne[i].prjPm+"</td>";
@@ -235,14 +235,14 @@ $(function(){
 			<div class="modal-content">
 				<span class="close">&times;</span>
 				<p>진행중인 프로젝트</p>
-				<div class="article">
+				<div class="article"  style="overflow-y: scroll; height: 250px">
 					<div class="table_wrap list">
 						<div id="projectListByMemIdWithZero"></div>
 					</div>
 				</div>
 				<br>
 				<p>완료된 프로젝트</p>
-				<div class="article">
+				<div class="article" style="overflow-y: scroll; height: 250px">
 					<div class="table_wrap list">
 						<div id="projectListByMemIdWithOne"></div>
 					</div>
