@@ -40,10 +40,10 @@ $(function(){
 		<input type="hidden" id="sessionRanks" th:value="${sessionRanks}">
 		<input type="hidden" id="sessionDeptName" th:value="${sessionDeptName}">
 		<input type="hidden" id="prjName" th:value="${prjName.prjCode}">
-		<input type="hidden" name="rskWriter" id="rskWriter" th:value="${sessionId}">
-		<input type="hidden" name="memName" id="memName" th:value="${sessionName}">
 			<div class="table_wrap view">
 			<form method="post" action="/user/insertProjectRisk" id="insertProjectRiskUpdateForm" enctype="multipart/form-data">
+			<input type="hidden" name="rskWriter" id="rskWriter" th:value="${sessionId}">
+			<input type="hidden" name="memName" id="memName" th:value="${sessionName}">
 			<div>
 				<select name="prjCode" id="projectCategory">
 					<option th:each=" prjInfo : ${prjInfo}" th:text="${prjInfo.prjName}" th:value="${prjInfo.prjCode}"></option>
@@ -58,6 +58,7 @@ $(function(){
 						<tr>
 							<th>제목</th>	
 							<td><input type="text" name="rskTitle" id="rskTitle" class="w100p"></td>
+							<input type="text" style="display: none;">
 						</tr>
 						<tr>
 							<th>내용</th>	
