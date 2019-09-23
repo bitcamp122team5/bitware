@@ -98,15 +98,33 @@ $(function(){
 			<div class="table_wrap list">
 				<table>
 					<colgroup>
+						<th:block th:if="${sessionRanks=='부장'} and ${sessionDeptName=='개발부'}">
 						<col width="50px">
+						</th:block>
+						<th:block th:unless="${sessionRanks=='부장'} and ${sessionDeptName=='개발부'}">
+						</th:block>
+						<th:block th:if="${sessionDeptName=='경영진'}">
+						<col width="50px">
+						</th:block>
+						<th:block th:unless="${sessionDeptName=='경영진'}">
+						</th:block>
 						<col width="*">
-						<col width="80px">
-						<col width="100px">
-						<col width="80px">
+						<col width="110px">
+						<col width="130px">
+						<col width="110px">
 					</colgroup>
 					<thead>
 						<tr>
+							<th:block th:if="${sessionRanks=='부장'} and ${sessionDeptName=='개발부'}">
 							<th><input type="checkbox" name="allCheckBox" id="riskAllCheckBox" onclick="riskCheckAll(this.checked)"></th>
+							</th:block>
+							<th:block th:unless="${sessionRanks=='부장'} and ${sessionDeptName=='개발부'}">
+							</th:block>
+							<th:block th:if="${sessionDeptName=='경영진'}">
+							<th><input type="checkbox" name="allCheckBox" id="riskAllCheckBox" onclick="riskCheckAll(this.checked)"></th>
+							</th:block>
+							<th:block th:unless="${sessionDeptName=='경영진'}">
+							</th:block>
 							<th>위험관리대장명</th>
 							<th>작성자</th>
 							<th>등록일</th>
@@ -115,8 +133,17 @@ $(function(){
 					</thead>
 					<tbody>
 						<tr th:each="rskDto : ${rskDtos}">
+							<th:block th:if="${sessionRanks=='부장'} and ${sessionDeptName=='개발부'}">
 							<td><input type="checkbox" name="riskAllCheckBox" id="rskCode" class="riskCheckBox" th:value="${rskDto.rskCode}"></td>
-							<td><a th:href="@{/user/selectProjectRiskDetail(rskCode=${rskDto.rskCode})}" th:text="${rskDto.rskTitle}"></a></td>
+							</th:block>
+							<th:block th:unless="${sessionRanks=='부장'} and ${sessionDeptName=='개발부'}">
+							</th:block>
+							<th:block th:if="${sessionDeptName=='경영진'}">
+							<td><input type="checkbox" name="riskAllCheckBox" id="rskCode" class="riskCheckBox" th:value="${rskDto.rskCode}"></td>
+							</th:block>
+							<th:block th:unless="${sessionDeptName=='경영진'}">
+							</th:block>
+							<td class="tit"><a th:href="@{/user/selectProjectRiskDetail(rskCode=${rskDto.rskCode})}" th:text="${rskDto.rskTitle}"></a></td>
 							<td th:text="${rskDto.memName}"></td>
 						
 							<th:block th:if="${today==#dates.format(rskDto.rskReg,'yyyy-MM-dd')}">

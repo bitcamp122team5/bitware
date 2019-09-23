@@ -52,16 +52,34 @@
 			<div class="table_wrap list">
 				<table>
 					<colgroup>
+						<th:block th:if="${sessionRanks=='부장'} and ${sessionDeptName=='개발부'}">
 						<col width="50px">
+						</th:block>
+						<th:block th:unless="${sessionRanks=='부장'} and ${sessionDeptName=='개발부'}">
+						</th:block>
+						<th:block th:if="${sessionDeptName=='경영진'}">
+						<col width="50px">
+						</th:block>
+						<th:block th:unless="${sessionDeptName=='경영진'}">
+						</th:block>
 						<col width="*">
-						<col width="80px">
-						<col width="100px">
-						<col width="100px">
-						<col width="100px">
+						<col width="110px">
+						<col width="130px">
+						<col width="130px">
+						<col width="130px">
 					</colgroup>
 					<thead>
 						<tr>
+							<th:block th:if="${sessionRanks=='부장'} and ${sessionDeptName=='개발부'}">
 							<th><input type="checkbox" name="allCheckBox" id="projectAllCheckBox" onclick="projectCheckAll(this.checked)"></th>
+							</th:block>
+							<th:block th:unless="${sessionRanks=='부장'} and ${sessionDeptName=='개발부'}">
+							</th:block>
+							<th:block th:if="${sessionDeptName=='경영진'}">
+							<th><input type="checkbox" name="allCheckBox" id="projectAllCheckBox" onclick="projectCheckAll(this.checked)"></th>
+							</th:block>
+							<th:block th:unless="${sessionDeptName=='경영진'}">
+							</th:block>
 							<th>프로젝트명</th>
 							<th>PM</th>
 							<th>시작일</th>
@@ -72,7 +90,16 @@
 					<tbody>
 						<tr th:each="Infos : ${prjInfos}">
 							<input type="hidden" id="pmPrjCode" th:value="${Infos.prjCode}">
+							<th:block th:if="${sessionRanks=='부장'} and ${sessionDeptName=='개발부'}">
 							<td><input type="checkbox" name="projectAllCheckBox" id="projectCheckBox" class="projectCheckBox" th:value="${Infos.prjCode}"></td>
+							</th:block>
+							<th:block th:unless="${sessionRanks=='부장'} and ${sessionDeptName=='개발부'}">
+							</th:block>
+							<th:block th:if="${sessionDeptName=='경영진'}">
+							<td><input type="checkbox" name="projectAllCheckBox" id="projectCheckBox" class="projectCheckBox" th:value="${Infos.prjCode}"></td>
+							</th:block>
+							<th:block th:unless="${sessionDeptName=='경영진'}">
+							</th:block>
 							<td class="tit"><a th:href="@{/user/projectDetail(prjCode=${Infos.prjCode})}" th:text="${Infos.prjName}"></a></td>
 							<td th:text="${Infos.prjPm}"></td>
 							<td th:text="${Infos.prjStart}"></td>

@@ -326,16 +326,12 @@ $(function(){
 			$('#deleteProjectBtn').hide();
 			$('#updateProjectBtn').hide();
 			$('#projectAttendMembersBtn').hide();
-			$('#projectAllCheckBox').hide();
-			$('.projectCheckBox').hide();
 		}else{
 			$('#completeProjectBtn').show();
 			$('#insertProjectBtn').show();
 			$('#deleteProjectBtn').show();
 			$('#updateProjectBtn').show();
 			$('#projectAttendMembersBtn').show();
-			$('#projectAllCheckBox').show();
-			$('.projectCheckBox').show();
 		}
 	}else if($('#sessionRanks').val() == "대표" || $('#sessionRanks').val() == "이사" ){
 		if($('#prjCompletion').val() > 0){
@@ -344,16 +340,12 @@ $(function(){
 			$('#deleteProjectBtn').hide();
 			$('#updateProjectBtn').hide();
 			$('#projectAttendMembersBtn').hide();
-			$('#projectAllCheckBox').hide();
-			$('.projectCheckBox').hide();
 		}else{
 			$('#completeProjectBtn').show();
 			$('#insertProjectBtn').show();
 			$('#deleteProjectBtn').show();
 			$('#updateProjectBtn').show();
 			$('#projectAttendMembersBtn').show();
-			$('#projectAllCheckBox').show();
-			$('.projectCheckBox').show();
 		}
 	}else{
 		$('#completeProjectBtn').hide();
@@ -361,7 +353,5 @@ $(function(){
 		$('#deleteProjectBtn').hide();
 		$('#updateProjectBtn').hide();
 		$('#projectAttendMembersBtn').hide();
-		$('#projectAllCheckBox').hide();
-		$('.projectCheckBox').hide();
 	}
 })
