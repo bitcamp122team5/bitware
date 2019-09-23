@@ -167,6 +167,7 @@ $(document).ready(function() {
     </div>
 
 <input type="hidden" id="apNo" th:value="${approval.apNo}">
+<input type="hidden" id="memId" th:value="${sessionId}">
 <input type="hidden" id="finalSign" th:value="${approval.finalSign}">
 <input type="hidden" id="ranksNo" th:value="${ranksNo}">
 <!-- <input type="hidden" id="apFileno" th:value="${approvalFileList.apFileno}"> -->
@@ -360,8 +361,11 @@ $(document).ready(function() {
 			<div class="box_right">
 	<!-- 			<a  class="btn btn_point" th:href="@{/user/selectApprovalListToBe}">목록</a> -->
 				<a  class="btn btn_point" href="javascript:history.back();">목록</a>
+				
+				<th:block th:if="${sessionId} == ${approval.memId}">
 				<a  class="btn btn_point" th:if="${approval.apDocstatus=='1'}" th:href="@{/user/deleteApproval(apNo=${approval.apNo})}">삭제</a>
 				<a  class="btn btn_point" th:if="${approval.apDocstatus=='1'}" th:href="@{/user/updateApprovalView(apNo=${approval.apNo})}">수정</a>
+				</th:block>
 			</div>
 		</div>
 		

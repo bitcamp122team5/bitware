@@ -304,6 +304,9 @@ public class ApprovalController {
 		int ranksNo = approvalService.selectRanksNo(memId);
 		model.addAttribute("firstRanksNo",firstRanksNo);
 		model.addAttribute("ranksNo",ranksNo);
+		
+		String sessionId = principal.getMember().getMemId();
+		model.addAttribute("sessionId", sessionId);
 		return "approval/approvalDetail";
 	}
 	
