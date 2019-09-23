@@ -69,7 +69,7 @@ public class ProjectSampleController {
 				
 			}
 			
-			if(i>345) {
+			if(i>345 && i%2 != 0) {
 				mem.setMemId("20190327016");
 				mem.setPrjCode(i);
 				dao.insertProjectMemberSamples(mem);
