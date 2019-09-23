@@ -29,6 +29,7 @@
     display:none;
     color:#fff;
 }
+.article::after{content:'';display:block;clear:both;}
 </style>
 <script>
 $(function(){
@@ -52,8 +53,25 @@ $(function(){
 	<div class="section_inner">
 		<h2>프로젝트 위험관리대장</h2>
 		<div class="article">
+		
+		<!-- 프로젝트 전환 검색 시작 -->
+		<form th:action="@{/user/selectProjectRiskList}" class="fl">
+		<div class="board_search">
+			<div class="board_search_inner">
+				<div class="select_wrap">
+					<span>조회한 프로젝트</span>
+					<select name="prjCode" id="projectCategory">
+						<option>프로젝트 선택</option>
+						<option th:each=" prjInfo : ${prjInfo}" th:text="${prjInfo.prjName}" th:value="${prjInfo.prjCode}"></option>
+					</select>
+				</div>
+			</div>
+		</div>
+		</form>
+		<!-- 프로젝트 전환 검색 종료 -->
+		
 		<!-- 검색 시작 -->
-		<form th:action="@{/user/selectProjectRiskList}">
+		<form th:action="@{/user/selectProjectRiskList}" class="fr">
 		<div class="board_search">
 			<div class="board_search_inner">
 				<div class="select_wrap">
@@ -73,24 +91,7 @@ $(function(){
 		<input type="hidden" id="searchCondition" th:value="${search.searchCondition}">
 		<input type="hidden" id="searchKeyword" th:value="${search.searchKeyword}">
 		<!-- 검색 종료 -->
-		<!-- 프로젝트 전환 검색 시작 -->
-		<form th:action="@{/user/selectProjectRiskList}">
-		<div class="board_search">
-			<div class="board_search_inner">
-				<div class="select_wrap">
-					<label>조회한 프로젝트</label>
-					<select name="prjCode" id="projectCategory">
-						<option>프로젝트 선택</option>
-						<option th:each=" prjInfo : ${prjInfo}" th:text="${prjInfo.prjName}" th:value="${prjInfo.prjCode}"></option>
-					</select>
-				</div>
-<!-- 				<div class="search"> -->
-<!-- 					<input type="submit" value="검색"> -->
-<!-- 				</div> -->
-			</div>
-		</div>
-		</form>
-		<!-- 프로젝트 전환 검색 종료 -->
+		
 		<input type="hidden" id="prjName" th:value="${prjName.prjCode}">
 		
 		<input type="hidden" id="sessionRanks" th:value="${sessionRanks}">

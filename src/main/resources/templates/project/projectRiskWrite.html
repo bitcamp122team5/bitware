@@ -44,7 +44,7 @@ $(function(){
 			<form method="post" action="/user/insertProjectRisk" id="insertProjectRiskUpdateForm" enctype="multipart/form-data">
 			<input type="hidden" name="rskWriter" id="rskWriter" th:value="${sessionId}">
 			<input type="hidden" name="memName" id="memName" th:value="${sessionName}">
-			<div>
+			<div style="margin-bottom:20px;">
 				<select name="prjCode" id="projectCategory">
 					<option th:each=" prjInfo : ${prjInfo}" th:text="${prjInfo.prjName}" th:value="${prjInfo.prjCode}"></option>
 				</select>
