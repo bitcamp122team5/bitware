@@ -96,7 +96,6 @@ public class ProjectAjaxController {
 	@RequestMapping(value="deleteProjectAttendMember", method=RequestMethod.POST)
 	@ResponseBody
 	public void deleteProjectAttendMember(int prjCode, String memId) {
-		
 		ProjectMembersDto prjMemDto;
 		prjMemDto = projectService.selectPrjMemNo(prjCode, memId);
 		projectService.deleteProjectAttendMember(prjMemDto.getPrjMemNo());

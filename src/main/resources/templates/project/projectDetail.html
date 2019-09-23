@@ -290,12 +290,13 @@ input[type='date']{
 						<th></th>
 					</tr>
 					<tr th:each="memInfos : ${memInfos}">
-						<td th:text="${memInfos.memName}"><input type="hidden" id="memId" th:value="${memInfos.memId}"></td>
+						<td th:text="${memInfos.memName}"></td>
 						<td th:text="${memInfos.deptName}"></td>
 						<td th:text="${memInfos.teamName}"></td>
 						<td name="btnChk" th:text="${memInfos.ranks}"></td>
-						<td style="display: none;"><input type="hidden" name="prjCode" id="prjCode" th:value="${prjInfo.prjCode}"></td>
+						<td style="display: none;"><input type="hidden" name="prjCode" id="prjCodes" th:value="${prjInfo.prjCode}"></td>
 						<th:block th:if="${sessionRanks}=='부장' and ${sessionDeptName}=='개발부'">
+							<input type="hidden" id="memIds" th:value="${memInfos.memId}">
 							<td><button type="button" class="closeRed" aria-label="Close" onclick="deleteProjectAttendMember()" id="deleteProjectAttendMemberBtn" style="color: red;"><span aria-hidden="true">&times;</span></button></td>
 						</th:block> 
 						<th:block th:unless="${sessionRanks}=='부장' and ${sessionDeptName}=='개발부'">

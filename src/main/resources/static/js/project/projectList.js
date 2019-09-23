@@ -190,8 +190,8 @@ function deleteProjectAttendMember(){
 	if($('#sessionRanks').val() == "부장" && $('#sessionDeptName').val() == "개발부"){
 		var confirm_val = confirm("인원을 삭제하시겠습니까?");
 		if(confirm_val){
-			var memId = $('#memId').val();
-			var prjCode = $("#prjCode").val();
+			var memId = $('#memIds').val();
+			var prjCode = $("#prjCodes").val();
 			$.ajax({
 				url:"/user/deleteProjectAttendMember",
 				type:"post",
@@ -208,8 +208,8 @@ function deleteProjectAttendMember(){
 	}else if($('#sessionRanks').val() == "대표" || $('#sessionRanks').val() == "이사" ){
 		var confirm_val = confirm("인원을 삭제하시겠습니까?");
 		if(confirm_val){
-			var memId = $('#memId').val();
-			var prjCode = $("#prjCode").val();
+			var memId = $('#memIds').val();
+			var prjCode = $("#prjCodes").val();
 			$.ajax({
 				url:"/user/deleteProjectAttendMember",
 				type:"post",
